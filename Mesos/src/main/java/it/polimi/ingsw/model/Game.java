@@ -1,9 +1,14 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+/**
+ * Represents the main class of the Model, orchestrating the entire game flow.
+ * Manages the game state, player turns, phases, eras, and board interaction.
+ *
+ * @author Matteo Mancin
+ */
 public class Game {
 
     private int round;
@@ -16,7 +21,12 @@ public class Game {
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
 
-
+    /**
+     * Constructor for the Game class.
+     * Initializes the starting parameters of the game, creating the board and the decks.
+     *
+     * @param numPlayers The number of players participating in the game (between 2 and 5).
+     */
     public Game(int numPlayers) {
         this.round = 0;
         this.era = 1;
@@ -41,6 +51,13 @@ public class Game {
     public int getEra() {
         return era;
     }
+
+    /**
+     * Sets the number of players, ensuring it is a valid amount.
+     *
+     * @param n The number of players to set.
+     * @throws IllegalArgumentException If the number of players is not between 2 and 5.
+     */
     public void setNumPlayers(int n) throws IllegalArgumentException {
         if (n>5 || n<2) {
             throw new IllegalArgumentException("Invalid number of players! Max = 5");
@@ -50,14 +67,23 @@ public class Game {
     public int getNumPlayers() {
         return numPlayers;
     }
+
+    /**
+     * Adds a new player to the game, if the maximum limit has not been reached.
+     *
+     * @param p The Player object to add.
+     */
     public void addPlayer(Player p) {
         if (players.size() < numPlayers) {
             players.add(p);
         }
     }
-
+    /**
+     * Starts the game by preparing the initial board, shuffling the player order,
+     * and assigning starting food rations based on the turn order.
+     */
     public void startGame() {
-        board.fill();       //Round 0 : .fill riempie entrambe le righe e i buildings
+        board.fill(numPlayers, era);       //Round 0 : .fill riempie entrambe le righe e i buildings
         Collections.shuffle(players);        //Shuffle dei player per avere un ordine casuale all'inizio
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
@@ -75,7 +101,12 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.round = 1;
     }
-
+    /**
+     * Calculates the final scores of the players and determines the winner(s).
+     * In case of a tie in prestige, the player with the most food wins.
+     *
+     * @return A list containing the winning player(s).
+     */
     public ArrayList<Player> endGame() {
         int max = Integer.MIN_VALUE;
         Player winner = new Player();
@@ -99,7 +130,11 @@ public class Game {
         winners.add(winner);
         return winners;
     }
-
+    /**
+     * Advances the turn to the next player.
+     * Automatically handles the phase change (from PLACEMENT to RESOLUTION) or
+     * advances to the next round if all players have completed their actions.
+     */
     public void nextPlayer(){
         currentPlayerIndex++;
 
@@ -113,7 +148,11 @@ public class Game {
             }
         }
     }
-
+    /**
+     * Handles the end of the entire round.
+     * Resolves events, restores the board, advances the round counter (or ends the game),
+     * and reorders the players based on the totems placed on the turn order tile.
+     */
     public void nextTurn() {
         board.solveEvents();
 
@@ -140,13 +179,21 @@ public class Game {
         }
         this.players = nextTurnOrder;
     }
-
+    /**
+     * Handles the transition to the next era.
+     * Discards remaining buildings and fills the board with new ones from the current era.
+     */
     public void nextEra() {
         this.era++;
-        board.shiftBuildings();  //non le avevamo messe nell'uml ma secondo me servirebbero funzioni del genere
+        board.shiftBuildings();
         board.fillBuildings();
     }
-
+    /**
+     * Allows the current player to place their Totem on a specific tile.
+     *
+     * @param pos The index of the tile on which to place the Totem.
+     * @throws IllegalArgumentException If the chosen tile is already occupied by another player.
+     */
     public void placeTotem(int pos) throws IllegalArgumentException{     //si presuppone che pos sia un numero sempre legale (compreso tra 0 e tiles-1)
         if (board.getTrack().get(pos).getStatus()) {
             throw new IllegalArgumentException("Position already taken by another player! Please choose a free tile");

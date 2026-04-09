@@ -1,9 +1,16 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+/**
+ * Represents a player within the game.
+ * This class acts as a data entity in the Model, maintaining the player's current state.
+ * It keeps track of personal information, available resources (food), prestige points,
+ * accumulated shaman stars, and the collection of cards they have acquired during the game.
+ *
+ * @author Matteo Mancin
+ */
 public class Player {
 
     private String nickname;
