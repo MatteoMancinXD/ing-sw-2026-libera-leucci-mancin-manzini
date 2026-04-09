@@ -68,7 +68,7 @@ public class Game {
                 p.editFood(3);
             }
             else {                       //Quarto e quinto giocatore prendono 4 cibo
-                è.editFood(4);
+                p.editFood(4);
             }
         }
         this.currentPhase = GamePhase.PLACEMENT;
@@ -143,7 +143,7 @@ public class Game {
 
     public void nextEra() {
         this.era++;
-        board.shiftBuildings();
+        board.shiftBuildings();  //non le avevamo messe nell'uml ma secondo me servirebbero funzioni del genere
         board.fillBuildings();
     }
 
