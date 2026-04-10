@@ -63,7 +63,7 @@ public class Player {
     }
 
     public void editFood(int amount) throws IllegalArgumentException{
-        if (amount > food) {
+        if (amount+food < 0) {
             throw new IllegalArgumentException("Food cannot go below zero!");
         }
         this.food = this.food + amount;
