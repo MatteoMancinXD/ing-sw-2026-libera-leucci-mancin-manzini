@@ -158,7 +158,7 @@ public class Game {
 
         board.clearLowerRow();
         board.shiftRow();
-        if(board.fill()) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
+        if(board.fill(numPlayers, era)) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
             nextEra();
         }
 
@@ -186,7 +186,7 @@ public class Game {
     public void nextEra() {
         this.era++;
         board.shiftBuildings();
-        board.fillBuildings();
+        board.fillBuildings(era);
     }
     /**
      * Allows the current player to place their Totem on a specific tile.
