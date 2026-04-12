@@ -1,4 +1,7 @@
 package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.model.characters.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +20,7 @@ public class Player {
     private int food;
     private int prestige;
     //private ArrayList<Card> cards;
-    private ArrayList<AristCard> artists;
+    private ArrayList<ArtistCard> artists;
     private ArrayList<BuilderCard> builders;
     private ArrayList<HarvesterCard> harvesters;
     private ArrayList<HunterCard> hunters;
@@ -78,7 +81,7 @@ public class Player {
     public void addArtist(ArtistCard c) { artists.add(c); }
     public void addBuilder(BuilderCard c) { builders.add(c); }
     public void addHarvester(HarvesterCard c) { harvesters.add(c); }
-    public void addBuilder(HunterCard c) { hunters.add(c); }
+    public void addHunter(HunterCard c) { hunters.add(c); }
     public void addInventor(InventorCard c) { inventors.add(c); }
     public void addShaman(ShamanCard c) { shamans.add(c); }
     //public void addBuilding(BuildingCard c) {buildings.add(c); }
