@@ -2,14 +2,23 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
-    private ArrayList<Card> cards;
+public class TribeDeck {
+    private ArrayList<TribeCard> cards;
 
-    public Deck(ArrayList<Card> cards) {
-        this.cards = cards;
+    /**
+     * @param cards to be taken from an archive of all TribeCards
+     * @param numPlayers number of players in game
+     */
+    public TribeDeck(ArrayList<TribeCard> cards, int numPlayers) {
+        this.cards = new ArrayList<>();
+
+        for(TribeCard card : cards) {
+            if(card.getMinPlayers() <= numPlayers)
+                this.cards.add(card);
+        }
     }
 
-    public Deck() {
+    public TribeDeck() {
         this.cards = new ArrayList<>();
     }
 
@@ -17,11 +26,11 @@ public class Deck {
      * Shuffles the deck segmenting the cards by era, shuffling them, and piling the up
      */
     public void shuffle() {
-        ArrayList<Card> era1 = new ArrayList<>();
-        ArrayList<Card> era2 = new ArrayList<>();
-        ArrayList<Card> era3 = new ArrayList<>();
+        ArrayList<TribeCard> era1 = new ArrayList<>();
+        ArrayList<TribeCard> era2 = new ArrayList<>();
+        ArrayList<TribeCard> era3 = new ArrayList<>();
 
-        for(Card card : cards) {
+        for(TribeCard card : cards) {
             switch(card.getEra()) {
                 case 1:
                     era1.add(card);
