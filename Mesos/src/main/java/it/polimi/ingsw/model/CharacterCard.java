@@ -13,6 +13,4 @@ public abstract class CharacterCard extends TribeCard{
     public Character getType() {
         return type;
     }
-
-    public void assignTo(Player player) {}
 }

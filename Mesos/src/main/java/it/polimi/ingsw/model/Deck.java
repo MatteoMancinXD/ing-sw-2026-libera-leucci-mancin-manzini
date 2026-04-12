@@ -52,6 +52,6 @@ public class Deck {
      * @return drawn card
      */
     public Card draw() {
-        return  cards.removeFirst();
+        return cards.removeFirst();
     }
 }

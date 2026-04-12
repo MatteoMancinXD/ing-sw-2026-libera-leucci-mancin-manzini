@@ -10,4 +10,6 @@ public abstract class Card {
     public int getEra() {
         return era;
     }
+
+    public void assignTo(Player player) {}
 }
