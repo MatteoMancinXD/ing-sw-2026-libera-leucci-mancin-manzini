@@ -34,7 +34,7 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.players = new ArrayList<>();
         this.board = new Board(numPlayers);     //La board viene inizializzata in base al numero di players
-        this.deck = new TribeDeck();
+        this.deck = new TribeDeck(numPlayers);
         this.buildingDeck = new BuildingDeck();
 
     }
@@ -188,6 +188,9 @@ public class Game {
         board.shiftBuildings();
         board.fillBuildings(era);
     }
+
+
+
     /**
      * Allows the current player to place their Totem on a specific tile.
      *
