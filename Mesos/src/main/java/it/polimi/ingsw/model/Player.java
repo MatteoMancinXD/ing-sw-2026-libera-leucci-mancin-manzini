@@ -16,14 +16,29 @@ public class Player {
     private String nickname;
     private int food;
     private int prestige;
-    private ArrayList<Card> cards;
+    //private ArrayList<Card> cards;
+    private ArrayList<AristCard> artists;
+    private ArrayList<BuilderCard> builders;
+    private ArrayList<HarvesterCard> harvesters;
+    private ArrayList<HunterCard> hunters;
+    private ArrayList<InventorCard> inventors;
+    private ArrayList<ShamanCard> shamans;
+    private ArrayList<BuildingCard> buildings;
+
     private int totStars;
 
     public Player(String nickname) {
         this.nickname = nickname;
         this.food = 0;
         this.prestige = 0;
-        this.cards = new ArrayList<>();
+        this.artists = new ArrayList<>();
+        this.builders = new ArrayList<>();
+        this.harvesters = new ArrayList<>();
+        this.hunters = new ArrayList<>();
+        this.inventors = new ArrayList<>();
+        this.shamans = new ArrayList<>();
+
+
         this.totStars = 0;
     }
 
@@ -55,15 +70,28 @@ public class Player {
     }
 
     public void drawCard(Card c){ //da vedere se usare liste diverse per ogni caracheter o quantomeno dei contatori
-        cards.add(c);
+
+        c.assignTo(this);
+
     }
+
+    public void addArtist(ArtistCard c) { artists.add(c); }
+    public void addBuilder(BuilderCard c) { builders.add(c); }
+    public void addHarvester(HarvesterCard c) { harvesters.add(c); }
+    public void addBuilder(HunterCard c) { hunters.add(c); }
+    public void addInventor(InventorCard c) { inventors.add(c); }
+    public void addShaman(ShamanCard c) { shamans.add(c); }
+    //public void addBuilding(BuildingCard c) {buildings.add(c); }
+
+    //prova
+
     public void buyBuilding(BuildingCard building){
         editFood(building.getCost());
-        cards.add(building);
+        buildings.add(building);
     }
 
     public void editFood(int amount) throws IllegalArgumentException{
-        if (amount+food < 0) {
+        if (amount + food < 0) {
             throw new IllegalArgumentException("Food cannot go below zero!");
         }
         this.food = this.food + amount;
