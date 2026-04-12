@@ -14,7 +14,6 @@ public class PaintingsEvent extends EventCard{
             }
         }
 
-
         // -2 prestige una tantum if below set number of artists else +era*artists
         // prestige can go negative by rules
         switch (era){

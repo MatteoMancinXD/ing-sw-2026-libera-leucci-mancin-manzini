@@ -19,7 +19,6 @@ public class HuntEvent extends EventCard{
            }
        }
 
-
     // +1 food and +1*era prestige foreach hunter
         switch (era){
             case(1):
@@ -44,8 +43,6 @@ public class HuntEvent extends EventCard{
                 editPrestige(hunters);
             }
         }
-
-
 
     }
 
