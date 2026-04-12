@@ -83,6 +83,7 @@ public class Player {
     public void addShaman(ShamanCard c) { shamans.add(c); }
     //public void addBuilding(BuildingCard c) {buildings.add(c); }
 
+    //prova
 
     public void buyBuilding(BuildingCard building){
         editFood(building.getCost());
