@@ -12,7 +12,7 @@ public class Board {
     /**
      * The main game deck containing the 96 Tribe cards. The board uses this deck to draw new cards and fill the offer rows during the game.
      */
-    private Deck deck;
+    private TribeDeck deck;
     private ArrayList<Card> buildingPool;      // Aggiunta questa lista per conservare i 21 edifici in attesa di essere messi in gioco. L'UML prevede solo un Deck da 96 carte tribu
     private boolean initialized; // Serve perché fill si comporta in modo diverso al round 0 (riempie entrambe le row) rispetto alle successive (solo upperrow).
 
@@ -25,7 +25,7 @@ public class Board {
         this.lowerRow = new ArrayList<>();
         this.track = new ArrayList<>();
         this.order = new OrderTile(numPlayers);
-        this.deck = new Deck();
+        this.deck = new TribeDeck();
         this.buildingPool = new ArrayList<>();
 
         // In attesa della classe BuildingCard. da inserire qui le carte edificio
