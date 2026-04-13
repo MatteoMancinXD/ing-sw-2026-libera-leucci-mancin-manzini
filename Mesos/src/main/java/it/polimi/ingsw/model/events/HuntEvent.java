@@ -18,8 +18,6 @@ import java.util.ArrayList;
 public class HuntEvent extends EventCard{
     @Override
     public void solveEventCard(Game game,Player player){
-        ArrayList<BuildingCard> buildingsList = player.getBuildings();
-        //ArrayList<HunterCard> huntersList = player.getHunters();
         
         int hunters = player.getHunters().size();
         int era = this.getEra(); 
@@ -41,7 +39,7 @@ public class HuntEvent extends EventCard{
         }
 
        //HuntEventBuilding bonus
-        for(BuildingCard card : buildingsList){
+        for(BuildingCard card : player.getBuildings()){
             if(card instanceof HuntEventBuilding){
                 //gives an extra +1 food and +1 prestige for each hunter
                 player.editFood(hunters);
