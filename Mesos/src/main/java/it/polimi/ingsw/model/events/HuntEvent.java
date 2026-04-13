@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class HuntEvent extends EventCard{
     @Override
-    public void solveEventCard(Player player){
+    public void solveEventCard(Game game,Player player){
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
         //ArrayList<HunterCard> huntersList = player.getHunters();
         
