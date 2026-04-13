@@ -86,6 +86,29 @@ public class Player {
     public void addShaman(ShamanCard c) { shamans.add(c); }
     //public void addBuilding(BuildingCard c) {buildings.add(c); }
 
+    public ArrayList<ArtistCard> getArtists() {
+        return artists;
+    }
+    public ArrayList<HunterCard> getHunters() {
+        return hunters;
+    }
+    public ArrayList<InventorCard> getInventors() {
+        return inventors;
+    }
+    public ArrayList<ShamanCard> getShamans(){
+        return shamans; 
+    }
+    public ArrayList<HarvesterCard> getHarvesters(){
+        return harvesters; 
+    } 
+    public ArrayList<BuilderCard> getBuilders(){
+        return builders; 
+    }
+    public ArrayList<BuildingCard> getBuildings(){
+        return buildings; 
+    }
+
+    
     //prova
 
     public void buyBuilding(BuildingCard building){
