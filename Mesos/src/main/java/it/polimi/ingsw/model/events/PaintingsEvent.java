@@ -17,8 +17,7 @@ import java.util.ArrayList;
 public class PaintingsEvent extends EventCard{
     @Override 
     public void solveEventCard(Game game,Player player){
-        ArrayList<BuildingCard> buildingsList = player.getBuildings();
-        //ArrayList<ArtistCard> artistsList = player.getArtists();
+        
         int artists = player.getArtists().size(); 
         int era = this.getEra(); 
 
@@ -46,7 +45,7 @@ public class PaintingsEvent extends EventCard{
         }
 
         //PaintingsEventBuilding's food bonus check
-        for(BuildingCard card : buildingsList){
+        for(BuildingCard card : player.getBuildings()){
             if(card instanceof PaintingsEventBuilding){
                 player.editFood(artists); //for x artists gives x food during PaintingsEvent only if you have PaintingsEventBuilding
             }
