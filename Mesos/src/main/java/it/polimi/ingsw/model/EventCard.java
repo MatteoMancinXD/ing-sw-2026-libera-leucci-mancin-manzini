@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
-public EventCard(int era, int minPlayers) {
-    super(era, minPlayers);
-}
-public abstract class EventCard extends TribeCard{
-    abstract void solveEventCard(Player player,Era era);  // ex. huntCardEventII.solveEventCard(giacomo,2)
 
+public abstract class EventCard extends TribeCard{
+    
+    public EventCard(int era, int minPlayers) {
+    super(era, minPlayers);
+    }
+    abstract void solveEventCard(Player player);  // ex. huntCardEventII.solveEventCard(giacomo)
 }
