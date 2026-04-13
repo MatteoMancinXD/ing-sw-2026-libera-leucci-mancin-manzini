@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class PaintingsEvent extends EventCard{
     @Override 
-    public void solveEventCard(Player player){
+    public void solveEventCard(Game game,Player player){
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
         //ArrayList<ArtistCard> artistsList = player.getArtists();
         int artists = player.getArtists().size(); 
