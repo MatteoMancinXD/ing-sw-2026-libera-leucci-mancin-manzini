@@ -19,9 +19,9 @@ public class HuntEvent extends EventCard{
     @Override
     public void solveEventCard(Player player){
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
-        ArrayList<HunterCard> huntersList = player.getHunters();
+        //ArrayList<HunterCard> huntersList = player.getHunters();
         
-        int hunters = huntersList.size();
+        int hunters = player.getHunters().size();
         int era = this.getEra(); 
 
     // +1 food and +1*era prestige foreach hunter
