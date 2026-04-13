@@ -1,72 +1,41 @@
-/*  //inside class Player
- *  private ArrayList<Card> playerDeck;
- *  private int harvest; //VA SETTATO A ZERO AD OGNI PARTITA E SERVE AD OGNI PLAYER + VA AUMENTATO AD OGNI HARVESTER CHE VIENE DRAWATO
- *  //...
- *  private int buildingsFoodDiscount; //in Player  VA SETTATO A ZERO AD OGNI PARTITA E SERVE AD OGNI PLAYER
- *  //...
- *
- *
- * void editBuildingFoodDiscount(int discount){
- *      this.buildingFoodDiscount = buildingFoodDiscount + discount;
- * }
- * int getBuildingFoodDiscount(){
- *      return buildingFoodDiscount;
- * }
- * void editHarvest(int i){
- *      this.harvest = harvest + i;
- * }
- * int getHarvest(){
- *      return harvest;
- * }
- *
- * boolean CardInDeck(Card checkCard){ //use to check the presence or of a Building (BuildingCards are unique)
- *     for(Card card : playerDeck){
- *          if(card instanceof checkCard){
- *              return true;
- *       }
- *      return false;
- * }
- *
- *
- *
- * //IMPORTANTE  deve returnare le carte possedute dal player in quel momento
- *
- * public ArrayList<Card> getPlayerCards(){
- *
- *      //... BO ...
- *
- *      ArrayList<Card> playerDeck = cards; //bo ...
- *      return playerDeck;
- *
- *      //gemini dice di farla synchronized giustamente
- *      //di farne una copia per evitare .clear() che ti distruggano il mazzo
- *      //va unita al controller
- * }
- *
- * //in class Card il metodo Card per mettere l era alla carta ha un nome un po generico (però l ho usato)
- *
- * //inside class Game ?
- *
- *
- *   public ArrayList<Player> getPlayers(){ // (Game game) come parametro se ci dovessero essere piu game
- *      ArrayList<Player> playersInGame = players;
- *      return playersInGame;
- *
- *
- *
- */
-
 package it.polimi.ingsw.model;
+import java.util.ArrayList;
+
+/**
+ *
+ * this class extends the method solveEventCard by solving the event "Sustenance" .
+ * During a game 3 SustenanceEvent will always happen regardless of the number of players, 1 in each era.
+ * The bonus/malus depends: on the era, on the quantity of Harvesters that are inside player's deck, on how much food
+ * the player has while the event is happening and on whether the player has bonus buildings for the event.
+ * 
+ * the method also checks the presence of HuntEventBuilding. If it's present in player's deck 
+ * give a bonus during the event. 
+ *
+ * @author Riccardo Libera 
+ * */
 
 public class SustenanceEvent extends EventCard{
 
-    public solveEventCard(Player player,Era era){
+    public void solveEventCard(Game game,Player player){
         int foodPoints;
         int currentHunger;
+        int foodFromBuildings = 0; 
+        int numCharacterCards = player.getArtists().size() + player.getHunters().size() + player.getInventors().size() + player.getShamans().size() + player.getHarvesters().size() + player.getBuilders().size();
 
-        ArrayList<Card> playerDeck = player.getPlayerCards();
+        //check if there are buildings with Sustenance bonuses
+        for(BuildingCard card : player.getBuildings()){
+            if(card instanceof SustenanceBuildingI){
+                foodFromBuildings += player.getArtists().size();
+            }
+            if(card instanceof SustenanceBuildingII){
+                foodFromBuildings += player.getHarvesters().size();
+            }
+            if(card instanceof SustenanceBuildingIII){
+                foodFromBuildings += player.getInventors().size(); 
+            }
+        }
 
-        currentHunger = size(playerDeck) - player.getHarvest() - player.getBuildingFoodDiscount(); // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
+        currentHunger = numCharacterCards - (player.getHarvesters().size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
         foodPoints = player.getFood() - currentHunger;
 
         if(foodPoints>=0){
@@ -79,13 +48,13 @@ public class SustenanceEvent extends EventCard{
             player.setFood(0);
 
             switch (era){
-                case(1):
-                    player.editPrestige(foodPoints); //foodPoints are negative
+                case 1:
+                    player.editPrestige(foodPoints); //foodPoints are negative inside else
                     break;
-                case(2):
+                case 2:
                     player.editPrestige(foodPoints*2);
                     break;
-                case(3):
+                case 3:
                     player.editPrestige(foodPoints*3);
                     break;
             }
