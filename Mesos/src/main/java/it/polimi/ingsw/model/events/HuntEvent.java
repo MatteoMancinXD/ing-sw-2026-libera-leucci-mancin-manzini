@@ -6,8 +6,8 @@ import java.util.ArrayList;
 //IMPORTANT: the event "Drew HunterCard with getsFood bonus" is not solved here
 
 public class HuntEvent extends EventCard{
-
-    public solveEventCard(Player player,Era era){
+    @Override
+    public void solveEventCard(Player player,int era){
         int hunters = 0;
 
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
@@ -35,8 +35,8 @@ public class HuntEvent extends EventCard{
         for(BuildingCard card : buildingsList){
             if(card instanceof HuntEventBuilding){
                 //gives an extra +1 food and +1 prestige for each hunter
-                editFood(hunters);
-                editPrestige(hunters);
+                player.editFood(hunters);
+                player.editPrestige(hunters);
             }
         }
 
