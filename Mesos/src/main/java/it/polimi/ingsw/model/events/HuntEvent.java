@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 
-
 //this obv solves just the event "Hunt Event Card"
 //IMPORTANT: the event "Drew HunterCard with getsFood bonus" is not solved here
 
@@ -11,13 +10,10 @@ public class HuntEvent extends EventCard{
     public solveEventCard(Player player,Era era){
         int hunters = 0;
 
-        ArrayList<Card> playerDeck = player.getPlayerCards();
-
-       for(Card card : playerDeck){
-           if(card instanceof HunterCard){
-               hunters++;
-           }
-       }
+        ArrayList<BuildingCard> buildingsList = player.getBuildings();
+        ArrayList<HunterCard> huntersList = player.getHunters();
+        hunters = huntersList.size();
+      
 
     // +1 food and +1*era prestige foreach hunter
         switch (era){
@@ -36,7 +32,7 @@ public class HuntEvent extends EventCard{
         }
 
        //HuntEventBuilding bonus
-        for(Card card : playerDeck){
+        for(BuildingCard card : buildingsList){
             if(card instanceof HuntEventBuilding){
                 //gives an extra +1 food and +1 prestige for each hunter
                 editFood(hunters);
