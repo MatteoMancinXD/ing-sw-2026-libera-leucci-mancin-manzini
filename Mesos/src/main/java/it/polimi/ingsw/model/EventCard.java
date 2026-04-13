@@ -6,5 +6,5 @@ public abstract class EventCard extends TribeCard{
     public EventCard(int era, int minPlayers) {
     super(era, minPlayers);
     }
-    abstract void solveEventCard(Player player);  // ex. huntCardEventII.solveEventCard(giacomo)
+    abstract void solveEventCard(Game game,Player player);  // ex. huntCardEventII.solveEventCard(giacomo)
 }
