@@ -18,13 +18,11 @@ import java.util.ArrayList;
 public class HuntEvent extends EventCard{
     @Override
     public void solveEventCard(Player player){
-        int hunters = 0;
-        int era = this.getEra(); 
-
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
         ArrayList<HunterCard> huntersList = player.getHunters();
-        hunters = huntersList.size();
-      
+        
+        int hunters = huntersList.size();
+        int era = this.getEra(); 
 
     // +1 food and +1*era prestige foreach hunter
         switch (era){
