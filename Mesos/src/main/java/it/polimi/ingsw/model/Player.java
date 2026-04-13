@@ -72,9 +72,15 @@ public class Player {
         return totStars;
     }
 
-    public void drawCard(Card c){ //da vedere se usare liste diverse per ogni caracheter o quantomeno dei contatori
+    public void drawCard(Card c){
 
-        c.assignTo(this);
+        if (c instanceof BuldingCard) {         //Quando avremo la classe BuildingCard mettere assignTo per evitare questo instanceof
+            BuildingCard bc = (BuildingCard) c;
+            this.buyBuilding(bc);
+        }
+        else {
+            c.assignTo(this);
+        }
 
     }
 

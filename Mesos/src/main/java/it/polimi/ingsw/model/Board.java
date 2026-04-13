@@ -182,6 +182,15 @@ public class Board {
             t.reset();
         }
     }
+
+    public Card removeUpper(int pos) {
+        return this.upperRow.remove(pos);
+    }
+
+    public Card removeLower(int pos) {
+        return this.lowerRow.remove(pos);
+    }
+
     public List<Tile> getTrack() {return track;}
     public List<Card> getUpperRow() {return upperRow;}
     public List<Card> getLowerRow() {return lowerRow;}

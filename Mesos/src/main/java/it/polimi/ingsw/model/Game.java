@@ -74,8 +74,8 @@ public class Game {
      * @param p The Player object to add.
      */
     public void addPlayer(Player p) {
-        if (players.size() < numPlayers) {
-            players.add(p);
+        if (this.players.size() < this.numPlayers) {
+            this.players.add(p);
         }
     }
     /**
@@ -83,10 +83,10 @@ public class Game {
      * and assigning starting food rations based on the turn order.
      */
     public void startGame() {
-        board.fill(numPlayers, era);       //Round 0 : .fill riempie entrambe le righe e i buildings
+        board.fill(this.numPlayers, this.era);       //Round 0 : .fill riempie entrambe le righe e i buildings
         Collections.shuffle(players);        //Shuffle dei player per avere un ordine casuale all'inizio
-        for (int i = 0; i < players.size(); i++) {
-            Player p = players.get(i);
+        for (int i = 0; i < this.players.size(); i++) {
+            Player p = this.players.get(i);
             if(i==0) {                  //Primo giocatore prende 2 cibo
                 p.editFood(2);
             }
@@ -189,6 +189,44 @@ public class Game {
         board.fillBuildings(era);
     }
 
+    /**
+     * Handles the RESOLUTION game phase.
+     * Each of the choosen cards are placed into the player cards and removed from the board.
+     * @param cardChoice indexes of the choosen cards by the Player
+     * @throws IllegalArgumentException if the player choices are more than the possible choices the Tile offers
+    */
+    public void resolveAction(int[] cardChoice) {
+
+        //cardChoice è una array di int tipo [1, 3, 2]
+        //I numeri rappresentano la posizione delle carte PRIMA della upper row e DOPO della lower row
+
+        Player p = this.players.get(currentPlayerIndex);
+        List<Tile> track = this.board.getTrack();
+        Tile targetTile = null;
+
+        for(Tile t : track) {
+            if (t.getPlayer().equals(p)) {
+                targetTile = t;
+                break;
+            }
+        }
+
+        if (cardChoice.size() > targetTile.getUpperRow() + targetTile.getLowerRow()) {
+            throw new IllegalArgumentException("Too many choices for this tile");
+        }
+
+        int i = 0, j = 0;
+        while (i < targetTile.getUpperRow()) {
+            p.drawCard(this.board.getTrack().removeUpper(cardChoice[i]));
+            i++;
+        }
+        while (j < targetTile.getLowerRow()) {
+            p.drawCard(this.board.getTrack().removeLower(cardChoice[i]));
+            j++;
+            i++;
+        }
+
+    }
 
 
     /**
