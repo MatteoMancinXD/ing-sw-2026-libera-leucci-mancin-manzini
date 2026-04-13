@@ -68,6 +68,11 @@ public class Game {
         return numPlayers;
     }
 
+    // return the list of players inside game (cannot be modified) 
+    public List<Player> getPlayersView() {
+    return Collections.unmodifiableList(players);
+    }
+    
     /**
      * Adds a new player to the game, if the maximum limit has not been reached.
      *
