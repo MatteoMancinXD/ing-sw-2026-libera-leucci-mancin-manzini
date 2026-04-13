@@ -1,7 +1,22 @@
 
 package it.polimi.ingsw.model;
-
 import java.util.ArrayList;
+
+/**
+ *
+ * this class extends the method solveEventCard by solving the event "Ritual" .
+ * During a game 3 RitualEvent will always happen regardless of the number of players, 1 in each era.
+ 
+ * The bonus/malus depends on how much stars each player has. By calling the solveEventCard method on 
+ * a RitualEvent card you have to put game and player as parameters. The player will be checked
+ * individually if he has or has not more or less stars than the other players (or less equal/ more equal 
+ * to someone other). The method then gives the player the bonus/malus he deserves. 
+ * 
+ * the method also checks the presence of RitualEventBuildings. If they are present in player's deck 
+ * they give a bonus during the event. 
+ *
+ * @author Riccardo Libera 
+ * */
 
 public class RitualEvent extends EventCard{
     @Override
