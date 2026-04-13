@@ -1,14 +1,25 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+/**
+ *
+ * this class extends the method solveEventCard by solving the event "Hunt" .
+ * During a game 3 HuntEvent will always happen regardless of the number of players, 1 in each era.
+ * The bonus/malus depends on the era and on the quantity of Hunters in the player's deck.
+ * 
+ * the method also checks the presence of HuntEventBuilding. If it's present in player's deck 
+ * give a bonus during the event. 
+ *
+ * @author Riccardo Libera 
+ * */
 
-//this obv solves just the event "Hunt Event Card"
 //IMPORTANT: the event "Drew HunterCard with getsFood bonus" is not solved here
 
 public class HuntEvent extends EventCard{
     @Override
-    public void solveEventCard(Player player,int era){
+    public void solveEventCard(Player player){
         int hunters = 0;
+        int era = this.getEra(); 
 
         ArrayList<BuildingCard> buildingsList = player.getBuildings();
         ArrayList<HunterCard> huntersList = player.getHunters();
@@ -17,15 +28,15 @@ public class HuntEvent extends EventCard{
 
     // +1 food and +1*era prestige foreach hunter
         switch (era){
-            case(1):
+            case 1:
                 player.editFood(hunters);
                 player.editPrestige(hunters);
                 break;
-            case(2):
+            case 2:
                 player.editFood(hunters);
                 player.editPrestige(hunters*2);
                 break;
-            case(3):
+            case 3:
                 player.editFood(hunters);
                 player.editPrestige(hunters*3);
                 break;
