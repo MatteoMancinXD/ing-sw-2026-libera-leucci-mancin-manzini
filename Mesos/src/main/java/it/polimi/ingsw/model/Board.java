@@ -44,10 +44,10 @@ public class Board {
         if (numPlayers == 5) {track.add(new Tile(5, 'A', 0, 0, 3));}
         track.add(new Tile(2, 'B', 0, 1));
         track.add(new Tile(2, 'C', 1, 0));
-        track.add(new Tile(2, 'D', 1, 1));
-        if (numPlayers >= 3) {track.add(new Tile(3, 'E', 2, 1));}
-        if (numPlayers >= 4){ track.add(new Tile(4, 'F', 2, 1));}
-        if (numPlayers == 5) {track.add(new Tile(5, 'G', 3, 1));}
+        if (numPlayers >= 3) { track.add(new Tile(3, 'D', 0, 2));}
+        track.add(new Tile(2, 'E', 1, 1));
+        track.add(new Tile(2, 'F', 2, 0));
+        if (numPlayers >= 4){track.add(new Tile(4, 'G', 2, 1));}
     }
 
     /**
