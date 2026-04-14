@@ -1,0 +1,160 @@
+{
+  "era1": [
+    {
+      "type": "ARTIST",
+      "id": 1,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 2,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 3,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 4,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 5,
+      "minPlayer": 3
+    },
+    {
+      "type": "ARTIST",
+      "id": 6,
+      "minPlayer": 4
+    },
+    {
+      "type": "BUILDER",
+      "id": 7,
+      "minPlayer": 2,
+      "discount": -2,
+      "pps": 0
+    },
+    {
+      "type": "BUILDER",
+      "id": 8,
+      "minPlayer": 2,
+      "discount": -1,
+      "pps": 3
+    },
+    {
+      "type": "BUILDER",
+      "id": 9,
+      "minPlayer": 2,
+      "discount": -1,
+      "pps": 2
+    },
+    {
+      "type": "BUILDER",
+      "id": 10,
+      "minPlayer": 5,
+      "discount": -2,
+      "pps": 1
+    },
+    {
+      "type": "HARVESTER",
+      "id": 11,
+      "minPlayer": 2
+    },
+    {
+      "type": "HARVESTER",
+      "id": 12,
+      "minPlayer": 2
+    },
+    {
+      "type": "HARVESTER",
+      "id": 13,
+      "minPlayer": 3
+    },
+    {
+      "type": "HARVESTER",
+      "id": 14,
+      "minPlayer": 5
+    },
+    {
+      "type": "HUNTER",
+      "id": 15,
+      "minPlayer": 2,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 16,
+      "minPlayer": 2,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 17,
+      "minPlayer": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 18,
+      "minPlayer": 3,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 19,
+      "minPlayer": 3,
+      "getsFood": false
+    },
+    {
+      "type": "INVENTOR",
+      "id": 20,
+      "minPlayer": 2,
+      "invenction": "BREAD"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 21,
+      "minPlayer": 2,
+      "invenction": "PELT"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 22,
+      "minPlayer": 2,
+      "invenction": "STONE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 23,
+      "minPlayer": 2,
+      "invenction": "ARROW"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 24,
+      "minPlayer": 4,
+      "invenction": "ROPE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 25,
+      "minPlayer": 4,
+      "invenction": "POT"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 26,
+      "minPlayer": 4,
+      "invenction": "FLUTE"
+    }
+  ],
+  "era2": [
+
+  ],
+  "era3": [
+
+  ]
+}
