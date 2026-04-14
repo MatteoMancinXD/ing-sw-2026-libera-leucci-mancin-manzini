@@ -1,5 +1,11 @@
 package it.polimi.ingsw.model.events;
-import it.polimi.ingsw.model.buildings.*;
+
+import it.polimi.ingsw.model.EventCard;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.BuildingCard;
+import it.polimi.ingsw.model.buildings.HuntEventBuilding;
+
 
 import java.util.ArrayList;
 /**
@@ -17,6 +23,11 @@ import java.util.ArrayList;
 //IMPORTANT: the event "Drew HunterCard with getsFood bonus" is not solved here
 
 public class HuntEvent extends EventCard{
+
+    public HuntEvent(int era) {
+        super(era);
+    }
+
     @Override
     public void solveEventCard(Game game,Player player){
         

@@ -1,6 +1,12 @@
 package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.buildings.*;
 
+import it.polimi.ingsw.model.EventCard;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.BuildingCard;
+
+
 /**
  *
  * this class extends the method solveEventCard by solving the event "Ritual" .
@@ -18,6 +24,11 @@ import it.polimi.ingsw.model.buildings.*;
  * */
 
 public class RitualEvent extends EventCard{
+
+    public RitualEvent(int era){
+        super(era);
+    }
+
     @Override
     public void solveEventCard(Game game,Player player){
 

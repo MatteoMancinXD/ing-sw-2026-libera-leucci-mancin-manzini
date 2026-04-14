@@ -1,5 +1,11 @@
 package it.polimi.ingsw.model.events;
 import it.polimi.ingsw.model.buildings.*;
+
+import it.polimi.ingsw.model.EventCard;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.BuildingCard;
+
 import java.util.ArrayList;
 
 /**
@@ -16,6 +22,10 @@ import java.util.ArrayList;
  * */
 
 public class SustenanceEvent extends EventCard{
+
+    public SustenanceEvent(int era){
+        super(era);
+    }
 
     public void solveEventCard(Game game,Player player){
         int foodPoints;
