@@ -216,7 +216,7 @@ public class Game {
             }
         }
 
-        if (cardChoice.size() > targetTile.getUpperRow() + targetTile.getLowerRow()) {
+        if (cardChoice.length > targetTile.getUpperRow() + targetTile.getLowerRow()) {
             throw new IllegalArgumentException("Too many choices for this tile");
         }
 
@@ -230,7 +230,7 @@ public class Game {
             j++;
             i++;
         }
-
+        nextPlayer();
     }
 
 
