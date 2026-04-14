@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 /**
  * Represents an offer tile on the board track, each tile specifies how many cards a player draws from each row.
  */

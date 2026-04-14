@@ -82,7 +82,7 @@ public class Board {
         int i = 0;
         while (i < numPlayers + 4) {
             Card c = deck.draw();
-            if (c == null) {break};
+            if (c == null) {break;}
             upperRow.add(c);
             i++;
             if (c.getEra() > currentEra) {
