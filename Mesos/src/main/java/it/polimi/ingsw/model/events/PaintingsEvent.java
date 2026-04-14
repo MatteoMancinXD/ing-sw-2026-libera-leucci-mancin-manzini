@@ -1,5 +1,7 @@
+package it.polimi.ingsw.model.events;
+import it.polimi.ingsw.model.buildings.*;
 
-package it.polimi.ingsw.model;
+
 import java.util.ArrayList;
 
 /**
