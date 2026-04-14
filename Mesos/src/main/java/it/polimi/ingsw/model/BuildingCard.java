@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+
 public abstract class BuildingCard extends Card{
     private int foodCost; //purchase cost
     private int prestigeGain; //prestige gain at the end of the game
