@@ -28,9 +28,6 @@ public class Board {
         this.deck = new TribeDeck();
         this.buildingPool = new ArrayList<>();
 
-        // In attesa della classe BuildingCard. da inserire qui le carte edificio
-
-
         this.initialized = false;
 
         setup(numPlayers);
@@ -183,6 +180,17 @@ public class Board {
         }
     }
 
+    /**
+     * Loads the valid building cards for the current game into the board.
+     * This method is expected to be called by the Game class after
+     * generating and shuffling the cards via the BuildingDeck.
+     *
+     * @param buildings the list of valid building cards to be added to the pool
+     */
+    public void setBuildingPool(ArrayList<Card> buildings)
+    {
+        this.buildingPool = buildings;
+    }
     public Card removeUpper(int pos) {
         return this.upperRow.remove(pos);
     }
