@@ -69,4 +69,8 @@ public class BuildingDeck {
         cards.addAll(era2);
         cards.addAll(era3);
     }
+
+    public BuildingCard draw() {
+        return cards.removeFirst();
+    }
 }

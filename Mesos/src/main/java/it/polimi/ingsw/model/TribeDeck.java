@@ -60,7 +60,7 @@ public class TribeDeck {
      * Draws the first card in the deck
      * @return drawn card
      */
-    public Card draw() {
+    public TribeCard draw() {
         return cards.removeFirst();
     }
 }
