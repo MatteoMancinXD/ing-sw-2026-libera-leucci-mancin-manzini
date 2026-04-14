@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 /**
  * Represents the turn order tile where players move their totems at the end of the placement phase.
  */
