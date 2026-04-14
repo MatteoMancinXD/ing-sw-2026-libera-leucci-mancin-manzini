@@ -149,12 +149,113 @@
       "id": 26,
       "minPlayer": 4,
       "invenction": "FLUTE"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 27,
+      "minPlayer": 2,
+      "stars": 1
+    },
+    {
+      "type": "SHAMAN",
+      "id": 28,
+      "minPlayer": 2,
+      "stars": 2
+    },
+    {
+      "type": "SHAMAN",
+      "id": 29,
+      "minPlayer": 4,
+      "stars": 1
+    },
+    {
+      "type": "SHAMAN",
+      "id": 30,
+      "minPlayer": 5,
+      "stars": 2
+    },
+    {
+      "type": "HUNT",
+      "id": 31,
+      "finalEvent": false
+    },
+    {
+      "type": "PAINTINGS",
+      "id": 32,
+      "finalEvent": false
+    },
+    {
+      "type": "RITUAL",
+      "id": 33,
+      "finalEvent": false
+    },
+    {
+      "type": "SUSTENANCE",
+      "id": 34,
+      "finalEvent": false
     }
   ],
   "era2": [
 
   ],
   "era3": [
-
+    {
+      "type": "ARTIST",
+      "id": 67,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 68,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 69,
+      "minPlayer": 2
+    },
+    {
+      "type": "ARTIST",
+      "id": 70,
+      "minPlayer": 5
+    },
+    {
+      "type": "BUILDER",
+      "id": 71,
+      "minPlayer": 2,
+      "discount": -2,
+      "pps": 3
+    },
+    {
+      "type": "BUILDER",
+      "id": 72,
+      "minPlayer": 2,
+      "discount": -1,
+      "pps": 5
+    },
+    {
+      "type": "BUILDER",
+      "id": 73,
+      "minPlayer": 2,
+      "discount": -2,
+      "pps": 2
+    },
+    {
+      "type": "BUILDER",
+      "id": 74,
+      "minPlayer": 5,
+      "discount": -1,
+      "pps": 4
+    },
+    {
+      "type": "HARVESTER",
+      "id": 75,
+      "minPlayer": 2
+    },
+    {
+      "type": "HARVESTER",
+      "id": 76,
+      "minPlayer": 5
+    }
   ]
 }
