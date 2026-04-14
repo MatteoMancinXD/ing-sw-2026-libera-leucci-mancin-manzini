@@ -1,4 +1,5 @@
-package it.polimi.ingsw.model.buildings.;
+package it.polimi.ingsw.model.buildings;
+import it.polimi.ingsw.model.BuildingCard;
 
 public class HuntEventBuilding extends BuildingCard {
 

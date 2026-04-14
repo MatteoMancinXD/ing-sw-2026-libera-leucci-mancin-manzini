@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.buildings;
+import it.polimi.ingsw.model.BuildingCard;
 
 public class RitualEventBuildingIII extends BuildingCard {
 
