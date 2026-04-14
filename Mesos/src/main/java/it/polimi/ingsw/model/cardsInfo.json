@@ -331,7 +331,108 @@
     {
       "type": "HARVESTER",
       "id": 76,
+      "minPlayer": 4
+    },
+    {
+      "type": "HARVESTER",
+      "id": 77,
       "minPlayer": 5
+    },
+    {
+      "type": "HUNTER",
+      "id": 78,
+      "minPlayer": 2,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 79,
+      "minPlayer": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 80,
+      "minPlayer": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 81,
+      "minPlayer": 5,
+      "getsFood": true
+    },
+    {
+      "type": "INVENTOR",
+      "id": 82,
+      "minPlayer": 2,
+      "invenction": "BREAD"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 83,
+      "minPlayer": 2,
+      "invenction": "HOOK"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 84,
+      "minPlayer": 2,
+      "invenction": "NECKLACE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 85,
+      "minPlayer": 2,
+      "invenction": "DOLL"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 86,
+      "minPlayer": 3,
+      "invenction": "STONE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 87,
+      "minPlayer": 3,
+      "invenction": "ARROW"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 88,
+      "minPlayer": 4,
+      "invenction": "NECKLACE"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 89,
+      "minPlayer": 2,
+      "stars": 3
+    },
+    {
+      "type": "SHAMAN",
+      "id": 90,
+      "minPlayer": 2,
+      "stars": 3
+    },
+    {
+      "type": "SHAMAN",
+      "id": 91,
+      "minPlayer": 2,
+      "stars": 2
+    },
+    {
+      "type": "SHAMAN",
+      "id": 92,
+      "minPlayer": 3,
+      "stars": 2
+    },
+    {
+      "type": "SHAMAN",
+      "id": 93,
+      "minPlayer": 4,
+      "stars": 2
     }
   ]
 }
