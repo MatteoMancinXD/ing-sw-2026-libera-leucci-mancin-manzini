@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 /**
  * Represents the turn order tile where players move their totems at the end of the placement phase.
  */
@@ -16,17 +16,30 @@ public class OrderTile {
      *  @param numPlayers number of players
      */
     private void setupModifiers(int numPlayers) {
-        modifiers[0] = 3;
 
-        if (numPlayers >= 2)
-        {modifiers[1] = 1; }
 
-        for (int i = 2; i < numPlayers - 1; i++)
-        { modifiers[i] = 0;}
+        if (numPlayers == 2)
+        {   modifiers[0] = 1;
+            modifiers[1] = -1; }
 
-        if (numPlayers > 2)
-        {modifiers[numPlayers - 1] = -1; // L'ultimo paga 1 cibo
-             }
+        if (numPlayers == 3)
+        {   modifiers[0] = 2;
+            modifiers[1] = 0;
+            modifiers[2] = -1;
+        }
+        if (numPlayers == 4)
+        {   modifiers[0] = 2;
+            modifiers[1] = 1;
+            modifiers[2] = 0;
+            modifiers[3] = -1;
+        }
+        if (numPlayers == 5)
+        {   modifiers[0] = 3;
+            modifiers[1] = 1;
+            modifiers[2] = 0;
+            modifiers[3] = 0;
+            modifiers[4] = -1;
+        }
     }
     /**
      * Returns the modifiers array.
