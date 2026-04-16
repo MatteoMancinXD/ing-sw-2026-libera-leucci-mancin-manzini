@@ -112,43 +112,43 @@
       "type": "INVENTOR",
       "id": 20,
       "minPlayer": 2,
-      "invenction": "BREAD"
+      "invention": "BREAD"
     },
     {
       "type": "INVENTOR",
       "id": 21,
       "minPlayer": 2,
-      "invenction": "PELT"
+      "invention": "PELT"
     },
     {
       "type": "INVENTOR",
       "id": 22,
       "minPlayer": 2,
-      "invenction": "STONE"
+      "invention": "STONE"
     },
     {
       "type": "INVENTOR",
       "id": 23,
       "minPlayer": 2,
-      "invenction": "ARROW"
+      "invention": "ARROW"
     },
     {
       "type": "INVENTOR",
       "id": 24,
       "minPlayer": 4,
-      "invenction": "ROPE"
+      "invention": "ROPE"
     },
     {
       "type": "INVENTOR",
       "id": 25,
       "minPlayer": 4,
-      "invenction": "POT"
+      "invention": "POT"
     },
     {
       "type": "INVENTOR",
       "id": 26,
       "minPlayer": 4,
-      "invenction": "FLUTE"
+      "invention": "FLUTE"
     },
     {
       "type": "SHAMAN",
@@ -271,7 +271,102 @@
       "getsFood": false
     },
     {
-
+      "type": "HUNTER",
+      "id": 48,
+      "minplayer": 3,
+      "getsFood": false
+    },
+    {
+      "tyoe": "HUNTER",
+      "id": 49,
+      "minPlayer": 4,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 50,
+      "minPlayer": 5,
+      "getsFood": false
+    },
+    {
+      "type": "INVENTOR",
+      "id": 51,
+      "minPlayer": 2,
+      "invention": "POT"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 52,
+      "minPlayer": 2,
+      "invention": "FLUTE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 53,
+      "minPlayer": 2,
+      "invention": "ROPE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 54,
+      "minPlayer": 2,
+      "invention": "DOLL"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 55,
+      "minPlayer": 2,
+      "invention": "PELT"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 56,
+      "minPlayer": 4,
+      "invention": "HOOK"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 57,
+      "minPlayer": 2,
+      "stars": "2"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 58,
+      "minPlayer": 2,
+      "stars": "2"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 59,
+      "minPlayer": 2,
+      "stars": "1"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 60,
+      "minPlayer": 2,
+      "stars": "2"
+    },
+    {
+      "type": "HUNT",
+      "id": 61,
+      "finalEvent": false
+    },
+    {
+      "type": "PAINTING",
+      "id": 62,
+      "finalEvent": false
+    },
+    {
+      "type": "RITUAL",
+      "id": 63,
+      "finalEvent": false
+    },
+    {
+      "type": "SUSTENANCE",
+      "id": 64,
+      "finalEvent": false
     }
   ],
   "era3": [
@@ -366,43 +461,43 @@
       "type": "INVENTOR",
       "id": 82,
       "minPlayer": 2,
-      "invenction": "BREAD"
+      "invention": "BREAD"
     },
     {
       "type": "INVENTOR",
       "id": 83,
       "minPlayer": 2,
-      "invenction": "HOOK"
+      "invention": "HOOK"
     },
     {
       "type": "INVENTOR",
       "id": 84,
       "minPlayer": 2,
-      "invenction": "NECKLACE"
+      "invention": "NECKLACE"
     },
     {
       "type": "INVENTOR",
       "id": 85,
       "minPlayer": 2,
-      "invenction": "DOLL"
+      "invention": "DOLL"
     },
     {
       "type": "INVENTOR",
       "id": 86,
       "minPlayer": 3,
-      "invenction": "STONE"
+      "invention": "STONE"
     },
     {
       "type": "INVENTOR",
       "id": 87,
       "minPlayer": 3,
-      "invenction": "ARROW"
+      "invention": "ARROW"
     },
     {
       "type": "INVENTOR",
       "id": 88,
       "minPlayer": 4,
-      "invenction": "NECKLACE"
+      "invention": "NECKLACE"
     },
     {
       "type": "SHAMAN",
