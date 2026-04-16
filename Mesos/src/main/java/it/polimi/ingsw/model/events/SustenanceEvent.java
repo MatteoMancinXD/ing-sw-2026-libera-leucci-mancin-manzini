@@ -35,15 +35,12 @@ public class SustenanceEvent extends EventCard{
 
         //check if there are buildings with Sustenance bonuses
         for(BuildingCard card : player.getBuildings()){
-            if(card instanceof SustenanceBuildingI){
-                foodFromBuildings += player.getArtists().size();
-            }
-            if(card instanceof SustenanceBuildingII){
-                foodFromBuildings += player.getHarvesters().size();
-            }
-            if(card instanceof SustenanceBuildingIII){
-                foodFromBuildings += player.getInventors().size(); 
-            }
+            //if the card is present these methods return the parameter, if it s not present it returns zero
+            //so no bonus added
+            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getArtists().size());
+            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getHarvesters().size());
+            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getInventors().size());
+
         }
 
         currentHunger = numCharacterCards - (player.getHarvesters().size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
@@ -57,24 +54,9 @@ public class SustenanceEvent extends EventCard{
             //and implies prestige loss depending on the SustenanceCard's era
 
             player.setFood(0);
-
-            switch (era){
-                case 1:
-                    player.editPrestige(foodPoints); //foodPoints are negative inside else
-                    break;
-                case 2:
-                    player.editPrestige(foodPoints*2);
-                    break;
-                case 3:
-                    player.editPrestige(foodPoints*3);
-                    break;
-            }
+            player.editPrestige(this.getEra()*foodPoints); //foodPoints are negative inside else statement
 
         }
-
-
-
-
 
     }
 }

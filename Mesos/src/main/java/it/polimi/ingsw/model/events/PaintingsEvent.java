@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * The bonus/malus depends on the era and on the quantity of Painters in the player's deck.
  * 
  * the method also checks the presence of PaintingsEventBuilding. If it's present in player's deck 
- * give a bonus during the event. 
+ * give a bonus during the event. (see also package buildings)
  *
  * @author Riccardo Libera 
  * */
@@ -28,6 +28,7 @@ public class PaintingsEvent extends EventCard{
         super(era);
     }
 
+
     @Override 
     public void solveEventCard(Game game,Player player){
         
@@ -36,33 +37,20 @@ public class PaintingsEvent extends EventCard{
 
         // -2 prestige una tantum if below set number of artists else +era*artists
         // prestige can go negative by rules
-        switch (era){
-            case 1:
-                if(artists==0)
-                    player.editPrestige(-2);
-                else
-                    player.editPrestige(artists);
-                break;
-            case 2:
-                if(artists<2)
-                    player.editPrestige(-2);
-                else
-                    player.editPrestige(artists*2);
-                break;
-            case 3:
-                if(artists<3)
-                    player.editPrestige(-2);
-                else
-                    player.editPrestige(artists*3);
-                break;
+
+        if (artists < era) {
+            player.editPrestige(-2);
+        } else {
+            player.editPrestige(artists * era);
         }
+
 
         //PaintingsEventBuilding's food bonus check
         for(BuildingCard card : player.getBuildings()){
-            if(card instanceof PaintingsEventBuilding){
-                player.editFood(artists); //for x artists gives x food during PaintingsEvent only if you have PaintingsEventBuilding
-            }
-        }
+
+                //for x artists gives x food during PaintingsEvent only if you have PaintingsEventBuilding
+                player.editFood(card.getPaintingsEventFoodBonus(artists));
+        }   //it is made like this not to use "instance of" if(BuildingCard card instanceof theExactBuilding) then give bonus
 
     }
 }

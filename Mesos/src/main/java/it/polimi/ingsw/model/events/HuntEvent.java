@@ -22,45 +22,32 @@ import java.util.ArrayList;
 
 //IMPORTANT: the event "Drew HunterCard with getsFood bonus" is not solved here
 
-public class HuntEvent extends EventCard{
+public class HuntEvent extends EventCard {
 
     public HuntEvent(int era) {
         super(era);
     }
 
     @Override
-    public void solveEventCard(Game game,Player player){
-        
+    public void solveEventCard(Game game, Player player) {
+
         int hunters = player.getHunters().size();
-        int era = this.getEra(); 
 
-    // +1 food and +1*era prestige foreach hunter
-        switch (era){
-            case 1:
-                player.editFood(hunters);
-                player.editPrestige(hunters);
-                break;
-            case 2:
-                player.editFood(hunters);
-                player.editPrestige(hunters*2);
-                break;
-            case 3:
-                player.editFood(hunters);
-                player.editPrestige(hunters*3);
-                break;
-        }
+        // +1 food and +1*era prestige foreach hunter
 
-       //HuntEventBuilding bonus
-        for(BuildingCard card : player.getBuildings()){
-            if(card instanceof HuntEventBuilding){
-                //gives an extra +1 food and +1 prestige for each hunter
-                player.editFood(hunters);
-                player.editPrestige(hunters);
-            }
+        player.editFood(hunters);
+        player.editPrestige(hunters * this.getEra());
+
+
+        //HuntEventBuilding bonus
+        for (BuildingCard card : player.getBuildings()) {
+            //gives one extra food and one extra prestige if the HuntEventBuilding is in player's deck
+            player.editFood(card.getHuntEventFoodBonus(hunters));
+            player.editPrestige(card.getHuntEventFoodBonus(hunters));
+
         }
 
     }
-
 }
 
 

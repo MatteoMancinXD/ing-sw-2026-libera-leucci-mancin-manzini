@@ -7,5 +7,6 @@ public class RitualEventBuildingII extends BuildingCard {
         super(2,7,0);
     }
 
-    //check happens inside RitualEvent class
+    @Override
+    public int getRitualEventDoublePrestigeBonus() { return 2;}
 }

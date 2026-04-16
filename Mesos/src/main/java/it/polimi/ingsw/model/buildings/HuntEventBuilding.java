@@ -8,6 +8,7 @@ public class HuntEventBuilding extends BuildingCard {
     }
 
     //During HuntEvent gives an extra +1 prestige +1 food for each Hunter
-    //check happens in class HuntEvent
+    @Override
+    public int getHuntEventFoodBonus(int hunters){return hunters;}
 
 }

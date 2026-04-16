@@ -7,9 +7,9 @@ public class RitualEventBuildingIII extends BuildingCard {
         super(2,6,4);
     }
 
-    /*
-    public void solveRitualEventBuildingIII(Player player){
-        player.setTotStars(player.getTotStars()+3);
-    }*/
+    //it can't work like this because in this way you could add 3 stars each
+    public int getRitualEventBonusStars(){
+        return 3;
+    }
 
 }
