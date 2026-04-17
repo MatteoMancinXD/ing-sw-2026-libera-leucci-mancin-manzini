@@ -46,8 +46,8 @@ public abstract class BuildingCard extends Card{
 
 
     // Hook methods to handle building events
-    public void onPurchase() {};
-    public void onRoundEnd() {};
-    public void onGameEnd() {};
-    public void onOtherCardPurchase() {};
+    public void onPurchase(Player player) {};
+    public void onRoundEnd(Player player) {};
+    public void onGameEnd(Player player) {};
+    public void onCharacterCardPurchase(Player player, CharacterCard card) {};
 }

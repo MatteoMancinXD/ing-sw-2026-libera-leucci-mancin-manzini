@@ -4,8 +4,7 @@
       "type": "CardSetForFood",
       "id": 97,
       "foodCost": 4,
-      "prestigeGain": 3,
-      "foodGain": 5
+      "prestigeGain": 3
     },
     {
       "type": "Sustenance",
@@ -31,8 +30,7 @@
       "type": "BonusFoodEndTurn",
       "id": 101,
       "foodCost": 3,
-      "prestigeGain": 3,
-      "bonusFood": 1
+      "prestigeGain": 3
     },
     {
       "type": "InventorSetForFood",
