@@ -44,6 +44,6 @@ public abstract class BuildingCard extends Card{
 
     public boolean getRitualEventNoPrestigeMalus(){return false;}//default is false (you don't own the building)
     public int getRitualEventDoublePrestigeBonus(){ return 1;} //if the double prestige bonus is not to be used default value is 0
-    public int getRitualEventBonusStars(){ return 0; } //default is 0 (you don't own the building)
+    public void getRitualEventBonusStars(Player player){} //default is 0 (you don't own the building)
 
 }

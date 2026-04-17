@@ -6,6 +6,7 @@ public class SustenanceBuildingI extends BuildingCard{
         super(id,era,foodCost,prestigeGain);
     }
 
+
     @Override
     public int getSustenanceEventArtistsFoodBonus(int artists){return artists;}
 }

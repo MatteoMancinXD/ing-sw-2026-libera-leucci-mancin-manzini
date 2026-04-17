@@ -8,6 +8,7 @@ public class RitualEventBuildingII extends BuildingCard {
         super(id,era,foodCost,prestigeGain);
     }
 
+
     @Override
     public int getRitualEventDoublePrestigeBonus() { return 2;}
 }

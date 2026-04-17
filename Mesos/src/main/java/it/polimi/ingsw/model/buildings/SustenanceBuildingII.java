@@ -6,6 +6,7 @@ public class SustenanceBuildingII extends BuildingCard {
         super(id,era,foodCost,prestigeGain);
     }
 
+
     @Override
     public int getSustenanceEventHarvestersFoodBonus(int harvesters){return harvesters;}
 }

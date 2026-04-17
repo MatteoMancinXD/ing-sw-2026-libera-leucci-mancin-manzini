@@ -8,6 +8,7 @@ public class RitualEventBuildingIII extends BuildingCard {
         super(id,era,foodCost,prestigeGain);
     }
 
+
     //adds 3 stars
     @Override
     public void getRitualEventBonusStars(Player player){
