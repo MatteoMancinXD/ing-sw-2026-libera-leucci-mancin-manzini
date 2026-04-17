@@ -8,6 +8,8 @@ public class ArtistCard extends CharacterCard {
     public ArtistCard(int id, int era, int minPlayers, Character type) {
         super(id, era, minPlayers, type);
     }
+    public ArtistCard() {}
+
 
     @Override
     public void assignTo(Player player) {

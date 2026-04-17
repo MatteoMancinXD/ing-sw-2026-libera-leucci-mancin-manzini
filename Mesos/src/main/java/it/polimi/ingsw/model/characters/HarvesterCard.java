@@ -7,6 +7,7 @@ public class HarvesterCard extends CharacterCard {
     public HarvesterCard(int id, int era, int minPlayers, Character type) {
         super(id, era, minPlayers, type);
     }
+    public HarvesterCard() {}
 
     @Override
     public void assignTo(Player player) {

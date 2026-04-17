@@ -40,10 +40,12 @@ public class Player {
         this.hunters = new ArrayList<>();
         this.inventors = new ArrayList<>();
         this.shamans = new ArrayList<>();
+        this.buildings = new ArrayList<>();
 
 
         this.totStars = 0;
     }
+
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -118,7 +120,7 @@ public class Player {
     //prova
 
     public void buyBuilding(BuildingCard building){
-        editFood(building.getCost());
+        editFood(-building.getCost());
         buildings.add(building);
     }
 
