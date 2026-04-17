@@ -48,6 +48,7 @@ public class HuntEvent extends EventCard {
         }
 
     }
+    //prova
 }
 
 
