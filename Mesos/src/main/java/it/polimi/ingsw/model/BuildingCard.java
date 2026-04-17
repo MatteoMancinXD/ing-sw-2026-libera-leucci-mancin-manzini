@@ -6,8 +6,8 @@ public abstract class BuildingCard extends Card{
     private int prestigeGain; //prestige gain at the end of the game
 
 
-    public BuildingCard(int era, int foodCost, int prestigeGain) {
-        super(era);
+    public BuildingCard(int id,int era, int foodCost, int prestigeGain) {
+        super(id, era);
         this.foodCost = foodCost;
         this.prestigeGain = prestigeGain;
     }

@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 
 public class ArtistCard extends CharacterCard {
-    public ArtistCard(int era, int minPlayers, Character type) {
-        super(era, minPlayers, type);
+    public ArtistCard(int id, int era, int minPlayers, Character type) {
+        super(id, era, minPlayers, type);
     }
     public ArtistCard() {}
 

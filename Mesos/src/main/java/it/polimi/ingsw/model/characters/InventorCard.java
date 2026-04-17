@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.Player;
 public class InventorCard extends CharacterCard {
     private Invention invention;
 
-    public InventorCard(int era, int minPlayers, Character type, Invention invention) {
-        super(era, minPlayers, type);
+    public InventorCard(int id, int era, int minPlayers, Character type, Invention invention) {
+        super(id, era, minPlayers, type);
         this.invention = invention;
     }
     public InventorCard() {}

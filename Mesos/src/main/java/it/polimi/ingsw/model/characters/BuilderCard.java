@@ -8,8 +8,8 @@ public class BuilderCard extends CharacterCard {
     private int discount;
     private int pps;
 
-    public BuilderCard(int era, int minPlayers, Character type, int pps, int discount) {
-        super(era, minPlayers, type);
+    public BuilderCard(int id, int era, int minPlayers, Character type, int pps, int discount) {
+        super(id, era, minPlayers, type);
         this.pps = pps;
         this.discount = discount;
     }
