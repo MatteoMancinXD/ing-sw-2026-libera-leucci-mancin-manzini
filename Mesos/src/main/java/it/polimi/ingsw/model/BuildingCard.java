@@ -45,4 +45,10 @@ public abstract class BuildingCard extends Card{
     public int getRitualEventDoublePrestigeBonus(){ return 1;} //if the double prestige bonus is not to be used default value is 0
     public void getRitualEventBonusStars(Player player){} //default is 0 (you don't own the building)
 
+
+    // Hook methods to handle building events
+    public void onPurchase(Player player) {};
+    public void onRoundEnd(Player player) {};
+    public void onGameEnd(Player player) {};
+    public void onCharacterCardPurchase(Player player, CharacterCard card) {};
 }

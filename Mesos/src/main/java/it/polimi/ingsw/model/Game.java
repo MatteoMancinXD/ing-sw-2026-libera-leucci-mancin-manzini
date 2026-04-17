@@ -67,7 +67,7 @@ public class Game {
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/cardsInfo.json");
+            InputStream is = getClass().getResourceAsStream("/resources/cardsInfo.json");
             TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
@@ -157,7 +157,8 @@ public class Game {
             for(BuildingCard b : p.getBuildings()) {
                 p.editPrestige(b.getBuildingPrestigeGain());
             }
-            for(BuilderCard b : p.getBuilders()) {
+            List<BuilderCard> builders = p.getCharacterDeck(Character.BUILDER);
+            for (BuilderCard b : builders) {
                 p.editPrestige(b.getPps());
             }
         }
