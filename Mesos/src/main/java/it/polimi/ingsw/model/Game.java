@@ -157,7 +157,8 @@ public class Game {
             for(BuildingCard b : p.getBuildings()) {
                 p.editPrestige(b.getBuildingPrestigeGain());
             }
-            for(BuilderCard b : p.getBuilders()) {
+            List<BuilderCard> builders = p.getCharacterDeck(Character.BUILDER);
+            for (BuilderCard b : builders) {
                 p.editPrestige(b.getPps());
             }
         }
