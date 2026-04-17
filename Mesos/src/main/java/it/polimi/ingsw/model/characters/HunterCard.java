@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.Player;
 public class HunterCard extends CharacterCard {
     private final boolean getsFood;
 
-    public HunterCard(int era, int minPlayers, Character type, boolean getsFood) {
-        super(era, minPlayers, type);
+    public HunterCard(int id, int era, int minPlayers, Character type, boolean getsFood) {
+        super(id, era, minPlayers, type);
         this.getsFood = getsFood;
     }
 
