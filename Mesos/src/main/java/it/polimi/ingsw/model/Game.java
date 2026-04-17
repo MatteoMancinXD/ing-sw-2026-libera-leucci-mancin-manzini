@@ -149,7 +149,7 @@ public class Game {
      */
     public ArrayList<Player> endGame() {
         int max = Integer.MIN_VALUE;
-        Player winner = new players.get(0);
+        Player winner =  players.getFirst();
         ArrayList<Player> winners = new ArrayList<>();
         winners.add(winner);
 
