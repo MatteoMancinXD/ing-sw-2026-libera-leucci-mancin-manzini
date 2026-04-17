@@ -1,8 +1,14 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.characters.BuilderCard;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Represents the main class of the Model, orchestrating the entire game flow.
@@ -35,7 +41,10 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.players = new ArrayList<>();
         this.board = new Board(numPlayers);     //La board viene inizializzata in base al numero di players
-        this.deck = new TribeDeck(numPlayers);
+
+        List<TribeCard> AllCards = loadCardsFromJson();
+
+        this.deck = new TribeDeck(AllCards, numPlayers);
         this.buildingDeck = new BuildingDeck();
 
     }
@@ -51,6 +60,29 @@ public class Game {
     }
     public int getEra() {
         return era;
+    }
+
+    private List<TribeCard> loadCardsFromJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<TribeCard> allCardsInGame = new ArrayList<>();
+        try {
+            InputStream is = getClass().getResourceAsStream("/cardsInfo.json");
+            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
+            Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
+
+            for (Map.Entry<String, List<TribeCard>> entry : data.entrySet()) {
+                String eraString = entry.getKey(); //Prende chiavi del JSON (era1, era2, era3)
+                int eraNumber = Integer.parseInt(eraString.substring(3));
+                for(TribeCard card : entry.getValue()) {
+                    card.setEra(eraNumber); //l'era si imposta "manualmente" perchè NON è un parametro nel JSON
+                    allCardsInGame.add(card);
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -115,20 +147,37 @@ public class Game {
      */
     public ArrayList<Player> endGame() {
         int max = Integer.MIN_VALUE;
-        Player winner = new Player();
+        Player winner = new players.get(0);
         ArrayList<Player> winners = new ArrayList<>();
-        for (Player p : players) {
-            if(p.getPrestige() > max) {
-                max = p.getPrestige();
+        winners.add(winner);
+
+        for (Player p: this.players) {                  //Aggiunta di prestigio finale per buildings e builder
+            for(BuildingCard b : p.getBuildings()) {
+                p.editPrestige(b.getBuildingPrestigeGain());
+            }
+            for(BuilderCard b : p.getBuilders()) {
+                p.editPrestige(b.getPps());
+            }
+        }
+
+        for (int i = 1; i < players.size(); i++) {
+            Player p = players.get(i);
+
+            if (p.getPrestige() > winner.getPrestige()) {
+                // Nuovo record assoluto di prestigio
                 winner = p;
                 winners.clear();
+                winners.add(winner);
             }
-            else if (p.getPrestige() == max) {
-                if(p.getFood() > winner.getFood()) {
+            else if (p.getPrestige() == winner.getPrestige()) {
+                // Spareggio sul prestigio! Controlliamo il cibo
+                if (p.getFood() > winner.getFood()) {
                     winner = p;
                     winners.clear();
+                    winners.add(winner);
                 }
                 else if (p.getFood() == winner.getFood()) {
+                    // Parità totale: vittoria condivisa
                     winners.add(p);
                 }
             }
@@ -211,7 +260,7 @@ public class Game {
         Tile targetTile = null;
 
         for(Tile t : track) {
-            if (t.getPlayer().equals(p)) {
+            if (t.getStatus() && t.getPlayer().equals(p)) {
                 targetTile = t;
                 break;
             }
@@ -223,11 +272,11 @@ public class Game {
 
         int i = 0, j = 0;
         while (i < targetTile.getUpperRow()) {
-            p.drawCard(this.board.getTrack().removeUpper(cardChoice[i]));
+            p.drawCard(this.board.removeUpper(cardChoice[i]));
             i++;
         }
         while (j < targetTile.getLowerRow()) {
-            p.drawCard(this.board.getTrack().removeLower(cardChoice[i]));
+            p.drawCard(this.board.removeLower(cardChoice[i]));
             j++;
             i++;
         }
