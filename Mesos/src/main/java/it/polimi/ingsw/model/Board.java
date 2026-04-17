@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.events.SustenanceEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -120,19 +122,23 @@ public class Board {
     /**
      * Resolves all event cards currently in  lowerrow.
      */
-    public void solveEvents() {
+    public void solveEvents(Game game) {
         EventCard sustenance = null;
 
         for (Card c : lowerRow) {
             if (c instanceof SustenanceEvent) {
                 sustenance = (EventCard) c;
             } else if (c instanceof EventCard) {
-                ((EventCard) c).solve();
+                for (Player p : game.getPlayersView()) {
+                    ((EventCard) c).solveEventCard(game, p);
+                }
             }
         }
 
         if (sustenance != null) {
-            sustenance.solve();
+            for (Player p : game.getPlayersView()) {
+                ((EventCard) sustenance).solveEventCard(game, p);
+            }
         }
     }
 
@@ -191,6 +197,15 @@ public class Board {
     {
         this.buildingPool = buildings;
     }
+
+    /**
+     * Sets the tribe deck to be used by the board to draw cards.
+     * @param deck the populated TribeDeck created by Game
+     */
+    public void setTribeDeck(TribeDeck deck) {
+        this.deck = deck;
+    }
+
     public Card removeUpper(int pos) {
         return this.upperRow.remove(pos);
     }

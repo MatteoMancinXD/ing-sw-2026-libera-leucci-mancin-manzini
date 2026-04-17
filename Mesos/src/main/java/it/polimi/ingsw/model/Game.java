@@ -44,7 +44,7 @@ public class Game {
 
         this.deck = new TribeDeck(AllCards, numPlayers);
         this.buildingDeck = new BuildingDeck();
-
+        board.setTribeDeck(this.deck);
     }
 
 
