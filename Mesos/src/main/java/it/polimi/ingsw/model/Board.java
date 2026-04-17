@@ -61,7 +61,7 @@ public class Board {
                 Card c = deck.draw();
                 if (c == null) {
                     break;
-                };
+                }
 
                 // Gli eventi vanno sempre nella riga superiore
                 if (c instanceof EventCard) {
