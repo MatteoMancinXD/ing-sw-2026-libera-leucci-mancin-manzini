@@ -25,8 +25,8 @@ import it.polimi.ingsw.model.BuildingCard;
 
 public class RitualEvent extends EventCard{
 
-    public RitualEvent(int era){
-        super(era);
+    public RitualEvent(int id,int era){
+        super(id,era);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.events;
 
+import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -24,14 +25,14 @@ import java.util.ArrayList;
 
 public class HuntEvent extends EventCard {
 
-    public HuntEvent(int era) {
-        super(era);
+    public HuntEvent(int id,int era) {
+        super(id,era);
     }
 
     @Override
     public void solveEventCard(Game game, Player player) {
 
-        int hunters = player.getHunters().size();
+        int hunters = player.getCharacterDeck(Character.HUNTER).size();
 
         // +1 food and +1*era prestige foreach hunter
 

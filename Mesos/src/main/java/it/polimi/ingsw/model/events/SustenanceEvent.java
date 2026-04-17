@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.events;
+import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.buildings.*;
 
 import it.polimi.ingsw.model.EventCard;
@@ -31,19 +32,19 @@ public class SustenanceEvent extends EventCard{
         int foodPoints;
         int currentHunger;
         int foodFromBuildings = 0; 
-        int numCharacterCards = player.getArtists().size() + player.getHunters().size() + player.getInventors().size() + player.getShamans().size() + player.getHarvesters().size() + player.getBuilders().size();
+        int numCharacterCards = player.getCharacterDeck(Character.ARTIST).size() + player.getCharacterDeck(Character.HUNTER).size() + player.getCharacterDeck(Character.INVENTOR).size() + player.getCharacterDeck(Character.SHAMAN).size() + player.getCharacterDeck(Character.HARVESTER).size() + player.getCharacterDeck(Character.BUILDER).size();
 
         //check if there are buildings with Sustenance bonuses
         for(BuildingCard card : player.getBuildings()){
             //if the card is present these methods return the parameter, if it s not present it returns zero
             //so no bonus added
-            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getArtists().size());
-            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getHarvesters().size());
-            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getInventors().size());
+            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getCharacterDeck(Character.ARTIST).size());
+            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getCharacterDeck(Character.HARVESTER).size());
+            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getCharacterDeck(Character.INVENTOR).size());
 
         }
 
-        currentHunger = numCharacterCards - (player.getHarvesters().size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
+        currentHunger = numCharacterCards - (player.getCharacterDeck(Character.HARVESTER).size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
         foodPoints = player.getFood() - currentHunger;
 
         if(foodPoints>=0){

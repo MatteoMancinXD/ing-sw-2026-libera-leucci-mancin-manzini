@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.events;
+import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.buildings.*;
 
 import it.polimi.ingsw.model.EventCard;
@@ -24,15 +25,15 @@ import java.util.ArrayList;
 
 public class PaintingsEvent extends EventCard{
 
-    public PaintingsEvent(int era){
-        super(era);
+    public PaintingsEvent(int id,int era){
+        super(id,era);
     }
 
 
     @Override 
     public void solveEventCard(Game game,Player player){
         
-        int artists = player.getArtists().size(); 
+        int artists = player.getCharacterDeck(Character.ARTIST).size();
         int era = this.getEra(); 
 
         // -2 prestige una tantum if below set number of artists else +era*artists
@@ -49,7 +50,9 @@ public class PaintingsEvent extends EventCard{
         for(BuildingCard card : player.getBuildings()){
 
                 //for x artists gives x food during PaintingsEvent only if you have PaintingsEventBuilding
-                player.editFood(card.getPaintingsEventFoodBonus(artists));
+
+                player.editFood(card.getPaintingsEventFoodBonus(artists)); //OLD VERSION
+
         }   //it is made like this not to use "instance of" if(BuildingCard card instanceof theExactBuilding) then give bonus
 
     }
