@@ -2,9 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Represents a player within the game.
@@ -20,12 +18,7 @@ public class Player {
     private int food;
     private int prestige;
     //private ArrayList<Card> cards;
-    private ArrayList<ArtistCard> artists;
-    private ArrayList<BuilderCard> builders;
-    private ArrayList<HarvesterCard> harvesters;
-    private ArrayList<HunterCard> hunters;
-    private ArrayList<InventorCard> inventors;
-    private ArrayList<ShamanCard> shamans;
+    private Map<Character, List<CharacterCard>> characters;
     private ArrayList<BuildingCard> buildings;
 
     private int totStars;
@@ -34,14 +27,8 @@ public class Player {
         this.nickname = nickname;
         this.food = 0;
         this.prestige = 0;
-        this.artists = new ArrayList<>();
-        this.builders = new ArrayList<>();
-        this.harvesters = new ArrayList<>();
-        this.hunters = new ArrayList<>();
-        this.inventors = new ArrayList<>();
-        this.shamans = new ArrayList<>();
+        this.characters = new HashMap<>();
         this.buildings = new ArrayList<>();
-
 
         this.totStars = 0;
     }
@@ -86,32 +73,18 @@ public class Player {
 
     }
 
-    public void addArtist(ArtistCard c) { artists.add(c); }
-    public void addBuilder(BuilderCard c) { builders.add(c); }
-    public void addHarvester(HarvesterCard c) { harvesters.add(c); }
-    public void addHunter(HunterCard c) { hunters.add(c); }
-    public void addInventor(InventorCard c) { inventors.add(c); }
-    public void addShaman(ShamanCard c) { shamans.add(c); }
+    public void addArtist(ArtistCard c) { characters.get(Character.ARTIST).add(c); }
+    public void addBuilder(BuilderCard c) { characters.get(Character.BUILDER).add(c); }
+    public void addHarvester(HarvesterCard c) { characters.get(Character.HARVESTER).add(c); }
+    public void addHunter(HunterCard c) { characters.get(Character.HUNTER).add(c); }
+    public void addInventor(InventorCard c) { characters.get(Character.INVENTOR).add(c); }
+    public void addShaman(ShamanCard c) { characters.get(Character.SHAMAN).add(c); }
     //public void addBuilding(BuildingCard c) {buildings.add(c); }
 
-    public ArrayList<ArtistCard> getArtists() {
-        return artists;
+    public <T extends CharacterCard> List<T> getCharacterDeck (Character c) {
+        return (List<T>) characters.getOrDefault(c, new ArrayList<>());
     }
-    public ArrayList<HunterCard> getHunters() {
-        return hunters;
-    }
-    public ArrayList<InventorCard> getInventors() {
-        return inventors;
-    }
-    public ArrayList<ShamanCard> getShamans(){
-        return shamans; 
-    }
-    public ArrayList<HarvesterCard> getHarvesters(){
-        return harvesters; 
-    } 
-    public ArrayList<BuilderCard> getBuilders(){
-        return builders; 
-    }
+
     public ArrayList<BuildingCard> getBuildings(){
         return buildings; 
     }
