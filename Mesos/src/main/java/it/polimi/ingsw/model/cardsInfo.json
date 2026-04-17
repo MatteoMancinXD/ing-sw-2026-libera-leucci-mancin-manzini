@@ -233,36 +233,37 @@
       "pps": 4
     },
     {
-      "type": "HARVESTER",
+      "type": "BUILDER",
       "id": 41,
-      "minPlayer": 2
+      "minPlayer": 3,
+      "discount": -1,
+      "pps": 2
     },
     {
       "type": "HARVESTER",
       "id": 42,
-      "minPlayer": 3
+      "minPlayer": 2
     },
     {
       "type": "HARVESTER",
       "id": 43,
-      "minPlayer": 4
+      "minPlayer": 3
     },
     {
       "type": "HARVESTER",
       "id": 44,
-      "minPlayer": 5
+      "minPlayer": 4
     },
     {
-      "type": "HUNTER",
+      "type": "HARVESTER",
       "id": 45,
-      "minPlayer": 2,
-      "getsFood": true
+      "minPlayer": 5
     },
     {
       "type": "HUNTER",
       "id": 46,
       "minPlayer": 2,
-      "getsFood": false
+      "getsFood": true
     },
     {
       "type": "HUNTER",
@@ -273,62 +274,62 @@
     {
       "type": "HUNTER",
       "id": 48,
+      "minPlayer": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 49,
       "minplayer": 3,
       "getsFood": false
     },
     {
       "tyoe": "HUNTER",
-      "id": 49,
+      "id": 50,
       "minPlayer": 4,
       "getsFood": true
     },
     {
       "type": "HUNTER",
-      "id": 50,
+      "id": 51,
       "minPlayer": 5,
       "getsFood": false
     },
     {
       "type": "INVENTOR",
-      "id": 51,
+      "id": 52,
       "minPlayer": 2,
       "invention": "POT"
     },
     {
       "type": "INVENTOR",
-      "id": 52,
+      "id": 53,
       "minPlayer": 2,
       "invention": "FLUTE"
     },
     {
       "type": "INVENTOR",
-      "id": 53,
+      "id": 54,
       "minPlayer": 2,
       "invention": "ROPE"
     },
     {
       "type": "INVENTOR",
-      "id": 54,
+      "id": 55,
       "minPlayer": 2,
       "invention": "DOLL"
     },
     {
       "type": "INVENTOR",
-      "id": 55,
+      "id": 56,
       "minPlayer": 2,
       "invention": "PELT"
     },
     {
       "type": "INVENTOR",
-      "id": 56,
+      "id": 57,
       "minPlayer": 4,
       "invention": "HOOK"
-    },
-    {
-      "type": "SHAMAN",
-      "id": 57,
-      "minPlayer": 2,
-      "stars": "2"
     },
     {
       "type": "SHAMAN",
@@ -340,36 +341,47 @@
       "type": "SHAMAN",
       "id": 59,
       "minPlayer": 2,
-      "stars": "1"
+      "stars": "2"
     },
     {
       "type": "SHAMAN",
       "id": 60,
       "minPlayer": 2,
+      "stars": "1"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 61,
+      "minPlayer": 2,
       "stars": "2"
     },
     {
       "type": "HUNT",
-      "id": 61,
-      "finalEvent": false
-    },
-    {
-      "type": "PAINTING",
       "id": 62,
       "finalEvent": false
     },
     {
-      "type": "RITUAL",
+      "type": "PAINTING",
       "id": 63,
       "finalEvent": false
     },
     {
-      "type": "SUSTENANCE",
+      "type": "RITUAL",
       "id": 64,
+      "finalEvent": false
+    },
+    {
+      "type": "SUSTENANCE",
+      "id": 65,
       "finalEvent": false
     }
   ],
   "era3": [
+    {
+      "type": "ARTIST",
+      "id": 66,
+      "minPlayer": 2
+    },
     {
       "type": "ARTIST",
       "id": 67,
@@ -383,61 +395,62 @@
     {
       "type": "ARTIST",
       "id": 69,
-      "minPlayer": 2
-    },
-    {
-      "type": "ARTIST",
-      "id": 70,
       "minPlayer": 5
     },
     {
       "type": "BUILDER",
-      "id": 71,
+      "id": 70,
       "minPlayer": 2,
       "discount": -2,
       "pps": 3
     },
     {
       "type": "BUILDER",
-      "id": 72,
+      "id": 71,
       "minPlayer": 2,
       "discount": -1,
       "pps": 5
     },
     {
       "type": "BUILDER",
-      "id": 73,
+      "id": 72,
       "minPlayer": 2,
       "discount": -2,
       "pps": 2
     },
     {
       "type": "BUILDER",
-      "id": 74,
+      "id": 73,
       "minPlayer": 5,
       "discount": -1,
       "pps": 4
     },
     {
       "type": "HARVESTER",
-      "id": 75,
+      "id": 74,
       "minPlayer": 2
     },
     {
       "type": "HARVESTER",
-      "id": 76,
+      "id": 75,
       "minPlayer": 4
     },
     {
       "type": "HARVESTER",
-      "id": 77,
+      "id": 76,
       "minPlayer": 5
+    },
+    {
+      "type": "HUNTER",
+      "id": 77,
+      "minPlayer": 2,
+      "getsFood": true
     },
     {
       "type": "HUNTER",
       "id": 78,
       "minPlayer": 2,
-      "getsFood": true
+      "getsFood": false
     },
     {
       "type": "HUNTER",
@@ -448,56 +461,56 @@
     {
       "type": "HUNTER",
       "id": 80,
-      "minPlayer": 2,
-      "getsFood": false
-    },
-    {
-      "type": "HUNTER",
-      "id": 81,
       "minPlayer": 5,
       "getsFood": true
     },
     {
       "type": "INVENTOR",
-      "id": 82,
+      "id": 81,
       "minPlayer": 2,
       "invention": "BREAD"
     },
     {
       "type": "INVENTOR",
-      "id": 83,
+      "id": 82,
       "minPlayer": 2,
       "invention": "HOOK"
     },
     {
       "type": "INVENTOR",
-      "id": 84,
+      "id": 83,
       "minPlayer": 2,
       "invention": "NECKLACE"
     },
     {
       "type": "INVENTOR",
-      "id": 85,
+      "id": 84,
       "minPlayer": 2,
       "invention": "DOLL"
     },
     {
       "type": "INVENTOR",
-      "id": 86,
+      "id": 85,
       "minPlayer": 3,
       "invention": "STONE"
     },
     {
       "type": "INVENTOR",
-      "id": 87,
+      "id": 86,
       "minPlayer": 3,
       "invention": "ARROW"
     },
     {
       "type": "INVENTOR",
-      "id": 88,
+      "id": 87,
       "minPlayer": 4,
       "invention": "NECKLACE"
+    },
+    {
+      "type": "SHAMAN",
+      "id": 88,
+      "minPlayer": 2,
+      "stars": 3
     },
     {
       "type": "SHAMAN",
@@ -509,25 +522,39 @@
       "type": "SHAMAN",
       "id": 90,
       "minPlayer": 2,
-      "stars": 3
-    },
-    {
-      "type": "SHAMAN",
-      "id": 91,
-      "minPlayer": 2,
       "stars": 2
     },
     {
       "type": "SHAMAN",
-      "id": 92,
+      "id": 91,
       "minPlayer": 3,
       "stars": 2
     },
     {
       "type": "SHAMAN",
-      "id": 93,
+      "id": 92,
       "minPlayer": 4,
       "stars": 2
+    },
+    {
+      "type": "HUNT",
+      "id": 93,
+      "finalEvent": false
+    },
+    {
+      "type": "PAINTINGS",
+      "id": 94,
+      "finalEvent": false
+    },
+    {
+      "type": "RITUAL",
+      "id": 95,
+      "finalEvent": true
+    },
+    {
+      "type": "SUSTENANCE",
+      "id": 96,
+      "finalEvent": true
     }
   ]
 }

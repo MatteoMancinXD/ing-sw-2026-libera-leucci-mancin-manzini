@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TribeDeck {
     private ArrayList<TribeCard> cards;
@@ -9,7 +10,7 @@ public class TribeDeck {
      * @param cards to be taken from an archive of all TribeCards
      * @param numPlayers number of players in game
      */
-    public TribeDeck(ArrayList<TribeCard> cards, int numPlayers) {
+    public TribeDeck(List<TribeCard> cards, int numPlayers) {
         this.cards = new ArrayList<>();
 
         for(TribeCard card : cards) {
@@ -17,6 +18,7 @@ public class TribeDeck {
                 this.cards.add(card);
         }
     }
+
 
     public TribeDeck() {
         this.cards = new ArrayList<>();

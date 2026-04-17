@@ -4,9 +4,10 @@ import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 
 public class HarvesterCard extends CharacterCard {
-    public HarvesterCard(int era, int minPlayers, Character type) {
-        super(era, minPlayers, type);
+    public HarvesterCard(int id, int era, int minPlayers, Character type) {
+        super(id, era, minPlayers, type);
     }
+    public HarvesterCard() {}
 
     @Override
     public void assignTo(Player player) {

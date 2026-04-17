@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class SustenanceEvent extends EventCard{
 
-    public SustenanceEvent(int era){
-        super(era);
+    public SustenanceEvent(int id, int era){
+        super(id, era);
     }
 
     public void solveEventCard(Game game,Player player){
