@@ -74,7 +74,7 @@ public class Player {
 
     public void drawCard(Card c){
 
-        if (c instanceof BuldingCard) {         //Quando avremo la classe BuildingCard mettere assignTo per evitare questo instanceof
+        if (c instanceof BuildingCard) {         //Quando avremo la classe BuildingCard mettere assignTo per evitare questo instanceof
             BuildingCard bc = (BuildingCard) c;
             this.buyBuilding(bc);
         }

@@ -3,8 +3,8 @@ import it.polimi.ingsw.model.BuildingCard;
 
 public class HuntEventBuilding extends BuildingCard {
 
-    public HuntEventBuilding() {
-        super(2, 7, 2); // era, foodCost, prestigeGain
+    public HuntEventBuilding(int id,int era, int foodCost, int prestigeGain) {
+        super(id,era,foodCost,prestigeGain); // era 2, foodCost 7, prestigeGain 2
     }
 
     //During HuntEvent gives an extra +1 prestige +1 food for each Hunter

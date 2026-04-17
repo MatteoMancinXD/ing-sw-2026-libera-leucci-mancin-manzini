@@ -6,8 +6,8 @@ public abstract class BuildingCard extends Card{
     private int prestigeGain; //prestige gain at the end of the game
 
 
-    public BuildingCard(int era, int foodCost, int prestigeGain) {
-        super(era);
+    public BuildingCard(int id,int era, int foodCost, int prestigeGain) {
+        super(id,era);
         this.foodCost = foodCost;
         this.prestigeGain = prestigeGain;
     }
@@ -44,6 +44,5 @@ public abstract class BuildingCard extends Card{
 
     public boolean getRitualEventNoPrestigeMalus(){return false;}//default is false (you don't own the building)
     public int getRitualEventDoublePrestigeBonus(){ return 1;} //if the double prestige bonus is not to be used default value is 0
-    public int getRitualEventBonusStars(){ return 0; } //default is 0 (you don't own the building)
-
+    public void getRitualEventBonusStars(Player player){} //default is 0 (you don't own the building)
 }

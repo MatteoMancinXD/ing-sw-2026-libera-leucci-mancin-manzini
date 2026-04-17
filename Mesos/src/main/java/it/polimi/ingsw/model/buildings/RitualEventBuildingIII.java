@@ -1,15 +1,17 @@
 package it.polimi.ingsw.model.buildings;
 import it.polimi.ingsw.model.BuildingCard;
+import it.polimi.ingsw.model.Player;
 
 public class RitualEventBuildingIII extends BuildingCard {
 
-    public RitualEventBuildingIII(){
-        super(2,6,4);
+    public RitualEventBuildingIII(int id,int era, int foodCost, int prestigeGain) {
+        super(id,era,foodCost,prestigeGain);
     }
 
-    //it can't work like this because in this way you could add 3 stars each
-    public int getRitualEventBonusStars(){
-        return 3;
+    //adds 3 stars
+    @Override
+    public void getRitualEventBonusStars(Player player){
+        player.setTotStars(player.getTotStars() + 3);
     }
 
 }
