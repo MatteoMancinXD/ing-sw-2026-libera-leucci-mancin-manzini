@@ -10,6 +10,7 @@ public class ArtistCard extends CharacterCard {
     }
     public ArtistCard() {}
 
+
     @Override
     public void assignTo(Player player) {
         player.addArtist(this);

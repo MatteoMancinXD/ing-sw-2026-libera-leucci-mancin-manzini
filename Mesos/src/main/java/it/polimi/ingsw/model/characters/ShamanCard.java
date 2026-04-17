@@ -14,6 +14,7 @@ public class ShamanCard extends CharacterCard {
 
     public void setStars(int stars) {
         this.stars = stars;
+
     }
     public int getStars() {
         return stars;

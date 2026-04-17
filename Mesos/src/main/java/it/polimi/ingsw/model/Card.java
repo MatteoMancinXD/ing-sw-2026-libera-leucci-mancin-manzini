@@ -9,6 +9,7 @@ public abstract class Card {
         this.era = era;
     }
 
+
     protected Card() {}
 
     public void setEra(int era) {

@@ -15,6 +15,7 @@ public class BuilderCard extends CharacterCard {
     }
     public BuilderCard() {}
 
+
     public void setDiscount(int discount) {
         this.discount = discount;
     }

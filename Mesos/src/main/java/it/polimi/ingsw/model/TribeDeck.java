@@ -19,6 +19,7 @@ public class TribeDeck {
         }
     }
 
+
     public TribeDeck() {
         this.cards = new ArrayList<>();
     }

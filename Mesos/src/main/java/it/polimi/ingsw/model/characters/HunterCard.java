@@ -12,6 +12,7 @@ public class HunterCard extends CharacterCard {
         this.getsFood = getsFood;
     }
     public HunterCard() {}
+
     public void setGetsFood(boolean getsFood) {
         this.getsFood = getsFood;
     }

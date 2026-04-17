@@ -12,6 +12,7 @@ public abstract class CharacterCard extends TribeCard{
     }
     protected CharacterCard() {}
 
+
     public Character getType() {
         return type;
     }

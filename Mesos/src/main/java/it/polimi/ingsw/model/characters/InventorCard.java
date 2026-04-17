@@ -15,6 +15,7 @@ public class InventorCard extends CharacterCard {
 
     public void setInvention(Invention invention) {
         this.invention = invention;
+
     }
     public Invention getInvention() {
         return invention;

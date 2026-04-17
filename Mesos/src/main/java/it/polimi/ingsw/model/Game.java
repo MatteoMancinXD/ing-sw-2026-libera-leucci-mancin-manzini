@@ -49,6 +49,7 @@ public class Game {
 
     }
 
+
     public void setRound(int round){
         this.round = round;
     }
@@ -83,6 +84,7 @@ public class Game {
             e.printStackTrace();
             return new ArrayList<>();
         }
+        return allCardsInGame;
     }
 
     /**

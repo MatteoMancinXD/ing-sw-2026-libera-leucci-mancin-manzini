@@ -46,6 +46,7 @@ public class Player {
         this.totStars = 0;
     }
 
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }

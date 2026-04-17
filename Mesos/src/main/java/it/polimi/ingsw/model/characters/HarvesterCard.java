@@ -8,6 +8,7 @@ public class HarvesterCard extends CharacterCard {
         super(id, era, minPlayers, type);
     }
     public HarvesterCard() {}
+
     @Override
     public void assignTo(Player player) {
         player.addHarvester(this);
