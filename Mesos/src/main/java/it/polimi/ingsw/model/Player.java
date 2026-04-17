@@ -28,6 +28,11 @@ public class Player {
         this.food = 0;
         this.prestige = 0;
         this.characters = new HashMap<>();
+
+        for (Character character : Character.values()) {
+            this.characters.put(character, new ArrayList<>());
+        }
+
         this.buildings = new ArrayList<>();
 
         this.totStars = 0;
@@ -81,8 +86,10 @@ public class Player {
     public void addShaman(ShamanCard c) { characters.get(Character.SHAMAN).add(c); }
     //public void addBuilding(BuildingCard c) {buildings.add(c); }
 
+    @SuppressWarnings("unchecked")
     public <T extends CharacterCard> List<T> getCharacterDeck (Character c) {
-        return (List<T>) characters.getOrDefault(c, new ArrayList<>());
+        //return (List<T>) characters.getOrDefault(c, new ArrayList<>());
+        return (List<T>) characters.get(c);
     }
 
     public ArrayList<BuildingCard> getBuildings(){
@@ -93,7 +100,7 @@ public class Player {
     //prova
 
     public void buyBuilding(BuildingCard building){
-        editFood(-building.getCost());
+        editFood(-building.getBuildingFoodCost());
         buildings.add(building);
     }
 
