@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
@@ -148,7 +146,6 @@ public class Game {
      * @return A list containing the winning player(s).
      */
     public ArrayList<Player> endGame() {
-        int max = Integer.MIN_VALUE;
         Player winner =  players.getFirst();
         ArrayList<Player> winners = new ArrayList<>();
         winners.add(winner);

@@ -28,7 +28,7 @@ public class SustenanceEvent extends EventCard{
         super(id, era);
     }
 
-    public void solveEventCard(Game game,Player player){
+    public void solveEventCard(Player player){
         int foodPoints;
         int currentHunger;
         int foodFromBuildings = 0; 
@@ -38,9 +38,10 @@ public class SustenanceEvent extends EventCard{
         for(BuildingCard card : player.getBuildings()){
             //if the card is present these methods return the parameter, if it s not present it returns zero
             //so no bonus added
-            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getCharacterDeck(Character.ARTIST).size());
-            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getCharacterDeck(Character.HARVESTER).size());
-            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getCharacterDeck(Character.INVENTOR).size());
+//            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getCharacterDeck(Character.ARTIST).size());
+//            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getCharacterDeck(Character.HARVESTER).size());
+//            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getCharacterDeck(Character.INVENTOR).size());
+            foodFromBuildings += card.getSustenanceEventFoodBonus(player);
 
         }
 

@@ -36,7 +36,9 @@ public abstract class BuildingCard extends Card{
     public int getSustenanceEventHarvestersFoodBonus(int harvesters){return 0;}
     public int getSustenanceEventInventorsFoodBonus(int inventors){return 0;}
 
-//    public Character getSustenanceEventFoodBonus(Character c,int characterCount){ return 0;}
+    public int getSustenanceEventFoodBonus(Player p){ return 0;}
+
+
     public int getPaintingsEventFoodBonus(int artists) {return 0;}
 
     public int getHuntEventFoodBonus(int hunters) { return 0; }
