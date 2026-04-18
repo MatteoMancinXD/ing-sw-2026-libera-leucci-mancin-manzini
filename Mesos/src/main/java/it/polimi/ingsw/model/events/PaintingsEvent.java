@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.BuildingCard;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,7 +32,7 @@ public class PaintingsEvent extends EventCard{
 
 
     @Override 
-    public void solveEventCard(Game game,Player player){
+    public void solveEventCard(Player player, List<Player> allPlayers){
         
         int artists = player.getCharacterDeck(Character.ARTIST).size();
         int era = this.getEra(); 

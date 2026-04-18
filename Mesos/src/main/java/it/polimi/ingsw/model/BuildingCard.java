@@ -32,6 +32,7 @@ public abstract class BuildingCard extends Card{
     //if the building is NOT present a default return value is needed
     //these are default return values
     //ONE method serves ONE card (because in event the presence of the single card is checked)
+
     public int getSustenanceEventArtistsFoodBonus(int artists){return 0;}
     public int getSustenanceEventHarvestersFoodBonus(int harvesters){return 0;}
     public int getSustenanceEventInventorsFoodBonus(int inventors){return 0;}

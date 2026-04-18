@@ -101,9 +101,9 @@ public class Game {
         return numPlayers;
     }
 
-    // return the list of players inside game (cannot be modified) 
-    public List<Player> getPlayersView() {
-    return Collections.unmodifiableList(players);
+    // return the list of players inside game
+    public List<Player> getPlayers() {
+        return players;
     }
     
     /**

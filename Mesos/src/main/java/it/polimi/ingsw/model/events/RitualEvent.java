@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BuildingCard;
+import java.util.List;
 
 
 /**
@@ -30,7 +31,7 @@ public class RitualEvent extends EventCard{
     }
 
     @Override
-    public void solveEventCard(Game game,Player player){
+    public void solveEventCard(Player player, List<Player> allPlayers){
 
         boolean buildingBonusI = false;
 
@@ -49,7 +50,7 @@ public class RitualEvent extends EventCard{
             }
             starsBonusFlag = false;
         } */
-        for(Player playerInGame : game.getPlayersView()){ //game.getPlayersView is the unmodifiable list of players inside the game
+        for(Player playerInGame : allPlayers){ //game.getPlayersView is the unmodifiable list of players inside the game
             if(!(playerInGame.equals(player))){
                 if(player.getTotStars() >= playerInGame.getTotStars()){
                     i++;
@@ -65,7 +66,7 @@ public class RitualEvent extends EventCard{
 
 
         //i and j are to be removed with the controller's "stars compare method"
-        if(i==game.getNumPlayers()-1){  //all the others - himself(1)
+        if(i==allPlayers.size()-1){  //all the others - himself(1)
             //player who invoked the solve event method has more stars than all the others (or equal to someone else with whom has more stars than all the others)
             for(BuildingCard card : player.getBuildings()) {
                 player.editPrestige(5 * era * card.getRitualEventDoublePrestigeBonus());
@@ -78,7 +79,7 @@ public class RitualEvent extends EventCard{
             buildingBonusI = card.getRitualEventNoPrestigeMalus();
         }
 
-        if(( j==game.getNumPlayers()-1) && !buildingBonusI){
+        if(( j==allPlayers.size()-1) && !buildingBonusI){
             //player who invoked the solve event method has less stars than all the others (or equal to someone else with whom has less stars than all the others)
             switch(era){
                 case 1:

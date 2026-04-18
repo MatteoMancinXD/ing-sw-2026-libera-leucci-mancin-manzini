@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.buildings.HuntEventBuilding;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * this class extends the method solveEventCard by solving the event "Hunt" .
@@ -30,7 +32,7 @@ public class HuntEvent extends EventCard {
     }
 
     @Override
-    public void solveEventCard(Game game, Player player) {
+    public void solveEventCard(Player player, List<Player> allPlayers) {
 
         int hunters = player.getCharacterDeck(Character.HUNTER).size();
 
@@ -49,7 +51,7 @@ public class HuntEvent extends EventCard {
         }
 
     }
-    //prova
+
 }
 
 

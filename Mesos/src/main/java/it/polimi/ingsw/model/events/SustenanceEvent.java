@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BuildingCard;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -28,19 +29,14 @@ public class SustenanceEvent extends EventCard{
         super(id, era);
     }
 
-    public void solveEventCard(Player player){
+    public void solveEventCard(Player player, List<Player> allPlayers){
         int foodPoints;
         int currentHunger;
         int foodFromBuildings = 0; 
         int numCharacterCards = player.getCharacterDeck(Character.ARTIST).size() + player.getCharacterDeck(Character.HUNTER).size() + player.getCharacterDeck(Character.INVENTOR).size() + player.getCharacterDeck(Character.SHAMAN).size() + player.getCharacterDeck(Character.HARVESTER).size() + player.getCharacterDeck(Character.BUILDER).size();
 
-        //check if there are buildings with Sustenance bonuses
+        //check if there are buildings with Sustenance bonuses (see SustenanceBuilding class)
         for(BuildingCard card : player.getBuildings()){
-            //if the card is present these methods return the parameter, if it s not present it returns zero
-            //so no bonus added
-//            foodFromBuildings += card.getSustenanceEventArtistsFoodBonus(player.getCharacterDeck(Character.ARTIST).size());
-//            foodFromBuildings += card.getSustenanceEventHarvestersFoodBonus(player.getCharacterDeck(Character.HARVESTER).size());
-//            foodFromBuildings += card.getSustenanceEventInventorsFoodBonus(player.getCharacterDeck(Character.INVENTOR).size());
             foodFromBuildings += card.getSustenanceEventFoodBonus(player);
 
         }
