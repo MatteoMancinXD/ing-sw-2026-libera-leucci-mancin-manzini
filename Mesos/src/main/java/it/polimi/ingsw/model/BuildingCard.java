@@ -12,6 +12,9 @@ public abstract class BuildingCard extends Card{
         this.prestigeGain = prestigeGain;
     }
 
+    protected BuildingCard() {
+    }
+
     public int getBuildingFoodCost() {
         return foodCost;
     }
@@ -46,6 +49,6 @@ public abstract class BuildingCard extends Card{
     public void onPurchase(Player player) {}; //used in RitualEventBonusStarsBuilding
     public void onRoundEnd(Player player) {};
     public void onGameEnd(Player player) {};
-    public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; //used for PrestigeForCharacterBuilding
+    //public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; useless
     public void onCharacterCardPurchase(Player player, CharacterCard card) {};
 }

@@ -65,7 +65,7 @@ public class Game {
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/resources/cardsInfo.json");
+            InputStream is = getClass().getResourceAsStream("/resources/json/cardsInfo.json");
             TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
@@ -153,12 +153,15 @@ public class Game {
         for (Player p: this.players) {                  //Aggiunta di prestigio finale per buildings e builder
             for(BuildingCard b : p.getBuildings()) {
                 p.editPrestige(b.getBuildingPrestigeGain());
+                b.onGameEnd(p);                         //Attivazione effetti building onGameEnd()
             }
             List<BuilderCard> builders = p.getCharacterDeck(Character.BUILDER);
             for (BuilderCard b : builders) {
                 p.editPrestige(b.getPps());
             }
         }
+
+
 
         for (int i = 1; i < players.size(); i++) {
             Player p = players.get(i);
@@ -170,7 +173,7 @@ public class Game {
                 winners.add(winner);
             }
             else if (p.getPrestige() == winner.getPrestige()) {
-                // Spareggio sul prestigio! Controlliamo il cibo
+                // Spareggio sul prestigio
                 if (p.getFood() > winner.getFood()) {
                     winner = p;
                     winners.clear();
@@ -209,7 +212,15 @@ public class Game {
      * and reorders the players based on the totems placed on the turn order tile.
      */
     public void nextTurn() {
-        board.solveEvents();
+
+        for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
+            ArrayList<BuildingCard> buildings = p.getBuildings();
+            for(BuildingCard b : buildings) {
+                b.onRoundEnd(p);
+            }
+        }
+
+        board.solveEvents(this.players);
 
         board.clearLowerRow();
         board.shiftRow();
@@ -225,7 +236,7 @@ public class Game {
 
         this.currentPhase = GamePhase.PLACEMENT;
         this.currentPlayerIndex = 0;
-        //logica per riordinare i players in base all'ordine sulla tileboard: ipotizzo che in Tile sia salvato il player
+        //logica per riordinare i players in base all'ordine sulla tileboard
         ArrayList<Player> nextTurnOrder = new ArrayList<>();
         for(Tile tile: board.getTrack()) {
             if (tile.getStatus()) {
@@ -258,7 +269,7 @@ public class Game {
         Player p = this.players.get(currentPlayerIndex);
         List<Tile> track = this.board.getTrack();
         Tile targetTile = null;
-
+        ArrayList<BuildingCard> buildings = p.getBuildings();
         for(Tile t : track) {
             if (t.getStatus() && t.getPlayer().equals(p)) {
                 targetTile = t;
@@ -272,11 +283,23 @@ public class Game {
 
         int i = 0, j = 0;
         while (i < targetTile.getUpperRow()) {
-            p.drawCard(this.board.removeUpper(cardChoice[i]));
+            Card c = this.board.removeUpper(cardChoice[i]);         //c = carta presa dalla fila superiore
+            p.drawCard(c);                                          //c viene aggiunta alla tribu di p
+            for(BuildingCard b : buildings) {                       //viene chiamato onCharacterPurchase solo se abbiamo preso un Character e non un building
+                if (!(c instanceof BuildingCard)) {
+                    b.onCharacterCardPurchase(p, (CharacterCard) c);
+                }
+            }
             i++;
         }
         while (j < targetTile.getLowerRow()) {
-            p.drawCard(this.board.removeLower(cardChoice[i]));
+            Card c = this.board.removeLower(cardChoice[i]);
+            p.drawCard(c);
+            for(BuildingCard b : buildings) {                       //viene chiamato onCharacterPurchase solo se abbiamo preso un Character e non un building
+                if (!(c instanceof BuildingCard)) {
+                    b.onCharacterCardPurchase(p, (CharacterCard) c);
+                }
+            }
             j++;
             i++;
         }
