@@ -65,7 +65,7 @@ public class Game {
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/resources/cardsInfo.json");
+            InputStream is = getClass().getResourceAsStream("/resources/json/cardsInfo.json");
             TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
@@ -209,7 +209,7 @@ public class Game {
      * and reorders the players based on the totems placed on the turn order tile.
      */
     public void nextTurn() {
-        board.solveEvents();
+        board.solveEvents(this.players);
 
         board.clearLowerRow();
         board.shiftRow();

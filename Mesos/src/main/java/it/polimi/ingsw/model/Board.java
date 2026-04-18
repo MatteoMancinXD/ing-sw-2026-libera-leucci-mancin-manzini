@@ -122,22 +122,22 @@ public class Board {
     /**
      * Resolves all event cards currently in  lowerrow.
      */
-    public void solveEvents(Game game) {
+    public void solveEvents(ArrayList<Player> players) {
         EventCard sustenance = null;
 
         for (Card c : lowerRow) {
             if (c instanceof SustenanceEvent) {
                 sustenance = (EventCard) c;
             } else if (c instanceof EventCard) {
-                for (Player p : game.getPlayersView()) {
-                    ((EventCard) c).solveEventCard(game, p);
+                for (Player p : players) {
+                    ((EventCard) c).solveEventCard(p, players);
                 }
             }
         }
 
         if (sustenance != null) {
-            for (Player p : game.getPlayersView()) {
-                ((EventCard) sustenance).solveEventCard(game, p);
+            for (Player p : players) {
+                ((EventCard) sustenance).solveEventCard(p, players);
             }
         }
     }
