@@ -44,4 +44,5 @@ public class PrestigeForCharacterBuilding extends BuildingCard {
         //on game end after editing prestige,it clears TAKEN_CHARACTERS to free the buildings for next game
         TAKEN_CHARACTERS.clear();
     }
+
 }
