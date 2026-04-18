@@ -103,6 +103,7 @@ public class Player {
     public void buyBuilding(BuildingCard building){
         editFood(-building.getBuildingFoodCost());
         buildings.add(building);
+        building.onPurchase(this);
     }
 
     public void editFood(int amount) throws IllegalArgumentException{

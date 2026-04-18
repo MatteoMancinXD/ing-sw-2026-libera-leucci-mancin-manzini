@@ -6,25 +6,25 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BuildingCard;
 
 public class PrestigeForCharacterBuilding extends BuildingCard {
-    public PrestigeForCharacterBuilding(int id, int era, int foodCost, int prestigeGain) {
+
+    private Character character;
+    private int bonusPrestige;
+
+    public PrestigeForCharacterBuilding(int id, int era, int foodCost, int prestigeGain, Character character, int bonusPrestige) {
         super(id,era,foodCost,prestigeGain);
+        this.character=character;
+        this.bonusPrestige=bonusPrestige;
     }
+
+    public PrestigeForCharacterBuilding() {}
+
+    public void setCharacter(Character character) {this.character=character;}
+    public void setBonusPrestige(int bonusPrestige) {this.bonusPrestige=bonusPrestige;}
+
     @Override
-    public void onCharacterCardGameEnd(Player player, CharacterCard card){
+    public void onGameEnd(Player player){
 
-        int deckSize = player.getCharacterDeck(card.getType()).size();
-
-        switch(card.getType()){
-            case INVENTOR ->  player.editPrestige(deckSize*2);
-            case HUNTER ->   player.editPrestige(deckSize*3);
-            case HARVESTER,ARTIST,SHAMAN,BUILDER ->   player.editPrestige(deckSize*4);
-
-        }
-
-
-
-
-
+        player.editPrestige(this.bonusPrestige*(player.getCharacterDeck(this.character).size()));
 
     }
 }
