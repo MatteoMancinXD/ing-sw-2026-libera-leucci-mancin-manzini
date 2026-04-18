@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.buildings;
 import it.polimi.ingsw.model.BuildingCard;
 
-public class RitualEventBuildingI extends BuildingCard {
+public class RitualEventNoMalusBuilding extends BuildingCard {
 
-    public RitualEventBuildingI(int id,int era, int foodCost, int prestigeGain) {
+    public RitualEventNoMalusBuilding(int id,int era, int foodCost, int prestigeGain) {
         super(id,era,foodCost,prestigeGain);
     }
 

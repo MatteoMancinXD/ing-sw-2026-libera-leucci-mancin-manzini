@@ -43,13 +43,7 @@ public class RitualEvent extends EventCard{
         int i=0;
         int j=0;
 
-        /* RITUAL BUILDING THAT ADDS 3 STARS: THE 3 STARS MUST BE ADDED BY ritualBuildingIII DRAWING
-        if(starsBonusFlag = true) {    //otherwise you put this starsBonusFlag on the card's draw on false
-            for (BuildingCard card : player.getBuildings()) {
-                player.setTotStars(player.getTotStars() + card.getRitualEventBonusStars());
-            }
-            starsBonusFlag = false;
-        } */
+
         for(Player playerInGame : allPlayers){ //game.getPlayersView is the unmodifiable list of players inside the game
             if(!(playerInGame.equals(player))){
                 if(player.getTotStars() >= playerInGame.getTotStars()){
