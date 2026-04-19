@@ -26,6 +26,9 @@ public class Game {
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
 
+    private int currentDrawnUpper;
+    private int currentDrawnLower;
+
     /**
      * Constructor for the Game class.
      * Initializes the starting parameters of the game, creating the board and the decks.
@@ -196,6 +199,9 @@ public class Game {
     public void nextPlayer(){
         currentPlayerIndex++;
 
+        currentDrawnLower = 0;
+        currentDrawnUpper = 0;
+
         if(currentPlayerIndex >= players.size()) {      //Fine player
             if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
                 currentPhase = GamePhase.RESOLUTION;
@@ -257,57 +263,49 @@ public class Game {
 
     /**
      * Handles the RESOLUTION game phase.
-     * Each of the choosen cards are placed into the player cards and removed from the board.
-     * @param cardChoice indexes of the choosen cards by the Player
+     * The choosen card is placed in the collection of the current player
+     * @param row is true if the card to be drawn is from the upper row, false if not
+     * @param index indicates the index of the choosen card from the row (upper or lower)
      * @throws IllegalArgumentException if the player choices are more than the possible choices the Tile offers
     */
-
-    //Cambiare il resolveAction(row, cordIndex) che pesca 1 sola carta alla volta
-    public void resolveAction(int[] cardChoice) {
-
-        //cardChoice è una array di int tipo [1, 3, 2]
-        //I numeri rappresentano la posizione delle carte PRIMA della upper row e DOPO della lower row
+    public void resolveAction(boolean row, int index) {         //row = true riga sopra, row = false riga sotto
 
         Player p = this.players.get(currentPlayerIndex);
-        List<Tile> track = this.board.getTrack();
+        Card c = null;
+
         Tile targetTile = null;
-        ArrayList<BuildingCard> buildings = p.getBuildings();
-        for(Tile t : track) {
+        for(Tile t : this.board.getTrack()) {
             if (t.getStatus() && t.getPlayer().equals(p)) {
                 targetTile = t;
                 break;
             }
         }
 
-        if (cardChoice.length > targetTile.getUpperRow() + targetTile.getLowerRow()) {
-            throw new IllegalArgumentException("Too many choices for this tile");
+        if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
+            throw new IllegalArgumentException("You already drawn the max number of cards from the upper row");
+        }
+        if (!row && currentDrawnLower >= targetTile.getLowerRow()) {
+            throw new IllegalArgumentException("You already drawn the max number of cards from the lower row");
         }
 
-        int i = 0, j = 0;
-        while (i < targetTile.getUpperRow()) {
-            Card c = this.board.removeUpper(cardChoice[i]);         //c = carta presa dalla fila superiore
-            p.drawCard(c);                                          //c viene aggiunta alla tribu di p
-            for(BuildingCard b : buildings) {                       //viene chiamato onCharacterPurchase solo se abbiamo preso un Character e non un building
-                if (!(c instanceof BuildingCard)) {
-                    b.onCharacterCardPurchase(p, (CharacterCard) c);
-                }
-            }
-            i++;
+        if (row) {
+            c = this.board.removeUpper(index);
         }
-        while (j < targetTile.getLowerRow()) {
-            Card c = this.board.removeLower(cardChoice[i]);
-            p.drawCard(c);
-            for(BuildingCard b : buildings) {                       //viene chiamato onCharacterPurchase solo se abbiamo preso un Character e non un building
-                if (!(c instanceof BuildingCard)) {
-                    b.onCharacterCardPurchase(p, (CharacterCard) c);
-                }
-            }
-            j++;
-            i++;
+        else{
+            c = this.board.removeLower(index);
         }
-        nextPlayer();
+        p.drawCard(c);
+        if (!(c instanceof BuildingCard)) {             //se la carta non è un building chiamo onCharacterCardPurchase su tutti i buildings
+            for (BuildingCard b : p.getBuildings()) {
+                b.onCharacterCardPurchase(p, (CharacterCard) c);
+            }
+        }
+
+        if(currentDrawnLower == targetTile.getLowerRow() && currentDrawnUpper == targetTile.getUpperRow()) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
+            nextPlayer();
+        }
+
     }
-
 
     /**
      * Allows the current player to place their Totem on a specific tile.
