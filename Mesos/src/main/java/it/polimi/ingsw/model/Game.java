@@ -261,6 +261,8 @@ public class Game {
      * @param cardChoice indexes of the choosen cards by the Player
      * @throws IllegalArgumentException if the player choices are more than the possible choices the Tile offers
     */
+
+    //Cambiare il resolveAction(row, cordIndex) che pesca 1 sola carta alla volta
     public void resolveAction(int[] cardChoice) {
 
         //cardChoice è una array di int tipo [1, 3, 2]
