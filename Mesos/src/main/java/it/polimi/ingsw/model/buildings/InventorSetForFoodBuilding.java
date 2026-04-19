@@ -43,7 +43,7 @@ public class InventorSetForFoodBuilding extends BuildingCard {
         }
 
         if(coupleCompleted) {
-            player.setFood(player.getFood() + 3);
+            player.editFood(3);
             newInventors.put(inv, 0);
             coupleCompleted = false;
         }
