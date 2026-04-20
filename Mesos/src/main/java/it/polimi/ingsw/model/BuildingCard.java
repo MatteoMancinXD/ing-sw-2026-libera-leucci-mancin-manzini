@@ -29,6 +29,11 @@ public abstract class BuildingCard extends Card{
         this.prestigeGain = prestigeGain;
     }
 
+    public void assignTo(Player player) {
+        player.addBuilding(this);
+        player.buyBuilding(this);
+    }
+
 
     //these methods are made to avoid the usage of "instance of"
     //during x event we check if the building is present inside the deck: for(BuildingCard card : player.getBuildings()){ ...

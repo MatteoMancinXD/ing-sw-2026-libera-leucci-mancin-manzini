@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.characters.BuilderCard;
 
 
 public abstract class CharacterCard extends TribeCard{
@@ -12,8 +13,14 @@ public abstract class CharacterCard extends TribeCard{
     }
     protected CharacterCard() {}
 
-
     public Character getType() {
         return type;
+    }
+
+    @Override
+    public void notifyBuildings(Player player) {
+        for(BuildingCard bc : player.getBuildings()) {
+            bc.onCharacterCardPurchase(player, this);
+        }
     }
 }

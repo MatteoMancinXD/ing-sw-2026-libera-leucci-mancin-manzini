@@ -68,15 +68,7 @@ public class Player {
     }
 
     public void drawCard(Card c){
-
-        if (c instanceof BuildingCard) {         //Quando avremo la classe BuildingCard mettere assignTo per evitare questo instanceof
-            BuildingCard bc = (BuildingCard) c;
-            this.buyBuilding(bc);
-        }
-        else {
-            c.assignTo(this);
-        }
-
+        c.assignTo(this);
     }
 
     public void addArtist(ArtistCard c) { characters.get(Character.ARTIST).add(c); }
@@ -85,7 +77,7 @@ public class Player {
     public void addHunter(HunterCard c) { characters.get(Character.HUNTER).add(c); }
     public void addInventor(InventorCard c) { characters.get(Character.INVENTOR).add(c); }
     public void addShaman(ShamanCard c) { characters.get(Character.SHAMAN).add(c); }
-    //public void addBuilding(BuildingCard c) {buildings.add(c); }
+    public void addBuilding(BuildingCard c) { buildings.add(c); }
 
     @SuppressWarnings("unchecked")
     public <T extends CharacterCard> List<T> getCharacterDeck (Character c) {
@@ -102,7 +94,6 @@ public class Player {
 
     public void buyBuilding(BuildingCard building){
         editFood(-building.getBuildingFoodCost());
-        buildings.add(building);
         building.onPurchase(this);
     }
 

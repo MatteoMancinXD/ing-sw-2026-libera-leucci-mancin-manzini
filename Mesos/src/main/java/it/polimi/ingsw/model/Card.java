@@ -22,4 +22,6 @@ public abstract class Card {
     public int getId() {return id;}
 
     public void assignTo(Player player) {}
+
+    public void notifyBuildings(Player player) {};
 }

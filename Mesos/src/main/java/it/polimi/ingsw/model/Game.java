@@ -295,11 +295,7 @@ public class Game {
             c = this.board.removeLower(index);
         }
         p.drawCard(c);
-        if (!(c instanceof BuildingCard)) {             //se la carta non è un building chiamo onCharacterCardPurchase su tutti i buildings
-            for (BuildingCard b : p.getBuildings()) {
-                b.onCharacterCardPurchase(p, (CharacterCard) c);
-            }
-        }
+        c.notifyBuildings(p);
 
         if(currentDrawnLower == targetTile.getLowerRow() && currentDrawnUpper == targetTile.getUpperRow()) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
             nextPlayer();
