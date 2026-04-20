@@ -10,5 +10,5 @@ public class RitualEventDoublePrestigeBuilding extends BuildingCard {
 
 
     @Override
-    public int getRitualEventDoublePrestigeBonus() { return 2;}
+    public boolean getRitualEventDoublePrestigeBonus() { return true;}
 }

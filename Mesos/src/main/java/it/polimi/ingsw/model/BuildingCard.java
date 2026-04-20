@@ -41,7 +41,7 @@ public abstract class BuildingCard extends Card{
     public int getHuntEventFoodBonus(int hunters) { return 0; }
 
     public boolean getRitualEventNoPrestigeMalus(){return false;}//default is false (you don't own the building)
-    public int getRitualEventDoublePrestigeBonus(){ return 1;} //if the double prestige bonus is not to be used default value is 0
+    public boolean getRitualEventDoublePrestigeBonus(){ return false;} //if the double prestige bonus is not to be used default value is 0
     //public void getRitualEventBonusStars(Player player){} //in onPurchase
 
 
