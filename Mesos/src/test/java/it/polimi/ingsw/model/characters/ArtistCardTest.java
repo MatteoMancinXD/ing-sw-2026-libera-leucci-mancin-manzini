@@ -65,31 +65,76 @@ public class ArtistCardTest {
 
 
     @Test
-    public void testConstructor1() {
+    public void testConstructor() {
 
-        int id,pl,era;
+        int id, numPl, era;
         Player player;
 
-        for(ArtistCard card : artistCards) {
-            era =1;
-            pl=2;
-            for(id=1;id<=6;id++){
-                card = new ArtistCard(id,era,pl,Character.ARTIST);
-                if(id>=5) pl++;
+
+        ArtistCard artistCard2 = new ArtistCard();   //void constructor
+        ArtistCard artistCard3 = new ArtistCard(0, 0, 0, Character.ARTIST); //no json
+
+
+        //with json
+        era = 1;
+        numPl = 2;
+
+        assertFalse(artistCards.isEmpty());
+
+        for (ArtistCard card : artistCards) {
+
+            for (id = 1; id <= 6; id++) {
+                card = new ArtistCard(id, era, numPl, Character.ARTIST);
+                if (id >= 5) numPl++;
             }
         }
+    }
+
+    @Test
+    public void testArtistJSON() {
+        int id, numPl, era;
+        Player player;
+        era =1;
+        numPl = 2;
 
 
-        era =2;
+            for(ArtistCard card : artistCards) {
+                assertEquals(Character.ARTIST,card.getType());
 
-        ArtistCard artistCard2 = new ArtistCard();
-        //ArtistCard artistCard3 = new ArtistCard(0,0,0,Character.ARTIST);
-        /*assertThrows(IllegalArgumentException.class, ()->{new ArtistCard(0,0,0,Character.ARTIST); });
+                assertTrue(card.getId()>0);
+                assertTrue(card.getId()<97);
+                assertTrue(card.getEra()>=0 && card.getEra()<=3);
+                assertTrue(card.getMinPlayers()>=2);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+/*
+        assertThrows(IllegalArgumentException.class, ()->
+        {
+            for(ArtistCard card : artistCards) {  //with json
+                    card = new ArtistCard(0,era,2,Character.ARTIST);
+
+            }
+        }
+        );*/
+
+        //new ArtistCard(0,0,0,Character.ARTIST);
+        /*assertThrows(IllegalArgumentException.class, () -> {
             new ArtistCard(0, 1, 2, Character.ARTIST);
         });*/
 
 
-    }
+
 }
