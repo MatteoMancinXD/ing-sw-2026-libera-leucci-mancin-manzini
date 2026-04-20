@@ -30,7 +30,8 @@ public class HuntEvent extends EventCard {
     public HuntEvent() {
         super(0, 0,false); // jackson default constructor
     }
-/*
+
+    /*
     @Override
     public void setEra(int era) {
         super.setEra(era);
