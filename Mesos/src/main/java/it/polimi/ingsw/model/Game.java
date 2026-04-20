@@ -220,7 +220,7 @@ public class Game {
     public void nextTurn() {
 
         for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
-            ArrayList<BuildingCard> buildings = p.getBuildings();
+            List<BuildingCard> buildings = p.getBuildings();
             for(BuildingCard b : buildings) {
                 b.onRoundEnd(p);
             }

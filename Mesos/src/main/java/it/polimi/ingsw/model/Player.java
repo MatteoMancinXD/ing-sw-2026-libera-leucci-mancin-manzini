@@ -82,11 +82,11 @@ public class Player {
     @SuppressWarnings("unchecked")
     public <T extends CharacterCard> List<T> getCharacterDeck (Character c) {
         //return (List<T>) characters.getOrDefault(c, new ArrayList<>());
-        return (List<T>) characters.get(c);
+        return new ArrayList<T>((List<T>) characters.get(c));
     }
 
-    public ArrayList<BuildingCard> getBuildings(){
-        return buildings; 
+    public List<BuildingCard> getBuildings(){
+        return new ArrayList<>(buildings);
     }
 
     
