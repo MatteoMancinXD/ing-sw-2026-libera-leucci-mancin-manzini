@@ -26,8 +26,11 @@ import java.util.List;
 
 public class PaintingsEvent extends EventCard{
 
+    public PaintingsEvent(){
+        super(0,0,false);
+    }
     public PaintingsEvent(int id,int era){
-        super(id,era);
+        super(id,era,false);
     }
 
 

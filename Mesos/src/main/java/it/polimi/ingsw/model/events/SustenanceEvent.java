@@ -25,8 +25,13 @@ import java.util.ArrayList;
 
 public class SustenanceEvent extends EventCard{
 
-    public SustenanceEvent(int id, int era){
-        super(id, era);
+    public SustenanceEvent(){
+        super(0,0,false);
+    }
+
+
+    public SustenanceEvent(int id, int era,boolean finalEvent){
+        super(id, era,finalEvent);
     }
 
     public void solveEventCard(Player player, List<Player> allPlayers){

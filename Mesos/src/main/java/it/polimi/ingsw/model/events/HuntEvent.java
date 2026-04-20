@@ -27,8 +27,17 @@ import java.util.List;
 
 public class HuntEvent extends EventCard {
 
-    public HuntEvent(int id,int era) {
-        super(id,era);
+    public HuntEvent() {
+        super(0, 0,false); // jackson default constructor
+    }
+/*
+    @Override
+    public void setEra(int era) {
+        super.setEra(era);
+    }*/
+
+    public HuntEvent(int id, int era,boolean finalEvent) {
+        super(id,era,false);
     }
 
     @Override

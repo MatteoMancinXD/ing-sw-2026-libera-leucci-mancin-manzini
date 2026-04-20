@@ -26,8 +26,12 @@ import java.util.List;
 
 public class RitualEvent extends EventCard{
 
-    public RitualEvent(int id,int era){
-        super(id,era);
+    public RitualEvent(){
+        super(0,0,false);
+    }
+
+    public RitualEvent(int id,int era,boolean finalEvent){
+        super(id,era,finalEvent);
     }
 
     @Override
