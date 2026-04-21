@@ -44,9 +44,10 @@ public class Game {
         this.board = new Board(numPlayers);     //La board viene inizializzata in base al numero di players
 
         List<TribeCard> AllCards = loadCardsFromJson();
+        List<BuildingCard> allBuildings = loadBuildingsFromJson();
 
         this.deck = new TribeDeck(AllCards, numPlayers);
-        this.buildingDeck = new BuildingDeck();
+        this.buildingDeck = new BuildingDeck(allBuildings, numPlayers);
         //board.setTribeDeck(this.deck);
     }
 
@@ -63,6 +64,32 @@ public class Game {
     public int getEra() {
         return era;
     }
+
+    private List<BuildingCard> loadBuildingsFromJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<BuildingCard> allBuildingsInGame = new ArrayList<>();
+        try {
+            InputStream is = getClass().getResourceAsStream("/resources/json/buildingsInfo.json");
+            TypeReference<Map<String, List<BuildingCard>>> typeRef = new TypeReference<Map<String, List<BuildingCard>>>() {};
+            Map<String, List<BuildingCard>> data = mapper.readValue(is, typeRef);
+
+            for (Map.Entry<String, List<BuildingCard>> entry : data.entrySet()) {
+                String eraString = entry.getKey(); //Prende chiavi del JSON (era1, era2, era3)
+                int eraNumber = Integer.parseInt(eraString.substring(3));
+                for(BuildingCard card : entry.getValue()) {
+                    card.setEra(eraNumber); //l'era si imposta "manualmente" perchè NON è un parametro nel JSON ma chiavi
+                    allBuildingsInGame.add(card);
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return allBuildingsInGame;
+    }
+
+
 
     private List<TribeCard> loadCardsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
