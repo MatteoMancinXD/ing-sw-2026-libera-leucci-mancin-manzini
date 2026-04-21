@@ -16,20 +16,19 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.stream.Collectors;
 
-public class BuilderCardTest {
 
-
+public class HarvesterCardTest {
     private List<TribeCard> allCards;
-    private List<BuilderCard> builderCards;
+    private List<HarvesterCard> harvesterCards;
 
     @BeforeEach
     void setUp() {
         allCards = loadCardsFromJson();
 
         //just artists
-        builderCards = allCards.stream()
-                .filter(c -> c instanceof BuilderCard)
-                .map(c -> (BuilderCard) c)
+        harvesterCards = allCards.stream()
+                .filter(c -> c instanceof HarvesterCard)
+                .map(c -> (HarvesterCard) c)
                 .collect(Collectors.toList());
     }
 
@@ -56,32 +55,18 @@ public class BuilderCardTest {
 
     @Test
     public void testConstructor(){
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
-        BuilderCard builderCard2 = new BuilderCard();
+        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2,Character.HARVESTER);
+        HarvesterCard harvesterCard2 = new HarvesterCard();
 
-        assertFalse(builderCards.isEmpty());
+        assertFalse(harvesterCards.isEmpty());
     }
 
-    @Test void testMethods(){
-        Player player = new Player("giacomo");
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
+    @Test
+    public void testMethods(){
+        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2,Character.HARVESTER);
+        Player player1 = new Player("giacomo");
 
-        builderCard1.setDiscount(4);
-        assertEquals(4,builderCard1.getDiscount());
-
-        builderCard1.setPps(4);
-        assertEquals(4,builderCard1.getPps());
-
-        //assignTo(player)
-        builderCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.BUILDER).contains(builderCard1));
-
+        harvesterCard1.assignTo(player1);
+        assertTrue(player1.getCharacterDeck(Character.HARVESTER).contains(harvesterCard1));
     }
-
-
-
-
-
-
-
 }
