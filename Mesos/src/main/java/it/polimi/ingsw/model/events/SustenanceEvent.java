@@ -38,7 +38,9 @@ public class SustenanceEvent extends EventCard{
         int foodPoints;
         int currentHunger;
         int foodFromBuildings = 0; 
-        int numCharacterCards = player.getCharacterDeck(Character.ARTIST).size() + player.getCharacterDeck(Character.HUNTER).size() + player.getCharacterDeck(Character.INVENTOR).size() + player.getCharacterDeck(Character.SHAMAN).size() + player.getCharacterDeck(Character.HARVESTER).size() + player.getCharacterDeck(Character.BUILDER).size();
+        int numCharacterCards = player.getArtists().size() + player.getHunters().size() +
+                player.getInventors().size() + player.getShamans().size() +
+                player.getHarvesters().size() + player.getBuilders().size();
 
         //check if there are buildings with Sustenance bonuses (see SustenanceBuilding class)
         for(BuildingCard card : player.getBuildings()){
@@ -46,12 +48,11 @@ public class SustenanceEvent extends EventCard{
 
         }
 
-        currentHunger = numCharacterCards - (player.getCharacterDeck(Character.HARVESTER).size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
+        currentHunger = numCharacterCards - (player.getHarvesters().size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
         foodPoints = player.getFood() - currentHunger;
 
         if(foodPoints>=0){
             player.setFood(foodPoints);
-
         }else{
             //not having enough food -> food is put to 0
             //and implies prestige loss depending on the SustenanceCard's era
