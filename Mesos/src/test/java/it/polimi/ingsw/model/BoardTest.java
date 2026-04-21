@@ -96,7 +96,7 @@ public class BoardTest {
 
     @Test
     void testSetupRows() {
-        assertEquals(7, board.getUpperRow().size(), "3 player -> 7 cards in upper row");
+        assertEquals(9, board.getUpperRow().size(), "3 player -> 7 cards in upper row + 2 buildings");
         assertEquals(4, board.getLowerRow().size(), "3 player -> 4 cards in lower row");
     }
 
