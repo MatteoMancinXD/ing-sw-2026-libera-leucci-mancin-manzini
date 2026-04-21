@@ -11,6 +11,9 @@ public class ExtraPickBuilding extends BuildingCard {
         this.extraPickAvailable = false;
     }
 
+    public ExtraPickBuilding() {}
+
+    public void setExtraPickAvailable(boolean extraPickAvailable) {this.extraPickAvailable = extraPickAvailable;}
 
     @Override
     public void onRoundEnd(Player player) {

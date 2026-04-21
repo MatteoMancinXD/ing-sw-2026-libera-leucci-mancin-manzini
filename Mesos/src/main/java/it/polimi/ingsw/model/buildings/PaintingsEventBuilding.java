@@ -7,6 +7,7 @@ public class PaintingsEventBuilding extends BuildingCard {
         super(id,era,foodCost,prestigeGain);
     }
 
+    public PaintingsEventBuilding() {}
 
     @Override
     public int getPaintingsEventFoodBonus(int artists){return artists;} //it gets 1 food per artist in PaintingsEvent

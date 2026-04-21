@@ -7,6 +7,7 @@ public class HuntEventBuilding extends BuildingCard {
         super(id,era,foodCost,prestigeGain); // era 2, foodCost 7, prestigeGain 2
     }
 
+    public HuntEventBuilding() {}
 
     //During HuntEvent gives an extra +1 prestige +1 food for each Hunter
     @Override

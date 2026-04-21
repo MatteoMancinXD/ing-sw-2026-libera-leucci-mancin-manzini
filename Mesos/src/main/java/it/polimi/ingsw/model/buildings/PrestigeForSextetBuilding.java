@@ -8,6 +8,7 @@ public class PrestigeForSextetBuilding extends BuildingCard {
     public PrestigeForSextetBuilding(int id, int era, int foodCost, int prestigeGain) {
         super(id,era,foodCost,prestigeGain);
     }
+    public PrestigeForSextetBuilding() {}
 
     @Override
     public void onGameEnd(Player player) {

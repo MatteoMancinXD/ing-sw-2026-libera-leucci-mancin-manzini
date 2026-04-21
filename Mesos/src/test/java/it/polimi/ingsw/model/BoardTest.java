@@ -18,14 +18,19 @@ public class BoardTest {
     private Board board;
     private List<TribeCard> allCard;
     private TribeDeck deck;
+    private ArrayList<BuildingCard> allBuildings;
+    private BuildingDeck bDeck;
 
     @BeforeEach
     public void setup() {
+        int numPlayers = 3;
         allCard = new ArrayList<>();
-        board = new Board(3);
+        board = new Board(numPlayers);
         allCard = loadCardsFromJson();
-        deck = new TribeDeck(allCard, 3);
-        board.fill(3, 1, deck , new BuildingDeck());
+        allBuildings = loadBuildingsFromJson();
+        deck = new TribeDeck(allCard, numPlayers);
+        bDeck = new BuildingDeck(allBuildings, numPlayers);
+        board.fill(numPlayers, 1, deck , bDeck);
     }
 
     private List<TribeCard> loadCardsFromJson() {
@@ -50,6 +55,30 @@ public class BoardTest {
             return new ArrayList<>();
         }
         return allCardsInGame;
+    }
+
+    private ArrayList<BuildingCard> loadBuildingsFromJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<BuildingCard> allBuildingsInGame = new ArrayList<>();
+        try {
+            InputStream is = getClass().getResourceAsStream("/json/buildingsInfo.json");
+            TypeReference<Map<String, List<BuildingCard>>> typeRef = new TypeReference<Map<String, List<BuildingCard>>>() {};
+            Map<String, List<BuildingCard>> data = mapper.readValue(is, typeRef);
+
+            for (Map.Entry<String, List<BuildingCard>> entry : data.entrySet()) {
+                String eraString = entry.getKey(); //Prende chiavi del JSON (era1, era2, era3)
+                int eraNumber = Integer.parseInt(eraString.substring(3));
+                for(BuildingCard card : entry.getValue()) {
+                    card.setEra(eraNumber); //l'era si imposta "manualmente" perchè NON è un parametro nel JSON ma chiavi
+                    allBuildingsInGame.add(card);
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return allBuildingsInGame;
     }
 
     @Test      //per 3 player
