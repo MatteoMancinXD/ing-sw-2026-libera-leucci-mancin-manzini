@@ -17,20 +17,20 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.stream.Collectors;
 
+public class BuilderCardTest {
 
-public class ArtistCardTest {
 
     private List<TribeCard> allCards;
-    private List<ArtistCard> artistCards;
+    private List<BuilderCard> builderCards;
 
     @BeforeEach
     void setUp() {
         allCards = loadCardsFromJson();
 
         //just artists
-        artistCards = allCards.stream()
-                .filter(c -> c instanceof ArtistCard)
-                .map(c -> (ArtistCard) c)
+        builderCards = allCards.stream()
+                .filter(c -> c instanceof BuilderCard)
+                .map(c -> (BuilderCard) c)
                 .collect(Collectors.toList());
     }
 
@@ -55,68 +55,28 @@ public class ArtistCardTest {
         return cards;
     }
 
-
-
     @Test
-    public void testConstructor() {
+    public void testConstructor(){
+        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
 
-        int id, numPl, era;
-        Player player;
-
-
-        ArtistCard artistCard2 = new ArtistCard();   //void constructor
-        ArtistCard artistCard3 = new ArtistCard(0, 0, 0, Character.ARTIST); //no json
-
-
-        //with json
-        era = 1;
-        numPl = 2;
-
-        assertFalse(artistCards.isEmpty());
-
-        /*for (ArtistCard card : artistCards) {
-
-            for (id = 1; id <= 6; id++) {
-                card = new ArtistCard(id, era, numPl, Character.ARTIST);
-                if (id >= 5) numPl++;
-            }
-        }*/ //useless
+        assertFalse(builderCards.isEmpty());
     }
-    /*
-    @Test
-    public void testAssignTo() {
-        int id, numPl, era;
-        Player pl; //va inizializzato player
 
-        ArtistCard artistCard4 = new  ArtistCard(1,1,2,Character.ARTIST);
+    @Test void testMethods(){
+        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
 
-        artistCard4.assignTo(pl);
+        builderCard1.setDiscount(4);
+        assertEquals(4,builderCard1.getDiscount());
 
+        builderCard1.setPps(4);
+        assertEquals(4,builderCard1.getPps());
 
-    }*/
-
-
+        //assignTo(player)
+    }
 
 
 
 
-
-
-
-/*
-        assertThrows(IllegalArgumentException.class, ()->
-        {
-            for(ArtistCard card : artistCards) {  //with json
-                    card = new ArtistCard(0,era,2,Character.ARTIST);
-
-            }
-        }
-        );*/
-
-        //new ArtistCard(0,0,0,Character.ARTIST);
-        /*assertThrows(IllegalArgumentException.class, () -> {
-            new ArtistCard(0, 1, 2, Character.ARTIST);
-        });*/
 
 
 
