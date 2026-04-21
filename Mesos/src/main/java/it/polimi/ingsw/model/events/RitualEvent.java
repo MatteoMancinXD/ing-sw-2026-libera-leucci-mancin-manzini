@@ -77,11 +77,9 @@ public class RitualEvent extends EventCard{
                 .filter(p -> player.getTotStars() <= p.getTotStars())
                 .toList().size();
 
-
         //check if the buildings are present or not
         hasDoublePrestigeBuilding = player.getBuildings().stream().anyMatch(BuildingCard::getRitualEventDoublePrestigeBonus);
         hasNoMalusBuilding = player.getBuildings().stream().anyMatch(BuildingCard::getRitualEventNoPrestigeMalus);
-
 
         if(betterThanOrEqual==otherPlayers){
             //player who invoked the solve event method has more stars than all the others (or equal to someone else with whom has more stars than all the others)
@@ -92,24 +90,9 @@ public class RitualEvent extends EventCard{
             }
         }
 
-
-
         if( worseThanOrEqual==otherPlayers && !hasNoMalusBuilding){
             //player who invoked the solve event method has less stars than all the others (or equal to someone else with whom has less stars than all the others)
-            switch(era){
-                case 1:
-                    player.editPrestige(-3);
-                    break;
-                case 2:
-                    player.editPrestige(-5);
-                    break;
-                case 3:
-                    player.editPrestige(-7);
-                    break;
-            }
-    }
-
-
-
+            player.editPrestige(-(3 + (era-1) * 2));
+        }
     }
 }
