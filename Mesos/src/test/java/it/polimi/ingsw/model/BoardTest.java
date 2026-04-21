@@ -108,6 +108,24 @@ public class BoardTest {
         assertEquals(6, board5.getLowerRow().size(), "5 player -> 6 cards in lower row");
     }
 
+    @Test
+    void testEndRoundMechanics() {
+        int initialUpperSize = board.getUpperRow().size();
 
+        board.clearLowerRow();
+
+        // ASSERT 1: La riga inferiore non deve avere carte normali (solo gli eventuali edifici scesi in ere precedenti, ma qui siamo a inizio gioco)
+        for (Card c : board.getLowerRow()) {
+            assertTrue(c instanceof BuildingCard, "Dopo clearLowerRow, sotto devono rimanere SOLO edifici");
+        }
+        board.shiftRow();
+
+        // ASSERT 2: La riga superiore deve contenere SOLO edifici o eventi speciali (se la tua logica li tiene su), le altre sono scese
+        for (Card c : board.getUpperRow()) {
+            assertTrue(c instanceof BuildingCard, "Dopo lo shift, sopra rimangono solo gli edifici");
+        }
+        // La riga inferiore ora dovrebbe contenere le carte normali che prima erano sopra
+        assertFalse(board.getLowerRow().isEmpty(), "La riga inferiore deve essersi riempita con le carte scese");
+    }
 
 }
