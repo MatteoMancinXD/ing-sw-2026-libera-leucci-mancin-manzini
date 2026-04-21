@@ -14,8 +14,8 @@ public class Board {
     /**
      * The main game deck containing the 96 Tribe cards. The board uses this deck to draw new cards and fill the offer rows during the game.
      */
-    private TribeDeck deck;
-    private ArrayList<Card> buildingPool;      // Aggiunta questa lista per conservare i 21 edifici in attesa di essere messi in gioco. L'UML prevede solo un Deck da 96 carte tribu
+    //private TribeDeck deck;
+    private ArrayList<BuildingCard> buildingPool;      // Aggiunta questa lista per conservare i 21 edifici in attesa di essere messi in gioco. L'UML prevede solo un Deck da 96 carte tribu
     private boolean initialized; // Serve perché fill si comporta in modo diverso al round 0 (riempie entrambe le row) rispetto alle successive (solo upperrow).
 
     /**
@@ -27,7 +27,7 @@ public class Board {
         this.lowerRow = new ArrayList<>();
         this.track = new ArrayList<>();
         this.order = new OrderTile(numPlayers);
-        this.deck = new TribeDeck();
+        //this.deck = new TribeDeck();
         this.buildingPool = new ArrayList<>();
 
         this.initialized = false;
@@ -55,7 +55,7 @@ public class Board {
      * @param currentEra the current era of the game
      * @return true if a card from a new era was drawn, false otherwise
      */
-    public boolean fill(int numPlayers, int currentEra) {
+    public boolean fill(int numPlayers, int currentEra, TribeDeck deck, BuildingDeck bDeck) {
         boolean eraChanged = false;
         if (!initialized) {
             int i = 0;
@@ -73,7 +73,7 @@ public class Board {
                     i++;
                 }
             }
-            fillBuildings(1);  // Gli edifici di era I vengono prelevati dalla riserva e messi nella upperrow
+            fillBuildings(1, numPlayers, bDeck);  // Gli edifici di era I vengono prelevati dalla riserva e messi nella upperrow
             initialized = true;
         }
 
@@ -167,16 +167,27 @@ public class Board {
         lowerRow.addAll(buildings);
     }
     /**
-     * Extracts building cards of the current era from the pool and adds them to upperrow.
+     * Extracts building cards of the current era from the buildingDeck and put them into the upperRow.
      * @param currentEra the current game era
+     * @param numPlayers number of players in the Game
+     * @param buildDeck building deck containing every building in the game
      */
-    public void fillBuildings(int currentEra)  //non presente in uml usato per gestire l'ingresso delle carte Edificio ad ogni cambio di Era.
-     { ArrayList<Card> toKeep = new ArrayList<>();
-        for (Card c : buildingPool) {
-            if (c.getEra() == currentEra) {upperRow.add(c);}
-            else {toKeep.add(c);}  // Lo teniamo nella riserva per le prossime ere
+    public void fillBuildings(int currentEra, int numPlayers, BuildingDeck buildDeck)
+     {
+         //mazzo di building arriva già shufflato
+        ArrayList<BuildingCard> bEraDeck = new ArrayList<>();
+        int numBuilds = buildDeck.getBuildingCardsForPlayers().get(numPlayers).get(currentEra-1);   //Prende il numero di building da mettere nella buildingPool
+        int cont = 0;
+
+        for(BuildingCard b : buildDeck.getBuildingsCards()) {
+            if (cont == numBuilds) {break;}
+            if(b.getEra() == currentEra) {
+                bEraDeck.add(b);
+                cont++;
+            }
         }
-        this.buildingPool = toKeep; } // rimuovo gli edifici piazzati dalla riserva
+        this.upperRow.addAll(bEraDeck);
+     }
     /**
      * Resets all track tiles, freeing them from any placed totems.
      */
@@ -193,17 +204,9 @@ public class Board {
      *
      * @param buildings the list of valid building cards to be added to the pool
      */
-    public void setBuildingPool(ArrayList<Card> buildings)
+    public void setBuildingPool(ArrayList<BuildingCard> buildings)
     {
         this.buildingPool = buildings;
-    }
-
-    /**
-     * Sets the tribe deck to be used by the board to draw cards.
-     * @param deck the populated TribeDeck created by Game
-     */
-    public void setTribeDeck(TribeDeck deck) {
-        this.deck = deck;
     }
 
     public Card removeUpper(int pos) {
