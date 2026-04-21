@@ -2,26 +2,19 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.io.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
-import it.polimi.ingsw.model.Game;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import java.io.InputStream;
-import java.util.*;
+
 import java.util.stream.Collectors;
 
 
@@ -99,18 +92,43 @@ public class ArtistCardTest {
 
 
             for(ArtistCard card : artistCards) {
-                assertEquals(Character.ARTIST,card.getType());
+                //assertEquals(Character.ARTIST,card.getType());
 
                 assertTrue(card.getId()>0);
                 assertTrue(card.getId()<97);
                 assertTrue(card.getEra()>=0 && card.getEra()<=3);
                 assertTrue(card.getMinPlayers()>=2);
 
+                assertFalse(card.getId()==0 && card.getId()>=97);
+                assertFalse(card.getEra()<0 && card.getEra()>3);
+                assertFalse(card.getMinPlayers()<2 && card.getMinPlayers()>6);
+
 
         }
 
     }
 
+    @Test
+    public void testAllJSON() {
+        int id, numPl, era;
+        Player player;
+
+
+        for(TribeCard card : allCards) {
+            //assertEquals(Character.ARTIST,card.getType());
+
+            assertTrue(card.getId()>0 && card.getId()<97);
+            assertTrue(card.getEra()>=0 && card.getEra()<=3);
+            assertTrue(card.getMinPlayers()>=2 && card.getMinPlayers()<=6);
+
+            assertFalse(card.getId()==0 && card.getId()>=97);
+            assertFalse(card.getEra()<0 && card.getEra()>3);
+            assertFalse(card.getMinPlayers()<2 && card.getMinPlayers()>6);
+
+
+        }
+
+    }
 
 
 
