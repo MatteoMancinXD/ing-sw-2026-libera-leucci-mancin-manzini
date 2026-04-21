@@ -339,25 +339,25 @@
       "type": "SHAMAN",
       "id": 58,
       "minPlayers": 2,
-      "stars": "2"
+      "stars": 2
     },
     {
       "type": "SHAMAN",
       "id": 59,
       "minPlayers": 2,
-      "stars": "2"
+      "stars": 2
     },
     {
       "type": "SHAMAN",
       "id": 60,
       "minPlayers": 2,
-      "stars": "1"
+      "stars": 1
     },
     {
       "type": "SHAMAN",
       "id": 61,
       "minPlayers": 2,
-      "stars": "2"
+      "stars": 2
     },
     {
       "type": "HUNT",

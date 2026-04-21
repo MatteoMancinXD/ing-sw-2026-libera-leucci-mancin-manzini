@@ -73,4 +73,10 @@ public class BuildingDeck {
     public BuildingCard draw() {
         return cards.removeFirst();
     }
+
+    public ArrayList<BuildingCard> getBuildingsCards() {
+        return cards;
+    }
+
+    public Map<Integer,List<Integer>> getBuildingCardsForPlayers() {return  buildingCardsForPlayers;}
 }
