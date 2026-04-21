@@ -26,6 +26,11 @@ public class InventorSetForFoodBuilding extends BuildingCard {
         }
     }
 
+    public InventorSetForFoodBuilding() {}
+
+    public void setCoupleCompleted(boolean coupleCompleted) {this.coupleCompleted = coupleCompleted;}
+    public void setInv(Invention inv) {this.inv = inv;}
+
     @Override
     public void onCharacterCardPurchase(Player player, CharacterCard card) {
         if(card.getType() != Character.INVENTOR) {

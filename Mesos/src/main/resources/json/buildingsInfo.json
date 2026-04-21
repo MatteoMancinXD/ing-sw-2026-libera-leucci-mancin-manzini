@@ -1,39 +1,39 @@
 {
   "era1": [
     {
-      "type": "CardSetForFood",
+      "type": "CardSetForFoodBuilding",
       "id": 97,
       "foodCost": 4,
       "prestigeGain": 3
     },
     {
-      "type": "Sustenance",
+      "type": "SustenanceBuilding",
       "id": 98,
       "foodCost": 4,
       "prestigeGain": 4,
-      "character": "Harvester"
+      "character": "HARVESTER"
     },
     {
-      "type": "Sustenance",
+      "type": "SustenanceBuilding",
       "id": 99,
       "foodCost": 5,
       "prestigeGain": 3,
-      "character": "Artist"
+      "character": "ARTIST"
     },
     {
-      "type": "NoRitualMalus",
+      "type": "RitualEventNoMalusBuilding",
       "id": 100,
       "foodCost": 5,
       "prestigeGain": 2
     },
     {
-      "type": "BonusFoodEndTurn",
+      "type": "OrderTileBuilding",
       "id": 101,
       "foodCost": 3,
       "prestigeGain": 3
     },
     {
-      "type": "InventorSetForFood",
+      "type": "InventorSetForFoodBuilding",
       "id": 102,
       "foodCost": 3,
       "prestigeGain": 4,
@@ -42,27 +42,27 @@
   ],
   "era2": [
     {
-      "type": "DoubleRitualBonus",
+      "type": "RitualEventDoublePrestigeBuilding",
       "id": 103,
       "foodCost": 7,
       "prestigeGain": 0
     },
     {
-      "type": "RitualFlatStars",
+      "type": "RitualEventBonusStarsBuilding",
       "id": 104,
       "foodCost": 6,
       "prestigeGain": 4,
       "starsBonus": 3
     },
     {
-      "type": "Sustenance",
+      "type": "SustenanceBuilding",
       "id": 105,
       "foodCost": 7,
       "prestigeGain": 4,
-      "character": "Inventor"
+      "character": "INVENTOR"
     },
     {
-      "type": "HuntEvent",
+      "type": "HuntEventBuilding",
       "id": 106,
       "foodCost": 7,
       "prestigeGain": 2,
@@ -70,19 +70,19 @@
       "prestigePerHunter": 1
     },
     {
-      "type": "DoubleBuilderPrestige",
+      "type": "PrestigeDoublingBuilderValueBuilding",
       "id": 107,
       "foodCost": 6,
       "prestigeGain": 4
     },
     {
-      "type": "PaintingsEvent",
+      "type": "PaintingsEventBuilding",
       "id": 108,
       "foodCost": 5,
       "prestigeGain": 6
     },
     {
-      "type": "CardSetForPrestige",
+      "type": "CardSetForFoodBuilding",
       "id": 109,
       "foodCost": 5,
       "prestigeGain": 6
@@ -90,61 +90,61 @@
   ],
   "era3": [
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 110,
       "foodCost": 8,
       "prestigeGain": 8,
       "bonusPrestige": 3,
-      "character": "Hunter"
+      "character": "HUNTER"
     },
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 111,
       "foodCost": 7,
       "prestigeGain": 6,
       "bonusPrestige": 4,
-      "character": "Harvester"
+      "character": "HARVESTER"
     },
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 112,
       "foodCost": 7,
       "prestigeGain": 4,
       "bonusPrestige": 4,
-      "character": "Shaman"
+      "character": "SHAMAN"
     },
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 113,
       "foodCost": 6,
       "prestigeGain": 3,
       "bonusPrestige": 4,
-      "character": "Builder"
+      "character": "BUILDER"
     },
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 114,
       "foodCost": 7,
       "prestigeGain": 4,
       "bonusPrestige": 4,
-      "character": "Artist"
+      "character": "ARTIST"
     },
     {
-      "type": "BonusPrestigePerCharacter",
+      "type": "PrestigeForCharacterBuilding",
       "id": 115,
       "foodCost": 6,
       "prestigeGain": 6,
       "bonusPrestige": 2,
-      "character": "Inventor"
+      "character": "INVENTOR"
     },
     {
-      "type": "BonusCardTopRow",
+      "type": "ExtraPickBuilding",
       "id": 116,
       "foodCost": 9,
       "prestigeGain": 3
     },
     {
-      "type": "FlatPrestigeEndGame",
+      "type": "PrestigeGivingBuilding",
       "id": 117,
       "foodCost": 10,
       "prestigeGain": 25

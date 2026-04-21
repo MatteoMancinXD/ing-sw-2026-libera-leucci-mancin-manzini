@@ -29,6 +29,10 @@ public class CardSetForFoodBuilding extends BuildingCard {
         }
     }
 
+    public CardSetForFoodBuilding() {}
+
+    public void setSetcompleted(boolean setCompleted) {this.setCompleted = setCompleted;}
+
     @Override
     public void onCharacterCardPurchase(Player player, CharacterCard card) {
         newCharacters.put(card.getType(), newCharacters.get(card.getType()) + 1);

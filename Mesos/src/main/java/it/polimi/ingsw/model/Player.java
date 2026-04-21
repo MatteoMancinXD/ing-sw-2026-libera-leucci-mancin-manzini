@@ -108,4 +108,8 @@ public class Player {
         this.prestige = this.prestige + amount;
     }
 
+    public void editStars(int amount) {
+        this.totStars = this.totStars + amount;
+    }
+
 }
