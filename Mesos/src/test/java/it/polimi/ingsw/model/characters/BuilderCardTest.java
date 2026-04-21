@@ -61,6 +61,16 @@ public class BuilderCardTest {
 
         assertFalse(builderCards.isEmpty());
     }
+    @Test
+    public void testJSON(){
+        for(BuilderCard card: builderCards){
+            assertTrue(card.getDiscount()<0);
+            assertTrue(card.getPps()>=0);
+
+            assertFalse(card.getDiscount()>=0);
+            assertFalse(card.getPps()<0);
+        }
+    }
 
     @Test void testMethods(){
         Player player = new Player("giacomo");

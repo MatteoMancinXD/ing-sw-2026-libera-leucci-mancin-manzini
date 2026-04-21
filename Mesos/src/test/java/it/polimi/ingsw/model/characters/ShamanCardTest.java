@@ -76,10 +76,16 @@ public class ShamanCardTest {
         shamanCard1.assignTo(player);
         assertTrue(player.getCharacterDeck(Character.SHAMAN).contains(shamanCard1));
 
-
-
     }
 
+    @Test
+    public void testJSON(){
+        for(ShamanCard card: shamanCards){
+            assertTrue(card.getStars()>=0 && card.getStars()<=3);
+
+            assertFalse(card.getStars()<0 && card.getStars()>3);
+        }
+    }
 
 
 

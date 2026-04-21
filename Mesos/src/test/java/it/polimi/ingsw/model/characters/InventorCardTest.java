@@ -77,6 +77,11 @@ public class InventorCardTest {
 
     }
 
-
+    @Test
+    public void testJSON(){
+        for(InventorCard card: inventorCards){
+            assertNotNull(card.getInvention());
+        }
+    }
 
 }
