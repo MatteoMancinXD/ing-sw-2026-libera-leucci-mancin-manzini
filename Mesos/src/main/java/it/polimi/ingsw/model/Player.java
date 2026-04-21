@@ -17,8 +17,14 @@ public class Player {
     private String nickname;
     private int food;
     private int prestige;
-    //private ArrayList<Card> cards;
-    private Map<Character, List<CharacterCard>> characters;
+
+    private List<HunterCard> hunters;
+    private List<BuilderCard> builders;
+    private List<HarvesterCard> harvesters;
+    private List<ArtistCard> artists;
+    private List<InventorCard> inventors;
+    private List<ShamanCard> shamans;
+
     private ArrayList<BuildingCard> buildings;
 
     private int totStars;
@@ -27,11 +33,13 @@ public class Player {
         this.nickname = nickname;
         this.food = 0;
         this.prestige = 0;
-        this.characters = new HashMap<>();
 
-        for (Character character : Character.values()) {
-            this.characters.put(character, new ArrayList<>());
-        }
+        this.hunters = new ArrayList<>();
+        this.builders = new ArrayList<>();
+        this.harvesters = new ArrayList<>();
+        this.artists = new ArrayList<>();
+        this.inventors = new ArrayList<>();
+        this.shamans = new ArrayList<>();
 
         this.buildings = new ArrayList<>();
 
@@ -71,26 +79,22 @@ public class Player {
         c.assignTo(this);
     }
 
-    public void addArtist(ArtistCard c) { characters.get(Character.ARTIST).add(c); }
-    public void addBuilder(BuilderCard c) { characters.get(Character.BUILDER).add(c); }
-    public void addHarvester(HarvesterCard c) { characters.get(Character.HARVESTER).add(c); }
-    public void addHunter(HunterCard c) { characters.get(Character.HUNTER).add(c); }
-    public void addInventor(InventorCard c) { characters.get(Character.INVENTOR).add(c); }
-    public void addShaman(ShamanCard c) { characters.get(Character.SHAMAN).add(c); }
+    public void addArtist(ArtistCard c) { artists.add(c); }
+    public void addBuilder(BuilderCard c) { builders.add(c); }
+    public void addHarvester(HarvesterCard c) { harvesters.add(c); }
+    public void addHunter(HunterCard c) { hunters.add(c); }
+    public void addInventor(InventorCard c) { inventors.add(c); }
+    public void addShaman(ShamanCard c) { shamans.add(c); }
     public void addBuilding(BuildingCard c) { buildings.add(c); }
 
-    @SuppressWarnings("unchecked")
-    public <T extends CharacterCard> List<T> getCharacterDeck (Character c) {
-        //return (List<T>) characters.getOrDefault(c, new ArrayList<>());
-        return new ArrayList<T>((List<T>) characters.get(c));
-    }
+    public List<HunterCard> getHunters() { return new ArrayList<>(hunters); }
+    public List<BuilderCard> getBuilders() { return new ArrayList<>(builders); }
+    public List<HarvesterCard> getHarvesters() { return new ArrayList<>(harvesters); }
+    public List<ArtistCard> getArtists() { return new ArrayList<>(artists); }
+    public List<InventorCard> getInventors() { return new ArrayList<>(inventors); }
+    public List<ShamanCard> getShamans() { return new ArrayList<>(shamans); }
 
-    public List<BuildingCard> getBuildings(){
-        return new ArrayList<>(buildings);
-    }
-
-    
-    //prova
+    public List<BuildingCard> getBuildings(){ return new ArrayList<>(buildings); }
 
     public void buyBuilding(BuildingCard building){
         editFood(-building.getBuildingFoodCost());
