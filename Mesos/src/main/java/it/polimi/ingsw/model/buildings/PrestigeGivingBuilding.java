@@ -7,4 +7,6 @@ public class PrestigeGivingBuilding extends BuildingCard {
             super(id,era,foodCost,prestigeGain);
         }
         //no override on any methods, this building just gives 25 prestige points
+    public PrestigeGivingBuilding () {}
+
 }

@@ -26,7 +26,7 @@ public class SustenanceBuilding extends BuildingCard{
 
 
     //constructor
-    SustenanceBuilding(int id, int era, int  foodCost, int prestigeGain, Character character) {
+    public SustenanceBuilding(int id, int era, int  foodCost, int prestigeGain, Character character) {
         super(id,era,foodCost,prestigeGain);
 
 
@@ -41,6 +41,8 @@ public class SustenanceBuilding extends BuildingCard{
 
         this.character=character;
     }
+
+    public SustenanceBuilding (){}
 
     //operative methods
     public void setCharacter(Character character) {this.character=character;}

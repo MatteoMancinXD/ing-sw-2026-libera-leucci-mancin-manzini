@@ -12,7 +12,7 @@ public class BuildingDeck {
     );
     private ArrayList<BuildingCard> cards;
 
-    public BuildingDeck(List<BuildingCard> cards, int numPlayers) {
+    public BuildingDeck(ArrayList<BuildingCard> cards, int numPlayers) {
         this.cards = new ArrayList<>();
 
         ArrayList<ArrayList<BuildingCard>> eras = new ArrayList<>();

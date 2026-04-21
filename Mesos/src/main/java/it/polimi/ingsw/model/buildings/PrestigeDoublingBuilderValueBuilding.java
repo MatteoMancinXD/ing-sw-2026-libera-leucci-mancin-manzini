@@ -11,6 +11,8 @@ public class PrestigeDoublingBuilderValueBuilding extends BuildingCard {
         super(id,era,foodCost,prestigeGain);
     }
 
+    public PrestigeDoublingBuilderValueBuilding() {}
+
     @Override
     public void onGameEnd(Player player){
         int builderPps;

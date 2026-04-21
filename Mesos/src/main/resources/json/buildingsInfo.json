@@ -11,14 +11,14 @@
       "id": 98,
       "foodCost": 4,
       "prestigeGain": 4,
-      "character": "Harvester"
+      "character": "HARVESTER"
     },
     {
       "type": "SustenanceBuilding",
       "id": 99,
       "foodCost": 5,
       "prestigeGain": 3,
-      "character": "Artist"
+      "character": "ARTIST"
     },
     {
       "type": "RitualEventNoMalusBuilding",
@@ -59,7 +59,7 @@
       "id": 105,
       "foodCost": 7,
       "prestigeGain": 4,
-      "character": "Inventor"
+      "character": "INVENTOR"
     },
     {
       "type": "HuntEventBuilding",
@@ -95,7 +95,7 @@
       "foodCost": 8,
       "prestigeGain": 8,
       "bonusPrestige": 3,
-      "character": "Hunter"
+      "character": "HUNTER"
     },
     {
       "type": "PrestigeForCharacterBuilding",
@@ -103,7 +103,7 @@
       "foodCost": 7,
       "prestigeGain": 6,
       "bonusPrestige": 4,
-      "character": "Harvester"
+      "character": "HARVESTER"
     },
     {
       "type": "PrestigeForCharacterBuilding",
@@ -111,7 +111,7 @@
       "foodCost": 7,
       "prestigeGain": 4,
       "bonusPrestige": 4,
-      "character": "Shaman"
+      "character": "SHAMAN"
     },
     {
       "type": "PrestigeForCharacterBuilding",
@@ -119,7 +119,7 @@
       "foodCost": 6,
       "prestigeGain": 3,
       "bonusPrestige": 4,
-      "character": "Builder"
+      "character": "BUILDER"
     },
     {
       "type": "PrestigeForCharacterBuilding",
@@ -127,7 +127,7 @@
       "foodCost": 7,
       "prestigeGain": 4,
       "bonusPrestige": 4,
-      "character": "Artist"
+      "character": "ARTIST"
     },
     {
       "type": "PrestigeForCharacterBuilding",
@@ -135,7 +135,7 @@
       "foodCost": 6,
       "prestigeGain": 6,
       "bonusPrestige": 2,
-      "character": "Inventor"
+      "character": "INVENTOR"
     },
     {
       "type": "ExtraPickBuilding",

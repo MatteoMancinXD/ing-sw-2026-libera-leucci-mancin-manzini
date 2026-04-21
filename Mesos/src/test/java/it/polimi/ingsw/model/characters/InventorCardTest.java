@@ -16,20 +16,20 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.stream.Collectors;
 
-public class BuilderCardTest {
+public class InventorCardTest {
 
 
     private List<TribeCard> allCards;
-    private List<BuilderCard> builderCards;
+    private List<InventorCard> inventorCards;
 
     @BeforeEach
     void setUp() {
         allCards = loadCardsFromJson();
 
         //just artists
-        builderCards = allCards.stream()
-                .filter(c -> c instanceof BuilderCard)
-                .map(c -> (BuilderCard) c)
+        inventorCards = allCards.stream()
+                .filter(c -> c instanceof InventorCard)
+                .map(c -> (InventorCard) c)
                 .collect(Collectors.toList());
     }
 
@@ -38,12 +38,13 @@ public class BuilderCardTest {
         List<TribeCard> cards = new ArrayList<>();
         try {
             InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json");
-            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<>() {};
+            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<>() {
+            };
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
             for (Map.Entry<String, List<TribeCard>> entry : data.entrySet()) {
                 int eraNumber = Integer.parseInt(entry.getKey().substring(3));
-                for(TribeCard card : entry.getValue()) {
+                for (TribeCard card : entry.getValue()) {
                     card.setEra(eraNumber);
                     cards.add(card);
                 }
@@ -55,32 +56,26 @@ public class BuilderCardTest {
     }
 
     @Test
-    public void testConstructor(){
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
-        BuilderCard builderCard2 = new BuilderCard();
+    void testConstructor(){
+        InventorCard inventorCard1= new InventorCard(0,0,2,Character.HUNTER,Invention.ROPE);
+        InventorCard inventorCard2 = new InventorCard();
 
-        assertFalse(builderCards.isEmpty());
+        assertFalse(inventorCards.isEmpty());
     }
 
-    @Test void testMethods(){
+    @Test
+    public void testMethods(){
         Player player = new Player("giacomo");
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
+        InventorCard inventorCard1= new InventorCard(0,0,2,Character.HUNTER,Invention.ROPE);
 
-        builderCard1.setDiscount(4);
-        assertEquals(4,builderCard1.getDiscount());
+        inventorCard1.setInvention(Invention.BREAD);
+        assertEquals(Invention.BREAD,inventorCard1.getInvention());
 
-        builderCard1.setPps(4);
-        assertEquals(4,builderCard1.getPps());
-
-        //assignTo(player)
-        builderCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.BUILDER).contains(builderCard1));
+        //assignTo
+        inventorCard1.assignTo(player);
+        assertTrue(player.getCharacterDeck(Character.INVENTOR).contains(inventorCard1));
 
     }
-
-
-
-
 
 
 

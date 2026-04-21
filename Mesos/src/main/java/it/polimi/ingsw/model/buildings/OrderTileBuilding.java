@@ -8,6 +8,9 @@ public class OrderTileBuilding extends BuildingCard {
         super(id, era, foodCost, prestigeGain); // era 1, foodCost 3, prestigeGain 3
     }
 
+    public OrderTileBuilding() {}
+
+
     public void onOrderTilePlacement(Player player, int position, OrderTile order) {
         if (order.getModifiers()[position] > 0) {
             player.editFood(1);
