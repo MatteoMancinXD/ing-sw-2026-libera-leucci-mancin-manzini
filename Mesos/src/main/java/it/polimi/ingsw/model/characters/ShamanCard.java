@@ -23,5 +23,6 @@ public class ShamanCard extends CharacterCard {
     @Override
     public void assignTo(Player player) {
         player.addShaman(this);
+        player.editStars(this.stars);
     }
 }

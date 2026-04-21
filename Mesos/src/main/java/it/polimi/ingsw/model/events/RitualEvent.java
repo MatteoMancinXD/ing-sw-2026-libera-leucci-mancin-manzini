@@ -43,27 +43,26 @@ public class RitualEvent extends EventCard{
         int betterThanOrEqual;
         int worseThanOrEqual;
 
-        int otherPlayers = allPlayers.size()-1; //everybody - the player(1)
-
         int era = this.getEra();
 
-    /*
-        //compare the player's stars with the other players' stars: if the player's is among the bests or among the worsts: then give bonus/malus
-        int i=0;
-        int j=0;
+        int otherPlayers = allPlayers.size()-1; //everybody - the player(1)
+        /*
+            //compare the player's stars with the other players' stars: if the player's is among the bests or among the worsts: then give bonus/malus
+            int i=0;
+            int j=0;
 
-        //if player has more/less equal stars compared to all the others
-        for(Player playerInGame : allPlayers){
-            if(!(playerInGame.equals(player))){
-                if(player.getTotStars() >= playerInGame.getTotStars()){
-                    i++;
+            //if player has more/less equal stars compared to all the others
+            for(Player playerInGame : allPlayers){
+                if(!(playerInGame.equals(player))){
+                    if(player.getTotStars() >= playerInGame.getTotStars()){
+                        i++;
+                    }
+                    if (player.getTotStars() <= playerInGame.getTotStars()) {
+                        j++;
+                    }
                 }
-                if (player.getTotStars() <= playerInGame.getTotStars()) {
-                    j++;
-                }
+
             }
-
-        }
         */
 
         //return the number of times the player's stars are better than or equal / worse than or equal, compared to the others
