@@ -47,7 +47,7 @@ public class Game {
 
         this.deck = new TribeDeck(AllCards, numPlayers);
         this.buildingDeck = new BuildingDeck();
-        board.setTribeDeck(this.deck);
+        //board.setTribeDeck(this.deck);
     }
 
 
@@ -124,7 +124,7 @@ public class Game {
      * and assigning starting food rations based on the turn order.
      */
     public void startGame() {
-        board.fill(this.numPlayers, this.era);       //Round 0 : .fill riempie entrambe le righe e i buildings
+        board.fill(this.numPlayers, this.era, this.deck, this.buildingDeck);       //Round 0 : .fill riempie entrambe le righe e i buildings
         Collections.shuffle(players);        //Shuffle dei player per avere un ordine casuale all'inizio
         for (int i = 0; i < this.players.size(); i++) {
             Player p = this.players.get(i);
@@ -230,7 +230,7 @@ public class Game {
 
         board.clearLowerRow();
         board.shiftRow();
-        if(board.fill(numPlayers, era)) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
+        if(board.fill(numPlayers, era, this.deck, this.buildingDeck)) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
             nextEra();
         }
 
@@ -258,7 +258,7 @@ public class Game {
     public void nextEra() {
         this.era++;
         board.shiftBuildings();
-        board.fillBuildings(era);
+        board.fillBuildings(era, numPlayers, buildingDeck);
     }
 
     /**
