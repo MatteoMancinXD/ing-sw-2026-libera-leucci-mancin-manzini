@@ -44,7 +44,7 @@ public class Game {
         this.board = new Board(numPlayers);     //La board viene inizializzata in base al numero di players
 
         List<TribeCard> AllCards = loadCardsFromJson();
-        List<BuildingCard> allBuildings = loadBuildingsFromJson();
+        ArrayList<BuildingCard> allBuildings = loadBuildingsFromJson();
 
         this.deck = new TribeDeck(AllCards, numPlayers);
         this.buildingDeck = new BuildingDeck(allBuildings, numPlayers);
@@ -65,9 +65,9 @@ public class Game {
         return era;
     }
 
-    private List<BuildingCard> loadBuildingsFromJson() {
+    private ArrayList<BuildingCard> loadBuildingsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
-        List<BuildingCard> allBuildingsInGame = new ArrayList<>();
+        ArrayList<BuildingCard> allBuildingsInGame = new ArrayList<>();
         try {
             InputStream is = getClass().getResourceAsStream("/resources/json/buildingsInfo.json");
             TypeReference<Map<String, List<BuildingCard>>> typeRef = new TypeReference<Map<String, List<BuildingCard>>>() {};

@@ -23,7 +23,7 @@ import it.polimi.ingsw.model.buildings.*;
         @JsonSubTypes.Type(value = InventorSetForFoodBuilding.class, name = "InventorSetForFoodBuilding"),
         @JsonSubTypes.Type(value = OrderTileBuilding.class, name = "OrderTileBuilding"),
         @JsonSubTypes.Type(value = PaintingsEventBuilding.class, name = "PaintingsEventBuilding"),
-        @JsonSubTypes.Type(value = PrestigeDoublingBuilderValueBuilding.class, name="prestigeDoublingBuilderValueBuilding"),
+        @JsonSubTypes.Type(value = PrestigeDoublingBuilderValueBuilding.class, name="PrestigeDoublingBuilderValueBuilding"),
         @JsonSubTypes.Type(value = PrestigeForCharacterBuilding.class, name = "PrestigeForCharacterBuilding"),
         @JsonSubTypes.Type(value = PrestigeForSextetBuilding.class, name = "PrestigeForSextetBuilding"),
         @JsonSubTypes.Type(value = PrestigeGivingBuilding.class, name = "PrestigeGivingBuilding"),
@@ -45,8 +45,10 @@ public abstract class BuildingCard extends Card{
         this.prestigeGain = prestigeGain;
     }
 
-    protected BuildingCard() {
-    }
+    public BuildingCard() {}
+
+    public void setFoodCost (int foodCost) {this.foodCost = foodCost;}
+    public void setPrestigeGain(int prestigeGain) {this.prestigeGain = prestigeGain;}
 
     public int getBuildingFoodCost() {
         return foodCost;

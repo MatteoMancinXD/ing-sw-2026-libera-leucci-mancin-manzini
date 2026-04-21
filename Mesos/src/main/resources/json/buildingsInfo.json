@@ -36,8 +36,7 @@
       "type": "InventorSetForFoodBuilding",
       "id": 102,
       "foodCost": 3,
-      "prestigeGain": 4,
-      "foodGain": 3
+      "prestigeGain": 4
     }
   ],
   "era2": [
@@ -51,8 +50,7 @@
       "type": "RitualEventBonusStarsBuilding",
       "id": 104,
       "foodCost": 6,
-      "prestigeGain": 4,
-      "starsBonus": 3
+      "prestigeGain": 4
     },
     {
       "type": "SustenanceBuilding",
@@ -65,9 +63,7 @@
       "type": "HuntEventBuilding",
       "id": 106,
       "foodCost": 7,
-      "prestigeGain": 2,
-      "foodPerHunter": 1,
-      "prestigePerHunter": 1
+      "prestigeGain": 2
     },
     {
       "type": "PrestigeDoublingBuilderValueBuilding",
