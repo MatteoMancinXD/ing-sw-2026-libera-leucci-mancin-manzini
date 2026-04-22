@@ -91,4 +91,6 @@ public abstract class BuildingCard extends Card{
     public void onGameEnd(Player player) {};
     //public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; useless
     public void onCharacterCardPurchase(Player player, CharacterCard card) {};
+
+    public boolean grantsExtraPick() {return false;}
 }

@@ -29,4 +29,9 @@ public class ExtraPickBuilding extends BuildingCard {
     public void useExtraPick() {
         this.extraPickAvailable = false;
     }
+
+    @Override
+    public boolean grantsExtraPick() {
+        return true;
+    }
 }
