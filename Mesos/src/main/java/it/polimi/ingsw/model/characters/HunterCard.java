@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.characters;
 
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 
 public class HunterCard extends CharacterCard {
     private boolean getsFood;
 
-    public HunterCard(int id, int era, int minPlayers, Character type, boolean getsFood) {
-        super(id, era, minPlayers, type);
+    public HunterCard(int id, int era, int minPlayers, boolean getsFood) {
+        super(id, era, minPlayers);
         this.getsFood = getsFood;
     }
     public HunterCard() {}

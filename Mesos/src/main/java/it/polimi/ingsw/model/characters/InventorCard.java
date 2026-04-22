@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.characters;
 
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 
 public class InventorCard extends CharacterCard {
     private Invention invention;
 
-    public InventorCard(int id, int era, int minPlayers, Character type, Invention invention) {
-        super(id, era, minPlayers, type);
+    public InventorCard(int id, int era, int minPlayers, Invention invention) {
+        super(id, era, minPlayers);
         this.invention = invention;
     }
     public InventorCard() {}

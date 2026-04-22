@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 
 public class HarvesterCard extends CharacterCard {
-    public HarvesterCard(int id, int era, int minPlayers, Character type) {
-        super(id, era, minPlayers, type);
+    public HarvesterCard(int id, int era, int minPlayers) {
+        super(id, era, minPlayers);
     }
     public HarvesterCard() {}
 

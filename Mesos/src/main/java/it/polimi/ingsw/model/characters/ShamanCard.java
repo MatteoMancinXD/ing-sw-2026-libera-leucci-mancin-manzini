@@ -1,13 +1,12 @@
 package it.polimi.ingsw.model.characters;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 
 public class ShamanCard extends CharacterCard {
     private int stars;
 
-    public ShamanCard(int id, int era, int minPlayers, Character type, int stars) {
-        super(id, era, minPlayers, type);
+    public ShamanCard(int id, int era, int minPlayers, int stars) {
+        super(id, era, minPlayers);
         this.stars = stars;
     }
     public ShamanCard() {}
