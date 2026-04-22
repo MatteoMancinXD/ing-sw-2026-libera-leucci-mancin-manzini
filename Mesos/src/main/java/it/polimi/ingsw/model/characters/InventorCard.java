@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
+import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 
 public class InventorCard extends CharacterCard {
     private Invention invention;
@@ -24,4 +26,12 @@ public class InventorCard extends CharacterCard {
     public void assignTo(Player player) {
         player.addInventor(this);
     }
+
+    @Override
+    public void registerForCardSet(CardSetForFoodBuilding b) {
+        b.incrementInventors();
+    }
+
+    @Override
+    public void registerInvention(InventorSetForFoodBuilding b) { b.incrementInvention(invention); }
 }
