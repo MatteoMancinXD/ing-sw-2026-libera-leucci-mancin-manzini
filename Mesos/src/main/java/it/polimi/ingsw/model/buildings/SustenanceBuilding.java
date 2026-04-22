@@ -50,7 +50,9 @@ public class SustenanceBuilding extends BuildingCard{
 
     @Override
     public int getSustenanceEventFoodBonus(Player p){
-        return p.getCharacterDeck(this.character).size();
+        //return p.getCharacterDeck(this.character).size();
+        return p.getHunters().size()+p.getBuilders().size()+p.getHarvesters().size()
+                +p.getArtists().size()+p.getInventors().size()+p.getShamans().size();
     }
 
 
