@@ -26,30 +26,31 @@ class PlayerTest {
         assertNotNull(p.getBuildings());
         assertEquals(0, p.getBuildings().size());
 
+        /*                                            //enum characters won't exist anymore
         // Checking character decks
         for(Character ch : Character.values()) {
             assertNotNull(p.getCharacterDeck(ch));
             assertEquals(0, p.getCharacterDeck(ch).size());
-        }
+        }*/
     }
 
     @Test
     void drawCardTest() {
         Player p = new Player("Player1");
-        CharacterCard cc = new HunterCard(1, 1, 2, Character.HUNTER, false);
+        CharacterCard cc = new HunterCard(1, 1, 2, false);
 
         p.drawCard(cc);
 
-        assertEquals(1, p.getCharacterDeck(Character.HUNTER).size());
-        assertEquals(cc, p.getCharacterDeck(Character.HUNTER).getFirst());
+        assertEquals(1, p.getHunters().size());
+        assertEquals(cc, p.getHunters().getFirst());
     }
 
     @Test
     void inventorSetForFoodTest() {
         Player p = new Player("Player1");
         BuildingCard bc = new InventorSetForFoodBuilding(1,1,0, 0);
-        CharacterCard inv1 = new InventorCard(2,1,2, Character.INVENTOR, Invention.ROPE);
-        CharacterCard inv2 = new InventorCard(3,2,2, Character.INVENTOR, Invention.ROPE);
+        CharacterCard inv1 = new InventorCard(2,1,2, Invention.ROPE);
+        CharacterCard inv2 = new InventorCard(3,2,2, Invention.ROPE);
 
         // Checking that player has 0 food now
         assertEquals(0, p.getFood());
@@ -65,8 +66,8 @@ class PlayerTest {
         inv1.notifyBuildings(p);
 
         // Checking Inventor Deck
-        assertEquals(1, p.getCharacterDeck(Character.INVENTOR).size());
-        assertEquals(inv1, p.getCharacterDeck(Character.INVENTOR).getFirst());
+        assertEquals(1, p.getInventors().size());
+        assertEquals(inv1, p.getInventors().getFirst());
 
         // Checking no food bonus yet
         assertEquals(0, p.getFood());
@@ -75,9 +76,9 @@ class PlayerTest {
         inv2.notifyBuildings(p);
 
         // Checking Inventor Deck
-        assertEquals(2, p.getCharacterDeck(Character.INVENTOR).size());
-        assertEquals(inv1, p.getCharacterDeck(Character.INVENTOR).getFirst());
-        assertEquals(inv2, p.getCharacterDeck(Character.INVENTOR).get(1));
+        assertEquals(2, p.getInventors().size());
+        assertEquals(inv1, p.getInventors().getFirst());
+        assertEquals(inv2, p.getInventors().get(1));
 
         // Checking food bonus
         assertEquals(3, p.getFood());

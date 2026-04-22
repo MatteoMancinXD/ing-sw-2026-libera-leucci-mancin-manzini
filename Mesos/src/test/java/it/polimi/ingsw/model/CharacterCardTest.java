@@ -54,9 +54,9 @@ public class CharacterCardTest {
     @Test
     public void testGetType(){
 
-        ArtistCard artistCard4 = new  ArtistCard(1,1,2,Character.ARTIST);
+        ArtistCard artistCard4 = new  ArtistCard(1,1,2);
 
-        assertEquals(Character.ARTIST,artistCard4.getType());
+
     }
 
     //public void testNotifyAllBuildings(){ }
