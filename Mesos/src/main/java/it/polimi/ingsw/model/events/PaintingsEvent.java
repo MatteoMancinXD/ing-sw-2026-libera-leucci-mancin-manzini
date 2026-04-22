@@ -37,7 +37,7 @@ public class PaintingsEvent extends EventCard{
     @Override 
     public void solveEventCard(Player player, List<Player> allPlayers){
         
-        int artists = player.getCharacterDeck(Character.ARTIST).size();
+        int artists = player.getArtists().size();
         int era = this.getEra(); 
 
         // -2 prestige una tantum if below set number of artists else +era*artists

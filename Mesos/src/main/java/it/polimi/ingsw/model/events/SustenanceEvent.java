@@ -44,7 +44,9 @@ public class SustenanceEvent extends EventCard{
 
         //check if there are buildings with Sustenance bonuses (see SustenanceBuilding class)
         for(BuildingCard card : player.getBuildings()){
-            foodFromBuildings += card.getSustenanceEventFoodBonus(player);
+            foodFromBuildings = card.getSustenanceEventArtistsFoodBonus(player) +
+                                card.getSustenanceEventHarvestersFoodBonus(player) +
+                                card.getSustenanceEventInventorsFoodBonus(player);
 
         }
 
