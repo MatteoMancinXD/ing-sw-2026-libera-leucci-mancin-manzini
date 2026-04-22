@@ -57,7 +57,7 @@ public class InventorCardTest {
 
     @Test
     void testConstructor(){
-        InventorCard inventorCard1= new InventorCard(0,0,2,Character.HUNTER,Invention.ROPE);
+        InventorCard inventorCard1= new InventorCard(0,0,2,Invention.ROPE);
         InventorCard inventorCard2 = new InventorCard();
 
         assertFalse(inventorCards.isEmpty());
@@ -66,14 +66,14 @@ public class InventorCardTest {
     @Test
     public void testMethods(){
         Player player = new Player("giacomo");
-        InventorCard inventorCard1= new InventorCard(0,0,2,Character.HUNTER,Invention.ROPE);
+        InventorCard inventorCard1= new InventorCard(0,0,2,Invention.ROPE);
 
         inventorCard1.setInvention(Invention.BREAD);
         assertEquals(Invention.BREAD,inventorCard1.getInvention());
 
         //assignTo
         inventorCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.INVENTOR).contains(inventorCard1));
+        assertTrue(player.getInventors().contains(inventorCard1));
 
     }
 

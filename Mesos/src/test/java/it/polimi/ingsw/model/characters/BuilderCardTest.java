@@ -57,7 +57,7 @@ public class BuilderCardTest {
 
     @Test
     public void testConstructor(){
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
+        BuilderCard builderCard1 = new BuilderCard(0,0,2,3,3);
         BuilderCard builderCard2 = new BuilderCard();
 
         assertFalse(builderCards.isEmpty());
@@ -75,7 +75,7 @@ public class BuilderCardTest {
 
     @Test void testMethods(){
         Player player = new Player("giacomo");
-        BuilderCard builderCard1 = new BuilderCard(0,0,2,Character.BUILDER,3,3);
+        BuilderCard builderCard1 = new BuilderCard(0,0,2,3,3);
 
         builderCard1.setDiscount(4);
         assertEquals(4,builderCard1.getDiscount());
@@ -85,7 +85,7 @@ public class BuilderCardTest {
 
         //assignTo(player)
         builderCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.BUILDER).contains(builderCard1));
+        assertTrue(player.getBuilders().contains(builderCard1));
 
     }
 

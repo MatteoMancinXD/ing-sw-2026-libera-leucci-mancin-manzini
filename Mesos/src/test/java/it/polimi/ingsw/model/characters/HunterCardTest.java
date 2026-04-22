@@ -58,7 +58,7 @@ public class HunterCardTest {
 
     @Test
     public void testConstructor(){
-        HunterCard hunterCard1 = new HunterCard(0,0,2,Character.HUNTER,true);
+        HunterCard hunterCard1 = new HunterCard(0,0,2,true);
         HunterCard hunterCard2 = new HunterCard();
 
         assertFalse(hunterCards.isEmpty());
@@ -66,14 +66,14 @@ public class HunterCardTest {
     @Test
     public void testMethods(){
         Player player = new Player("giacomo");
-        HunterCard hunterCard1 = new HunterCard(0,0,2,Character.HUNTER,false);
+        HunterCard hunterCard1 = new HunterCard(0,0,2,false);
 
         hunterCard1.setGetsFood(true);
         assertTrue(hunterCard1.getGetsFood());
 
         //assignTo
         hunterCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.HUNTER).contains(hunterCard1));
+        assertTrue(player.getHunters().contains(hunterCard1));
 
     }
 

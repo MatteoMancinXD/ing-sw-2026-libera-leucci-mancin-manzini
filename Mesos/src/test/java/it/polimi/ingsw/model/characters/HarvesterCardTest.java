@@ -55,7 +55,7 @@ public class HarvesterCardTest {
 
     @Test
     public void testConstructor(){
-        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2,Character.HARVESTER);
+        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2);
         HarvesterCard harvesterCard2 = new HarvesterCard();
 
         assertFalse(harvesterCards.isEmpty());
@@ -63,10 +63,10 @@ public class HarvesterCardTest {
 
     @Test
     public void testMethods(){
-        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2,Character.HARVESTER);
+        HarvesterCard harvesterCard1 = new HarvesterCard(0,0,2);
         Player player1 = new Player("giacomo");
 
         harvesterCard1.assignTo(player1);
-        assertTrue(player1.getCharacterDeck(Character.HARVESTER).contains(harvesterCard1));
+        assertTrue(player1.getHarvesters().contains(harvesterCard1));
     }
 }

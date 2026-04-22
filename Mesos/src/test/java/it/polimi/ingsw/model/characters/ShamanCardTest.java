@@ -58,7 +58,7 @@ public class ShamanCardTest {
 
     @Test
     public void testConstructor(){
-        ShamanCard shamanCard1 = new ShamanCard(0,1,2,Character.SHAMAN,1);
+        ShamanCard shamanCard1 = new ShamanCard(0,1,2,1);
         ShamanCard shamanCard2 = new ShamanCard();
 
         assertFalse(shamanCards.isEmpty());
@@ -67,14 +67,14 @@ public class ShamanCardTest {
     @Test
     public void testMethods(){
         Player player = new Player("giacomo");
-        ShamanCard shamanCard1 = new ShamanCard(0,1,2,Character.SHAMAN,1);
+        ShamanCard shamanCard1 = new ShamanCard(0,1,2,1);
 
         shamanCard1.setStars(3);
         assertEquals(3,shamanCard1.getStars());
 
         //assignTo
         shamanCard1.assignTo(player);
-        assertTrue(player.getCharacterDeck(Character.SHAMAN).contains(shamanCard1));
+        assertTrue(player.getShamans().contains(shamanCard1));
 
     }
 

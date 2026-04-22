@@ -23,12 +23,12 @@ class PaintingsEventTest {
             players.add(new Player("Player" + Integer.toString(i)));
         }
 
-        ArtistCard a1 = new ArtistCard(2,1,2, Character.ARTIST);
-        ArtistCard a2 = new ArtistCard(3,1,2, Character.ARTIST);
-        ArtistCard a3 = new ArtistCard(4,1,2, Character.ARTIST);
-        ArtistCard a4 = new ArtistCard(5,1,2, Character.ARTIST);
-        ArtistCard a5 = new ArtistCard(6,1,2, Character.ARTIST);
-        ArtistCard a6 = new ArtistCard(7,1,2, Character.ARTIST);
+        ArtistCard a1 = new ArtistCard(2,1,2);
+        ArtistCard a2 = new ArtistCard(3,1,2);
+        ArtistCard a3 = new ArtistCard(4,1,2);
+        ArtistCard a4 = new ArtistCard(5,1,2);
+        ArtistCard a5 = new ArtistCard(6,1,2);
+        ArtistCard a6 = new ArtistCard(7,1,2);
 
         PaintingsEventBuilding b = new PaintingsEventBuilding(8,1,0,0);
 

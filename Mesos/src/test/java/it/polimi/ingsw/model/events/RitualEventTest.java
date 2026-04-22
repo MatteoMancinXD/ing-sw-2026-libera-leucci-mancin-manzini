@@ -24,8 +24,8 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.get(1).drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
-        players.get(2).drawCard(new ShamanCard(3, 1, 2, Character.SHAMAN, 1));
+        players.get(1).drawCard(new ShamanCard(2, 1, 2, 1));
+        players.get(2).drawCard(new ShamanCard(3, 1, 2, 1));
 
         // Checking 0 food and prestige for each player
         for(Player p : players) {
@@ -54,7 +54,7 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.getFirst().drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
+        players.getFirst().drawCard(new ShamanCard(2, 1, 2, 1));
 
         // Checking 0 food and prestige for each player
         for(Player p : players) {
@@ -83,8 +83,8 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.getFirst().drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
-        players.get(1).drawCard(new ShamanCard(3, 1, 2, Character.SHAMAN, 1));
+        players.getFirst().drawCard(new ShamanCard(2, 1, 2, 1));
+        players.get(1).drawCard(new ShamanCard(3, 1, 2, 1));
 
         // Checking 0 food and prestige for each player
         for(Player p : players) {
@@ -138,7 +138,7 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.getFirst().drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
+        players.getFirst().drawCard(new ShamanCard(2, 1, 2, 1));
         players.get(1).drawCard(new RitualEventNoMalusBuilding(3,1,0,0));
 
         // Checking 0 food and prestige for each player
@@ -167,7 +167,7 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.getFirst().drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
+        players.getFirst().drawCard(new ShamanCard(2, 1, 2, 1));
         players.getFirst().drawCard(new RitualEventDoublePrestigeBuilding(3,1,0,0));
 
         // Checking 0 food and prestige for each player
@@ -196,7 +196,7 @@ class RitualEventTest {
             players.add(new Player("Player"+Integer.toString(i)));
         }
 
-        players.getFirst().drawCard(new ShamanCard(2, 1, 2, Character.SHAMAN, 1));
+        players.getFirst().drawCard(new ShamanCard(2, 1, 2, 1));
         players.get(1).drawCard(new RitualEventBonusStarsBuilding(3,1,0,0));
 
         // Checking 0 food and prestige for each player

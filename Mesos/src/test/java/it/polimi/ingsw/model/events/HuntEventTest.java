@@ -23,9 +23,9 @@ class HuntEventTest {
         players.add(p1);
         players.add(p2);
 
-        HunterCard hunter1 = new HunterCard(2, 1, 2, Character.HUNTER, false);
-        HunterCard hunter2 = new HunterCard(3, 1, 2, Character.HUNTER, false);
-        HunterCard hunter3 = new HunterCard(4, 1, 2, Character.HUNTER, false);
+        HunterCard hunter1 = new HunterCard(2, 1, 2, false);
+        HunterCard hunter2 = new HunterCard(3, 1, 2,false);
+        HunterCard hunter3 = new HunterCard(4, 1, 2,false);
 
         HuntEventBuilding hb = new HuntEventBuilding(5, 1, 0, 0);
 
@@ -45,12 +45,12 @@ class HuntEventTest {
         }
 
         // Checking food and prestige for player 1
-        int num1 = p1.getCharacterDeck(Character.HUNTER).size();
+        int num1 = p1.getHunters().size();
         assertEquals(num1, p1.getFood());
         assertEquals(num1 * hunt.getEra(), p1.getPrestige());
 
         // Checking food and prestige for player 2
-        int num2 = p2.getCharacterDeck(Character.HUNTER).size();
+        int num2 = p2.getHunters().size();
         assertEquals(num2 * 2, p2.getFood());
         assertEquals(num2 * (hunt.getEra() + 1), p2.getPrestige());
     }
