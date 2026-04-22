@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BuildingCard;
 import java.util.List;
+import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
 
 import java.util.ArrayList;
 
