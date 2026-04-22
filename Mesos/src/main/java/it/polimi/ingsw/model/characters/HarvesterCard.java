@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.CharacterCard;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 
 public class HarvesterCard extends CharacterCard {
     public HarvesterCard(int id, int era, int minPlayers) {
@@ -11,5 +12,10 @@ public class HarvesterCard extends CharacterCard {
     @Override
     public void assignTo(Player player) {
         player.addHarvester(this);
+    }
+
+    @Override
+    public void registerForCardSet(CardSetForFoodBuilding b) {
+        b.incrementHarvesters();
     }
 }

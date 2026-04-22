@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 
 public class BuilderCard extends CharacterCard {
     private int discount;
@@ -32,5 +33,10 @@ public class BuilderCard extends CharacterCard {
     @Override
     public void assignTo(Player player) {
         player.addBuilder(this);
+    }
+
+    @Override
+    public void registerForCardSet(CardSetForFoodBuilding b) {
+        b.incrementBuilders();
     }
 }

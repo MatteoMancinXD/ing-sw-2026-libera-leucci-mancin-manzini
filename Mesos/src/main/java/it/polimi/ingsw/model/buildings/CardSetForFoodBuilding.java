@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.buildings;
 
 import it.polimi.ingsw.model.BuildingCard;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 
@@ -16,40 +15,48 @@ import java.util.Map;
  * and food is given. Each Character's counter then is decreased by one.
  */
 public class CardSetForFoodBuilding extends BuildingCard {
-    Map<Character, Integer> newCharacters;
-    boolean setCompleted;
+    int hunters, builders, harvesters, artists, inventors, shamans;
 
     public CardSetForFoodBuilding(int id, int era, int foodCost, int prestigeGain) {
         super(id, era, foodCost, prestigeGain);
-
-        setCompleted = false;
-        newCharacters = new HashMap<>();
-        for(Character ch : Character.values()) {
-            newCharacters.put(ch, 0);
-        }
+        hunters = 0;
+        builders = 0;
+        harvesters = 0;
+        artists = 0;
+        inventors = 0;
+        shamans = 0;
     }
 
-    public CardSetForFoodBuilding() {}
+    public CardSetForFoodBuilding() {
+        super();
+        hunters = 0;
+        builders = 0;
+        harvesters = 0;
+        artists = 0;
+        inventors = 0;
+        shamans = 0;
+    }
 
-    public void setSetcompleted(boolean setCompleted) {this.setCompleted = setCompleted;}
+    public void incrementHunters() { hunters++; }
+    public void incrementBuilders() { builders++; }
+    public void incrementHarvesters() { harvesters++; }
+    public void incrementArtists() { artists++; }
+    public void incrementInventors() { inventors++; }
+    public void incrementShamans() { shamans++; }
 
     @Override
     public void onCharacterCardPurchase(Player player, CharacterCard card) {
-        newCharacters.put(card.getType(), newCharacters.get(card.getType()) + 1);
+        card.registerForCardSet(this);
 
-        setCompleted = true;
-        for(Character ch : Character.values()) {
-            if(newCharacters.get(ch) < 1) {
-                setCompleted = false;
-            }
-        }
-
-        if(setCompleted) {
+        if(hunters > 0 && builders > 0 &&  harvesters > 0 && artists > 0 && inventors > 0 && shamans > 0) {
             player.editFood(5);
-            for(Character ch : Character.values()) {
-                newCharacters.put(ch, newCharacters.get(ch) - 1);
-            }
-            setCompleted = false;
+
+            hunters--;
+            builders--;
+            harvesters--;
+            artists--;
+            inventors--;
+            shamans--;
         }
     }
 }
