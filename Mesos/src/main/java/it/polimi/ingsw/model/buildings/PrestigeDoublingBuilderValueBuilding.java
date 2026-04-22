@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.buildings;
 
 import it.polimi.ingsw.model.BuildingCard;
-import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.characters.BuilderCard;
 
 public class PrestigeDoublingBuilderValueBuilding extends BuildingCard {
@@ -23,13 +21,9 @@ public class PrestigeDoublingBuilderValueBuilding extends BuildingCard {
         instead of doubling the builder's prestige points it just adds to player's
         total prestige points the total amount of points given by all the builders
         */
-        for(CharacterCard c : player.getBuilders()){
-            builderCard = (BuilderCard) c;
-            builderPps = builderCard.getPps();
+        for(BuilderCard c : player.getBuilders()){
+            builderPps = c.getPps();
             player.editPrestige(builderPps);
-
         }
-
-
     }
 }
