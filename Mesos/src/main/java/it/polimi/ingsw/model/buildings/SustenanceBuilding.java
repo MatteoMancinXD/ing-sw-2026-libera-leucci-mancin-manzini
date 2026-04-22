@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.buildings;
+/*package it.polimi.ingsw.model.buildings;
 import it.polimi.ingsw.model.BuildingCard;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
@@ -7,8 +7,12 @@ import java.util.EnumSet;
 import java.util.Set;
 
 
+ //!!! BUILDING IS OBSOLETE !!!
 
-public class SustenanceBuilding extends BuildingCard{
+
+
+
+public abstract class SustenanceBuilding extends BuildingCard{
 
     private Character character;
 
@@ -35,10 +39,6 @@ public class SustenanceBuilding extends BuildingCard{
             throw new IllegalArgumentException("Error: " + character + " not a valid Character for SustenanceBuilding");
         }
 
-
-
-
-
         this.character=character;
     }
 
@@ -50,10 +50,11 @@ public class SustenanceBuilding extends BuildingCard{
 
     @Override
     public int getSustenanceEventFoodBonus(Player p){
-        //return p.getCharacterDeck(this.character).size();
-        return p.getHunters().size()+p.getBuilders().size()+p.getHarvesters().size()
-                +p.getArtists().size()+p.getInventors().size()+p.getShamans().size();
-    }
+        return p.getCharacterDeck(this.character).size();
+
+       /* return p.getHunters().size()+p.getBuilders().size()+p.getHarvesters().size()
+                +p.getArtists().size()+p.getInventors().size()+p.getShamans().size();*/
+    }*/
 
 
 
