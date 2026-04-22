@@ -10,7 +10,7 @@ public class SustenanceForInventorsBuilding extends BuildingCard {
     public SustenanceForInventorsBuilding(){}
 
     @Override
-    public int getSustenanceEventInventorsFoodBonus(Player p){
+    public int getSustenanceEventFoodBonus(Player p){
         return p.getInventors().size();
     }
 }

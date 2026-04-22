@@ -10,7 +10,7 @@ public class SustenanceForHarvestersBuilding extends BuildingCard {
     public SustenanceForHarvestersBuilding(){}
 
     @Override
-    public int getSustenanceEventHarvestersFoodBonus(Player p){
+    public int getSustenanceEventFoodBonus(Player p){
         return p.getHarvesters().size();
     }
 }

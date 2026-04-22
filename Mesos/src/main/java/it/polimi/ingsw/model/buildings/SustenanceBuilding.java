@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.buildings;
 import it.polimi.ingsw.model.BuildingCard;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
 
 import java.util.EnumSet;

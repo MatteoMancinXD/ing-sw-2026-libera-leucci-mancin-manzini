@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model.events;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.buildings.*;
 
 import it.polimi.ingsw.model.EventCard;
@@ -29,8 +28,6 @@ public class SustenanceEvent extends EventCard{
     public SustenanceEvent(){
         super(0,0,false);
     }
-
-
     public SustenanceEvent(int id, int era,boolean finalEvent){
         super(id, era,finalEvent);
     }
@@ -45,10 +42,7 @@ public class SustenanceEvent extends EventCard{
 
         //check if there are buildings with Sustenance bonuses (see SustenanceBuilding class)
         for(BuildingCard card : player.getBuildings()){
-            foodFromBuildings = card.getSustenanceEventArtistsFoodBonus(player) +
-                                card.getSustenanceEventHarvestersFoodBonus(player) +
-                                card.getSustenanceEventInventorsFoodBonus(player);
-
+            foodFromBuildings += card.getSustenanceEventFoodBonus(player);
         }
 
         currentHunger = numCharacterCards - (player.getHarvesters().size()*3) - foodFromBuildings; // current Hunger = number of cards - value of the harvest - BuildingFoodDiscount
@@ -62,8 +56,6 @@ public class SustenanceEvent extends EventCard{
 
             player.setFood(0);
             player.editPrestige(this.getEra()*foodPoints); //foodPoints are negative inside else statement
-
         }
-
     }
 }

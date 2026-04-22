@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.buildings.sustenancebuildings;
 
 import it.polimi.ingsw.model.BuildingCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.SustenanceBuilding;
 
 
 public class SustenanceForArtistsBuilding extends BuildingCard {
@@ -11,7 +12,7 @@ public class SustenanceForArtistsBuilding extends BuildingCard {
     public SustenanceForArtistsBuilding(){}
 
     @Override
-    public int getSustenanceEventArtistsFoodBonus(Player p){
+    public int getSustenanceEventFoodBonus(Player p){
         return p.getArtists().size();
     }
 }

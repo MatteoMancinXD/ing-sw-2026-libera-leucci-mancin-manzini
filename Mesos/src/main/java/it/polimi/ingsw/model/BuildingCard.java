@@ -80,12 +80,7 @@ public abstract class BuildingCard extends Card{
     //these are default return values
 
     //SustenanceEvents' buildings
-   // public int getSustenanceEventFoodBonus(Player p){ return 0;}//3 building cards
-    public int getSustenanceEventArtistsFoodBonus(Player p){ return 0; }
-    public int getSustenanceEventHarvestersFoodBonus(Player p){ return 0; }
-    public int getSustenanceEventInventorsFoodBonus(Player p){ return 0; }
-
-
+    public int getSustenanceEventFoodBonus(Player p){ return 0; }
 
     public int getPaintingsEventFoodBonus(int artists) {return 0;}
     public int getHuntEventFoodBonus(int hunters) { return 0; }
