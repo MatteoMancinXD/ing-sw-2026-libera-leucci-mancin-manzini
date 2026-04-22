@@ -78,7 +78,7 @@
       "prestigeGain": 6
     },
     {
-      "type": "CardSetForFoodBuilding",
+      "type": "CardSetForPrestigeBuilding",
       "id": 109,
       "foodCost": 5,
       "prestigeGain": 6
