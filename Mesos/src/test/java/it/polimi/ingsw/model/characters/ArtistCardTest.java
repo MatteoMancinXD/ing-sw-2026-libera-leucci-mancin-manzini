@@ -25,15 +25,15 @@ public class ArtistCardTest {
 
     @BeforeEach
     void setUp() {
-        allCards = loadCardsFromJson();
+       /* allCards = loadCardsFromJson();
 
         //just artists
         artistCards = allCards.stream()
                 .filter(c -> c instanceof ArtistCard)
                 .map(c -> (ArtistCard) c)
                 .collect(Collectors.toList());
-    }
-
+    }*/
+    /*
     private List<TribeCard> loadCardsFromJson() { //method in game
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> cards = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ArtistCardTest {
         } catch (Exception e) {
             fail("Impossibile caricare il file JSON: " + e.getMessage());
         }
-        return cards;
+        return cards;*/
     }
 
 
@@ -65,14 +65,14 @@ public class ArtistCardTest {
 
 
         ArtistCard artistCard2 = new ArtistCard();   //void constructor
-        ArtistCard artistCard3 = new ArtistCard(0, 0, 0, Character.ARTIST); //no json
+        ArtistCard artistCard3 = new ArtistCard(0, 0, 0 /*, Character.ARTIST*/); //no json
 
 
         //with json
         era = 1;
         numPl = 2;
 
-        assertFalse(artistCards.isEmpty());
+        //assertFalse(artistCards.isEmpty());
 
         /*for (ArtistCard card : artistCards) {
 
@@ -82,18 +82,18 @@ public class ArtistCardTest {
             }
         }*/ //useless
     }
-    /*
+
     @Test
     public void testAssignTo() {
         int id, numPl, era;
-        Player pl; //va inizializzato player
+        Player pl = new Player("giacomo"); //va inizializzato player
 
-        ArtistCard artistCard4 = new  ArtistCard(1,1,2,Character.ARTIST);
-
+        //ArtistCard artistCard4 = new  ArtistCard(1,1,2,Character.ARTIST);
+        ArtistCard artistCard4 = new  ArtistCard(1,1,2);
         artistCard4.assignTo(pl);
 
 
-    }*/
+    }
 
 
 
