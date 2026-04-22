@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 
 public class ShamanCard extends CharacterCard {
     private int stars;
@@ -23,5 +24,10 @@ public class ShamanCard extends CharacterCard {
     public void assignTo(Player player) {
         player.addShaman(this);
         player.editStars(this.stars);
+    }
+
+    @Override
+    public void registerForCardSet(CardSetForFoodBuilding b) {
+        b.incrementShamans();
     }
 }

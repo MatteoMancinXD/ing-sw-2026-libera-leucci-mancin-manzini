@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
+import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 
 
@@ -16,4 +18,7 @@ public abstract class CharacterCard extends TribeCard{
             bc.onCharacterCardPurchase(player, this);
         }
     }
+
+    public void registerForCardSet(CardSetForFoodBuilding b) {}
+    public void registerInvention(InventorSetForFoodBuilding b) {}
 }

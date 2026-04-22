@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.buildings;
 
 import it.polimi.ingsw.model.BuildingCard;
-import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.characters.Invention;
@@ -26,19 +25,25 @@ public class InventorSetForFoodBuilding extends BuildingCard {
         }
     }
 
-    public InventorSetForFoodBuilding() {}
+    public InventorSetForFoodBuilding() {
+        newInventors = new HashMap<>();
+        coupleCompleted = false;
+    }
 
     public void setCoupleCompleted(boolean coupleCompleted) {this.coupleCompleted = coupleCompleted;}
     public void setInv(Invention inv) {this.inv = inv;}
 
+    public void incrementInvention(Invention i) {
+        if(newInventors.containsKey(i)) {
+            newInventors.put(i, newInventors.get(i) + 1);
+        } else {
+            newInventors.put(i, 1);
+        }
+    }
+
     @Override
     public void onCharacterCardPurchase(Player player, CharacterCard card) {
-        if(card.getType() != Character.INVENTOR) {
-            return;
-        }
-
-        InventorCard inventor = (InventorCard) card;
-        newInventors.put(inventor.getInvention(), newInventors.get(inventor.getInvention()) + 1);
+        card.registerInvention(this);
 
         for(Invention i : Invention.values()) {
             if(newInventors.get(i) >= 2)  {

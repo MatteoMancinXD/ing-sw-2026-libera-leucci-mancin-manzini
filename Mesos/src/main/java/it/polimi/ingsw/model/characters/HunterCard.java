@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.model.CharacterCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 
 public class HunterCard extends CharacterCard {
     private boolean getsFood;
@@ -23,5 +24,10 @@ public class HunterCard extends CharacterCard {
     @Override
     public void assignTo(Player player) {
         player.addHunter(this);
+    }
+
+    @Override
+    public void registerForCardSet(CardSetForFoodBuilding b) {
+        b.incrementHunters();
     }
 }
