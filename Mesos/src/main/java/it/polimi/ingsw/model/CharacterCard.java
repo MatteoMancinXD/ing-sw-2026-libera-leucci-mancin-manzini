@@ -5,17 +5,10 @@ import it.polimi.ingsw.model.characters.BuilderCard;
 
 
 public abstract class CharacterCard extends TribeCard{
-    private Character type;
-
-    public CharacterCard(int id, int era, int minPlayers, Character type) {
+    public CharacterCard(int id, int era, int minPlayers) {
         super(id, era, minPlayers);
-        this.type = type;
     }
     protected CharacterCard() {}
-
-    public Character getType() {
-        return type;
-    }
 
     @Override
     public void notifyBuildings(Player player) {
