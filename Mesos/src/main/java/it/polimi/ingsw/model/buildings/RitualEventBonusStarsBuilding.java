@@ -13,7 +13,7 @@ public class RitualEventBonusStarsBuilding extends BuildingCard {
     //adds 3 stars
     @Override
     public void onPurchase(Player player){
-        player.setTotStars(player.getTotStars() + 3);
+        player.editStars(3);
     }
 
 }
