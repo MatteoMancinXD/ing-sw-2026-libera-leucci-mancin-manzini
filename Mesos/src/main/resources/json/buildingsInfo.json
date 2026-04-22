@@ -83,52 +83,46 @@
   ],
   "era3": [
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForHuntersBuilding",
       "id": 110,
       "foodCost": 8,
       "prestigeGain": 8,
-      "bonusPrestige": 3,
-      "character": "HUNTER"
+      "bonusPrestige": 3
     },
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForHarvesterBuilding",
       "id": 111,
       "foodCost": 7,
       "prestigeGain": 6,
-      "bonusPrestige": 4,
-      "character": "HARVESTER"
+      "bonusPrestige": 4
     },
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForShamanBuilding",
       "id": 112,
       "foodCost": 7,
       "prestigeGain": 4,
-      "bonusPrestige": 4,
-      "character": "SHAMAN"
+      "bonusPrestige": 4
     },
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForBuilderBuilding",
       "id": 113,
       "foodCost": 6,
       "prestigeGain": 3,
-      "bonusPrestige": 4,
-      "character": "BUILDER"
+      "bonusPrestige": 4
     },
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForArtistsBuilding",
       "id": 114,
       "foodCost": 7,
       "prestigeGain": 4,
-      "bonusPrestige": 4,
-      "character": "ARTIST"
+      "bonusPrestige": 4
     },
     {
-      "type": "PrestigeForCharacterBuilding",
+      "type": "PrestigeForInventorsBuilding",
       "id": 115,
       "foodCost": 6,
       "prestigeGain": 6,
-      "bonusPrestige": 2,
-      "character": "INVENTOR"
+      "bonusPrestige": 2
     },
     {
       "type": "ExtraPickBuilding",
