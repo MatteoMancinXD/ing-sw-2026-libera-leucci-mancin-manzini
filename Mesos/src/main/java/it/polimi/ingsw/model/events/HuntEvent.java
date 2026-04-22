@@ -44,7 +44,7 @@ public class HuntEvent extends EventCard {
     @Override
     public void solveEventCard(Player player, List<Player> allPlayers) {
 
-        int hunters = player.getCharacterDeck(Character.HUNTER).size();
+        int hunters = player.getHunters().size();
 
         // +1 food and +1*era prestige foreach hunter
 

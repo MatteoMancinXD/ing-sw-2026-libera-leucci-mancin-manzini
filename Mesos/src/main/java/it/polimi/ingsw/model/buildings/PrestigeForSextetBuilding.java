@@ -1,8 +1,11 @@
-package it.polimi.ingsw.model.buildings;
+/*package it.polimi.ingsw.model.buildings;
 
 import it.polimi.ingsw.model.BuildingCard;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
+
+  // !!!  BUILDING IS OBSOLETE  !!! -> NOW CARDSETFORPRESTIGE
+
 
 public class PrestigeForSextetBuilding extends BuildingCard {
     public PrestigeForSextetBuilding(int id, int era, int foodCost, int prestigeGain) {
@@ -20,7 +23,7 @@ public class PrestigeForSextetBuilding extends BuildingCard {
         int numHunters = player.getCharacterDeck(Character.HUNTER).size();
         int numBuilders = player.getCharacterDeck(Character.BUILDER).size();*/
 
-        //find the smallest deckSize
+   /*     //find the smallest deckSize
             int min = 0; //initializes min to a number (just to avoid compilation error)
             boolean firstCycle = true;
             for(Character c : Character.values()) {
@@ -41,7 +44,7 @@ public class PrestigeForSextetBuilding extends BuildingCard {
 
 
 
-    }
+    }*/
 
 
 

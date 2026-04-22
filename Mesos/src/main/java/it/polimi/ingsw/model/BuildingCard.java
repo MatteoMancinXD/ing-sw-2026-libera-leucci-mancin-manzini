@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.events.PaintingsEvent;
 import it.polimi.ingsw.model.events.RitualEvent;
 import it.polimi.ingsw.model.events.SustenanceEvent;
 import it.polimi.ingsw.model.buildings.*;
+import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -25,12 +27,14 @@ import it.polimi.ingsw.model.buildings.*;
         @JsonSubTypes.Type(value = PaintingsEventBuilding.class, name = "PaintingsEventBuilding"),
         @JsonSubTypes.Type(value = PrestigeDoublingBuilderValueBuilding.class, name="PrestigeDoublingBuilderValueBuilding"),
         @JsonSubTypes.Type(value = PrestigeForCharacterBuilding.class, name = "PrestigeForCharacterBuilding"),
-        @JsonSubTypes.Type(value = PrestigeForSextetBuilding.class, name = "PrestigeForSextetBuilding"),
+        @JsonSubTypes.Type(value = CardSetForPrestigeBuilding.class, name = "CardSetForPrestigeBuilding"),
         @JsonSubTypes.Type(value = PrestigeGivingBuilding.class, name = "PrestigeGivingBuilding"),
         @JsonSubTypes.Type(value = RitualEventBonusStarsBuilding.class, name = "RitualEventBonusStarsBuilding"),
         @JsonSubTypes.Type(value = RitualEventDoublePrestigeBuilding.class, name = "RitualEventDoublePrestigeBuilding"),
         @JsonSubTypes.Type(value = RitualEventNoMalusBuilding.class, name = "RitualEventNoMalusBuilding"),
-        @JsonSubTypes.Type(value = SustenanceBuilding.class, name = "SustenanceBuilding")
+        @JsonSubTypes.Type(value = SustenanceForArtistsBuilding.class, name = "SustenanceForArtistsBuilding"),
+        @JsonSubTypes.Type(value = SustenanceForHarvestersBuilding.class, name = "SustenanceForHarvestersBuilding"),
+        @JsonSubTypes.Type(value = SustenanceForInventorsBuilding.class, name = "SustenanceForInventorsBuilding")
 
 })
 public abstract class BuildingCard extends Card{
@@ -76,7 +80,13 @@ public abstract class BuildingCard extends Card{
     //these are default return values
 
     //SustenanceEvents' buildings
-    public int getSustenanceEventFoodBonus(Player p){ return 0;}  //3 building cards
+   // public int getSustenanceEventFoodBonus(Player p){ return 0;}//3 building cards
+    public int getSustenanceEventArtistsFoodBonus(Player p){ return 0; }
+    public int getSustenanceEventHarvestersFoodBonus(Player p){ return 0; }
+    public int getSustenanceEventInventorsFoodBonus(Player p){ return 0; }
+
+
+
     public int getPaintingsEventFoodBonus(int artists) {return 0;}
     public int getHuntEventFoodBonus(int hunters) { return 0; }
 
@@ -91,4 +101,6 @@ public abstract class BuildingCard extends Card{
     public void onGameEnd(Player player) {};
     //public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; useless
     public void onCharacterCardPurchase(Player player, CharacterCard card) {};
+
+    public boolean grantsExtraPick() {return false;}
 }

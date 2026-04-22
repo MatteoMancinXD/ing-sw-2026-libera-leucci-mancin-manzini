@@ -7,18 +7,16 @@
       "prestigeGain": 3
     },
     {
-      "type": "SustenanceBuilding",
+      "type": "SustenanceForHarvestersBuilding",
       "id": 98,
       "foodCost": 4,
-      "prestigeGain": 4,
-      "character": "HARVESTER"
+      "prestigeGain": 4
     },
     {
-      "type": "SustenanceBuilding",
+      "type": "SustenanceForArtistsBuilding",
       "id": 99,
       "foodCost": 5,
-      "prestigeGain": 3,
-      "character": "ARTIST"
+      "prestigeGain": 3
     },
     {
       "type": "RitualEventNoMalusBuilding",
@@ -53,11 +51,10 @@
       "prestigeGain": 4
     },
     {
-      "type": "SustenanceBuilding",
+      "type": "SustenanceForInventorsBuilding",
       "id": 105,
       "foodCost": 7,
-      "prestigeGain": 4,
-      "character": "INVENTOR"
+      "prestigeGain": 4
     },
     {
       "type": "HuntEventBuilding",

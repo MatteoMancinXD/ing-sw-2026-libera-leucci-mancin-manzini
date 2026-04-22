@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BuildingCard;
 import java.util.List;
+import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,9 @@ public class SustenanceEvent extends EventCard{
 
         //check if there are buildings with Sustenance bonuses (see SustenanceBuilding class)
         for(BuildingCard card : player.getBuildings()){
-            foodFromBuildings += card.getSustenanceEventFoodBonus(player);
+            foodFromBuildings = card.getSustenanceEventArtistsFoodBonus(player) +
+                                card.getSustenanceEventHarvestersFoodBonus(player) +
+                                card.getSustenanceEventInventorsFoodBonus(player);
 
         }
 

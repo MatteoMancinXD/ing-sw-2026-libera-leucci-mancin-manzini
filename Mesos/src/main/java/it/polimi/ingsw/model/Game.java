@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -185,7 +186,7 @@ public class Game {
                 p.editPrestige(b.getBuildingPrestigeGain());
                 b.onGameEnd(p);                         //Attivazione effetti building onGameEnd()
             }
-            List<BuilderCard> builders = p.getCharacterDeck(Character.BUILDER);
+            List<BuilderCard> builders = p.getBuilders();
             for (BuilderCard b : builders) {
                 p.editPrestige(b.getPps());
             }
@@ -235,10 +236,40 @@ public class Game {
                 currentPlayerIndex = 0;
             }
             else if( currentPhase == GamePhase.RESOLUTION) {
+                Player bonusPlayer = checkExtraPickBuilding();
+                if (bonusPlayer != null) {
+                    currentPhase = GamePhase.EXTRA_PICK;
+                    currentPlayerIndex = players.indexOf(bonusPlayer);          //Impostiamo "a mano" il player index al player che ha il building extra pick
+                }
+                else {
+                    nextTurn();
+                }
+            }
+            else if (currentPhase == GamePhase.EXTRA_PICK) {
                 nextTurn();
             }
         }
     }
+
+    private Player checkExtraPickBuilding() {
+        for(Player p: players) {
+            for(BuildingCard b : p.getBuildings()) {
+                if (b.grantsExtraPick()) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void skipExtraPick() throws IllegalStateException {  //Metodo per gestire il caso in cui l'utente decide di NON prendere la carta extra
+        if(this.currentPhase != GamePhase.EXTRA_PICK) {
+            throw new IllegalStateException();
+        }
+        currentPlayerIndex = players.size();
+        nextPlayer();
+    }
+
     /**
      * Handles the end of the entire round.
      * Resolves events, restores the board, advances the round counter (or ends the game),
@@ -327,6 +358,22 @@ public class Game {
         if(currentDrawnLower == targetTile.getLowerRow() && currentDrawnUpper == targetTile.getUpperRow()) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
             nextPlayer();
         }
+
+    }
+
+    public void resolveExtraPick(int pos) {
+
+        if (this.currentPhase != GamePhase.EXTRA_PICK) {
+            throw new IllegalArgumentException("Its not the phase to extra pick");
+        }
+        Player p = this.players.get(currentPlayerIndex);
+
+        Card c = this.board.removeUpper(pos);
+        p.drawCard(c);
+        c.notifyBuildings(p);
+
+        currentPlayerIndex = players.size();     //Re-impostiamo il player Index al max perchè prima era stato impostato al giocatore con l'extrapick building
+        nextPlayer();
 
     }
 
