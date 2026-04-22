@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 //import it.polimi.ingsw.model.Board.*;
 
 
+
 public class BoardTest {
 
     private Board board;
