@@ -24,8 +24,46 @@ public class ArtistCardTest {
     private List<TribeCard> allCards;
     private List<ArtistCard> artistCards;
 
+
     @BeforeEach
-    void setUp() {}
+    void setUp() {
+        allCards = loadCardsFromJson();
+
+        //just artists
+        artistCards = allCards.stream()
+                .filter(c -> c instanceof ArtistCard)
+                .map(c -> (ArtistCard) c)
+                .collect(Collectors.toList());
+    }
+
+    //from class Game
+
+    private List<TribeCard> loadCardsFromJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<TribeCard> allCardsInGame = new ArrayList<>();
+        try {
+            InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json"); //in game è resources/json/cardsInfo.json
+            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
+            Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
+
+            for (Map.Entry<String, List<TribeCard>> entry : data.entrySet()) {
+                String eraString = entry.getKey(); //Prende chiavi del JSON (era1, era2, era3)
+                int eraNumber = Integer.parseInt(eraString.substring(3));
+                for(TribeCard card : entry.getValue()) {
+                    card.setEra(eraNumber); //l'era si imposta "manualmente" perchè NON è un parametro nel JSON
+                    allCardsInGame.add(card);
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return allCardsInGame;
+    }
+
+
+
 
     @Test
     public void testConstructor() {
@@ -46,6 +84,12 @@ public class ArtistCardTest {
     }
 
     @Test
+    public void testJson(){
+        assertFalse(allCards.isEmpty());
+        assertFalse(artistCards.isEmpty());
+    }
+
+    @Test
     public void testAssignTo() {
         Player pl = new Player("giacomo");
 
@@ -58,9 +102,11 @@ public class ArtistCardTest {
     }
 
     @Test
-    public void testAssignToCardSet() {
-        CardSetForFoodBuilding newSpecificCard = new CardSetForFoodBuilding();
-        newSpecificCard.incrementArtists();
+    public void testRegisterForCardSet() {
+        ArtistCard artistCard6 = new  ArtistCard(1,1,2);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        artistCard6.registerForCardSet(newSpecificBuildingCard);  //the building card increments its counter with a +1 artist
 
         //still to do , see behaviour in game
     }
