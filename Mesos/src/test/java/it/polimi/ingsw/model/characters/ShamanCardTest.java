@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,6 +80,14 @@ public class ShamanCardTest {
     }
 
     @Test
+    public void testRegisterForCardSet(){
+        ShamanCard shamanCard6 = new  ShamanCard(1,1,2,1);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        shamanCard6.registerForCardSet(newSpecificBuildingCard);
+    }
+
+    @Test
     public void testJSON(){
         for(ShamanCard card: shamanCards){
             assertTrue(card.getStars()>=0 && card.getStars()<=3);
@@ -86,6 +95,8 @@ public class ShamanCardTest {
             assertFalse(card.getStars()<0 && card.getStars()>3);
         }
     }
+
+
 
 
 

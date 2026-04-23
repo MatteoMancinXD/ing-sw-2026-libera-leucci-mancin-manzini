@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
+import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,6 +84,22 @@ public class InventorCardTest {
         for(InventorCard card: inventorCards){
             assertNotNull(card.getInvention());
         }
+    }
+
+    @Test
+    public void testRegisterForCardSet(){
+        InventorCard inventorCard6 = new InventorCard(1,1,2,Invention.ROPE);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        inventorCard6.registerForCardSet(newSpecificBuildingCard);
+    }
+
+    @Test
+    public void testRegisterForCardInvention(){
+        InventorCard inventorCard6 = new InventorCard(1,1,2,Invention.ROPE);
+        InventorSetForFoodBuilding otherSpecificBuildingCard = new InventorSetForFoodBuilding();
+
+        inventorCard6.registerInvention(otherSpecificBuildingCard);
     }
 
 }

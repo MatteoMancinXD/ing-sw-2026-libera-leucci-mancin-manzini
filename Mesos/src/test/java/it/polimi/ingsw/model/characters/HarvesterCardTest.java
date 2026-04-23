@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,5 +69,12 @@ public class HarvesterCardTest {
 
         harvesterCard1.assignTo(player1);
         assertTrue(player1.getHarvesters().contains(harvesterCard1));
+    }
+    @Test
+    public void testRegisterForCardSet(){
+        HarvesterCard harvesterCard6 = new  HarvesterCard(1,1,2);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        harvesterCard6.registerForCardSet(newSpecificBuildingCard);
     }
 }
