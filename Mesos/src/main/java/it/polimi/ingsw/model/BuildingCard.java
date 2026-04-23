@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.buildings.*;
+import it.polimi.ingsw.model.buildings.prestigebuildings.*;
 import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
 
 @JsonTypeInfo(
@@ -21,7 +22,14 @@ import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
         @JsonSubTypes.Type(value = OrderTileBuilding.class, name = "OrderTileBuilding"),
         @JsonSubTypes.Type(value = PaintingsEventBuilding.class, name = "PaintingsEventBuilding"),
         @JsonSubTypes.Type(value = PrestigeDoublingBuilderValueBuilding.class, name="PrestigeDoublingBuilderValueBuilding"),
-        @JsonSubTypes.Type(value = PrestigeForCharacterBuilding.class, name = "PrestigeForCharacterBuilding"),
+        //PRESTIGE BUILDINGS:
+        @JsonSubTypes.Type(value = PrestigeForArtistsBuilding.class, name = "PrestigeForArtistsBuilding"),
+        @JsonSubTypes.Type(value = PrestigeForBuildersBuilding.class, name = "PrestigeForBuildersBuilding"),
+        @JsonSubTypes.Type(value = PrestigeForHarvestersBuilding.class, name = "PrestigeForHarvestersBuilding"),
+        @JsonSubTypes.Type(value = PrestigeForHuntersBuilding.class, name="PrestigeForHuntersBuilding"),
+        @JsonSubTypes.Type(value = PrestigeForInventorsBuilding.class, name = "PrestigeForInventorsBuilding"),
+        @JsonSubTypes.Type(value = PrestigeForShamansBuilding.class, name = "PrestigeForShamansBuilding"),
+
         @JsonSubTypes.Type(value = CardSetForPrestigeBuilding.class, name = "CardSetForPrestigeBuilding"),
         @JsonSubTypes.Type(value = PrestigeGivingBuilding.class, name = "PrestigeGivingBuilding"),
         @JsonSubTypes.Type(value = RitualEventBonusStarsBuilding.class, name = "RitualEventBonusStarsBuilding"),

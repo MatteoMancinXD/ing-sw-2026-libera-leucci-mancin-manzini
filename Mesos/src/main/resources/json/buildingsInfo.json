@@ -86,43 +86,37 @@
       "type": "PrestigeForHuntersBuilding",
       "id": 110,
       "foodCost": 8,
-      "prestigeGain": 8,
-      "bonusPrestige": 3
+      "prestigeGain": 8
     },
     {
-      "type": "PrestigeForHarvesterBuilding",
+      "type": "PrestigeForHarvestersBuilding",
       "id": 111,
       "foodCost": 7,
-      "prestigeGain": 6,
-      "bonusPrestige": 4
+      "prestigeGain": 6
     },
     {
-      "type": "PrestigeForShamanBuilding",
+      "type": "PrestigeForShamansBuilding",
       "id": 112,
       "foodCost": 7,
-      "prestigeGain": 4,
-      "bonusPrestige": 4
+      "prestigeGain": 4
     },
     {
-      "type": "PrestigeForBuilderBuilding",
+      "type": "PrestigeForBuildersBuilding",
       "id": 113,
       "foodCost": 6,
-      "prestigeGain": 3,
-      "bonusPrestige": 4
+      "prestigeGain": 3
     },
     {
       "type": "PrestigeForArtistsBuilding",
       "id": 114,
       "foodCost": 7,
-      "prestigeGain": 4,
-      "bonusPrestige": 4
+      "prestigeGain": 4
     },
     {
       "type": "PrestigeForInventorsBuilding",
       "id": 115,
       "foodCost": 6,
-      "prestigeGain": 6,
-      "bonusPrestige": 2
+      "prestigeGain": 6
     },
     {
       "type": "ExtraPickBuilding",
