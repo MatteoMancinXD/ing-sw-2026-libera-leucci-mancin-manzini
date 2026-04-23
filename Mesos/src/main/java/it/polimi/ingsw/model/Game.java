@@ -65,12 +65,14 @@ public class Game {
     public int getEra() {
         return era;
     }
+    public GamePhase getCurrentPhase() {  return currentPhase; }
+    public Player getCurrentPlayer() { return players.get(currentPlayerIndex);}
 
     private ArrayList<BuildingCard> loadBuildingsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<BuildingCard> allBuildingsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/resources/json/buildingsInfo.json");
+            InputStream is = getClass().getResourceAsStream("/json/buildingsInfo.json");
             TypeReference<Map<String, List<BuildingCard>>> typeRef = new TypeReference<Map<String, List<BuildingCard>>>() {};
             Map<String, List<BuildingCard>> data = mapper.readValue(is, typeRef);
 
@@ -96,7 +98,7 @@ public class Game {
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/resources/json/cardsInfo.json");
+            InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json");
             TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
@@ -116,6 +118,10 @@ public class Game {
         return allCardsInGame;
     }
 
+
+
+
+
     /**
      * Sets the number of players, ensuring it is a valid amount.
      *
@@ -132,6 +138,7 @@ public class Game {
         return numPlayers;
     }
 
+    public Board getBoard() {return board; }
     // return the list of players inside game
     public List<Player> getPlayers() {
         return players;
@@ -352,9 +359,13 @@ public class Game {
 
         if (row) {
             c = this.board.removeUpper(index);
+            currentDrawnUpper++;
+
         }
         else{
             c = this.board.removeLower(index);
+            currentDrawnLower++;
+
         }
         p.drawCard(c);
         c.notifyBuildings(p);
