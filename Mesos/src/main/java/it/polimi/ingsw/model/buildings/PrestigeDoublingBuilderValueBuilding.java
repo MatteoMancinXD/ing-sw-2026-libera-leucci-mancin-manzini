@@ -13,17 +13,8 @@ public class PrestigeDoublingBuilderValueBuilding extends BuildingCard {
 
     @Override
     public void onGameEnd(Player player){
-        int builderPps;
-        int numBuilders = player.getBuilders().size();
-        BuilderCard builderCard = new BuilderCard();
-
-        /*
-        instead of doubling the builder's prestige points it just adds to player's
-        total prestige points the total amount of points given by all the builders
-        */
         for(BuilderCard c : player.getBuilders()){
-            builderPps = c.getPps();
-            player.editPrestige(builderPps);
+            player.editPrestige(c.getPps());
         }
     }
 }
