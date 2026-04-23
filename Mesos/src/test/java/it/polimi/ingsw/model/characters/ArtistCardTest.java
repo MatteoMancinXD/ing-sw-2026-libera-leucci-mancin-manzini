@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characters;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Character;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,76 +24,91 @@ public class ArtistCardTest {
     private List<TribeCard> allCards;
     private List<ArtistCard> artistCards;
 
+
     @BeforeEach
     void setUp() {
-       /* allCards = loadCardsFromJson();
+        allCards = loadCardsFromJson();
 
         //just artists
         artistCards = allCards.stream()
                 .filter(c -> c instanceof ArtistCard)
                 .map(c -> (ArtistCard) c)
                 .collect(Collectors.toList());
-    }*/
-    /*
-    private List<TribeCard> loadCardsFromJson() { //method in game
+    }
+
+    //from class Game
+
+    private List<TribeCard> loadCardsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
-        List<TribeCard> cards = new ArrayList<>();
+        List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
-            InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json");
-            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<>() {};
+            InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json"); //in game è resources/json/cardsInfo.json
+            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
             for (Map.Entry<String, List<TribeCard>> entry : data.entrySet()) {
-                int eraNumber = Integer.parseInt(entry.getKey().substring(3));
+                String eraString = entry.getKey(); //Prende chiavi del JSON (era1, era2, era3)
+                int eraNumber = Integer.parseInt(eraString.substring(3));
                 for(TribeCard card : entry.getValue()) {
-                    card.setEra(eraNumber);
-                    cards.add(card);
+                    card.setEra(eraNumber); //l'era si imposta "manualmente" perchè NON è un parametro nel JSON
+                    allCardsInGame.add(card);
                 }
             }
-        } catch (Exception e) {
-            fail("Impossibile caricare il file JSON: " + e.getMessage());
         }
-        return cards;*/
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return allCardsInGame;
     }
+
 
 
 
     @Test
     public void testConstructor() {
 
-        int id, numPl, era;
-        Player player;
+        Player player = new Player("giacomo");
 
+        ArtistCard artistCard1 = new ArtistCard();   //void constructor
+        ArtistCard artistCard2 = new ArtistCard(0, 0, 0 );
 
-        ArtistCard artistCard2 = new ArtistCard();   //void constructor
-        ArtistCard artistCard3 = new ArtistCard(0, 0, 0 /*, Character.ARTIST*/); //no json
+        player.addArtist(artistCard1);
+        player.addArtist(artistCard2);
 
+        assertFalse(player.getArtists().isEmpty());
+        assertEquals(2,player.getArtists().size());
+        assertEquals(artistCard1,player.getArtists().get(0));
+        assertEquals(artistCard2,player.getArtists().get(1));
 
-        //with json
-        era = 1;
-        numPl = 2;
+    }
 
-        //assertFalse(artistCards.isEmpty());
-
-        /*for (ArtistCard card : artistCards) {
-
-            for (id = 1; id <= 6; id++) {
-                card = new ArtistCard(id, era, numPl, Character.ARTIST);
-                if (id >= 5) numPl++;
-            }
-        }*/ //useless
+    @Test
+    public void testJson(){
+        assertFalse(allCards.isEmpty());
+        assertFalse(artistCards.isEmpty());
     }
 
     @Test
     public void testAssignTo() {
-        int id, numPl, era;
-        Player pl = new Player("giacomo"); //va inizializzato player
+        Player pl = new Player("giacomo");
 
         //ArtistCard artistCard4 = new  ArtistCard(1,1,2,Character.ARTIST);
         ArtistCard artistCard4 = new  ArtistCard(1,1,2);
         artistCard4.assignTo(pl);
 
+        ArtistCard artiCard5 = new  ArtistCard(0,0,0);
+        artiCard5.assignTo(pl);
+    }
 
+    @Test
+    public void testRegisterForCardSet() {
+        ArtistCard artistCard6 = new  ArtistCard(1,1,2);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        artistCard6.registerForCardSet(newSpecificBuildingCard);  //the building card increments its counter with a +1 artist
+
+        //still to do , see behaviour in game
     }
 
 

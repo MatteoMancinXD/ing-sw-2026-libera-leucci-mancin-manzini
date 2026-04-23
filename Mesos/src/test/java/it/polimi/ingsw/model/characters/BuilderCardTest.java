@@ -3,6 +3,7 @@ import it.polimi.ingsw.model.*;
 
 //import it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,6 +88,14 @@ public class BuilderCardTest {
         builderCard1.assignTo(player);
         assertTrue(player.getBuilders().contains(builderCard1));
 
+    }
+
+    @Test
+    public void testRegisterForCardSet(){
+        BuilderCard artistCard6 = new  BuilderCard(1,1,2,2,3);
+        CardSetForFoodBuilding newSpecificBuildingCard = new CardSetForFoodBuilding();
+
+        artistCard6.registerForCardSet(newSpecificBuildingCard);
     }
 
 
