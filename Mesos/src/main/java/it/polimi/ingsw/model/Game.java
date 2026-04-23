@@ -304,7 +304,11 @@ public class Game {
         ArrayList<Player> nextTurnOrder = new ArrayList<>();
         for(Tile tile: board.getTrack()) {
             if (tile.getStatus()) {
-                nextTurnOrder.add(tile.getPlayer());
+                Player p = tile.getPlayer();
+                for(BuildingCard b : p.getBuildings()) {
+                    b.onOrderTilePlacement(p, nextTurnOrder.size(), board.getOrder());
+                }
+                nextTurnOrder.add(p);
             }
         }
         this.players = nextTurnOrder;

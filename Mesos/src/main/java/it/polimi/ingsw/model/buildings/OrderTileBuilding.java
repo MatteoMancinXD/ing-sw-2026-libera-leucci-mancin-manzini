@@ -10,7 +10,7 @@ public class OrderTileBuilding extends BuildingCard {
 
     public OrderTileBuilding() {}
 
-
+    @Override
     public void onOrderTilePlacement(Player player, int position, OrderTile order) {
         if (order.getModifiers()[position] > 0) {
             player.editFood(1);

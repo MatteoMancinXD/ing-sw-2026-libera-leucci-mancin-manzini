@@ -86,4 +86,5 @@ public abstract class BuildingCard extends Card{
     public void onCharacterCardPurchase(Player player, CharacterCard card) {}
 
     public boolean grantsExtraPick() {return false;}
+    public void onOrderTilePlacement(Player player, int position, OrderTile order) {}
 }
