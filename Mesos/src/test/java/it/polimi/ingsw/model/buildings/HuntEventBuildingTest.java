@@ -22,12 +22,11 @@ class HuntEventBuildingTest {
         }
 
         p.drawCard(b);
-
         hunt.solveEventCard(p, new ArrayList<>());
 
         // Checking player's food and prestige
-        int num = 3;
-        assertEquals(num * 2, p.getFood());
-        assertEquals(num * (hunt.getEra() + 1), p.getPrestige());
+        int numHunters = 3;
+        assertEquals(numHunters * 2, p.getFood());
+        assertEquals(numHunters * (hunt.getEra() + 1), p.getPrestige());
     }
 }
