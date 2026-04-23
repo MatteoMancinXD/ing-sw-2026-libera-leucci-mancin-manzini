@@ -4,11 +4,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
-import it.polimi.ingsw.model.characters.*;
-import it.polimi.ingsw.model.events.HuntEvent;
-import it.polimi.ingsw.model.events.PaintingsEvent;
-import it.polimi.ingsw.model.events.RitualEvent;
-import it.polimi.ingsw.model.events.SustenanceEvent;
 import it.polimi.ingsw.model.buildings.*;
 import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
 
@@ -54,18 +49,11 @@ public abstract class BuildingCard extends Card{
     public void setFoodCost (int foodCost) {this.foodCost = foodCost;}
     public void setPrestigeGain(int prestigeGain) {this.prestigeGain = prestigeGain;}
 
-    public int getBuildingFoodCost() {
+    public int getFoodCost() {
         return foodCost;
     }
-    public int getBuildingPrestigeGain(){
+    public int getPrestigeGain(){
         return prestigeGain;
-    }
-
-
-    //protected because can be modified just inside BuildindCard subclasses
-    protected void setBuildingFoodCost(int foodCost){this.foodCost = foodCost;}
-    protected void setBuildingPrestigeGain(int prestigeGain){
-        this.prestigeGain = prestigeGain;
     }
 
     public void assignTo(Player player) {
@@ -91,11 +79,11 @@ public abstract class BuildingCard extends Card{
 
 
     // Hook methods to handle building events
-    public void onPurchase(Player player) {}; //used in RitualEventBonusStarsBuilding
-    public void onRoundEnd(Player player) {};
-    public void onGameEnd(Player player) {};
+    public void onPurchase(Player player) {}     //used in RitualEventBonusStarsBuilding
+    public void onRoundEnd(Player player) {}
+    public void onGameEnd(Player player) {}
     //public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; useless
-    public void onCharacterCardPurchase(Player player, CharacterCard card) {};
+    public void onCharacterCardPurchase(Player player, CharacterCard card) {}
 
     public boolean grantsExtraPick() {return false;}
 }

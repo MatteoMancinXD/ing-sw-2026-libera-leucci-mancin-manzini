@@ -183,7 +183,7 @@ public class Game {
 
         for (Player p: this.players) {                  //Aggiunta di prestigio finale per buildings e builder
             for(BuildingCard b : p.getBuildings()) {
-                p.editPrestige(b.getBuildingPrestigeGain());
+                p.editPrestige(b.getPrestigeGain());
                 b.onGameEnd(p);                         //Attivazione effetti building onGameEnd()
             }
             List<BuilderCard> builders = p.getBuilders();
