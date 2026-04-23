@@ -95,7 +95,17 @@ public class Player {
     public List<BuildingCard> getBuildings(){ return new ArrayList<>(buildings); }
 
     public void buyBuilding(BuildingCard building){
-        editFood(-building.getBuildingFoodCost());
+        int cost = building.getFoodCost();
+        int discount = 0;
+        for(BuilderCard c : this.builders){
+            discount += c.getDiscount();
+        }
+
+        // if discount <= cost the player loses less food, otherwise doesn't pay any
+        if(discount <= cost){
+            editFood(-(cost - discount));
+        }
+
         building.onPurchase(this);
     }
 
