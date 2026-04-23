@@ -36,8 +36,7 @@ public class RitualEvent extends EventCard{
 
     @Override
     public void solveEventCard(Player player, List<Player> allPlayers){
-
-        boolean hasDoublePrestigeBuilding = false;
+        int multiplier = 1;
         boolean hasNoMalusBuilding = false;
 
         int betterThanOrEqual;
@@ -46,24 +45,6 @@ public class RitualEvent extends EventCard{
         int era = this.getEra();
 
         int otherPlayers = allPlayers.size()-1; //everybody - the player(1)
-        /*
-            //compare the player's stars with the other players' stars: if the player's is among the bests or among the worsts: then give bonus/malus
-            int i=0;
-            int j=0;
-
-            //if player has more/less equal stars compared to all the others
-            for(Player playerInGame : allPlayers){
-                if(!(playerInGame.equals(player))){
-                    if(player.getTotStars() >= playerInGame.getTotStars()){
-                        i++;
-                    }
-                    if (player.getTotStars() <= playerInGame.getTotStars()) {
-                        j++;
-                    }
-                }
-
-            }
-        */
 
         //return the number of times the player's stars are better than or equal / worse than or equal, compared to the others
         betterThanOrEqual = allPlayers.stream()
@@ -77,19 +58,24 @@ public class RitualEvent extends EventCard{
                 .toList().size();
 
         //check if the buildings are present or not
-        hasDoublePrestigeBuilding = player.getBuildings().stream().anyMatch(BuildingCard::getRitualEventDoublePrestigeBonus);
-        hasNoMalusBuilding = player.getBuildings().stream().anyMatch(BuildingCard::getRitualEventNoPrestigeMalus);
+        multiplier = player
+                .getBuildings()
+                .stream()
+                .mapToInt(BuildingCard::getRitualEventDoublePrestigeBonus)
+                .max()
+                .orElse(1);
+
+        hasNoMalusBuilding = player
+                .getBuildings()
+                .stream()
+                .anyMatch(BuildingCard::getRitualEventNoPrestigeMalus);
 
         if(betterThanOrEqual==otherPlayers){
             //player who invoked the solve event method has more stars than all the others (or equal to someone else with whom has more stars than all the others)
-            if(hasDoublePrestigeBuilding){
-                player.editPrestige(5 * era * 2);
-            }else{
-                player.editPrestige(5 * era);
-            }
+            player.editPrestige(5 * era * multiplier);
         }
 
-        if( worseThanOrEqual==otherPlayers && !hasNoMalusBuilding){
+        if(worseThanOrEqual==otherPlayers && !hasNoMalusBuilding){
             //player who invoked the solve event method has less stars than all the others (or equal to someone else with whom has less stars than all the others)
             player.editPrestige(-(3 + (era-1) * 2));
         }
