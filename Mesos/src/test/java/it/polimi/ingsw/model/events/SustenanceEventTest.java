@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SustenanceEventTest {
 
     @Test
-    void SustenanceEventTest() {
+    void sustenanceEventTest() {
 
     }
 

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PaintingsEventTest {
 
     @Test
-    void PaintingsEventTest() {
+    void paintingsEventTest() {
         PaintingsEvent paint = new PaintingsEvent(1,3);
         List<Player> players = new ArrayList<>();
 

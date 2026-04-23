@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RitualEventTest {
 
     @Test
-    void RitualEventMultiWinnerTest() {
+    void ritualEventMultiWinnerTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 
@@ -46,7 +46,7 @@ class RitualEventTest {
     }
 
     @Test
-    void RitualEventMultiLoserTest() {
+    void ritualEventMultiLoserTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 
@@ -75,7 +75,7 @@ class RitualEventTest {
     }
 
     @Test
-    void RitualEventMultiGeneralTest() {
+    void ritualEventMultiGeneralTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 
@@ -106,7 +106,7 @@ class RitualEventTest {
     }
 
     @Test
-    void RitualEventWinAndLoseTest() {
+    void ritualEventWinAndLoseTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 
@@ -130,7 +130,7 @@ class RitualEventTest {
     }
 
     @Test
-    void RitualEventNoMalusTest() {
+    void ritualEventNoMalusTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 
@@ -159,7 +159,7 @@ class RitualEventTest {
     }
 
     @Test
-    void RitualEventDoubleBonusTest() {
+    void ritualEventDoubleBonusTest() {
         RitualEvent ritual = new RitualEvent(1, 1,false);
         List<Player> players = new ArrayList<>();
 

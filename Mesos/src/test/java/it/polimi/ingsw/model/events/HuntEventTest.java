@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HuntEventTest {
 
     @Test
-    void HuntEventTest() {
+    void huntEventTest() {
         HuntEvent hunt = new HuntEvent(1, 2, false);
         Player p1 =  new Player("Player1");
         Player p2 = new Player("Player2");
