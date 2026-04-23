@@ -1,22 +1,21 @@
-package it.polimi.ingsw.model.buildings;
+package it.polimi.ingsw.model.buildings.prestigebuildings;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.buildings.prestigebuildings.PrestigeForHarvestersBuilding;
 import it.polimi.ingsw.model.characters.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PrestigeForHarvestersBuildingTest {
+public class PrestigeForArtistsBuildingTest {
 
     @Test
     void prestigeGainOnGameEndTest() {
 
-        PrestigeForHarvestersBuilding testBuild = new PrestigeForHarvestersBuilding(1, 0, 0, 0);
-        HarvesterCard c1 = new HarvesterCard();
-        HarvesterCard c2 = new HarvesterCard();
-        HarvesterCard c3 = new HarvesterCard();
-        HarvesterCard c4 = new HarvesterCard();
-        HarvesterCard c5 = new HarvesterCard();
-        HarvesterCard c6 = new HarvesterCard();
+        PrestigeForArtistsBuilding testBuild = new PrestigeForArtistsBuilding(1, 0, 0, 0);
+        ArtistCard c1 = new ArtistCard();
+        ArtistCard c2 = new ArtistCard();
+        ArtistCard c3 = new ArtistCard();
+        ArtistCard c4 = new ArtistCard();
+        ArtistCard c5 = new ArtistCard();
+        ArtistCard c6 = new ArtistCard();
 
         Player p1 = new Player("Dante");
         Player p2 = new Player("Beatrice");
@@ -24,9 +23,9 @@ public class PrestigeForHarvestersBuildingTest {
         p1.drawCard(c1);
         p1.drawCard(c2);
         p1.drawCard(c3);
-        p1.drawCard(c4);        //p1 ha 4 harvesters
+        p1.drawCard(c4);        //p1 ha 4 artist
 
-        p2.drawCard(c5);        //p2 ha 2 harvesters
+        p2.drawCard(c5);        //p2 ha 2 artist
         p2.drawCard(c6);
 
         p1.drawCard(testBuild);
@@ -39,4 +38,5 @@ public class PrestigeForHarvestersBuildingTest {
         assertEquals(8, p2.getPrestige(), "Player 2 should have 4*2=8 prestige");
 
     }
+
 }

@@ -1,10 +1,7 @@
-package it.polimi.ingsw.model.buildings;
+package it.polimi.ingsw.model.buildings.sustenancebuildings;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.buildings.sustenancebuildings.SustenanceForHarvestersBuilding;
-import it.polimi.ingsw.model.characters.ArtistCard;
 import it.polimi.ingsw.model.characters.HarvesterCard;
 import it.polimi.ingsw.model.characters.HunterCard;
-import it.polimi.ingsw.model.events.HuntEvent;
 import it.polimi.ingsw.model.events.SustenanceEvent;
 import org.junit.jupiter.api.Test;
 

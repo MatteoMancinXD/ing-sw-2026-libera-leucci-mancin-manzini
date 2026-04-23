@@ -1,6 +1,5 @@
-package it.polimi.ingsw.model.buildings;
+package it.polimi.ingsw.model.buildings.prestigebuildings;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.buildings.prestigebuildings.PrestigeForInventorsBuilding;
 import it.polimi.ingsw.model.characters.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
