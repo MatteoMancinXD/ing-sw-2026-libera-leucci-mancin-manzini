@@ -49,6 +49,7 @@ public class Tile {
     public void place(Player p) {
         this.status= true;
         this.player =p;
+        p.editFood(this.foodBonus);
     }
 
     /**

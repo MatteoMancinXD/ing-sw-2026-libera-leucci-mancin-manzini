@@ -22,4 +22,14 @@ public class TileTest {
         assertNull(tile.getPlayer(), "Tile's player after reset should be null");
     }
 
+    @Test
+    void oodBonusTile() {
+        Tile tile = new Tile(1, 'A', 0, 0 , 3);
+        Player p = new Player("Matteo");
+
+        tile.place(p);
+
+        assertEquals(3, p.getFood(), "Tile food bonus apply when a player is placed into it");
+    }
+
 }
