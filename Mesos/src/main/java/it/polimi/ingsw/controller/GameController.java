@@ -1,16 +1,16 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.rmi.VirtualRMIView;
+import it.polimi.ingsw.network.rmi.VirtualRMIView;
 
 import java.util.List;
 
-public class ServerController {
+public class GameController {
 
     private Game game;
     List<VirtualRMIView> connectedClients;
 
-    public ServerController(List<VirtualRMIView> clients) {
+    public GameController(List<VirtualRMIView> clients) {
         this.connectedClients = clients;
         this.game = new Game(clients.size());
     }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.rmi;
+package it.polimi.ingsw.network.rmi;
 
 public interface VirtualRMIView {
 }

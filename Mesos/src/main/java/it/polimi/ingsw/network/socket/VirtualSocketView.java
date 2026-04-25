@@ -1,4 +1,4 @@
-package it.polimi.ingsw.socket;
+package it.polimi.ingsw.network.socket;
 
 public interface VirtualSocketView {
 }
