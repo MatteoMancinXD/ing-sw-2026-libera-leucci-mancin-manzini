@@ -24,4 +24,6 @@ public abstract class Card {
     public void assignTo(Player player) {}
 
     public void notifyBuildings(Player player) {};
+
+    public int getFoodCost() { return 0; }
 }

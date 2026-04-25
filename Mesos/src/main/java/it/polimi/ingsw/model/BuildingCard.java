@@ -57,6 +57,7 @@ public abstract class BuildingCard extends Card{
     public void setFoodCost (int foodCost) {this.foodCost = foodCost;}
     public void setPrestigeGain(int prestigeGain) {this.prestigeGain = prestigeGain;}
 
+    @Override
     public int getFoodCost() {
         return foodCost;
     }
