@@ -349,7 +349,7 @@ public class Game {
                 break;
             }
         }
-
+        
         if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
             throw new IllegalArgumentException("You already drawn the max number of cards from the upper row");
         }
