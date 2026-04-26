@@ -1,11 +1,9 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,14 +26,20 @@ public class GameController {
             } else {
                 game.addPlayer(new Player(nickname));
                 clients.put(nickname, view);
+
+                if(game.getPlayers().size() == game.getNumPlayers()) {
+                    game.startGame();
+                }
                 return true;
             }
         }
     }
 
-    public boolean drawCard(boolean row, int idx) {
+    public boolean drawCard(String nickname, boolean row, int idx) {
         if(idx < 0)
             return false;
+
+        if(!checkPlayer(nickname)) return false;
 
         Player p = game.getCurrentPlayer();
         Board board = game.getBoard();
@@ -46,7 +50,38 @@ public class GameController {
         if(foodCost > p.getFood())
             return false;
 
-        p.drawCard(card);
+        game.resolveAction(row, idx);
+        broadcastUpdateBoard();
+
         return true;
+    }
+
+    public boolean placeTotem(String nickname, int tileIndex) {
+        if(!checkPlayer(nickname)) return false;
+        if(tileIndex < 0 || tileIndex > 4 + (game.getNumPlayers() - 2) - 1) return false;
+
+
+        Board board = game.getBoard();
+        Tile tile = board.getTrack().get(tileIndex);
+        if(tile.getStatus()) return false;
+
+        game.placeTotem(tileIndex);
+
+        broadcastUpdateBoard();
+        return true;
+    }
+
+    public void broadcastUpdateBoard() {
+        for(VirtualView view : clients.values()) {
+            try {
+                view.updateBoard(game.getBoard());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean checkPlayer(String nickname) {
+        return nickname.equals(game.getCurrentPlayer().getNickname());
     }
 }
