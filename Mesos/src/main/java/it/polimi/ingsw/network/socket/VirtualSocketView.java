@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network.socket;
 
-public class VirtualSocketView  implements VirtualView{
+import it.polimi.ingsw.network.VirtualView;
+
+public abstract class VirtualSocketView  implements VirtualView {
 
 
 

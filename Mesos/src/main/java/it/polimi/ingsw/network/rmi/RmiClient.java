@@ -22,12 +22,12 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote {
         this.nickname = nickname;
     }
 
-    public void startConnection(String serverIP, int port) {
+    public void startConnection(String serverIP, int port, int gameId, int numPlayers) throws RemoteException {
         try {
             System.out.println("Connecting to " + serverIP + ":" + port);
             Registry registry = LocateRegistry.getRegistry(serverIP, port);
             serverStub = (ServerInterface) registry.lookup("MesosServer");
-            serverStub.login(nickname, this);
+            serverStub.login(nickname, gameId, numPlayers, this);
             System.out.println("Connected and logged with success to " + serverIP + ":" + port);
         }
         catch (Exception e) {
@@ -38,7 +38,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote {
 
     public void askToDrawCard(boolean row, int idx) {
         try {
-            serverStub.drawCard(nickname, row, idx);
+            serverStub.drawCard(nickname, 1, row, idx);
         } catch(RemoteException e) {
             System.err.println("Failed to ask to draw card, lost connection");
         }
