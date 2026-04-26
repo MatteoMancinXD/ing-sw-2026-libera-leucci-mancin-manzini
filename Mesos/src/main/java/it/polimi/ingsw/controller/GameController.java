@@ -58,10 +58,10 @@ public class GameController {
 
     public boolean placeTotem(String nickname, int tileIndex) {
         if(!checkPlayer(nickname)) return false;
-        if(tileIndex < 0 || tileIndex > 4 + (game.getNumPlayers() - 2) - 1) return false;
-
 
         Board board = game.getBoard();
+        if(tileIndex < 0 || tileIndex > board.getTrack().size() - 1) return false;
+
         Tile tile = board.getTrack().get(tileIndex);
         if(tile.getStatus()) return false;
 
