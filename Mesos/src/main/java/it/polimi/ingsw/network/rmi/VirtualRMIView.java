@@ -6,6 +6,8 @@ import it.polimi.ingsw.network.VirtualView;
 import java.rmi.RemoteException;
 import java.util.List;
 
+
+//Client Handler RMI
 public class VirtualRMIView implements VirtualView {
 
     private final String nickname;
