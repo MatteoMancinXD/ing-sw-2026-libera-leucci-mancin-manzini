@@ -6,7 +6,7 @@ public interface NetworkClient {
 
     void createGame(String nickname, int numPlayers);
 
-    void joinGame(String nickname);
+    void joinGame(String nickname, int gameID);
 
     void askToDrawCard(boolean row, int index);
 
