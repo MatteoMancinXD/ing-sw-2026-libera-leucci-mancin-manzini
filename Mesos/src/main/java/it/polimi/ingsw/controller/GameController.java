@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 public class GameController {
-
+    private int gameID;
     private Game game;
     private Map<String, VirtualView> clients;
 
-    public GameController(int numPlayers) {
+    public GameController(int gameID, int numPlayers) {
+        this.gameID = gameID;
         game = new Game(numPlayers);
         clients = new HashMap<>();
     }
@@ -31,6 +32,7 @@ public class GameController {
 
                 if(game.getPlayers().size() == game.getNumPlayers()) {
                     game.startGame();
+                    System.out.println("Game " + gameID + " is starting.");
                 }
                 return true;
             }
