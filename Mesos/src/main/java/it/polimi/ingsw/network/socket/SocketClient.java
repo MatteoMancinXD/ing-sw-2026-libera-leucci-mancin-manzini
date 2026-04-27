@@ -1,7 +1,9 @@
 package it.polimi.ingsw.network.socket;
 
+import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.messages.BoardUpdateMessage;
 import it.polimi.ingsw.network.messages.ClientToServerMessage;
+import it.polimi.ingsw.network.messages.PlaceTotemMessage;
 import it.polimi.ingsw.network.messages.ServerToClientMessage;
 
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SocketClient {
+public class SocketClient implements NetworkClient {
 
     private final String nickname;
     private String token;
@@ -63,6 +65,10 @@ public class SocketClient {
         } finally {
             try { if (socket != null) socket.close(); } catch (IOException ex) { }
         }
+    }
+
+    public void askToPlaceTotem(int index) {
+        sendMessageToServer(new PlaceTotemMessage(this.nickname, index));
     }
 
 }
