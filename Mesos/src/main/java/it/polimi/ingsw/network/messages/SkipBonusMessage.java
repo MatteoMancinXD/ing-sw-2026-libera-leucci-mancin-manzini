@@ -11,7 +11,7 @@ public class SkipBonusMessage extends ClientToServerMessage{
     }
 
     @Override
-    public void process(GameController controller, SocketClientHandler handler) {
-        controller.skipBonusPick();
+    public void process(SocketClientHandler handler) {
+        handler.handleSkip(this);
     }
 }

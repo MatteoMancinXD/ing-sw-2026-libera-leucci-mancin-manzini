@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.messages;
 
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.GameManager;
 import it.polimi.ingsw.network.socket.SocketClientHandler;
 
 public class DrawCardMessage extends ClientToServerMessage{
@@ -22,9 +23,10 @@ public class DrawCardMessage extends ClientToServerMessage{
         return this.index;
     }
 
+
     @Override
-    public void process(GameController controller, SocketClientHandler handler) {
-        controller.drawCard(getNickname(), upperRow, index);
+    public void process(SocketClientHandler handler) {
+        handler.handleDrawCard(this);
     }
 
 }

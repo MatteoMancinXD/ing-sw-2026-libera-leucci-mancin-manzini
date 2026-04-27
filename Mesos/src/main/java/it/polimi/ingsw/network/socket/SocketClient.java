@@ -12,6 +12,7 @@ import java.net.Socket;
 public class SocketClient {
 
     private final String nickname;
+    private String token;
     //ci sarà anche la TUI/GUI
 
     private Socket socket;
