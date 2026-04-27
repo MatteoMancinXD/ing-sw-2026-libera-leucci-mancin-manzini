@@ -27,11 +27,11 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
 
         if(lobbies.containsKey(gameID)){
             lobbies.get(gameID).addPlayer(view, nickname);
-            System.out.println(nickname + " participates to game " + gameID + " through RMI.");
+            //System.out.println(nickname + " participates to game " + gameID + " through RMI.");
         } else {
             lobbies.put(gameID, new GameController(gameID, numPlayers));
             lobbies.get(gameID).addPlayer(view, nickname);
-            System.out.println(nickname + " creates game " + gameID +  " through RMI.");
+            //System.out.println(nickname + " creates game " + gameID +  " through RMI.");
         }
 
         String token = UUID.randomUUID().toString();

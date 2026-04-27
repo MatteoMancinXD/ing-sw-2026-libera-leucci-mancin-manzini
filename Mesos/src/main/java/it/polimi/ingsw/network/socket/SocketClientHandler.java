@@ -59,11 +59,11 @@ public class SocketClientHandler implements Runnable{
 
         if(lobbies.containsKey(gameID)){
             success = lobbies.get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
+            //System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
         } else {
             lobbies.put(gameID, new GameController(gameID, numPlayers));
             success = lobbies.get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
+            //System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
         }
 
         if (!success) {

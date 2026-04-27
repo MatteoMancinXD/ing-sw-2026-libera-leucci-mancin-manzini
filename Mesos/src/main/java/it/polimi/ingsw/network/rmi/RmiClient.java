@@ -79,7 +79,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote {
     }
     @Override
     public void receiveMessage(String message) throws RemoteException {
-
+        System.out.println(message);
     }
 
     @Override

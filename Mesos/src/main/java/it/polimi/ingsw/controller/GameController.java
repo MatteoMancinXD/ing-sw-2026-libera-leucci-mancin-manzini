@@ -21,7 +21,7 @@ public class GameController {
     }
 
     public boolean addPlayer(VirtualView view, String nickname) {
-        synchronized(this) {
+        synchronized(game) {
             if (game.getPlayers().size() == game.getNumPlayers()) {
                 return false;
             } else if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
@@ -30,12 +30,21 @@ public class GameController {
                 game.addPlayer(new Player(nickname));
                 clients.put(nickname, view);
 
-                if(game.getPlayers().size() == game.getNumPlayers()) {
+                int curr = game.getPlayers().size();
+                int max = game.getNumPlayers();
+
+                System.out.println(nickname + " joined game #" + gameID);
+                String msg = "Current players: " + curr + "/" + max + "...";
+                broadcastMessage(msg);
+
+                if (game.getPlayers().size() == game.getNumPlayers()) {
                     game.startGame();
-                    System.out.println("Game " + gameID + " is starting.");
+                    System.out.println("Game #" + gameID + " is starting.");
+
+                    broadcastMessage("Game #" + gameID + " starting.");
                 }
-                return true;
             }
+            return true;
         }
     }
 
@@ -55,7 +64,7 @@ public class GameController {
             return false;
 
         game.resolveAction(row, idx);
-        new Thread(() -> { broadcastUpdateBoard(); }).start();
+        broadcastUpdateBoard();
 
         return true;
     }
@@ -71,18 +80,34 @@ public class GameController {
 
         game.placeTotem(tileIndex);
 
-        new Thread(() -> { broadcastUpdateBoard(); }).start();
+        broadcastUpdateBoard();
         return true;
     }
 
     public void broadcastUpdateBoard() {
-        synchronized(this) {
+        synchronized(clients) {
             for(VirtualView view : clients.values()) {
-                try {
-                    view.updateBoard(game.getBoard());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                new Thread(() -> {
+                    try {
+                        view.updateBoard(game.getBoard());
+                    } catch (RemoteException e) {
+                        System.out.println("Client unreachable.");
+                    }
+                }).start();
+            }
+        }
+    }
+
+    public void broadcastMessage(String message) {
+        synchronized(clients) {
+            for(VirtualView view : clients.values()) {
+                new Thread(() -> {
+                    try {
+                        view.showMessage(message);
+                    } catch (RemoteException e) {
+                        System.out.println("Client unreachable.");
+                    }
+                }).start();
             }
         }
     }
