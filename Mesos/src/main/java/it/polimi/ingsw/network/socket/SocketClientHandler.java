@@ -49,7 +49,7 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
-    public String handleLogin(LoginMessage msg) {
+    public void handleLogin(LoginMessage msg) {
         this.nickname = msg.getNickname();
         int gameId = msg.getGameId();
         int numPlayers = msg.getNumPlayers();
@@ -81,19 +81,20 @@ public class SocketClientHandler implements Runnable{
         }
 
         return UUID.randomUUID().toString();
-    } */
+     */ }
 
     public void handleDrawCard(DrawCardMessage msg) {
       //  String token = msg.getToken();
 
-        gameController.drawCard(msg.getUpperRow(), msg.getIndex());
+        gameController.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
     }
 
     public void handlePlaceTotem(PlaceTotemMessage msg) {
-            gameController.placeTotem(msg.getPos());
+            gameController.placeTotem(nickname, msg.getPos());
         }
 
-    public void handleSkip(SkipBonusMessage msg) {}
+    public void handleSkip(SkipBonusMessage msg) {    gameController.skipExtraPick(nickname);
+    }
 
 
     private boolean validateToken(String receivedToken) {

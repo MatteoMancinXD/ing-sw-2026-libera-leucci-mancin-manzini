@@ -116,4 +116,13 @@ public class GameController {
     public boolean checkPlayer(String nickname) {
         return nickname.equals(game.getCurrentPlayer().getNickname());
     }
+
+    public void skipExtraPick(String nickname) {
+        if(!checkPlayer(nickname)) return;
+        game.skipExtraPick();
+        new Thread(() -> {
+            broadcastUpdateBoard();
+            notifyCurrentPlayer();
+        }).start();
+    }
 }
