@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.GameManager;
+import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.messages.ClientToServerMessage;
 import it.polimi.ingsw.network.messages.DrawCardMessage;
 import it.polimi.ingsw.network.messages.LoginMessage;
@@ -46,9 +47,9 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
-    public String handleLogin(LoginMessage msg) {
+    public void handleLogin(LoginMessage msg) {
         this.nickname = msg.getNickname();
-        int gameId = msg.getGameId();
+        int gameID = msg.getGameId();
         int numPlayers = msg.getNumPlayers();
 
         Map<Integer, GameController> lobbies = mngr.getLobbies();
@@ -56,20 +57,23 @@ public class SocketClientHandler implements Runnable{
         VirtualSocketView view = new VirtualSocketView(nickname, out);
         boolean success;
 
-        if(lobbies.containsKey(gameId)){
-            success = lobbies.get(gameId).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " added to lobby " + gameId + " through socket.");
+        if(lobbies.containsKey(gameID)){
+            success = lobbies.get(gameID).addPlayer(view, nickname);
+            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
         } else {
-            lobbies.put(gameId, new GameController(numPlayers));
-            success = lobbies.get(gameId).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " created lobby " + gameId + " through socket.");
+            lobbies.put(gameID, new GameController(gameID, numPlayers));
+            success = lobbies.get(gameID).addPlayer(view, nickname);
+            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
         }
 
         if (!success) {
            //messaggio errore
         }
 
-        return UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
+        GameSession session = new GameSession(gameID, nickname);
+
+        mngr.getSessions().put(token, session);
     }
 
     public void handleDrawCard(DrawCardMessage msg) {

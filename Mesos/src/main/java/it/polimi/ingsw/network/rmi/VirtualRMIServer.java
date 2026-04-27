@@ -21,20 +21,25 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public String login(String nickname, int gameId, int numPlayers, ClientRemote clientStub) throws RemoteException {
+    public String login(String nickname, int gameID, int numPlayers, ClientRemote clientStub) throws RemoteException {
         VirtualRMIView view = new VirtualRMIView(nickname, clientStub);
         Map<Integer, GameController> lobbies = mngr.getLobbies();
 
-        if(lobbies.containsKey(gameId)){
-            lobbies.get(gameId).addPlayer(view, nickname);
-            System.out.println(nickname + " participates to game " + gameId + " through RMI.");
+        if(lobbies.containsKey(gameID)){
+            lobbies.get(gameID).addPlayer(view, nickname);
+            System.out.println(nickname + " participates to game " + gameID + " through RMI.");
         } else {
-            lobbies.put(gameId, new GameController(numPlayers));
-            lobbies.get(gameId).addPlayer(view, nickname);
-            System.out.println(nickname + " creates game " + gameId +  " through RMI.");
+            lobbies.put(gameID, new GameController(gameID, numPlayers));
+            lobbies.get(gameID).addPlayer(view, nickname);
+            System.out.println(nickname + " creates game " + gameID +  " through RMI.");
         }
 
-        return UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
+        GameSession session = new GameSession(gameID, nickname);
+
+        mngr.getSessions().put(token, session);
+
+        return token;
     }
 
     @Override
