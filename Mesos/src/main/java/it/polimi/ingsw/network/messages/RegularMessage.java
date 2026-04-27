@@ -11,4 +11,8 @@ public class RegularMessage extends ServerToClientMessage{
         return message;
     }
 
+    public void process() {
+        //userInterface....
+    }
+
 }

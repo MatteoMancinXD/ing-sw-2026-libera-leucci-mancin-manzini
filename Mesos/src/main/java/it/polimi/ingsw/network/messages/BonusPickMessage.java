@@ -4,4 +4,8 @@ public class BonusPickMessage extends ServerToClientMessage{
 
     public BonusPickMessage(){}
 
+    public void process() {
+        //userInterface....
+    }
+
 }

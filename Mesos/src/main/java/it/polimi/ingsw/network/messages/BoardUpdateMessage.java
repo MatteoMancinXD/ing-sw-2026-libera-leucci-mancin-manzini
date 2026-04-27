@@ -13,4 +13,9 @@ public class BoardUpdateMessage extends ServerToClientMessage {
         return board;
     }
 
+    @Override
+    public void process() {
+        //userInterface.updateBoard(board);
+    }
+
 }

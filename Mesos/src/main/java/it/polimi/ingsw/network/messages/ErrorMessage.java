@@ -12,4 +12,8 @@ public class ErrorMessage extends ServerToClientMessage {
         return error;
     }
 
+    public void process() {
+        //userInterface....
+    }
+
 }

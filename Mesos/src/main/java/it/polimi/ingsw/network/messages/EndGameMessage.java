@@ -15,4 +15,8 @@ public class EndGameMessage extends ServerToClientMessage{
         return rankings;
     }
 
+    public void process() {
+        //userInterface....
+    }
+
 }

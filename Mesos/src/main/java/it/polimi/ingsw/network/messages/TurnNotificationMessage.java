@@ -12,4 +12,8 @@ public class TurnNotificationMessage extends ServerToClientMessage{
         return this.currentPlayerNickname;
     }
 
+    public void process() {
+        //userInterface....
+    }
+
 }
