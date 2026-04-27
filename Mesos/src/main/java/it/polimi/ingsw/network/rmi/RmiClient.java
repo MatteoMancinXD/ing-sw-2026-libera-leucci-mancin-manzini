@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
 
 import java.rmi.RemoteException;
@@ -10,7 +11,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class RmiClient extends UnicastRemoteObject implements ClientRemote {
+public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
     private String token;
     private final String nickname;
@@ -37,11 +38,25 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote {
         }
     }
 
+    public void requestGameAvailable() {
+        try {
+
+        }
+    }
+
     public void askToDrawCard(boolean row, int idx) {
         try {
             serverStub.drawCard(token, row, idx);
         } catch(RemoteException e) {
             System.err.println("Failed to ask to draw card, lost connection");
+        }
+    }
+
+    public void askToPlaceTotem(int index) {
+        try {
+            serverStub.placeTotem(token, index);
+        } catch(RemoteException e) {
+            System.err.println("Connection error: Failed to place totem");
         }
     }
 
