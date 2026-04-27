@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.network.messages.BoardUpdateMessage;
 import it.polimi.ingsw.network.messages.ClientToServerMessage;
+import it.polimi.ingsw.network.messages.LoginMessage;
 import it.polimi.ingsw.network.messages.ServerToClientMessage;
 
 import java.io.IOException;
@@ -41,6 +42,10 @@ public class SocketClient {
         }
     }
 
+    public void login(int gameId, int numPlayers){
+        sendMessageToServer(new LoginMessage(nickname, gameId, numPlayers));
+    }
+
     public void sendMessageToServer(ClientToServerMessage message) {
         try {
             out.writeObject(message);
@@ -51,11 +56,14 @@ public class SocketClient {
         }
     }
 
+    public String getToken() {return token;}
+public void setToken(String token) {this.token = token;}
 
     private void listenToServer() {
         try {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
+                message.onReceive(this);
                 message.process();
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -63,6 +71,7 @@ public class SocketClient {
         } finally {
             try { if (socket != null) socket.close(); } catch (IOException ex) { }
         }
+
     }
 
 }

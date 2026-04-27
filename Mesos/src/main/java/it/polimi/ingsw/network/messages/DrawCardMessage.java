@@ -10,8 +10,8 @@ public class DrawCardMessage extends ClientToServerMessage{
     private final boolean upperRow;
     private final int index;
 
-    public DrawCardMessage(String nickname, boolean upperRow, int index) {
-        super(nickname);
+    public DrawCardMessage(String token, boolean upperRow, int index) {
+        super(token);
         this.upperRow = upperRow;
         this.index = index;
     }

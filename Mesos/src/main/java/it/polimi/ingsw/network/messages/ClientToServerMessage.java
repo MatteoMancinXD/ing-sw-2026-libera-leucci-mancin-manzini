@@ -16,6 +16,6 @@ public abstract class ClientToServerMessage implements Serializable {
     public String getToken() {
         return token;
     }
-
+    public boolean requiresToken(){return true;}
     public abstract void process(SocketClientHandler handler);
 }
