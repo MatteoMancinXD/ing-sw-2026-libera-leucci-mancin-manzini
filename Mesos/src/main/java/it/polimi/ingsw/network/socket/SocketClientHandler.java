@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.GameManager;
+import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
@@ -14,17 +15,17 @@ import java.util.UUID;
 public class SocketClientHandler implements Runnable{
 
     private final Socket socket;
-    //private final GameManager mngr;
-    private final GameController gameController;
+    private final GameManager mngr;
+
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String nickname;
     private String token;
 
-    public SocketClientHandler(Socket socket, GameController gameController) {
+    public SocketClientHandler(Socket socket, GameManager mngr) {
         this.socket = socket;
-        this.gameController = gameController;
+        this.mngr = mngr;
     }
 
     @Override
@@ -35,7 +36,6 @@ public class SocketClientHandler implements Runnable{
 
             while (true) {
                 ClientToServerMessage message = (ClientToServerMessage) in.readObject();
-                //message.process(this);
                 if (message.requiresToken() && !validateToken(message.getToken())) {
                     sendMessage(new ErrorMessage("Token non valid"));
                     continue;
@@ -59,43 +59,40 @@ public class SocketClientHandler implements Runnable{
         //Map<Integer, GameController> lobbies = mngr.getLobbies();
 
         VirtualSocketView view = new VirtualSocketView(nickname, out);
-        boolean success= gameController.addPlayer(view, nickname);
-        if (success) {
-            this.token = UUID.randomUUID().toString();
-            sendMessage(new LoginResponseMessage(token));
-        } else {
-            sendMessage(new LoginResponseMessage("Nickname already taken", false));
-        }
-
-       /* if(lobbies.containsKey(gameId)){
-            success = lobbies.get(gameId).addPlayer(view, nickname);
+        //boolean success= gameController.addPlayer(view, nickname);
+        if (mngr.getLobbies().containsKey(gameId)) {
+            mngr.getLobbies().get(gameId).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " added to lobby " + gameId + " through socket.");
         } else {
-            lobbies.put(gameId, new GameController(numPlayers));
-            success = lobbies.get(gameId).addPlayer(view, nickname);
+            mngr.getLobbies().put(gameId, new GameController(gameId, numPlayers));
+            mngr.getLobbies().get(gameId).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " created lobby " + gameId + " through socket.");
         }
 
-        if (!success) {
-           //messaggio errore
-        }
-
-        return UUID.randomUUID().toString();
-     */ }
+        this.token = UUID.randomUUID().toString();
+        mngr.getSessions().put(token, new GameSession(gameId, nickname));
+        sendMessage(new LoginResponseMessage(token));
+    }
 
     public void handleDrawCard(DrawCardMessage msg) {
-      //  String token = msg.getToken();
-
-        gameController.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
+        GameController ctrl = getController();
+        if (ctrl != null) ctrl.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
     }
 
     public void handlePlaceTotem(PlaceTotemMessage msg) {
-            gameController.placeTotem(nickname, msg.getPos());
+        GameController ctrl = getController();
+        if (ctrl != null) ctrl.placeTotem(nickname, msg.getPos());
         }
 
-    public void handleSkip(SkipBonusMessage msg) {    gameController.skipExtraPick(nickname);
+    public void handleSkip(SkipBonusMessage msg) {  GameController ctrl = getController();
+        if (ctrl != null) ctrl.skipExtraPick(nickname);
     }
 
+    private GameController getController() {
+        GameSession session = mngr.getSessions().get(token);
+        if (session == null) return null;
+        return mngr.getLobbies().get(session.getGameID());
+    }
 
     private boolean validateToken(String receivedToken) {
             return this.token != null && this.token.equals(receivedToken);
