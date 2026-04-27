@@ -33,6 +33,9 @@ public class GameController {
                 if(game.getPlayers().size() == game.getNumPlayers()) {
                     game.startGame();
                     System.out.println("Game " + gameID + " is starting.");
+                    new Thread(() -> {
+                        broadcastUpdateBoard();
+                        notifyCurrentPlayer();}).start();
                 }
                 return true;
             }
@@ -55,7 +58,8 @@ public class GameController {
             return false;
 
         game.resolveAction(row, idx);
-        new Thread(() -> { broadcastUpdateBoard(); }).start();
+        new Thread(() -> { broadcastUpdateBoard();
+                            notifyCurrentPlayer();}).start();
 
         return true;
     }
@@ -71,7 +75,8 @@ public class GameController {
 
         game.placeTotem(tileIndex);
 
-        new Thread(() -> { broadcastUpdateBoard(); }).start();
+        new Thread(() -> { broadcastUpdateBoard();
+            notifyCurrentPlayer();}).start();
         return true;
     }
 
@@ -80,6 +85,27 @@ public class GameController {
             for(VirtualView view : clients.values()) {
                 try {
                     view.updateBoard(game.getBoard());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void notifyCurrentPlayer() {
+        synchronized(this) {
+            if (game.getRound() > 10) return;
+            String current = game.getCurrentPlayer().getNickname();
+            for (VirtualView view : clients.values()) {
+                try {
+                    view.notifyTurn(current);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (game.getCurrentPhase() == GamePhase.EXTRA_PICK) {
+                try {
+                    clients.get(current).askBonusExtraPick();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
