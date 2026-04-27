@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
+
+import java.io.Serializable;
+
 /**
  * Represents an offer tile on the board track, each tile specifies how many cards a player draws from each row.
  */
-public class Tile {
+public class Tile implements Serializable {
     private int minPlayers;
     private char letter;
     private int upperRow;

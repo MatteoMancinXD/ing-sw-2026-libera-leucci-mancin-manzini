@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.events.SustenanceEvent;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * Represents the main game board. Manages the two rows, the track tiles, the building card display. Also handles row shifting and event resolution between rounds.
  */
-public class Board {
+public class Board implements Serializable {
     private List<Card> upperRow;
     private List<Card> lowerRow;
     private List<Tile> track;
