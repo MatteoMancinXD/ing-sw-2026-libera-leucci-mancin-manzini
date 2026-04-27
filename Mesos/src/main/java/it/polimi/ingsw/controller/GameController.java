@@ -21,7 +21,9 @@ public class GameController {
 
     public boolean addPlayer(VirtualView view, String nickname) {
         synchronized(this) {
-            if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
+            if (game.getPlayers().size() == game.getNumPlayers()) {
+                return false;
+            } else if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
                 return false;
             } else {
                 game.addPlayer(new Player(nickname));
@@ -51,7 +53,7 @@ public class GameController {
             return false;
 
         game.resolveAction(row, idx);
-        broadcastUpdateBoard();
+        new Thread(() -> { broadcastUpdateBoard(); }).start();
 
         return true;
     }
@@ -67,16 +69,18 @@ public class GameController {
 
         game.placeTotem(tileIndex);
 
-        broadcastUpdateBoard();
+        new Thread(() -> { broadcastUpdateBoard(); }).start();
         return true;
     }
 
     public void broadcastUpdateBoard() {
-        for(VirtualView view : clients.values()) {
-            try {
-                view.updateBoard(game.getBoard());
-            } catch (RemoteException e) {
-                e.printStackTrace();
+        synchronized(this) {
+            for(VirtualView view : clients.values()) {
+                try {
+                    view.updateBoard(game.getBoard());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
