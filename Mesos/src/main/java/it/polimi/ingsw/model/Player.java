@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,7 +13,7 @@ import java.util.*;
  *
  * @author Matteo Mancin
  */
-public class Player {
+public class Player implements Serializable {
 
     private String nickname;
     private int food;
