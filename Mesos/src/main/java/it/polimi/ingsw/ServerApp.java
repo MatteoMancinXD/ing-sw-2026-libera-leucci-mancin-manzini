@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.GameManager;
+import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.rmi.VirtualRMIServer;
 import it.polimi.ingsw.network.socket.SocketServer;
 
@@ -13,10 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerApp
 {
-    public static void runRMIServer(Map<Integer, GameController> lobbies) {
+    public static void runRMIServer(GameManager mngr) {
         try {
             System.out.println("[SERVER] Starting RMI server...");
-            VirtualRMIServer lobbyMaster = new VirtualRMIServer(lobbies);
+            VirtualRMIServer lobbyMaster = new VirtualRMIServer(mngr);
 
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("MesosServer", lobbyMaster);
@@ -29,20 +31,24 @@ public class ServerApp
         }
     }
 
-    public static void runSocketServer(Map<Integer, GameController> lobbies) {
+    public static void runSocketServer(GameManager mngr) {
         System.out.println("[SERVER] Starting socket server...");
-        SocketServer socketServer = new SocketServer(5000, lobbies);
+        SocketServer socketServer = new SocketServer(5000, mngr);
 
         socketServer.start();
     }
 
     public static void main( String[] args )
     {
-        Map<Integer, GameController> lobbies = new ConcurrentHashMap<Integer, GameController>();
-        Thread rmiServerThread = new Thread(() -> { runRMIServer(lobbies); });
+        Map<Integer, GameController> lobbies = new ConcurrentHashMap<>();
+        Map<String, GameSession> sessions = new ConcurrentHashMap<>();
+
+        GameManager mngr = new GameManager(lobbies, sessions);
+
+        Thread rmiServerThread = new Thread(() -> { runRMIServer(mngr); });
         rmiServerThread.start();
 
-        Thread socketServerThread = new Thread(() -> { runSocketServer(lobbies); });
+        Thread socketServerThread = new Thread(() -> { runSocketServer(mngr); });
         socketServerThread.start();
     }
 }

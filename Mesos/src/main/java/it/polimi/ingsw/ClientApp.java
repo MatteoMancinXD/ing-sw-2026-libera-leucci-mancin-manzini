@@ -24,6 +24,8 @@ public class ClientApp {
         System.out.println("2. Socket");
         int protocol = kb.nextInt();
 
+        String token = "";
+
         if(protocol == 1){
             RmiClient client = new RmiClient(ui, nickname);
             client.startConnection("127.0.0.1", 1099, gameID, 2);
@@ -32,7 +34,7 @@ public class ClientApp {
 
             client.startConnection("127.0.0.1", 5000);
 
-            client.sendMessageToServer(new LoginMessage(nickname, gameID, 2));
+            client.sendMessageToServer(new LoginMessage(token, nickname, gameID, 2));
         }
 }
 }
