@@ -94,7 +94,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
     @Override
     public void receiveMessage(String message) throws RemoteException {
-        System.out.println(message);
+
     }
 
     @Override
