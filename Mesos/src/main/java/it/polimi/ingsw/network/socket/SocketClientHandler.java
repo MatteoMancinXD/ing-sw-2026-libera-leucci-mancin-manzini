@@ -73,6 +73,22 @@ public class SocketClientHandler implements Runnable{
         sendMessage(new LoginResponseMessage(token));
     }
 
+    public void handleCreateGame(CreateGameMessage msg) {
+        VirtualSocketView view = new VirtualSocketView(nickname, out);
+
+        System.out.println("CreateGameMessage received");
+
+        this.nickname = msg.getNickname();
+        int numPlayers =  msg.getNumPlayers();
+
+        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
+        int gameID = mngr.getIdCounter();
+
+        GameController ctrl = new GameController(gameID, nickname, numPlayers);
+        availableGames.put(gameID, ctrl);
+        ctrl.addPlayer(view, nickname);
+    }
+
     public void handleDrawCard(DrawCardMessage msg) {
         GameController ctrl = getController();
         if (ctrl != null) ctrl.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
@@ -87,6 +103,8 @@ public class SocketClientHandler implements Runnable{
         GameController ctrl = getController();
         if (ctrl != null) ctrl.placeTotem(nickname, msg.getPos());
     }
+
+
 
     private GameController getController() {
         GameSession session = mngr.getSessions().get(token);

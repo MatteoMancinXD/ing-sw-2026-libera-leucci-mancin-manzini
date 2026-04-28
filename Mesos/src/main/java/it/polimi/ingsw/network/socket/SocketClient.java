@@ -77,7 +77,7 @@ public class SocketClient implements NetworkClient {
 
     @Override
     public void requestAvailableGames() throws RemoteException {
-        // da completare quando ServerInterface avrà getAvailableGames
+
     }
 
     @Override

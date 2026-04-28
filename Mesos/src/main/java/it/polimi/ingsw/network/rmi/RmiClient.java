@@ -41,6 +41,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    @Override
     public void requestAvailableGames() throws RemoteException{
         try {
             Map<Integer,String> games = serverStub.getAvailableGames();

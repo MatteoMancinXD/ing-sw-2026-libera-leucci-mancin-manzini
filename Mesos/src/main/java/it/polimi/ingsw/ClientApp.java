@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.network.messages.CreateGameMessage;
 import it.polimi.ingsw.network.messages.LoginMessage;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
@@ -41,10 +42,14 @@ public class ClientApp {
             }
         } else if(protocol == 2){
             SocketClient client = new SocketClient(nickname);
-
             client.startConnection("127.0.0.1", 5000);
-            int gameID = 0;
-            client.sendMessageToServer(new LoginMessage(nickname, gameID, 2));
+
+            if(choice == 1) {
+                client.sendMessageToServer(new CreateGameMessage(token, nickname, 2));
+                System.out.println("Message sent");
+            } else if (choice == 2) {
+                //client.sendMessageToServer(new JoinGameMessage(token, nickname, gameID))
+            }
         }
-}
+    }
 }

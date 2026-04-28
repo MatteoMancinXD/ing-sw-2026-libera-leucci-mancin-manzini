@@ -14,12 +14,10 @@ import java.util.UUID;
 public class VirtualRMIServer extends UnicastRemoteObject implements ServerInterface {
 
     private GameManager mngr;
-    private Integer gameIDs;
 
     public VirtualRMIServer(GameManager mngr) throws RemoteException {
         super();
         this.mngr = mngr;
-        gameIDs = 1;
     }
 
 //    @Override
@@ -84,23 +82,21 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public int createGame(String gameMaster, int numPlayers, ClientRemote clientStub) throws RemoteException{
         VirtualRMIView view = new VirtualRMIView(gameMaster, clientStub);
-        GameController ctrl = new GameController(gameIDs, gameMaster, numPlayers);
 
-        int id;
-        synchronized (gameIDs) {
-            id = gameIDs++;
-        }
+        int gameID = mngr.getIdCounter();
 
-        mngr.getAvailableGames().put(id, ctrl);
-        mngr.getAvailableGames().get(id).addPlayer(view, gameMaster);
+        GameController ctrl = new GameController(gameID, gameMaster, numPlayers);
+
+        mngr.getAvailableGames().put(gameID, ctrl);
+        mngr.getAvailableGames().get(gameID).addPlayer(view, gameMaster);
 
         String token = UUID.randomUUID().toString();
-        GameSession session = new GameSession(id, gameMaster);
+        GameSession session = new GameSession(gameID, gameMaster);
 
         mngr.getSessions().put(token, session);
         clientStub.receiveToken(token);
 
-        return id;
+        return gameID;
     }
 
     @Override
