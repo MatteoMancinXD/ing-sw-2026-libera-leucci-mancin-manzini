@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,5 +25,14 @@ public class GameManager {
 
     public Map<Integer, GameController> getStartedGames() {
         return startedGames;
+    }
+
+    public Map<Integer, String> getGamesIDAndMaster() {
+        Map<Integer, String> games = new HashMap<>();
+        for(Map.Entry<Integer, GameController> game : availableGames.entrySet()) {
+            games.put(game.getKey(), game.getValue().getGameMaster());
+        }
+
+        return games;
     }
 }
