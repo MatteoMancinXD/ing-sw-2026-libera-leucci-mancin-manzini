@@ -237,5 +237,9 @@ public class cli implements ui{
         }
 
     }
+    @Override
+    public void showAvailableGames() {
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface ClientRemote extends Remote{
 
-    void receiveBoardUpdate(Board board) throws RemoteException;
+    void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException;
 
     void receiveError(String errorMessage) throws RemoteException;
 

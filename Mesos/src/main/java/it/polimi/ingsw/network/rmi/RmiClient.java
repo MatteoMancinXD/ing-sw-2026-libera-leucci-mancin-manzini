@@ -3,8 +3,10 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
+import it.polimi.ingsw.view.ui;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -21,11 +23,13 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     private final String nickname;
     private final ClientController uiController; //Controller lato client - sostanzialmente javafx
     private ServerInterface serverStub;
+    private final ui userInteface;
 
-    public RmiClient(ClientController uiController, String nickname) throws  RemoteException {
+    public RmiClient(ClientController uiController,ui userInterface,  String nickname) throws  RemoteException {
         super();
         this.uiController = uiController;
         this.nickname = nickname;
+        this.userInteface = userInterface;
     }
 
     public void startConnection(String serverIP, int port) throws RemoteException {
@@ -78,6 +82,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void askToSkipBonus(){
+        try{
+            serverStub.skipBonusPick(this.token);
+        }catch (RemoteException e){
+            System.err.println("Failed to ask to skip bonus");
+        }
 
     }
 
@@ -90,7 +99,14 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void disconnect(){
-
+        try {
+            if (token != null) {
+                serverStub.logout(this.token);
+                this.token = null;
+            }
+        }catch(RemoteException e){
+            System.err.println("Failed to disconnect from RMI server");
+        }
     }
 
     public void askToDrawCard(boolean row, int idx) {
@@ -110,9 +126,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void receiveBoardUpdate(Board board) throws RemoteException {
-        System.out.println("Received board update \n");
-        //uiController aggiorna la view
+    public void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException {
+        userInteface.updateBoard(board, players);
     }
 
     @Override

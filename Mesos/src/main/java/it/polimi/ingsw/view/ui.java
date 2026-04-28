@@ -18,4 +18,5 @@ public interface ui {
 
     void showMessage(String message);
 
+    void showAvailableGames();
 }
