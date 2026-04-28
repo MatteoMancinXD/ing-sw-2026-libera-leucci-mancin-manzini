@@ -60,4 +60,9 @@ public class PaintingsEvent extends EventCard{
         }   //it is made like this not to use "instance of" if(BuildingCard card instanceof theExactBuilding) then give bonus
 
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Paintings event: artists number < era = -2 prestige || artists number >= era = +artists*era prestige");
+    }
 }

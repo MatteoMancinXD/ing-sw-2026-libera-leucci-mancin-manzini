@@ -68,7 +68,6 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void joinGame(String nickName, int gameID) throws RemoteException{
         Map<Integer,GameController> games = serverStub.getAvailableGames();
         try {
-
             this.token = serverStub.login(this.nickname, gameID, 0,this);
             System.out.println("You joined the game with id: "+gameID);
         } catch (RemoteException e) {

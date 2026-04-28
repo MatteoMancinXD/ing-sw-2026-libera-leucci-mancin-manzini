@@ -34,4 +34,9 @@ public class InventorCard extends CharacterCard {
 
     @Override
     public void registerInvention(InventorSetForFoodBuilding b) { b.incrementInvention(invention); }
+
+    @Override
+    public String getShortString() {
+        return String.format("Artist, era=%d, invention=%s", getEra(), invention);
+    }
 }
