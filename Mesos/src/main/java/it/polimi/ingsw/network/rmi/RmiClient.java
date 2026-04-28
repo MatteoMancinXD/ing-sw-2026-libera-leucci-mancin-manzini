@@ -64,14 +64,13 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
         int nuovoID = maxID + 1;
 
-        int gameID = serverStub.askNewGameID();
 
             try {
                 //see if else in login method in VirtualRMIServer
-                this.token = serverStub.login(this.nickname, numPlayers, gameID,this);
-                System.out.println("You created the game with id: "+gameID);
+                this.token = serverStub.login(this.nickname, numPlayers, nuovoID,this);
+                System.out.println("You created the game with id: "+nuovoID);
             } catch (RemoteException e) {
-                System.err.println("Failed to create game with ID " + gameID + "!");
+                System.err.println("Failed to create game with ID " + nuovoID + "!");
             }
 
     }
