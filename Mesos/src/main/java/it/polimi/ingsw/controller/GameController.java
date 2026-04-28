@@ -174,6 +174,7 @@ public class GameController {
         }
     }
 
+    //invoked if the player decides not to use the "extra pick" bonus
     public void skipExtraPick(String nickname) {
         synchronized (game) {
             if (!checkPlayer(nickname)) return;
@@ -187,7 +188,7 @@ public class GameController {
         }
     }
 
-    //invoked only if currentPlayer refuses to draw the cards he has to
+    //invoked only if currentPlayer refuses to draw all the cards he is able to
     public void controllerEndTurn(String nickname) {
 
         synchronized (gameLock) {
