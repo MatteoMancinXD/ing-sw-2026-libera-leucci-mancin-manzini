@@ -15,7 +15,7 @@ public interface ServerInterface extends Remote{
 
     void placeTotem(String token, int tileIndex) throws RemoteException;
 
-    void skipBonusPick() throws RemoteException;
+    void skipBonusPick(String token) throws RemoteException;
 
     Map<Integer, GameController> getAvailableGames() throws RemoteException;
     Map<Integer, GameController> getStartedGames() throws RemoteException;

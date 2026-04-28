@@ -66,10 +66,12 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public void skipBonusPick(String token) throws RemoteException {
-        /*GameSession session = mngr.getSessions().get(token);
-        GameController  controller = mngr.getAvailableGames().get();
-        controller.skipExtraPick(session.getNickname());*/
+    public void skipBonusPick(String token) throws RemoteException {  //pls check
+        int id = mngr.getSessions().get(token).getGameID();
+
+        GameSession session = mngr.getSessions().get(token);
+        GameController  controller = mngr.getAvailableGames().get(id);
+        controller.skipExtraPick(session.getNickname());
     }
 
     @Override
