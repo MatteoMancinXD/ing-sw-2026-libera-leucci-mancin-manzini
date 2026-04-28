@@ -2,10 +2,13 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.network.NetworkClient;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class cli implements ui{
@@ -181,8 +184,8 @@ public class cli implements ui{
     }
 
     @Override
-    public void updateBoard(Board board) {
-        System.out.println("\nBOARD UPDATE!\n");
+    public void updateBoard(Board board, List<Player> players) {
+        System.out.println("\n======BOARD UPDATE!======\n");
 
         //TILE TRACK
         for (Tile t : board.getTrack()) {
@@ -198,16 +201,40 @@ public class cli implements ui{
         }
 
         //UPPER ROW / LOWER ROW
-        System.out.println("Upper row cards: \n");
+        System.out.println("------UPPER ROW------ \n");
         for (Card c : board.getUpperRow()) {
             System.out.print(c.getShortString()+",  "); //provo a stamparle tutte su una riga (crazy)
         }
-        System.out.println("\nLower row cards: \n");
+        System.out.println("\n------LOWER ROW------\n");
         for (Card c : board.getLowerRow()) {
             System.out.print(c.getShortString()+",  ");
         }
 
-        //
+        //STATUS PERSONALE + ALTRI PLAYER
+        for (Player p : players) {
+            if (p.getNickname().equals(this.nickname)) {
+                System.out.println("------YOUR STATS AND CARDS------\n");
+                System.out.println("Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
+                List<Card> everyCard = new ArrayList<>();
+                everyCard.addAll(p.getArtists());
+                everyCard.addAll(p.getBuilders());
+                everyCard.addAll(p.getHarvesters());
+                everyCard.addAll(p.getHunters());
+                everyCard.addAll(p.getShamans());
+                everyCard.addAll(p.getInventors());
+                everyCard.addAll(p.getBuildings());
+                for (Card c : everyCard) {
+                    System.out.print(c.getShortString()+",  ");
+                }
+                System.out.println("\n\n");
+            }
+        }
+        for (Player p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
+            if (!p.getNickname().equals(this.nickname)) {
+                System.out.println("------OPPONENTS STATS AND CARDS------\n");
+                System.out.println("Nickname: "+p.getNickname()+", Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
+            }
+        }
 
     }
 

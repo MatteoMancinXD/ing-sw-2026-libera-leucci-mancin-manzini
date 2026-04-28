@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface VirtualView {
 
     //Interfaccia che rappresenta un generico client
 
-    void updateBoard(Board board) throws RemoteException;
+    void updateBoard(Board board, List<Player> players) throws RemoteException;
 
     void notifyTurn(String currentPlayerNickname) throws RemoteException;
 
