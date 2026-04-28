@@ -77,6 +77,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void askToSkipBonus(){
+        try{
+            serverStub.skipBonusPick(this.token);
+        }catch (RemoteException e){
+            System.err.println("Failed to ask to skip bonus");
+        }
 
     }
 
