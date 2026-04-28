@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,16 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
         Map<Integer, GameController> games = serverStub.getAvailableGames();
+        Map<Integer, GameController> startedGames = serverStub.getStartedGames();
+
+        int maxID = 0;
+        for (Integer id : games.keySet()) {
+            if (id > maxID) maxID = id;
+        }
+        for (Integer id : startedGames.keySet()) {
+            if (id > maxID) maxID = id;
+        }
+        int nuovoID = maxID + 1;
 
         int gameID = serverStub.askNewGameID();
 

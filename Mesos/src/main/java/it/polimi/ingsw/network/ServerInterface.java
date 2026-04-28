@@ -18,6 +18,6 @@ public interface ServerInterface extends Remote{
     void skipBonusPick() throws RemoteException;
 
     Map<Integer, GameController> getAvailableGames() throws RemoteException;
-
+    Map<Integer, GameController> getStartedGames() throws RemoteException;
 
 }
