@@ -80,4 +80,9 @@ public class RitualEvent extends EventCard{
             player.editPrestige(-(3 + (era-1) * 2));
         }
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Ritual event: +5*era prestige those who have the most stars | -3+(era-1)*2 prestige for those who have the least stars");
+    }
 }

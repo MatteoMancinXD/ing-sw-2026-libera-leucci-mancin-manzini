@@ -30,4 +30,11 @@ public class HunterCard extends CharacterCard {
     public void registerForCardSet(CardSetForFoodBuilding b) {
         b.incrementHunters();
     }
+
+    @Override
+    public String getShortString() {
+        String food = "noFoodBonus";
+        if (getsFood) {food = "FoodBous";}
+        return String.format("Artist, era=%d, %s", getEra(), food);
+    }
 }

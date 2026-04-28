@@ -58,4 +58,9 @@ public class SustenanceEvent extends EventCard{
             player.editPrestige(this.getEra()*foodPoints); //foodPoints are negative inside else statement
         }
     }
+
+    @Override
+    public String toShortString() {
+        return String.format("Sustenance Event: -1 food for every character you have");
+    }
 }

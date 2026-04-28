@@ -8,7 +8,7 @@ public interface NetworkClient {
 
     void createGame(String nickname, int numPlayers) throws RemoteException;
 
-    void joinGame(String nickname, int gameID);
+    void joinGame(String nickname, int gameID) throws RemoteException;
 
     void askToDrawCard(boolean row, int index);
 

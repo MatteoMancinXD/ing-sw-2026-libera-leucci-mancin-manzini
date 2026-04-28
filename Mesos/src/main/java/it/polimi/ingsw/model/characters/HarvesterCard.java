@@ -18,4 +18,9 @@ public class HarvesterCard extends CharacterCard {
     public void registerForCardSet(CardSetForFoodBuilding b) {
         b.incrementHarvesters();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Harvester, era=%d, SustenanceDiscount=3", getEra());
+    }
 }
