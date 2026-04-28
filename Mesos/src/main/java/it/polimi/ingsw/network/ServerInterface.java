@@ -17,6 +17,8 @@ public interface ServerInterface extends Remote{
 
     void skipBonusPick(String token) throws RemoteException;
 
+    void logout(String token) throws RemoteException;
+
     Map<Integer, GameController> getAvailableGames() throws RemoteException;
     Map<Integer, GameController> getStartedGames() throws RemoteException;
 

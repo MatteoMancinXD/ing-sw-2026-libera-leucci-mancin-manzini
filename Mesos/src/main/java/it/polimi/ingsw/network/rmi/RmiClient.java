@@ -103,7 +103,14 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void disconnect(){
-
+        try {
+            if (token != null) {
+                serverStub.logout(this.token);
+                this.token = null;
+            }
+        }catch(RemoteException e){
+            System.err.println("Failed to disconnect from RMI server");
+        }
     }
 
     public void askToDrawCard(boolean row, int idx) {

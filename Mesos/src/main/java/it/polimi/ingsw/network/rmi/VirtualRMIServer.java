@@ -75,6 +75,11 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
+    public void logout(String token) throws RemoteException{
+        GameSession session = mngr.getSessions().remove(token);
+    }
+
+    @Override
     public Map<Integer, String> getAvailableGames() {
         return mngr.getGamesIDAndMaster();
     }
