@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class cli implements ui{
 
     private final Scanner scanner;
-    private NetworkClient client;s
+    private NetworkClient client;
 
     private final String nickname;
     private CliState currentState;

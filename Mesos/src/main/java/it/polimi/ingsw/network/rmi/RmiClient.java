@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
@@ -50,7 +51,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
-        Map<Integer,String> games = serverStub.getAvailableGames();
+        Map<Integer, GameController> games = serverStub.getAvailableGames();
 
         int gameID = serverStub.askNewGameID();
 
