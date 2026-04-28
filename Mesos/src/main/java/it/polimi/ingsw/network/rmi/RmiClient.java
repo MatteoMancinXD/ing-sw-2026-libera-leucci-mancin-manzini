@@ -49,11 +49,32 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
-    public void createGame(String gameName,int gameID){
+    public void createGame(String nickName,int numPlayers) throws RemoteException{
+        Map<Integer,String> games = serverStub.getAvailableGames();
+
+        int gameID = serverStub.askNewGameID();
+
+            try {
+                //see if else in login method in VirtualRMIServer
+                this.token = serverStub.login(this.nickname, numPlayers, gameID,this);
+                System.out.println("You created the game with id: "+gameID);
+            } catch (RemoteException e) {
+                System.err.println("Failed to create game with ID " + gameID + "!");
+            }
 
     }
 
-    public void joinGame(String gameName,int gameID){
+    public void joinGame(String nickName){
+        Map<Integer,String> games = serverStub.getAvailableGames();
+        //int gameID = games.get(); //get id from the game you want to join
+        //int numPlayers = games. //...
+        try {
+            //see if else in login method in VirtualRMIServer
+            this.token = serverStub.login(this.nickname, numPlayers, gameID,this);
+            System.out.println("You joined the game with id: "+gameID);
+        } catch (RemoteException e) {
+            System.err.println("Failed to join game with id: " + gameID);
+        }
 
     }
 
@@ -61,7 +82,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     }
 
-    public void sendChatMessage(){
+    public void askToEndTurn(){
+
+    }
+
+    public void sendChatMessage(String Message){
 
     }
 
