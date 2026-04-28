@@ -91,7 +91,14 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void askToEndTurn(){
-
+        try{
+            if(token!=null){
+                serverStub.serverEndTurn(this.token);
+                System.out.println("End turn request sent");
+            }
+        }catch (RemoteException e){
+            System.err.println("Failed to end turn request");
+        }
     }
 
     public void sendChatMessage(String Message){

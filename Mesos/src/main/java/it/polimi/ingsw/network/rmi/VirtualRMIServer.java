@@ -80,6 +80,21 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
+    public void serverEndTurn(String token) throws RemoteException {  //checks if gameController controller exists if yes controllerEndTurn
+        GameSession session = mngr.getSessions().get(token);
+
+        int gameID = session.getGameID();
+        String nickname = session.getNickname();
+
+        GameController controller = mngr.getStartedGames().get(gameID);
+        if(controller == null){
+            controller = mngr.getAvailableGames().get(gameID);
+        }
+
+        if(controller != null) controller.controllerEndTurn(nickname); //controllerEndTurn manually ends the turn asking the Model
+    }
+
+    @Override
     public Map<Integer, String> getAvailableGames() {
         return mngr.getGamesIDAndMaster();
     }

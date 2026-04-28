@@ -15,6 +15,8 @@ public class GameController {
     private Game game;
     private Map<String, VirtualView> clients;
 
+    private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
+
     public GameController(int gameID, String gameMaster, int numPlayers) {
         this.gameID = gameID;
         this.gameMaster = gameMaster;
@@ -178,6 +180,26 @@ public class GameController {
             game.skipExtraPick();
             Board board = game.getBoard();
 
+            new Thread(() -> {
+                broadcastUpdateBoard(board);
+                notifyCurrentPlayer();
+            }).start();
+        }
+    }
+
+    //invoked only if currentPlayer refuses to draw the cards he has to
+    public void controllerEndTurn(String nickname) {
+
+        synchronized (gameLock) {
+            if (!checkPlayer(nickname)) {
+                System.err.println("It's not " + nickname + "'s turn, so you can't end it");
+                return;
+            }
+
+            game.nextTurn();
+
+            //update board
+            Board board = game.getBoard();
             new Thread(() -> {
                 broadcastUpdateBoard(board);
                 notifyCurrentPlayer();
