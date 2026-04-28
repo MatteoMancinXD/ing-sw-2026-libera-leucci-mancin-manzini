@@ -101,9 +101,19 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
-    public void sendChatMessage(String Message){
-
+    public void sendChatMessage(String token,String message) throws RemoteException{
+        try {
+            if (token != null) {
+                serverStub.sendChatMessage(this.token, message);
+            }
+        } catch (RemoteException e) {
+            System.err.println("Error couldn't send chat message");
+        }
     }
+    public void receiveChatMessage(String sender, String message) throws RemoteException {
+        System.out.println("[CHAT] "+ sender + ": " + message);
+    }
+
 
     public void disconnect(){
         try {

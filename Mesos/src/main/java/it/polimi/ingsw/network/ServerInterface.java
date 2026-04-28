@@ -24,6 +24,7 @@ public interface ServerInterface extends Remote{
     int createGame(String gameMaster, int numPlayers, ClientRemote clientStub) throws RemoteException;
     void joinGame(String nickname, int gameID, ClientRemote clientStub) throws RemoteException, IllegalArgumentException;
 
+        void sendChatMessage(String token,String message) throws RemoteException;
 
     void serverEndTurn(String token) throws RemoteException;
 }

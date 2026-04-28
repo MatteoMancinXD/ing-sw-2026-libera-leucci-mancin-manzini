@@ -95,6 +95,30 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
+    public void sendChatMessage(String token,String message) throws RemoteException{
+        GameSession session = mngr.getSessions().get(token);
+
+        if(session == null) {
+            System.err.println("Chat rejected: Invalid token.");
+            return;
+        }
+
+        int gameID = session.getGameID();
+        String nickname = session.getNickname();
+
+        GameController controller = mngr.getStartedGames().get(gameID);
+        if (controller == null) {
+            controller = mngr.getAvailableGames().get(gameID);
+        }
+
+        if (controller != null) {
+            controller.broadcastMessage(nickname + ": " + message);  //logic here
+        } else {
+            System.err.println("Chat error: Game " + gameID + " not found.");
+        }
+    }
+
+    @Override
     public Map<Integer, String> getAvailableGames() {
         return mngr.getGamesIDAndMaster();
     }
