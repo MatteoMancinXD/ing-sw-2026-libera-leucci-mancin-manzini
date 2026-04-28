@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network;
 
+import java.rmi.RemoteException;
+
 public interface NetworkClient {
 
-    void requestAvailableGames();
+    void requestAvailableGames() throws RemoteException;
 
     void createGame(String nickname, int numPlayers);
 

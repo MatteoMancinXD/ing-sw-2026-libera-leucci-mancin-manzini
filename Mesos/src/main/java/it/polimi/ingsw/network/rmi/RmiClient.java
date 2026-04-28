@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.Map;
 
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
@@ -38,10 +39,34 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
-    public void requestGameAvailable() {
+    public void requestAvailableGames() throws RemoteException{
         try {
-
+            Map<Integer,String> games = serverStub.getAvailableGames();
+            System.out.println("Available games:"+games);
+        }catch (Exception e) {
+            System.err.println("Failed to request available games");
+            e.printStackTrace();
         }
+    }
+
+    public void createGame(String gameName,int gameID){
+
+    }
+
+    public void joinGame(String gameName,int gameID){
+
+    }
+
+    public void askToSkipBonus(){
+
+    }
+
+    public void sendChatMessage(){
+
+    }
+
+    public void disconnect(){
+
     }
 
     public void askToDrawCard(boolean row, int idx) {
@@ -98,7 +123,5 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void ping() throws RemoteException {
-
-    }
+    public void ping() throws RemoteException {}
 }

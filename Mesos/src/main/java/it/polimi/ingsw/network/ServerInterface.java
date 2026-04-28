@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.rmi.ClientRemote;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 public interface ServerInterface extends Remote{
 
@@ -14,6 +15,8 @@ public interface ServerInterface extends Remote{
     void placeTotem(String token, int tileIndex) throws RemoteException;
 
     void skipBonusPick() throws RemoteException;
+
+    Map<Integer, String> getAvailableGames() throws RemoteException;
 
 
 }
