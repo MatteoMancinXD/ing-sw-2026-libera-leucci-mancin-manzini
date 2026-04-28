@@ -1,5 +1,5 @@
 package it.polimi.ingsw.network.messages;
-
+import it.polimi.ingsw.view.ui;
 public class RegularMessage extends ServerToClientMessage{
 
     private final String message;
@@ -11,7 +11,7 @@ public class RegularMessage extends ServerToClientMessage{
         return message;
     }
 
-    public void process() {
+    public void process(ui userInterface) {
         //userInterface....
     }
 

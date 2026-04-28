@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-
+import it.polimi.ingsw.view.ui;
 import java.util.List;
 
 public class BoardUpdateMessage extends ServerToClientMessage {
@@ -18,8 +18,8 @@ public class BoardUpdateMessage extends ServerToClientMessage {
     }
 
     @Override
-    public void process() {
-        //userInterface.updateBoard(board);
+    public void process(ui userInterface) {
+        userInterface.updateBoard(board, players);
     }
 
 }

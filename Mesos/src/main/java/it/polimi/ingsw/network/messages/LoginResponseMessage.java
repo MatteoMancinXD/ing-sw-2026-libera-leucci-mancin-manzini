@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.network.socket.SocketClient;
-
+import it.polimi.ingsw.view.ui;
 public class LoginResponseMessage extends ServerToClientMessage {
 
     private final String token;
@@ -32,7 +32,7 @@ public class LoginResponseMessage extends ServerToClientMessage {
     }
 
     @Override
-    public void process() {
+    public void process(ui userInterface) {
         // vedi tui
     }
 }

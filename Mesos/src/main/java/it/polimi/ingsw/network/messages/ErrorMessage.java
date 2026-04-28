@@ -1,5 +1,5 @@
 package it.polimi.ingsw.network.messages;
-
+import it.polimi.ingsw.view.ui;
 public class ErrorMessage extends ServerToClientMessage {
 
     private final String error;
@@ -12,7 +12,7 @@ public class ErrorMessage extends ServerToClientMessage {
         return error;
     }
 
-    public void process() {
+    public void process(ui userInterface) {
         //userInterface....
     }
 

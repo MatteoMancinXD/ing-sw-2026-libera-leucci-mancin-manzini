@@ -1,5 +1,5 @@
 package it.polimi.ingsw.network.messages;
-
+import it.polimi.ingsw.view.ui;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class EndGameMessage extends ServerToClientMessage{
         return rankings;
     }
 
-    public void process() {
+    public void process(ui userInterface) {
         //userInterface....
     }
 
