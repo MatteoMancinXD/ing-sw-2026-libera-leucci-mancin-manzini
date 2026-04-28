@@ -1,16 +1,13 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.network.NetworkClient;
-import it.polimi.ingsw.network.messages.BoardUpdateMessage;
-import it.polimi.ingsw.network.messages.ClientToServerMessage;
-import it.polimi.ingsw.network.messages.PlaceTotemMessage;
-import it.polimi.ingsw.network.messages.ServerToClientMessage;
-import it.polimi.ingsw.network.messages.LoginMessage;
+import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 
 public class SocketClient implements NetworkClient {
 
@@ -59,12 +56,13 @@ public class SocketClient implements NetworkClient {
         try {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
+                message.onReceive(this);
                 message.process();
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Connection lost");
         } finally {
-            try { if (socket != null) socket.close(); } catch (IOException ex) { }
+            disconnect();
         }
     }
 
@@ -77,8 +75,54 @@ public class SocketClient implements NetworkClient {
         sendMessageToServer(new LoginMessage(nickname, gameId, numPlayers));
     }
 
-    public void askToPlaceTotem(int index) {
-        sendMessageToServer(new PlaceTotemMessage(this.token, index));
+    @Override
+    public void requestAvailableGames() throws RemoteException {
+        // da completare quando ServerInterface avrà getAvailableGames
     }
+
+    @Override
+    public void createGame(String nickname, int numPlayers) {
+        // da completare
+    }
+
+    @Override
+    public void joinGame(String nickname, int gameID) {
+        // da completare
+    }
+
+    @Override
+    public void askToDrawCard(boolean row, int index) {
+        sendMessageToServer(new DrawCardMessage(token, row, index));
+    }
+
+    @Override
+    public void askToPlaceTotem(int pos) {
+        sendMessageToServer(new PlaceTotemMessage(token, pos));
+    }
+
+    @Override
+    public void askToSkipBonus() {
+        sendMessageToServer(new SkipBonusMessage(token));
+    }
+
+    @Override
+    public void sendChatMessage(String message) {
+        // da completare
+    }
+
+    @Override
+    public void askToEndTurn() {
+        // da completare
+    }
+
+    @Override
+    public void disconnect() {
+        try {
+            if (socket != null) socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
