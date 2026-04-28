@@ -6,19 +6,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameManager {
-    Map<Integer, GameController> lobbies;
+    Map<Integer, GameController> availableGames;
     Map<Integer, GameController> startedGames;
     Map<String, GameSession> sessions;
 
-    public GameManager(Map<Integer, GameController> lobbies, Map<Integer, GameController> startedGames, Map<String, GameSession> sessions) {
-        this.lobbies = lobbies;
+    public GameManager(Map<Integer, GameController> availableGames, Map<Integer, GameController> startedGames, Map<String, GameSession> sessions) {
+        this.availableGames = availableGames;
         this.sessions = sessions;
         this.startedGames = startedGames;
     }
 
-    public Map<Integer, GameController> getLobbies() {
-        return lobbies;
-    }
+    public Map<Integer, GameController> getAvailableGames() { return availableGames; }
 
     public Map<String, GameSession> getSessions() {
         return sessions;
