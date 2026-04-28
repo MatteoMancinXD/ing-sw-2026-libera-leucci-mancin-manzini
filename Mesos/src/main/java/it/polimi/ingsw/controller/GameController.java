@@ -119,7 +119,7 @@ public class GameController {
             for (VirtualView view : clients.values()) {
                 new Thread(() -> {
                     try {
-                        view.updateBoard(board);
+                        view.updateBoard(board, game.getPlayers());
                     } catch (RemoteException e) {
                         System.out.println("Client unreachable.");
                     }
