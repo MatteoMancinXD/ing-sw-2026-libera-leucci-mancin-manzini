@@ -64,6 +64,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
         int nuovoID = maxID + 1;
 
+
         int gameID = serverStub.askNewGameID();
 
             try {
