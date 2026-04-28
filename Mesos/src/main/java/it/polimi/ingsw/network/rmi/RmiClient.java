@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     public void requestAvailableGames() throws RemoteException{
         try {
-            Map<Integer,GameController> games = serverStub.getAvailableGames();
+            Map<Integer,String> games = serverStub.getAvailableGames();
             System.out.println("Available games:"+games);
         }catch (Exception e) {
             System.err.println("Failed to request available games");
@@ -52,21 +53,30 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
         Map<Integer, GameController> games = serverStub.getAvailableGames();
+        Map<Integer, GameController> startedGames = serverStub.getStartedGames();
 
-        int gameID = serverStub.askNewGameID();
+        int maxID = 0;
+        for (Integer id : games.keySet()) {
+            if (id > maxID) maxID = id;
+        }
+        for (Integer id : startedGames.keySet()) {
+            if (id > maxID) maxID = id;
+        }
+        int nuovoID = maxID + 1;
+
 
             try {
                 //see if else in login method in VirtualRMIServer
-                this.token = serverStub.login(this.nickname, numPlayers, gameID,this);
-                System.out.println("You created the game with id: "+gameID);
+                this.token = serverStub.login(this.nickname, numPlayers, nuovoID,this);
+                System.out.println("You created the game with id: "+nuovoID);
             } catch (RemoteException e) {
-                System.err.println("Failed to create game with ID " + gameID + "!");
+                System.err.println("Failed to create game with ID " + nuovoID + "!");
             }
 
     }
 
     public void joinGame(String nickName, int gameID) throws RemoteException{
-        Map<Integer,GameController> games = serverStub.getAvailableGames();
+        Map<Integer,String> games = serverStub.getAvailableGames();
         try {
             this.token = serverStub.login(this.nickname, gameID, 0,this);
             System.out.println("You joined the game with id: "+gameID);

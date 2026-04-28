@@ -71,8 +71,8 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public Map<Integer, GameController> getAvailableGames() {
-        return mngr.getAvailableGames();
+    public Map<Integer, String> getAvailableGames() {
+        return mngr.getGamesIDAndMaster();
     }
 
 }
