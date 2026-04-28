@@ -21,7 +21,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public String login(String nickname, int gameID, int numPlayers, ClientRemote clientStub) throws RemoteException {
+    public String login(String nickname, int gameID, int numPlayers, ClientRemote clientStub) throws RemoteException, IllegalArgumentException {
         VirtualRMIView view = new VirtualRMIView(nickname, clientStub);
         Map<Integer, GameController> availableGames = mngr.getAvailableGames();
 
@@ -29,6 +29,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
             availableGames.get(gameID).addPlayer(view, nickname);
             //System.out.println(nickname + " participates to game " + gameID + " through RMI.");
         } else {
+            if (numPlayers < 2) {throw new IllegalArgumentException("Players cannot be less than 2");}
             availableGames.put(gameID, new GameController(gameID, numPlayers));
             availableGames.get(gameID).addPlayer(view, nickname);
             //System.out.println(nickname + " creates game " + gameID +  " through RMI.");
