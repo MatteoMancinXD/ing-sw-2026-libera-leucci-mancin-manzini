@@ -89,6 +89,18 @@ public class SocketClientHandler implements Runnable{
         ctrl.addPlayer(view, nickname);
     }
 
+    public void handleJoinGame(JoinGameMessage msg) {
+        VirtualSocketView view = new VirtualSocketView(nickname, out);
+
+        System.out.println("JoinGameMessage received");
+
+        this.nickname = msg.getNickname();
+        int gameID = msg.getGameID();
+
+        GameController ctrl = mngr.getAvailableGames().get(gameID);
+        ctrl.addPlayer(view, nickname);
+    }
+
     public void handleDrawCard(DrawCardMessage msg) {
         GameController ctrl = getController();
         if (ctrl != null) ctrl.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
