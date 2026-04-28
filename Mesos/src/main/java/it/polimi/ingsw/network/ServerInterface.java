@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.rmi.ClientRemote;
 
 import java.rmi.Remote;
@@ -16,7 +17,7 @@ public interface ServerInterface extends Remote{
 
     void skipBonusPick() throws RemoteException;
 
-    Map<Integer, String> getAvailableGames() throws RemoteException;
+    Map<Integer, GameController> getAvailableGames() throws RemoteException;
 
 
 }

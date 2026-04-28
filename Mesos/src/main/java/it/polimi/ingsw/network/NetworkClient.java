@@ -6,7 +6,7 @@ public interface NetworkClient {
 
     void requestAvailableGames() throws RemoteException;
 
-    void createGame(String nickname, int numPlayers);
+    void createGame(String nickname, int numPlayers) throws RemoteException;
 
     void joinGame(String nickname, int gameID);
 
