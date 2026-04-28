@@ -20,4 +20,6 @@ public abstract class EventCard extends TribeCard{
     }
     protected abstract void solveEventCard(Player player,List<Player> allPlayers);  // ex. huntCardEventII.solveEventCard(giacomo,game.getPlayers()) , if game can be used
 
+    public abstract String getShortString();
+
 }

@@ -20,4 +20,9 @@ public class ArtistCard extends CharacterCard {
     public void registerForCardSet(CardSetForFoodBuilding b) {
         b.incrementArtists();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Artist, era=%d", getEra());
+    }
 }

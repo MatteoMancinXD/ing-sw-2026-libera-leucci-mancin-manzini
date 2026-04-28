@@ -96,4 +96,10 @@ public abstract class BuildingCard extends Card{
 
     public boolean grantsExtraPick() {return false;}
     public void onOrderTilePlacement(Player player, int position, OrderTile order) {}
+
+    //da fare un toShortString per ogni building in realta...
+    public String toShortString() {
+        return String.format("%s : foodcost=%d, prestige bonus=%d", this.getClass(),  this.getFoodCost(), this.getPrestigeGain());
+    }
+
 }

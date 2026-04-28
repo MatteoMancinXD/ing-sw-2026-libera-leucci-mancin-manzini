@@ -39,4 +39,9 @@ public class BuilderCard extends CharacterCard {
     public void registerForCardSet(CardSetForFoodBuilding b) {
         b.incrementBuilders();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Builder, era=%d, discount=%d", getEra(), getDiscount());
+    }
 }

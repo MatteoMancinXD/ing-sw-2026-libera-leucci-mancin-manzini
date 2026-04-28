@@ -21,4 +21,5 @@ public abstract class CharacterCard extends TribeCard{
 
     public void registerForCardSet(CardSetForFoodBuilding b) {}
     public void registerInvention(InventorSetForFoodBuilding b) {}
+    public abstract String getShortString();
 }

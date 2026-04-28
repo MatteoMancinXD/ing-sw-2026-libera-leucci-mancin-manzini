@@ -62,6 +62,11 @@ public class HuntEvent extends EventCard {
 
     }
 
+    @Override
+    public String getShortString() {
+        return String.format("Hunt Event: +1food & +1*era prestige for each hunter. Era = %d ", this.getEra());
+    }
+
 }
 
 

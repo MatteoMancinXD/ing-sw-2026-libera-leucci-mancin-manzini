@@ -1,7 +1,14 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.network.NetworkClient;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class cli implements ui{
@@ -52,11 +59,20 @@ public class cli implements ui{
     public void handleLobbyCommands(String command, String[] parameters) {
            switch(command) {
                case "create":
-                   client.createGame(nickname, Integer.parseInt(parameters[1]));
-                   System.out.println("Game creation request sent");
+                   try {
+                       client.createGame(nickname, Integer.parseInt(parameters[1]));
+                       System.out.println("Game creation request sent");
+                   } catch (RemoteException e) {
+                       System.out.println("Connection error creating game");
+                   }
                    break;
                case "join":
-                   client.joinGame(nickname, Integer.parseInt(parameters[1]));
+                   try {
+                       client.joinGame(nickname, Integer.parseInt(parameters[1]));
+                       System.out.println("Game join request sent");
+                   } catch (RemoteException e) {
+                       System.out.println("Connection error joining game");
+                   }
                    break;
                case "help":
                    System.out.println("Lobby commands: create *num_players*  |  join *game_id*  | list ");
@@ -165,6 +181,61 @@ public class cli implements ui{
 
         System.out.println("---------------------------------");
         System.out.print("> ");
+    }
+
+    @Override
+    public void updateBoard(Board board, List<Player> players) {
+        System.out.println("\n======BOARD UPDATE!======\n");
+
+        //TILE TRACK
+        for (Tile t : board.getTrack()) {
+            String status = "";
+            if (t.getStatus()) {
+                String player = t.getPlayer().getNickname();
+                status = "Occupied by " + player;
+            }
+            else {
+                status = "is free";
+            }
+            System.out.println("Tile " + t.getLetter() + ":"+status+" \n");
+        }
+
+        //UPPER ROW / LOWER ROW
+        System.out.println("------UPPER ROW------ \n");
+        for (Card c : board.getUpperRow()) {
+            System.out.print(c.getShortString()+",  "); //provo a stamparle tutte su una riga (crazy)
+        }
+        System.out.println("\n------LOWER ROW------\n");
+        for (Card c : board.getLowerRow()) {
+            System.out.print(c.getShortString()+",  ");
+        }
+
+        //STATUS PERSONALE + ALTRI PLAYER
+        for (Player p : players) {
+            if (p.getNickname().equals(this.nickname)) {
+                System.out.println("------YOUR STATS AND CARDS------\n");
+                System.out.println("Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
+                List<Card> everyCard = new ArrayList<>();
+                everyCard.addAll(p.getArtists());
+                everyCard.addAll(p.getBuilders());
+                everyCard.addAll(p.getHarvesters());
+                everyCard.addAll(p.getHunters());
+                everyCard.addAll(p.getShamans());
+                everyCard.addAll(p.getInventors());
+                everyCard.addAll(p.getBuildings());
+                for (Card c : everyCard) {
+                    System.out.print(c.getShortString()+",  ");
+                }
+                System.out.println("\n\n");
+            }
+        }
+        for (Player p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
+            if (!p.getNickname().equals(this.nickname)) {
+                System.out.println("------OPPONENTS STATS AND CARDS------\n");
+                System.out.println("Nickname: "+p.getNickname()+", Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
+            }
+        }
+
     }
 
 }

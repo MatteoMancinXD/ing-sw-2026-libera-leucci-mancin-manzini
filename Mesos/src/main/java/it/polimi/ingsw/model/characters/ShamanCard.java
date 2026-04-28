@@ -30,4 +30,9 @@ public class ShamanCard extends CharacterCard {
     public void registerForCardSet(CardSetForFoodBuilding b) {
         b.incrementShamans();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Shaman, era=%d, stars=%d", getEra(), stars);
+    }
 }
