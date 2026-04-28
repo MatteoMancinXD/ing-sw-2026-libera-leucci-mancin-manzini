@@ -11,13 +11,18 @@ import java.util.Map;
 
 public class GameController {
     private int gameID;
+    private String gameMaster;
     private Game game;
     private Map<String, VirtualView> clients;
 
-    public GameController(int gameID, int numPlayers) {
+    public GameController(int gameID, String gameMaster, int numPlayers) {
         this.gameID = gameID;
         game = new Game(numPlayers);
         clients = new HashMap<>();
+    }
+
+    public String getGameMaster() {
+        return gameMaster;
     }
 
     public boolean addPlayer(VirtualView view, String nickname) {

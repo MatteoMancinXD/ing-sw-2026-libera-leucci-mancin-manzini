@@ -2,23 +2,22 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameManager {
-    Map<Integer, GameController> lobbies;
+    Map<Integer, GameController> availableGames;
     Map<Integer, GameController> startedGames;
     Map<String, GameSession> sessions;
 
-    public GameManager(Map<Integer, GameController> lobbies, Map<Integer, GameController> startedGames, Map<String, GameSession> sessions) {
-        this.lobbies = lobbies;
+    public GameManager(Map<Integer, GameController> availableGames, Map<Integer, GameController> startedGames, Map<String, GameSession> sessions) {
+        this.availableGames = availableGames;
         this.sessions = sessions;
         this.startedGames = startedGames;
     }
 
-    public Map<Integer, GameController> getLobbies() {
-        return lobbies;
-    }
+    public Map<Integer, GameController> getAvailableGames() { return availableGames; }
 
     public Map<String, GameSession> getSessions() {
         return sessions;
@@ -26,5 +25,14 @@ public class GameManager {
 
     public Map<Integer, GameController> getStartedGames() {
         return startedGames;
+    }
+
+    public Map<Integer, String> getGamesIDAndMaster() {
+        Map<Integer, String> games = new HashMap<>();
+        for(Map.Entry<Integer, GameController> game : availableGames.entrySet()) {
+            games.put(game.getKey(), game.getValue().getGameMaster());
+        }
+
+        return games;
     }
 }

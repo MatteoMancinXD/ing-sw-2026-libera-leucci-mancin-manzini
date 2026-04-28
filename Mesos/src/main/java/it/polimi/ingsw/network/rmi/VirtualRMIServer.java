@@ -21,16 +21,17 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public String login(String nickname, int gameID, int numPlayers, ClientRemote clientStub) throws RemoteException {
+    public String login(String nickname, int gameID, int numPlayers, ClientRemote clientStub) throws RemoteException, IllegalArgumentException {
         VirtualRMIView view = new VirtualRMIView(nickname, clientStub);
-        Map<Integer, GameController> lobbies = mngr.getLobbies();
+        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
 
-        if(lobbies.containsKey(gameID)){
-            lobbies.get(gameID).addPlayer(view, nickname);
+        if(availableGames.containsKey(gameID)){
+            availableGames.get(gameID).addPlayer(view, nickname);
             //System.out.println(nickname + " participates to game " + gameID + " through RMI.");
         } else {
-            lobbies.put(gameID, new GameController(gameID, numPlayers));
-            lobbies.get(gameID).addPlayer(view, nickname);
+            if (numPlayers < 2) {throw new IllegalArgumentException("Players cannot be less than 2");}
+            availableGames.put(gameID, new GameController(gameID, numPlayers));
+            availableGames.get(gameID).addPlayer(view, nickname);
             //System.out.println(nickname + " creates game " + gameID +  " through RMI.");
         }
 
@@ -48,7 +49,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         int gameID = session.getGameID();
         String nickname = session.getNickname();
 
-        GameController ctrl =  mngr.getLobbies().get(gameID);
+        GameController ctrl =  mngr.getStartedGames().get(gameID);
 
         ctrl.drawCard(nickname, row, idx);
     }
@@ -59,7 +60,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         int gameID = session.getGameID();
         String nickname = session.getNickname();
 
-        GameController ctrl =  mngr.getLobbies().get(gameID);
+        GameController ctrl =  mngr.getStartedGames().get(gameID);
 
         ctrl.placeTotem(nickname, tileIndex);
     }
@@ -70,8 +71,8 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     }
 
     @Override
-    public Map<Integer, GameController> getAvailableGames() {
-        return mngr.getLobbies();
+    public Map<Integer, String> getAvailableGames() {
+        return mngr.getGamesIDAndMaster();
     }
 
 }

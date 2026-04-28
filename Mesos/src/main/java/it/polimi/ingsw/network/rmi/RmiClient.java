@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,18 +51,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
-        Map<Integer, GameController> games = serverStub.getAvailableGames();
-        Map<Integer, GameController> startedGames = serverStub.getStartedGames();
-
-        int maxID = 0;
-        for (Integer id : games.keySet()) {
-            if (id > maxID) maxID = id;
-        }
-        for (Integer id : startedGames.keySet()) {
-            if (id > maxID) maxID = id;
-        }
-        int nuovoID = maxID + 1;
-
+        Map<Integer, String> games = serverStub.getAvailableGames();
 
         int gameID = serverStub.askNewGameID();
 
@@ -77,13 +65,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     }
 
-    public void joinGame(String nickName){
+    public void joinGame(String nickName, int gameID) throws RemoteException{
         Map<Integer,String> games = serverStub.getAvailableGames();
-        //int gameID = games.get(); //get id from the game you want to join
-        //int numPlayers = games. //...
         try {
-            //see if else in login method in VirtualRMIServer
-            this.token = serverStub.login(this.nickname, numPlayers, gameID,this);
+
+            this.token = serverStub.login(this.nickname, gameID, 0,this);
             System.out.println("You joined the game with id: "+gameID);
         } catch (RemoteException e) {
             System.err.println("Failed to join game with id: " + gameID);

@@ -40,10 +40,11 @@ public class ServerApp
 
     public static void main( String[] args )
     {
-        Map<Integer, GameController> lobbies = new ConcurrentHashMap<>();
+        Map<Integer, GameController> availableGames = new ConcurrentHashMap<>();
+        Map<Integer, GameController> startedGames = new ConcurrentHashMap<>();
         Map<String, GameSession> sessions = new ConcurrentHashMap<>();
 
-        GameManager mngr = new GameManager(lobbies, sessions);
+        GameManager mngr = new GameManager(availableGames, startedGames, sessions);
 
         Thread rmiServerThread = new Thread(() -> { runRMIServer(mngr); });
         rmiServerThread.start();
