@@ -14,7 +14,9 @@ public interface NetworkClient {
 
     void askToSkipBonus();
 
-    void sendChatMessage();
+    void sendChatMessage(String message);
+
+    void askToEndTurn();
 
     void disconnect();
 

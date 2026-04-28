@@ -335,7 +335,7 @@ public class Game {
      * The choosen card is placed in the collection of the current player
      * @param row is true if the card to be drawn is from the upper row, false if not
      * @param index indicates the index of the choosen card from the row (upper or lower)
-     * @throws IllegalArgumentException if the player choices are more than the possible choices the Tile offers
+     * @throws IllegalStateException if the player choices are more than the possible choices the Tile offers
     */
     public void resolveAction(boolean row, int index) {         //row = true riga sopra, row = false riga sotto
 
@@ -351,16 +351,15 @@ public class Game {
         }
         
         if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
-            throw new IllegalArgumentException("You already drawn the max number of cards from the upper row");
+            throw new IllegalStateException("You already drawn the max number of cards from the upper row");
         }
         if (!row && currentDrawnLower >= targetTile.getLowerRow()) {
-            throw new IllegalArgumentException("You already drawn the max number of cards from the lower row");
+            throw new IllegalStateException("You already drawn the max number of cards from the lower row");
         }
 
         if (row) {
             c = this.board.removeUpper(index);
             currentDrawnUpper++;
-
         }
         else{
             c = this.board.removeLower(index);

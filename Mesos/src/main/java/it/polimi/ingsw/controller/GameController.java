@@ -62,10 +62,18 @@ public class GameController {
 
         if(foodCost > p.getFood())
             return false;
+        try {
+            game.resolveAction(row, idx);
+            broadcastUpdateBoard();
+        } catch(IllegalStateException e) {
+            VirtualView view = clients.get(nickname);
+            try {
+                view.showError(e.getMessage());
+            }catch(RemoteException re){
+                //giocatore disconnesso
+            }
 
-        game.resolveAction(row, idx);
-        broadcastUpdateBoard();
-
+        }
         return true;
     }
 
