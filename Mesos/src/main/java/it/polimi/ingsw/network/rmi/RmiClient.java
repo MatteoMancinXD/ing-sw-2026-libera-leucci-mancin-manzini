@@ -42,7 +42,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     public void requestAvailableGames() throws RemoteException{
         try {
-            Map<Integer,GameController> games = serverStub.getAvailableGames();
+            Map<Integer,String> games = serverStub.getAvailableGames();
             System.out.println("Available games:"+games);
         }catch (Exception e) {
             System.err.println("Failed to request available games");
@@ -51,7 +51,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
-        Map<Integer, GameController> games = serverStub.getAvailableGames();
+        Map<Integer, String> games = serverStub.getAvailableGames();
 
         int gameID = serverStub.askNewGameID();
 
@@ -66,7 +66,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void joinGame(String nickName, int gameID) throws RemoteException{
-        Map<Integer,GameController> games = serverStub.getAvailableGames();
+        Map<Integer,String> games = serverStub.getAvailableGames();
         try {
 
             this.token = serverStub.login(this.nickname, gameID, 0,this);
