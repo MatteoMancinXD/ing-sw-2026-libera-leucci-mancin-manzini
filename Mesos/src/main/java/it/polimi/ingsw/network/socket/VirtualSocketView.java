@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.messages.*;
 
@@ -22,8 +23,8 @@ public class VirtualSocketView  implements VirtualView {
     }
 
     @Override
-    public void updateBoard(Board board) throws RemoteException {
-            sendMessage(new BoardUpdateMessage(board));
+    public void updateBoard(Board board, List<Player> players) throws RemoteException {
+            sendMessage(new BoardUpdateMessage(board, players));
     }
 
     @Override
