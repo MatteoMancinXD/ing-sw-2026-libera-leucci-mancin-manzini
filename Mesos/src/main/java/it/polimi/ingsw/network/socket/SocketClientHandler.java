@@ -54,17 +54,17 @@ public class SocketClientHandler implements Runnable{
         int gameID = msg.getGameId();
         int numPlayers = msg.getNumPlayers();
 
-        Map<Integer, GameController> lobbies = mngr.getLobbies();
+        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
 
         VirtualSocketView view = new VirtualSocketView(nickname, out);
         boolean success;
 
-        if (mngr.getLobbies().containsKey(gameID)) {
-            mngr.getLobbies().get(gameID).addPlayer(view, nickname);
+        if (mngr.getAvailableGames().containsKey(gameID)) {
+            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
         } else {
-            mngr.getLobbies().put(gameID, new GameController(gameID, numPlayers));
-            mngr.getLobbies().get(gameID).addPlayer(view, nickname);
+            mngr.getAvailableGames().put(gameID, new GameController(gameID, numPlayers));
+            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
         }
 
@@ -91,7 +91,7 @@ public class SocketClientHandler implements Runnable{
     private GameController getController() {
         GameSession session = mngr.getSessions().get(token);
         if (session == null) return null;
-        return mngr.getLobbies().get(session.getGameID());
+        return mngr.getAvailableGames().get(session.getGameID());
     }
 
     private boolean validateToken(String receivedToken) {
