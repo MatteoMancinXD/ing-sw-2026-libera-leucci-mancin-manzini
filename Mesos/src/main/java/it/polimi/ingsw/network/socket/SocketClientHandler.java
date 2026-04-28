@@ -63,7 +63,7 @@ public class SocketClientHandler implements Runnable{
             mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
         } else {
-            mngr.getAvailableGames().put(gameID, new GameController(gameID, numPlayers));
+            mngr.getAvailableGames().put(gameID, new GameController(gameID, nickname, numPlayers));
             mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
             System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
         }

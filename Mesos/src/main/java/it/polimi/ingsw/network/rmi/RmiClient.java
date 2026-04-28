@@ -13,6 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
@@ -27,12 +28,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         this.nickname = nickname;
     }
 
-    public void startConnection(String serverIP, int port, int gameId, int numPlayers) throws RemoteException {
+    public void startConnection(String serverIP, int port) throws RemoteException {
         try {
             System.out.println("Connecting to " + serverIP + ":" + port);
             Registry registry = LocateRegistry.getRegistry(serverIP, port);
             serverStub = (ServerInterface) registry.lookup("MesosServer");
-            token = serverStub.login(nickname, gameId, numPlayers, this);
             System.out.println("Connected and logged with success to " + serverIP + ":" + port);
         }
         catch (Exception e) {
@@ -44,7 +44,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void requestAvailableGames() throws RemoteException{
         try {
             Map<Integer,String> games = serverStub.getAvailableGames();
-            System.out.println("Available games:"+games);
+            System.out.println("Available games:");
+
+            for(Map.Entry<Integer,String> game : games.entrySet()) {
+                System.out.println("Game #" +  game.getKey() + ": " + game.getValue() + "'s game");
+            }
         }catch (Exception e) {
             System.err.println("Failed to request available games");
             e.printStackTrace();
@@ -52,46 +56,28 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
-        Map<Integer, GameController> games = serverStub.getAvailableGames();
-        Map<Integer, GameController> startedGames = serverStub.getStartedGames();
+        Map<Integer, String> games = serverStub.getAvailableGames();
 
-        int maxID = 0;
-        for (Integer id : games.keySet()) {
-            if (id > maxID) maxID = id;
+        try {
+            //see if else in login method in VirtualRMIServer
+            int id = serverStub.createGame(this.nickname, numPlayers, this);
+            System.out.println("You created the game with id: " + id);
+        } catch (RemoteException e) {
+            System.err.println("Failed to create game!");
         }
-        for (Integer id : startedGames.keySet()) {
-            if (id > maxID) maxID = id;
-        }
-        int nuovoID = maxID + 1;
-
-
-            try {
-                //see if else in login method in VirtualRMIServer
-                this.token = serverStub.login(this.nickname, numPlayers, nuovoID,this);
-                System.out.println("You created the game with id: "+nuovoID);
-            } catch (RemoteException e) {
-                System.err.println("Failed to create game with ID " + nuovoID + "!");
-            }
-
     }
 
     public void joinGame(String nickName, int gameID) throws RemoteException{
-        Map<Integer,String> games = serverStub.getAvailableGames();
-        try {
-            this.token = serverStub.login(this.nickname, gameID, 0,this);
+       try {
+            serverStub.joinGame(this.nickname, gameID,this);
             System.out.println("You joined the game with id: "+gameID);
         } catch (RemoteException e) {
             System.err.println("Failed to join game with id: " + gameID);
         }
-
     }
 
     public void askToSkipBonus(){
-        try {
-            serverStub.skipBonusPick(this.token);
-        }catch(RemoteException e){
-            System.err.println("Failed to ask to skip bonus remotely");
-        }
+
     }
 
     public void askToEndTurn(){
@@ -164,6 +150,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     @Override
     public void receiveMessage(String message) throws RemoteException {
 
+    }
+
+    @Override
+    public void receiveToken(String token)  throws RemoteException {
+        this.token = token;
     }
 
     @Override

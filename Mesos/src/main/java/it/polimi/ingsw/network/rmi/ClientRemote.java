@@ -21,6 +21,8 @@ public interface ClientRemote extends Remote{
 
     void receiveGameEnd(List<String> rankings) throws RemoteException;
 
+    void receiveToken(String token) throws RemoteException;
+
     void ping() throws RemoteException;
 
 }

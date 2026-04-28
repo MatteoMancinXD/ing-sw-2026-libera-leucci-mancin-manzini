@@ -16,25 +16,35 @@ public class ClientApp {
         System.out.println("Type your nickname: ");
         String nickname = kb.nextLine();
 
-        System.out.println("Type the gameID: ");
-        int gameID = kb.nextInt();
-
         System.out.println("Select communication protocol:");
         System.out.println("1. RMI");
         System.out.println("2. Socket");
         int protocol = kb.nextInt();
 
+        System.out.println("1. Create a new game");
+        System.out.println("2. Join a game");
+        int choice = kb.nextInt();
+
         String token = "";
 
         if(protocol == 1){
             RmiClient client = new RmiClient(ui, nickname);
-            client.startConnection("127.0.0.1", 1099, gameID, 2);
+            client.startConnection("127.0.0.1", 1099);
+
+            if(choice == 1) {
+                client.createGame(nickname, 2);
+            } else if (choice == 2) {
+                client.requestAvailableGames();
+                System.out.println("Select game to join: ");
+                int id =  kb.nextInt();
+                client.joinGame(nickname, id);
+            }
         } else if(protocol == 2){
             SocketClient client = new SocketClient(nickname);
 
             client.startConnection("127.0.0.1", 5000);
-
-            client.sendMessageToServer(new LoginMessage(token, nickname, gameID, 2));
+            int gameID = 0;
+            client.sendMessageToServer(new LoginMessage(nickname, gameID, 2));
         }
 }
 }
