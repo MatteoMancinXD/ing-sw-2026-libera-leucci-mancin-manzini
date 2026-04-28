@@ -21,7 +21,7 @@ public class GameController {
     }
 
     public boolean addPlayer(VirtualView view, String nickname) {
-        synchronized(game) {
+        synchronized (game) {
             if (game.getPlayers().size() == game.getNumPlayers()) {
                 return false;
             } else if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
@@ -42,8 +42,11 @@ public class GameController {
                     System.out.println("Game #" + gameID + " is starting.");
 
                     broadcastMessage("Game #" + gameID + " starting.");
+
+                    Board board = game.getBoard();
+
                     new Thread(() -> {
-                        broadcastUpdateBoard();
+                        broadcastUpdateBoard(board);
                         notifyCurrentPlayer();
                     }).start();
                 }
@@ -53,61 +56,65 @@ public class GameController {
     }
 
     public boolean drawCard(String nickname, boolean row, int idx) {
-        if(idx < 0)
-            return false;
+        synchronized (game) {
+            if (idx < 0)
+                return false;
 
-        if(!checkPlayer(nickname)) return false;
+            if (!checkPlayer(nickname)) return false;
 
-        Player p = game.getCurrentPlayer();
-        Board board = game.getBoard();
+            Player p = game.getCurrentPlayer();
+            Board board = game.getBoard();
 
-        Card card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
-        int foodCost = card.getFoodCost();
+            Card card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
+            int foodCost = card.getFoodCost();
 
-        if(foodCost > p.getFood())
-            return false;
-        try {
-            game.resolveAction(row, idx);
-            new Thread(() -> {
-                broadcastUpdateBoard();
-                notifyCurrentPlayer();
-            }).start();
-        } catch(IllegalStateException e) {
-            VirtualView view = clients.get(nickname);
+            if (foodCost > p.getFood())
+                return false;
             try {
-                view.showError(e.getMessage());
-            }catch(RemoteException re){
-                //giocatore disconnesso
-            }
+                game.resolveAction(row, idx);
+                new Thread(() -> {
+                    broadcastUpdateBoard(board);
+                    notifyCurrentPlayer();
+                }).start();
+            } catch (IllegalStateException e) {
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.showError(e.getMessage());
+                } catch (RemoteException re) {
+                    //giocatore disconnesso
+                }
 
+            }
+            return true;
         }
-        return true;
     }
 
     public boolean placeTotem(String nickname, int tileIndex) {
-        if(!checkPlayer(nickname)) return false;
+        synchronized (game) {
+            if (!checkPlayer(nickname)) return false;
 
-        Board board = game.getBoard();
-        if(tileIndex < 0 || tileIndex > board.getTrack().size() - 1) return false;
+            Board board = game.getBoard();
+            if (tileIndex < 0 || tileIndex > board.getTrack().size() - 1) return false;
 
-        Tile tile = board.getTrack().get(tileIndex);
-        if(tile.getStatus()) return false;
+            Tile tile = board.getTrack().get(tileIndex);
+            if (tile.getStatus()) return false;
 
-        game.placeTotem(tileIndex);
-        new Thread(() -> {
-            broadcastUpdateBoard();
-            notifyCurrentPlayer();
-        }).start();
+            game.placeTotem(tileIndex);
+            new Thread(() -> {
+                broadcastUpdateBoard(board);
+                notifyCurrentPlayer();
+            }).start();
 
-        return true;
+            return true;
+        }
     }
 
-    public void broadcastUpdateBoard() {
-        synchronized(clients) {
-            for(VirtualView view : clients.values()) {
+    public void broadcastUpdateBoard(Board board) {
+        synchronized (clients) {
+            for (VirtualView view : clients.values()) {
                 new Thread(() -> {
                     try {
-                        view.updateBoard(game.getBoard());
+                        view.updateBoard(board);
                     } catch (RemoteException e) {
                         System.out.println("Client unreachable.");
                     }
@@ -117,8 +124,8 @@ public class GameController {
     }
 
     public void broadcastMessage(String message) {
-        synchronized(clients) {
-            for(VirtualView view : clients.values()) {
+        synchronized (clients) {
+            for (VirtualView view : clients.values()) {
                 new Thread(() -> {
                     try {
                         view.showMessage(message);
@@ -135,7 +142,7 @@ public class GameController {
     }
 
     public void notifyCurrentPlayer() {
-        synchronized(clients) {
+        synchronized (clients) {
             if (game.getRound() > 10) return;
             String current = game.getCurrentPlayer().getNickname();
             for (VirtualView view : clients.values()) {
@@ -157,17 +164,18 @@ public class GameController {
                 }).start();
             }
         }
-
-
-
     }
 
     public void skipExtraPick(String nickname) {
-        if (!checkPlayer(nickname)) return;
-        game.skipExtraPick();
-        new Thread(() -> {
-            broadcastUpdateBoard();
-            notifyCurrentPlayer();
-        }).start();
+        synchronized (game) {
+            if (!checkPlayer(nickname)) return;
+            game.skipExtraPick();
+            Board board = game.getBoard();
+
+            new Thread(() -> {
+                broadcastUpdateBoard(board);
+                notifyCurrentPlayer();
+            }).start();
+        }
     }
 }
