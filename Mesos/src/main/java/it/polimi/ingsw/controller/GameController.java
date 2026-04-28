@@ -17,6 +17,7 @@ public class GameController {
 
     public GameController(int gameID, String gameMaster, int numPlayers) {
         this.gameID = gameID;
+        this.gameMaster = gameMaster;
         game = new Game(numPlayers);
         clients = new HashMap<>();
     }
