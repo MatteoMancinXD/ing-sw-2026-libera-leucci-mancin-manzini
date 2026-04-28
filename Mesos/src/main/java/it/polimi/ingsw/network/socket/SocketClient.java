@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.messages.BoardUpdateMessage;
 import it.polimi.ingsw.network.messages.ClientToServerMessage;
 import it.polimi.ingsw.network.messages.PlaceTotemMessage;
 import it.polimi.ingsw.network.messages.ServerToClientMessage;
+import it.polimi.ingsw.network.messages.LoginMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -67,8 +68,17 @@ public class SocketClient implements NetworkClient {
         }
     }
 
+
+    public String getToken() { return token; }
+
+    public void setToken(String token) { this.token = token; }
+
+    public void login(int gameId, int numPlayers) {
+        sendMessageToServer(new LoginMessage(nickname, gameId, numPlayers));
+    }
+
     public void askToPlaceTotem(int index) {
-        sendMessageToServer(new PlaceTotemMessage(this.nickname, index));
+        sendMessageToServer(new PlaceTotemMessage(this.token, index));
     }
 
 }

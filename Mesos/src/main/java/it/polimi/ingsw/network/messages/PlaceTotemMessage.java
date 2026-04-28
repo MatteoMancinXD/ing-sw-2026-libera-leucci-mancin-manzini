@@ -7,8 +7,8 @@ public class PlaceTotemMessage extends ClientToServerMessage {
 
     private final int pos;
 
-    public PlaceTotemMessage(String nickname, int pos) {
-        super(nickname);
+    public PlaceTotemMessage(String token, int pos) {
+        super(token);
         this.pos = pos;
     }
     public int getPos() {
@@ -18,7 +18,7 @@ public class PlaceTotemMessage extends ClientToServerMessage {
 
     @Override
     public void process(SocketClientHandler handler) {
-        //controller.placeTotem(getNickname(), pos);
+        handler.handlePlaceTotem(this);
     }
 
 }

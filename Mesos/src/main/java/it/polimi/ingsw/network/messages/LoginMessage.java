@@ -12,12 +12,20 @@ public class LoginMessage extends ClientToServerMessage {
     private int gameId;
     private int numPlayers;
 
-    public int getGameId() { return gameId; }
-    public int getNumPlayers() { return numPlayers; }
-    public String getNickname() { return nickname; }
+    public int getGameId() {
+        return gameId;
+    }
 
-    public LoginMessage(String token, String nickname,  int gameId, int numPlayers) {
-        super(token);
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public LoginMessage(String nickname, int gameId, int numPlayers) {
+        super(null);
         this.nickname = nickname;
         this.gameId = gameId;
         this.numPlayers = numPlayers;
@@ -26,5 +34,10 @@ public class LoginMessage extends ClientToServerMessage {
     @Override
     public void process(SocketClientHandler handler) {
         handler.handleLogin(this);
+    }
+
+    @Override
+    public boolean requiresToken() {
+        return false;
     }
 }

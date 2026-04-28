@@ -42,6 +42,10 @@ public class GameController {
                     System.out.println("Game #" + gameID + " is starting.");
 
                     broadcastMessage("Game #" + gameID + " starting.");
+                    new Thread(() -> {
+                        broadcastUpdateBoard();
+                        notifyCurrentPlayer();
+                    }).start();
                 }
             }
             return true;
@@ -64,7 +68,10 @@ public class GameController {
             return false;
         try {
             game.resolveAction(row, idx);
-            broadcastUpdateBoard();
+            new Thread(() -> {
+                broadcastUpdateBoard();
+                notifyCurrentPlayer();
+            }).start();
         } catch(IllegalStateException e) {
             VirtualView view = clients.get(nickname);
             try {
@@ -87,8 +94,11 @@ public class GameController {
         if(tile.getStatus()) return false;
 
         game.placeTotem(tileIndex);
+        new Thread(() -> {
+            broadcastUpdateBoard();
+            notifyCurrentPlayer();
+        }).start();
 
-        broadcastUpdateBoard();
         return true;
     }
 
@@ -122,5 +132,42 @@ public class GameController {
 
     public boolean checkPlayer(String nickname) {
         return nickname.equals(game.getCurrentPlayer().getNickname());
+    }
+
+    public void notifyCurrentPlayer() {
+        synchronized(clients) {
+            if (game.getRound() > 10) return;
+            String current = game.getCurrentPlayer().getNickname();
+            for (VirtualView view : clients.values()) {
+                new Thread(() -> {
+                    try {
+                        view.notifyTurn(current);
+                    } catch (RemoteException e) {
+                        System.out.println("Client unreachable.");
+                    }
+                }).start();
+            }
+            if (game.getCurrentPhase() == GamePhase.EXTRA_PICK) {
+                new Thread(() -> {
+                    try {
+                        clients.get(current).askBonusExtraPick();
+                    } catch (RemoteException e) {
+                        System.out.println("Client unreachable.");
+                    }
+                }).start();
+            }
+        }
+
+
+
+    }
+
+    public void skipExtraPick(String nickname) {
+        if (!checkPlayer(nickname)) return;
+        game.skipExtraPick();
+        new Thread(() -> {
+            broadcastUpdateBoard();
+            notifyCurrentPlayer();
+        }).start();
     }
 }
