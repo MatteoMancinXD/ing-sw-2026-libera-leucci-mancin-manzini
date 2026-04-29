@@ -53,10 +53,10 @@ public class GameController {
 
                     Board board = game.getBoard();
 
-                    new Thread(() -> {
-                        broadcastUpdateBoard(board);
+                    //new Thread(() -> {
+                        broadcastUpdateBoard(board, game.getPlayers());
                         notifyCurrentPlayer();
-                    }).start();
+                    //}).start();
                 }
             }
             return true;
@@ -81,7 +81,7 @@ public class GameController {
             try {
                 game.resolveAction(row, idx);
                 new Thread(() -> {
-                    broadcastUpdateBoard(board);
+                    broadcastUpdateBoard(board, game.getPlayers());
                     notifyCurrentPlayer();
                 }).start();
             } catch (IllegalStateException e) {
@@ -109,7 +109,7 @@ public class GameController {
 
             game.placeTotem(tileIndex);
             new Thread(() -> {
-                broadcastUpdateBoard(board);
+                broadcastUpdateBoard(board, game.getPlayers());
                 notifyCurrentPlayer();
             }).start();
 
@@ -117,32 +117,30 @@ public class GameController {
         }
     }
 
-    public void broadcastUpdateBoard(Board board) {
+    public void broadcastUpdateBoard(Board board, List<Player> players) {
         synchronized (clients) {
-            for (VirtualView view : clients.values()) {
-                new Thread(() -> {
+            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                //new Thread(() -> {
                     try {
-                        view.updateBoard(board, game.getPlayers());
+                        entry.getValue().updateBoard(board, players);
                     } catch (RemoteException e) {
-                        System.out.println("Client unreachable.");
-
+                        System.out.println("Client "+ entry.getKey() + " unreachable");
                     }
-                }).start();
+                //}).start();
             }
         }
     }
 
     public void broadcastMessage(String message) {
         synchronized (clients) {
-            for (VirtualView view : clients.values()) {
-                new Thread(() -> {
+            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                //new Thread(() -> {
                     try {
-                        view.showMessage(message);
+                        entry.getValue().showMessage(message);
                     } catch (RemoteException e) {
-                        System.out.println("Client unreachable.");
-
+                        System.out.println("Client " + entry.getKey() + " unreachable");
                     }
-                }).start();
+                //}).start();
             }
         }
     }
@@ -156,13 +154,13 @@ public class GameController {
             if (game.getRound() > 10) return;
             String current = game.getCurrentPlayer().getNickname();
             for (VirtualView view : clients.values()) {
-                new Thread(() -> {
+                //new Thread(() -> {
                     try {
                         view.notifyTurn(current, game.getCurrentPhase());
                     } catch (RemoteException e) {
                         System.out.println("Client unreachable.");
                     }
-                }).start();
+                //}).start();
             }
             if (game.getCurrentPhase().equals("EXTRA_PICK")) {
                 new Thread(() -> {
@@ -184,7 +182,7 @@ public class GameController {
             Board board = game.getBoard();
 
             new Thread(() -> {
-                broadcastUpdateBoard(board);
+                broadcastUpdateBoard(board, game.getPlayers());
                 notifyCurrentPlayer();
             }).start();
         }
@@ -204,7 +202,7 @@ public class GameController {
             //update board
             Board board = game.getBoard();
             new Thread(() -> {
-                broadcastUpdateBoard(board);
+                broadcastUpdateBoard(board, game.getPlayers());
                 notifyCurrentPlayer();
             }).start();
         }
