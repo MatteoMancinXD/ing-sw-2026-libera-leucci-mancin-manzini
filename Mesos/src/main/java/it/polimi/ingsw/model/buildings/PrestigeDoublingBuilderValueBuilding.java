@@ -17,4 +17,9 @@ public class PrestigeDoublingBuilderValueBuilding extends BuildingCard {
             player.editPrestige(c.getPps());
         }
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige Doubling Builder [cost=%d, pp=%d] - doubles pp from all builders at game end", getFoodCost(), getPrestigeGain());
+    }
 }

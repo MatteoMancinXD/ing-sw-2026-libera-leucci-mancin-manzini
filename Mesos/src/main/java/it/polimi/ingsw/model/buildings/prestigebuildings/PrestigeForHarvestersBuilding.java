@@ -16,4 +16,9 @@ public class PrestigeForHarvestersBuilding extends BuildingCard {
         int harvesters = player.getHarvesters().size();
         player.editPrestige(4 * harvesters);
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Harvesters [cost=%d, pp=%d] - +4 pp per harvester at game end", getFoodCost(), getPrestigeGain());
+    }
 }

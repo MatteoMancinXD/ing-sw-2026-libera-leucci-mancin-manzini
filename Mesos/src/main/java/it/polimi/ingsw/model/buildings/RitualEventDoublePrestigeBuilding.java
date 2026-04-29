@@ -11,4 +11,9 @@ public class RitualEventDoublePrestigeBuilding extends BuildingCard {
 
     @Override
     public int getRitualEventDoublePrestigeBonus() { return 2; }
+
+    @Override
+    public String getShortString() {
+        return String.format("Ritual Event Double Prestige [cost=%d, pp=%d] - double pp if majority in Ritual Event", getFoodCost(), getPrestigeGain());
+    }
 }

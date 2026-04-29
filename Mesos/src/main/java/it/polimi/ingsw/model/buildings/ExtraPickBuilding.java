@@ -34,4 +34,9 @@ public class ExtraPickBuilding extends BuildingCard {
     public boolean grantsExtraPick() {
         return true;
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Extra Pick [cost=%d, pp=%d] - pick 1 extra card from upper row each round", getFoodCost(), getPrestigeGain());
+    }
 }

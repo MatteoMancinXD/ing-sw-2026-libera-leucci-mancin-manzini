@@ -16,4 +16,9 @@ public class OrderTileBuilding extends BuildingCard {
             player.editFood(1);
         }
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Order Tile [cost=%d, pp=%d] - +1 food when placing totem on a food bonus tile", getFoodCost(), getPrestigeGain());
+    }
 }

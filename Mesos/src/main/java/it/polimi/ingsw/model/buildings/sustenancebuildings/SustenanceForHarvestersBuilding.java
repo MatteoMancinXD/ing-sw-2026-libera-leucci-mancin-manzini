@@ -13,4 +13,9 @@ public class SustenanceForHarvestersBuilding extends BuildingCard {
     public int getSustenanceEventFoodBonus(Player p){
         return p.getHarvesters().size();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Sustenance For Harvesters [cost=%d, pp=%d] - -1 food per harvester during Sustenance Event", getFoodCost(), getPrestigeGain());
+    }
 }

@@ -15,4 +15,9 @@ public class SustenanceForArtistsBuilding extends BuildingCard {
     public int getSustenanceEventFoodBonus(Player p){
         return p.getArtists().size();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Sustenance For Artists [cost=%d, pp=%d] - -1 food per artist during Sustenance Event", getFoodCost(), getPrestigeGain());
+    }
 }

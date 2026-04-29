@@ -14,4 +14,9 @@ public class SustenanceBuilding extends BuildingCard{
     }
 
     public SustenanceBuilding () {}
+
+    @Override
+    public String getShortString() {
+        return String.format("Sustenance [cost=%d, pp=%d] - food discount during Sustenance Event", getFoodCost(), getPrestigeGain());
+    }
 }

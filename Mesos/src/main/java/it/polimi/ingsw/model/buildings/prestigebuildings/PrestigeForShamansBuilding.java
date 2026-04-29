@@ -15,4 +15,8 @@ public class PrestigeForShamansBuilding extends BuildingCard {
         int shamans = player.getShamans().size();
         player.editPrestige(4 * shamans);
     }
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Shamans [cost=%d, pp=%d] - +4 pp per shaman at game end", getFoodCost(), getPrestigeGain());
+    }
 }

@@ -13,4 +13,9 @@ public class SustenanceForInventorsBuilding extends BuildingCard {
     public int getSustenanceEventFoodBonus(Player p){
         return p.getInventors().size();
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Sustenance For Inventors [cost=%d, pp=%d] - -1 food per inventor during Sustenance Event", getFoodCost(), getPrestigeGain());
+    }
 }

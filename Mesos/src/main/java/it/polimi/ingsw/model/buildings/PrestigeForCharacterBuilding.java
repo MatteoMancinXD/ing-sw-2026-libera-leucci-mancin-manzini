@@ -14,4 +14,9 @@ public class PrestigeForCharacterBuilding extends BuildingCard {
 
     public PrestigeForCharacterBuilding() {}
     public void setBonusPrestige(int bonusPrestige) {this.bonusPrestige=bonusPrestige;}
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Character [cost=%d, pp=%d] - +%d pp per character of the indicated type", getFoodCost(), getPrestigeGain(), bonusPrestige);
+    }
 }
