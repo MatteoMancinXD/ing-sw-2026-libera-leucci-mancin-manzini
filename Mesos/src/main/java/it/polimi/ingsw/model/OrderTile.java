@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
+
+import java.io.Serializable;
+
 /**
  * Represents the turn order tile where players move their totems at the end of the placement phase.
  */
-public class OrderTile {
+public class OrderTile implements Serializable {
     private int[] modifiers;
     /**
      * Creates the order tile and sets up food modifiers for the given player count. The first player gains 3 food, the second gains 1, middle players gain nothing, and the last player loses 1 food.
