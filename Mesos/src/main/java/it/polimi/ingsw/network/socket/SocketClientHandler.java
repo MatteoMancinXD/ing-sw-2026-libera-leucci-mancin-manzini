@@ -76,8 +76,6 @@ public class SocketClientHandler implements Runnable{
     public void handleCreateGame(CreateGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
 
-        System.out.println("CreateGameMessage received");
-
         this.nickname = msg.getNickname();
         int numPlayers =  msg.getNumPlayers();
 
@@ -87,6 +85,13 @@ public class SocketClientHandler implements Runnable{
         GameController ctrl = new GameController(gameID, nickname, numPlayers);
         availableGames.put(gameID, ctrl);
         ctrl.addPlayer(view, nickname);
+
+        sendMessage(new LoginResponseMessage(token));
+    }
+
+    public void handleRequestGames(RequestGamesMessage msg) {
+        Map<Integer, String> games = mngr.getGamesIDAndMaster();
+        sendMessage(new AvailableGamesMessage(games));
     }
 
     public void handleJoinGame(JoinGameMessage msg) {
@@ -99,6 +104,8 @@ public class SocketClientHandler implements Runnable{
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
         ctrl.addPlayer(view, nickname);
+
+        sendMessage(new LoginResponseMessage(token));
     }
 
     public void handleDrawCard(DrawCardMessage msg) {

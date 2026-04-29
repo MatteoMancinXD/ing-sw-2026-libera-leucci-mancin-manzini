@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.view.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +14,9 @@ public class SocketClient implements NetworkClient {
 
     private final String nickname;
     private String token;
+
     //ci sarà anche la TUI/GUI
+    private ui ui;
 
     private Socket socket;
     private ObjectOutputStream out;
@@ -57,15 +60,15 @@ public class SocketClient implements NetworkClient {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
                 message.onReceive(this);
-                message.process();
+                message.process(ui);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Connection lost");
+            e.printStackTrace();
         } finally {
             disconnect();
         }
     }
-
 
     public String getToken() { return token; }
 

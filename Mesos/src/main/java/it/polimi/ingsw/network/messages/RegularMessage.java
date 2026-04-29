@@ -12,7 +12,7 @@ public class RegularMessage extends ServerToClientMessage{
     }
 
     public void process(ui userInterface) {
-        //userInterface....
+        System.out.println(message);
     }
 
 }

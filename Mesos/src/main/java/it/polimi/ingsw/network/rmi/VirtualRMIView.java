@@ -25,7 +25,7 @@ public class VirtualRMIView implements VirtualView {
 
     @Override
     public void updateBoard(Board board, List<Player> players) throws RemoteException {
-        clientStub.receiveBoardUpdate(board);
+        clientStub.receiveBoardUpdate(board, players);
     }
     @Override
     public void notifyTurn(String currentPlayerNickname) throws RemoteException {
