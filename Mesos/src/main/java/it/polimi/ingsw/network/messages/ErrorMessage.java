@@ -13,7 +13,7 @@ public class ErrorMessage extends ServerToClientMessage {
     }
 
     public void process(ui userInterface) {
-        //userInterface....
+        userInterface.showError(error);
     }
 
 }

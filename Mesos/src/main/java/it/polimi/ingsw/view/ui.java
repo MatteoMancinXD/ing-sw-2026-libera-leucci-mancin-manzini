@@ -12,11 +12,10 @@ public interface ui {
 
     void showError(String errorMessage);
 
-    void notifyTurn(String currentPlayerNickname, String turnphase);
+    void notifyTurn(String currentPlayerNickname, String gamePhase);
 
     void notifyEndGame(List<String> rankings);
 
     void showMessage(String message);
 
-    void showAvailableGames();
 }

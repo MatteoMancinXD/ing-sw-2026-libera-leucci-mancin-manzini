@@ -65,7 +65,7 @@ public class Game {
     public int getEra() {
         return era;
     }
-    public GamePhase getCurrentPhase() {  return currentPhase; }
+    public String getCurrentPhase() {  return currentPhase.toString(); }
     public Player getCurrentPlayer() { return players.get(currentPlayerIndex);}
 
     private ArrayList<BuildingCard> loadBuildingsFromJson() {

@@ -156,13 +156,13 @@ public class GameController {
             for (VirtualView view : clients.values()) {
                 new Thread(() -> {
                     try {
-                        view.notifyTurn(current);
+                        view.notifyTurn(current, game.getCurrentPhase());
                     } catch (RemoteException e) {
                         System.out.println("Client unreachable.");
                     }
                 }).start();
             }
-            if (game.getCurrentPhase() == GamePhase.EXTRA_PICK) {
+            if (game.getCurrentPhase().equals("EXTRA_PICK")) {
                 new Thread(() -> {
                     try {
                         clients.get(current).askBonusExtraPick();

@@ -33,6 +33,6 @@ public class LoginResponseMessage extends ServerToClientMessage {
 
     @Override
     public void process(ui userInterface) {
-        // vedi tui
+        if (token == null) { userInterface.showError(errorMessage); }
     }
 }

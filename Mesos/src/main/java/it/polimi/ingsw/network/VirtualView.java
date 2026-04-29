@@ -12,7 +12,7 @@ public interface VirtualView {
 
     void updateBoard(Board board, List<Player> players) throws RemoteException;
 
-    void notifyTurn(String currentPlayerNickname) throws RemoteException;
+    void notifyTurn(String currentPlayerNickname, String gamePhase) throws RemoteException;
 
     void showError(String errorMessage) throws RemoteException;
 
