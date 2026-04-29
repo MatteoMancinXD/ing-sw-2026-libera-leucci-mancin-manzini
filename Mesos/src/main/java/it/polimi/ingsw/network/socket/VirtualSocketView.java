@@ -8,9 +8,7 @@ import it.polimi.ingsw.network.messages.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualSocketView  implements VirtualView {
@@ -34,8 +32,8 @@ public class VirtualSocketView  implements VirtualView {
     }
 
     @Override
-    public void notifyTurn(String currentPlayerNickname) throws RemoteException {
-        sendMessage(new TurnNotificationMessage(currentPlayerNickname));
+    public void notifyTurn(String currentPlayerNickname, String gamePhase) throws RemoteException {
+        sendMessage(new TurnNotificationMessage(currentPlayerNickname, gamePhase));
     }
 
     @Override

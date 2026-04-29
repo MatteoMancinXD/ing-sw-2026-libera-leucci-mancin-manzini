@@ -15,4 +15,9 @@ public class PrestigeForBuildersBuilding extends BuildingCard {
         int builders = player.getBuilders().size();
         player.editPrestige(4 * builders);
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Builders [cost=%d, pp=%d] - +4 pp per builder at game end", getFoodCost(), getPrestigeGain());
+    }
 }

@@ -9,4 +9,8 @@ public class PrestigeGivingBuilding extends BuildingCard {
         //no override on any methods, this building just gives 25 prestige points
     public PrestigeGivingBuilding () {}
 
+    @Override
+    public String getShortString() {
+        return String.format("Prestige Giving [cost=%d, pp=%d] - +25 pp at game end", getFoodCost(), getPrestigeGain());
+    }
 }

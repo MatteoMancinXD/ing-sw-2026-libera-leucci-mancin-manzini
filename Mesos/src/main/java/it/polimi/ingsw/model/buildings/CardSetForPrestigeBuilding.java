@@ -27,6 +27,10 @@ public class CardSetForPrestigeBuilding extends BuildingCard {
 
         player.editPrestige(6 * min);
     }
+    @Override
+    public String getShortString() {
+        return String.format("Card Set For Prestige [cost=%d, pp=%d] - +6 pp per complete set of 6 character types at game end", getFoodCost(), getPrestigeGain());
+    }
 }
 
 

@@ -10,4 +10,9 @@ public class RitualEventNoMalusBuilding extends BuildingCard {
     public RitualEventNoMalusBuilding() {}
     @Override
     public boolean getRitualEventNoPrestigeMalus() {return true;}
+
+    @Override
+    public String getShortString() {
+        return String.format("Ritual Event No Malus [cost=%d, pp=%d] - no pp loss if minority in Ritual Event", getFoodCost(), getPrestigeGain());
+    }
 }

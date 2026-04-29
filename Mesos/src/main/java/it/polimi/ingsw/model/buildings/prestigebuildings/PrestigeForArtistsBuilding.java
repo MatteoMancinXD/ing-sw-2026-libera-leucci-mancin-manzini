@@ -15,4 +15,9 @@ public class PrestigeForArtistsBuilding extends BuildingCard {
         int artists = player.getArtists().size();
         player.editPrestige(4 * artists);
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Artists [cost=%d, pp=%d] - +4 pp per artist at game end", getFoodCost(), getPrestigeGain());
+    }
 }

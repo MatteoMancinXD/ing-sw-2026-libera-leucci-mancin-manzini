@@ -16,4 +16,9 @@ public class PrestigeForInventorsBuilding extends BuildingCard {
         int inventors =  player.getInventors().size();
         player.editPrestige(2 * inventors);
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Inventors [cost=%d, pp=%d] - +2 pp per inventor at game end", getFoodCost(), getPrestigeGain());
+    }
 }

@@ -16,4 +16,8 @@ public class RitualEventBonusStarsBuilding extends BuildingCard {
         player.editStars(3);
     }
 
+    @Override
+    public String getShortString() {
+        return String.format("Ritual Event Bonus Stars [cost=%d, pp=%d] - +3 shaman stars on purchase", getFoodCost(), getPrestigeGain());
+    }
 }

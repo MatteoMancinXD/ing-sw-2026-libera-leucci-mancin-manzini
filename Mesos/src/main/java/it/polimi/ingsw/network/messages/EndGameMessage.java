@@ -16,7 +16,7 @@ public class EndGameMessage extends ServerToClientMessage{
     }
 
     public void process(ui userInterface) {
-        //userInterface....
+        userInterface.notifyEndGame(rankings);
     }
 
 }

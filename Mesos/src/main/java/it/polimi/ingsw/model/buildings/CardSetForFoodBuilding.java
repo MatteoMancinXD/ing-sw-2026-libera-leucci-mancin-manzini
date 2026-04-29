@@ -59,4 +59,7 @@ public class CardSetForFoodBuilding extends BuildingCard {
             shamans--;
         }
     }
+    @Override
+    public String getShortString() {
+        return String.format("Card Set For Food [cost=%d, pp=%d] - +5 food per complete set of 6 character types", getFoodCost(), getPrestigeGain());}
 }

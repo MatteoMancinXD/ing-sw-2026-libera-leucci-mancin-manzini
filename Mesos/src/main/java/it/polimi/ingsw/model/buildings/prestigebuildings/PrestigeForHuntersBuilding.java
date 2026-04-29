@@ -15,4 +15,9 @@ public class PrestigeForHuntersBuilding extends BuildingCard {
         int hunters = player.getHunters().size();
         player.editPrestige(3 * hunters);
     }
+
+    @Override
+    public String getShortString() {
+        return String.format("Prestige For Hunters [cost=%d, pp=%d] - +3 pp per hunter at game end", getFoodCost(), getPrestigeGain());
+    }
 }

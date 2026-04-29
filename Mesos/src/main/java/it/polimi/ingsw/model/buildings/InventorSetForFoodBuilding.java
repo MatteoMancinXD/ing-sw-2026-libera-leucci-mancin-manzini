@@ -58,4 +58,8 @@ public class InventorSetForFoodBuilding extends BuildingCard {
             coupleCompleted = false;
         }
     }
+    @Override
+    public String getShortString() {
+        return String.format("Inventor Set For Food [cost=%d, pp=%d] - +3 food per pair of inventors with same invention", getFoodCost(), getPrestigeGain());
+    }
 }

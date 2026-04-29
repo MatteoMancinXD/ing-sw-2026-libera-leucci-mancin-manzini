@@ -13,4 +13,8 @@ public class HuntEventBuilding extends BuildingCard {
     @Override
     public int getHuntEventFoodBonus(int hunters){return hunters;}
 
+    @Override
+    public String getShortString() {
+        return String.format("Hunt Event [cost=%d, pp=%d] - +1 food and +1 pp per hunter during Hunt Event", getFoodCost(), getPrestigeGain());
+    }
 }

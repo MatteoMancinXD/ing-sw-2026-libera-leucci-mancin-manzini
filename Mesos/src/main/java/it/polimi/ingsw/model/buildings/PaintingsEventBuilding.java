@@ -11,4 +11,10 @@ public class PaintingsEventBuilding extends BuildingCard {
 
     @Override
     public int getPaintingsEventFoodBonus(int artists){return artists;} //it gets 1 food per artist in PaintingsEvent
+
+    @Override
+    public String getShortString() {
+        return String.format("Paintings Event [cost=%d, pp=%d] - +1 food per artist during Paintings Event", getFoodCost(), getPrestigeGain());
+    }
+
 }

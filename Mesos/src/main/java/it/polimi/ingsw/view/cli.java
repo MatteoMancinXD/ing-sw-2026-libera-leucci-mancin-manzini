@@ -60,20 +60,37 @@ public class cli implements ui{
            switch(command) {
                case "create":
                    try {
-                       client.createGame(nickname, Integer.parseInt(parameters[1]));
-                       System.out.println("Game creation request sent");
+                       try {
+                           client.createGame(nickname, Integer.parseInt(parameters[1]));
+                           System.out.println("Game creation request sent");
+                       } catch (NumberFormatException e) {
+                           System.out.println("Invalid number of players");
+                       }
+
                    } catch (RemoteException e) {
                        System.out.println("Connection error creating game");
                    }
                    break;
                case "join":
                    try {
-                       client.joinGame(nickname, Integer.parseInt(parameters[1]));
-                       System.out.println("Game join request sent");
+                       try {
+                           client.joinGame(nickname, Integer.parseInt(parameters[1]));
+                           System.out.println("Game join request sent");
+                       } catch (NumberFormatException e) {
+                           System.out.println("Invalid gameID");
+                       }
+
                    } catch (RemoteException e) {
                        System.out.println("Connection error joining game");
                    }
                    break;
+               case "list":
+                   try {
+                       client.requestAvailableGames();
+                   } catch (RemoteException e) {
+                       showError(e.getMessage());
+                   }
+
                case "help":
                    System.out.println("Lobby commands: create *num_players*  |  join *game_id*  | list ");
                    break;
@@ -85,13 +102,18 @@ public class cli implements ui{
     public void handleWaitingCommands(String command, String[] parameters) {
         switch(command) {
             case "chat":
-                String message = null;
+                String message = "";
                 for (String word : parameters) {
                     if (!word.equals(parameters[0])) {
                         message += word;
                     }
                 }
-                client.sendChatMessage(message);
+                try {
+                    client.sendChatMessage(message);
+                } catch (RemoteException e) {
+                    showError(e.getMessage());
+                }
+
                 System.out.println("Chat message sent");
                 break;
             case "help":
@@ -112,17 +134,27 @@ public class cli implements ui{
                 if (parameters[1].equals("1")) {
                     row = true;
                 }
-                client.askToDrawCard(row, Integer.parseInt(parameters[2]));
-                System.out.println("Draw request sent");
+                try {
+                    client.askToDrawCard(row, Integer.parseInt(parameters[2]));
+                    System.out.println("Draw request sent");
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid index format");
+                }
+
                 break;
             case "chat":
-                String message = null;
+                String message = "";
                 for (String word : parameters) {
                     if (!word.equals(parameters[0])) {
                         message += word;
                     }
                 }
-                client.sendChatMessage(message);
+                try {
+                    client.sendChatMessage(message);
+                } catch (RemoteException e) {
+                    showError(e.getMessage());
+                }
+
                 System.out.println("Chat message sent");
                 break;
             default:
@@ -135,25 +167,31 @@ public class cli implements ui{
 
         switch(command) {
             case "help":
-                System.out.println("Placing commands:  totem *tile_index*  |  end  |  chat *message*");
+                System.out.println("Placing commands:  totem *tile_index*  |  chat *message*");
                 break;
             case "totem":
-                client.askToPlaceTotem(Integer.parseInt(parameters[1]));
-                System.out.println("Totem placing request sent");
-                this.currentState = CliState.WAITING;
+                try {
+                    client.askToPlaceTotem(Integer.parseInt(parameters[1]));
+                    System.out.println("Totem placing request sent");
+                    this.currentState = CliState.WAITING;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number");
+                }
                 break;
             case "chat":
-                String message = null;
+                String message = "";
                 for (String word : parameters) {
                     if (!word.equals(parameters[0])) {
                         message += word;
                     }
                 }
-                client.sendChatMessage(message);
+                try {
+                    client.sendChatMessage(message);
+                } catch (RemoteException e) {
+                    showError(e.getMessage());
+                }
+
                 System.out.println("Chat message sent");
-                break;
-            case "end":         //Se il giocatore non vuole pescare tutte le carte che potrebbe
-                client.askToEndTurn();
                 break;
             default:
                 System.out.println("Invalid command");
@@ -232,14 +270,32 @@ public class cli implements ui{
         for (Player p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
             if (!p.getNickname().equals(this.nickname)) {
                 System.out.println("------OPPONENTS STATS AND CARDS------\n");
-                System.out.println("Nickname: "+p.getNickname()+", Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
+                System.out.println("Nickname: "+p.getNickname()+", Food: "+p.getFood()+", Prestige: "+p.getPrestige());
+                System.out.println("Artists: "+p.getArtists().size() +", Builder: "+p.getBuilders().size()+", Harvesters: "+p.getHarvesters().size()+", Hunters: "+p.getHunters().size()+", Inventors: "+p.getInventors().size()+", Shamans: "+p.getShamans().size()+"\n");
             }
         }
 
     }
-    @Override
-    public void showAvailableGames() {
 
+    @Override
+    public void showError(String errorMsg) {
+        final String ANSI_RED = "\u001B[31m";       //stampa l'errore in rosso, poi resetta a bianco
+        final String ANSI_RESET = "\u001B[0m";
+        System.out.println("\n"+ANSI_RED+errorMsg+ANSI_RESET);
+    }
+
+    @Override
+    public void notifyEndGame(List<String> rankings) {
+        System.out.println("\n\n======GAME OVER======");
+        System.out.println("Standings: ");
+        for(int i = 0; i < rankings.size(); i++) {
+            System.out.println(i+")"+rankings.get(i));
+        }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        System.out.println(message);
     }
 
 }
