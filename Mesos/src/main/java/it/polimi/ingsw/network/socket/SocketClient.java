@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.view.ui;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,24 +10,27 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+
 public class SocketClient implements NetworkClient {
 
     private final String nickname;
     private String token;
-    //ci sarà anche la TUI/GUI
+    private final ui userInterface;
 
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    public SocketClient(String nickname) {
+    public SocketClient(String nickname, ui userInterface)
+    {
         this.nickname = nickname;
+        this.userInterface = userInterface;
     }
 
 
     public void startConnection(String ip, int port) {
         try {
-            System.out.println("Connecting to server:  " + ip + ":" + port + "...");
+            userInterface.showMessage("Connecting to server:  " + ip + ":" + port + "...");
             socket = new Socket(ip, port);
 
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -34,10 +38,10 @@ public class SocketClient implements NetworkClient {
 
             new Thread(this::listenToServer).start();
 
-            System.out.println("Connected to server");
+            userInterface.showMessage("Connected to server");
 
         } catch (IOException e) {
-            System.err.println("Connection error: " + e.getMessage());
+            userInterface.showError("Connection error: " + e.getMessage());
         }
     }
 
@@ -47,7 +51,7 @@ public class SocketClient implements NetworkClient {
             out.flush();
             out.reset();
         } catch (IOException e) {
-            System.err.println("Network error, impossible to send message");
+            userInterface.showError("Network error, impossible to send message");
         }
     }
 
@@ -57,10 +61,10 @@ public class SocketClient implements NetworkClient {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
                 message.onReceive(this);
-                message.process();
+                message.process(userInterface);
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Connection lost");
+            userInterface.showError("Connection lost");
         } finally {
             disconnect();
         }
@@ -82,12 +86,12 @@ public class SocketClient implements NetworkClient {
 
     @Override
     public void createGame(String nickname, int numPlayers) {
-        // da completare
+        sendMessageToServer(new CreateGameMessage(token, this.nickname, numPlayers));
     }
 
     @Override
     public void joinGame(String nickname, int gameID) {
-        // da completare
+        sendMessageToServer(new JoinGameMessage(token, this.nickname, gameID));
     }
 
     @Override
@@ -107,12 +111,12 @@ public class SocketClient implements NetworkClient {
 
     @Override
     public void sendChatMessage(String message) {
-        // da completare
+        sendMessageToServer(new ChatMessage(token, message));
     }
 
     @Override
     public void askToEndTurn() {
-        // da completare
+        //inutile perchè i player DEVONO prendere tutte le carte che possono
     }
 
     @Override
