@@ -118,7 +118,7 @@ public class SocketClient implements NetworkClient {
     }
     @Override
     public void requestAvailableGames() throws RemoteException {
-        sendMessageToServer(new RequestAvailableGamesMessage(token));
+        sendMessageToServer(new RequestGamesMessage(token));
     }
 
     @Override

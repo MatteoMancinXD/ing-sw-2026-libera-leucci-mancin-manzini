@@ -139,7 +139,7 @@ public class SocketClientHandler implements Runnable{
         }
     }}
 
-    public void handleRequestAvailableGames(RequestAvailableGamesMessage msg) {
+    public void handleRequestGames(RequestGamesMessage msg) {
         Map<Integer, String> games = mngr.getGamesIDAndMaster();
         sendMessage(new AvailableGamesMessage(games));
     }
