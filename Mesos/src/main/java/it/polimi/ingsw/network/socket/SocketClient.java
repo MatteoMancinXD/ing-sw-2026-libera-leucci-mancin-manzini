@@ -109,12 +109,12 @@ public class SocketClient implements NetworkClient {
 
     @Override
     public void sendChatMessage(String message) {
-        // da completare
+        sendMessageToServer(new ChatMessage(token, message));
     }
 
     @Override
     public void askToEndTurn() {
-        // da completare
+        //sendMessageToServer(new EndTurnMessage(token));
     }
     @Override
     public void requestAvailableGames() throws RemoteException {
