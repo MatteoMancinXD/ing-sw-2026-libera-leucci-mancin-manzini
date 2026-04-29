@@ -49,29 +49,29 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
-    public void handleLogin(LoginMessage msg) {
-        this.nickname = msg.getNickname();
-        int gameID = msg.getGameId();
-        int numPlayers = msg.getNumPlayers();
-
-        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
-
-        VirtualSocketView view = new VirtualSocketView(nickname, out);
-        boolean success;
-
-        if (mngr.getAvailableGames().containsKey(gameID)) {
-            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
-        } else {
-            mngr.getAvailableGames().put(gameID, new GameController(gameID, nickname, numPlayers));
-            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
-        }
-
-        this.token = UUID.randomUUID().toString();
-        mngr.getSessions().put(token, new GameSession(gameID, nickname));
-        sendMessage(new LoginResponseMessage(token));
-    }
+//    public void handleLogin(LoginMessage msg) {
+//        this.nickname = msg.getNickname();
+//        int gameID = msg.getGameId();
+//        int numPlayers = msg.getNumPlayers();
+//
+//        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
+//
+//        VirtualSocketView view = new VirtualSocketView(nickname, out);
+//        boolean success;
+//
+//        if (mngr.getAvailableGames().containsKey(gameID)) {
+//            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
+//            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
+//        } else {
+//            mngr.getAvailableGames().put(gameID, new GameController(gameID, nickname, numPlayers));
+//            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
+//            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
+//        }
+//
+//        this.token = UUID.randomUUID().toString();
+//        mngr.getSessions().put(token, new GameSession(gameID, nickname));
+//        sendMessage(new LoginResponseMessage(token));
+//    }
 
     public void handleCreateGame(CreateGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
@@ -86,7 +86,10 @@ public class SocketClientHandler implements Runnable{
         availableGames.put(gameID, ctrl);
         ctrl.addPlayer(view, nickname);
 
-        sendMessage(new LoginResponseMessage(token));
+        this.token = UUID.randomUUID().toString();
+        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+
+        sendMessage(new LoginResponseMessage(this.token));
     }
 
     public void handleRequestGames(RequestGamesMessage msg) {
@@ -105,7 +108,10 @@ public class SocketClientHandler implements Runnable{
         GameController ctrl = mngr.getAvailableGames().get(gameID);
         ctrl.addPlayer(view, nickname);
 
-        sendMessage(new LoginResponseMessage(token));
+        this.token = UUID.randomUUID().toString();
+        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+
+        sendMessage(new LoginResponseMessage(this.token));
     }
 
     public void handleDrawCard(DrawCardMessage msg) {
@@ -135,13 +141,15 @@ public class SocketClientHandler implements Runnable{
         return this.token != null && this.token.equals(receivedToken);
     }
 
-    private void sendMessage(ServerToClientMessage message) {
-        try {
-            out.writeObject(message);
-            out.flush();
-            out.reset();
-        } catch (IOException e) {
-            System.err.println("Error sending a message to " + nickname);
+    public void sendMessage(ServerToClientMessage message) {
+        synchronized(out) {
+            try {
+                out.writeObject(message);
+                out.flush();
+                out.reset();
+            } catch (IOException e) {
+                System.err.println("Error sending a message to " + nickname);
+            }
         }
     }
 
