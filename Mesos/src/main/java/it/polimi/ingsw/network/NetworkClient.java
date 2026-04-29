@@ -16,7 +16,7 @@ public interface NetworkClient {
 
     void askToSkipBonus();
 
-    void sendChatMessage(String message);
+    void sendChatMessage(String token, String message) throws RemoteException;
 
     void askToEndTurn();
 
