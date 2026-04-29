@@ -1,46 +1,39 @@
 package it.polimi.ingsw.network.rmi;
 
-import it.polimi.ingsw.controller.ClientController;
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
 import it.polimi.ingsw.view.ui;
-
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
     private String token;
     private final String nickname;
-    private final ClientController uiController; //Controller lato client - sostanzialmente javafx
     private ServerInterface serverStub;
-    private final ui userInteface;
+    private final ui userInterface;
 
-    public RmiClient(ClientController uiController,ui userInterface,  String nickname) throws  RemoteException {
+    public RmiClient(ui userInterface,  String nickname) throws  RemoteException {
         super();
-        this.uiController = uiController;
         this.nickname = nickname;
-        this.userInteface = userInterface;
+        this.userInterface = userInterface;
     }
 
     public void startConnection(String serverIP, int port) throws RemoteException {
         try {
-            System.out.println("Connecting to " + serverIP + ":" + port);
+            userInterface.showMessage("Connecting to " + serverIP + ":" + port);
             Registry registry = LocateRegistry.getRegistry(serverIP, port);
             serverStub = (ServerInterface) registry.lookup("MesosServer");
-            System.out.println("Connected and logged with success to " + serverIP + ":" + port);
+            userInterface.showMessage("Connected and logged with success to " + serverIP + ":" + port);
         }
         catch (Exception e) {
-            System.err.println("Failed to connect to RMI server");
+            userInterface.showError("Failed to connect to RMI server");
             e.printStackTrace();
         }
     }
@@ -49,13 +42,13 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void requestAvailableGames() throws RemoteException{
         try {
             Map<Integer,String> games = serverStub.getAvailableGames();
-            System.out.println("Available games:");
+            userInterface.showMessage("Available games:");
 
             for(Map.Entry<Integer,String> game : games.entrySet()) {
-                System.out.println("Game #" +  game.getKey() + ": " + game.getValue() + "'s game");
+                userInterface.showMessage("Game #" +  game.getKey() + ": " + game.getValue() + "'s game");
             }
         }catch (Exception e) {
-            System.err.println("Failed to request available games");
+            userInterface.showError("Failed to request available games");
             e.printStackTrace();
         }
     }
@@ -66,18 +59,18 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try {
             //see if else in login method in VirtualRMIServer
             int id = serverStub.createGame(this.nickname, numPlayers, this);
-            System.out.println("You created the game with id: " + id);
+            userInterface.showMessage("You created the game with id: " + id);
         } catch (RemoteException e) {
-            System.err.println("Failed to create game!");
+            userInterface.showError("Failed to create game!");
         }
     }
 
     public void joinGame(String nickName, int gameID) throws RemoteException{
        try {
             serverStub.joinGame(this.nickname, gameID,this);
-            System.out.println("You joined the game with id: "+gameID);
+           userInterface.showMessage("You joined the game with id: "+gameID);
         } catch (RemoteException e) {
-            System.err.println("Failed to join game with id: " + gameID);
+           userInterface.showError("Failed to join game with id: " + gameID);
         }
     }
 
@@ -85,7 +78,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try{
             serverStub.skipBonusPick(this.token);
         }catch (RemoteException e){
-            System.err.println("Failed to ask to skip bonus");
+            userInterface.showError("Failed to ask to skip bonus");
         }
 
     }
@@ -94,24 +87,24 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try{
             if(token!=null){
                 serverStub.serverEndTurn(this.token);
-                System.out.println("End turn request sent");
+                userInterface.showMessage("End turn request sent");
             }
         }catch (RemoteException e){
-            System.err.println("Failed to end turn request");
+            userInterface.showMessage("End turn request failed");
         }
     }
 
-    public void sendChatMessage(String token,String message) throws RemoteException{
+    public void sendChatMessage(String message) throws RemoteException{
         try {
             if (token != null) {
                 serverStub.sendChatMessage(this.token, message);
             }
         } catch (RemoteException e) {
-            System.err.println("Error couldn't send chat message");
+            userInterface.showError("Error couldn't send chat message");
         }
     }
     public void receiveChatMessage(String sender, String message) throws RemoteException {
-        System.out.println("[CHAT] "+ sender + ": " + message);
+        userInterface.showMessage("[CHAT] " + sender + ": " + message);
     }
 
 
@@ -122,7 +115,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
                 this.token = null;
             }
         }catch(RemoteException e){
-            System.err.println("Failed to disconnect from RMI server");
+            userInterface.showMessage("Failed to disconnect from RMI server");
         }
     }
 
@@ -130,7 +123,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try {
             serverStub.drawCard(token, row, idx);
         } catch(RemoteException e) {
-            System.err.println("Failed to ask to draw card, lost connection");
+            userInterface.showError("Error couldn't ask to draw card");
         }
     }
 
@@ -138,44 +131,38 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try {
             serverStub.placeTotem(token, index);
         } catch(RemoteException e) {
-            System.err.println("Connection error: Failed to place totem");
+            userInterface.showError("Connection error: Failed to place totem");
         }
     }
 
     @Override
     public void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException {
-        userInteface.updateBoard(board, players);
+        userInterface.updateBoard(board, players);
     }
 
     @Override
     public void receiveError(String errorMessage) throws RemoteException {
-        System.out.println("Server Error: "+errorMessage+ "\n");
+        userInterface.showError("Server error: "+errorMessage);
     }
 
     @Override
-    public void receiveTurnNotification(String currentPlayerNickname) throws RemoteException {
-        System.out.println("Turn changed. It's now "+currentPlayerNickname+ " 's turn");
-        if (currentPlayerNickname.equals(nickname)) {
-            System.out.println("It's your turn");
-        }
+    public void receiveTurnNotification(String currentPlayerNickname, String gamePhase) throws RemoteException {
+        userInterface.notifyTurn(currentPlayerNickname, gamePhase);
     }
 
     @Override
     public void receiveAskBonusExtraPick() throws RemoteException {
-        System.out.println("You have activated ExtraPickBuilding");
-        System.out.println("Choose if you want to draw a bonus card or not");
+        userInterface.showMessage("You have activated ExtraPickBuilding");
+        userInterface.showMessage("Choose if you want to draw a bonus card or not");
     }
 
     @Override
     public void receiveGameEnd(List<String> rankings) throws RemoteException {
-        System.out.println("Game ended. Rankings: ");
-        for(int i = 0; i < rankings.size(); i++) {
-            System.out.println((i+1)+" place: "+rankings.get(i));
-        }
+        userInterface.notifyEndGame(rankings);
     }
     @Override
     public void receiveMessage(String message) throws RemoteException {
-
+        userInterface.showMessage(message);
     }
 
     @Override

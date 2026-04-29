@@ -14,7 +14,7 @@ public interface ClientRemote extends Remote{
 
     void receiveError(String errorMessage) throws RemoteException;
 
-    void receiveTurnNotification(String currentPlayerNickname) throws RemoteException;
+    void receiveTurnNotification(String currentPlayerNickname, String gamePhase) throws RemoteException;
 
     void receiveAskBonusExtraPick() throws RemoteException;
 
