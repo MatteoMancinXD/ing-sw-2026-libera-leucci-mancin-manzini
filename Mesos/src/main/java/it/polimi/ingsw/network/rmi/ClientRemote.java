@@ -26,7 +26,6 @@ public interface ClientRemote extends Remote{
 
 
     void receiveChatMessage(String sender, String message) throws RemoteException;
-    void sendChatMessage(String token,String message) throws RemoteException; //the sender is himself
 
 
     void ping() throws RemoteException;
