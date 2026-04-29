@@ -65,6 +65,7 @@ public class SocketClient implements NetworkClient {
             }
         } catch (IOException | ClassNotFoundException e) {
             userInterface.showError("Connection lost");
+            e.printStackTrace();
         } finally {
             disconnect();
         }

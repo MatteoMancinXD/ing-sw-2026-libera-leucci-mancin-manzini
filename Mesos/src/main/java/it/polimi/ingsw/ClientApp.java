@@ -14,8 +14,6 @@ import java.util.Scanner;
 
 public class ClientApp {
     public static void main(String[] args) throws Exception {
-        ClientController ctrl = new ClientController();
-
         Scanner kb = new Scanner(System.in);
 
         System.out.println("Type your nickname: ");
@@ -36,7 +34,7 @@ public class ClientApp {
         String token = "";
 
         if(protocol == 1){
-            RmiClient client = new RmiClient(ctrl, ui, nickname);
+            RmiClient client = new RmiClient(ui, nickname);
             client.startConnection("127.0.0.1", 1099);
 
             if(choice == 1) {
@@ -48,7 +46,7 @@ public class ClientApp {
                 client.joinGame(nickname, id);
             }
         } else if(protocol == 2){
-            SocketClient client = new SocketClient(nickname);
+            SocketClient client = new SocketClient(nickname, ui);
             client.startConnection("127.0.0.1", 5000);
 
             if(choice == 1) {

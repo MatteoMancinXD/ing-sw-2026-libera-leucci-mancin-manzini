@@ -60,7 +60,7 @@ public class SustenanceEvent extends EventCard{
     }
 
     @Override
-    public String toShortString() {
+    public String getShortString() {
         return String.format("Sustenance Event: -1 food for every character you have");
     }
 }

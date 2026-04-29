@@ -19,7 +19,4 @@ public abstract class EventCard extends TribeCard{
     super(id, era,2); //EventCards are 12 (4events * 3eras) and are always used in the game, regardless the number of players, so minPlayers = 2
     }
     protected abstract void solveEventCard(Player player,List<Player> allPlayers);  // ex. huntCardEventII.solveEventCard(giacomo,game.getPlayers()) , if game can be used
-
-    public abstract String getShortString();
-
 }
