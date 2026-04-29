@@ -31,4 +31,4 @@ public abstract class Card implements Serializable {
 
     public abstract String getShortString();
     }
-}
+

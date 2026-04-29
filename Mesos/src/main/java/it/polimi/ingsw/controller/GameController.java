@@ -124,7 +124,8 @@ public class GameController {
                     try {
                         view.updateBoard(board, game.getPlayers());
                     } catch (RemoteException e) {
-                        System.out.println("Client unreachable.");
+                        //System.out.println("Client unreachable.");
+                        e.printStackTrace();
                     }
                 }).start();
             }
@@ -138,7 +139,8 @@ public class GameController {
                     try {
                         view.showMessage(message);
                     } catch (RemoteException e) {
-                        System.out.println("Client unreachable.");
+                        //System.out.println("Client unreachable.");
+                        e.printStackTrace();
                     }
                 }).start();
             }

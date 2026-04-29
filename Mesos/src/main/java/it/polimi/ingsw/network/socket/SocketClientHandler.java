@@ -129,6 +129,7 @@ public class SocketClientHandler implements Runnable{
     }
 
     private void sendMessage(ServerToClientMessage message) {
+        synchronized (out) {
         try {
             out.writeObject(message);
             out.flush();
@@ -136,8 +137,12 @@ public class SocketClientHandler implements Runnable{
         } catch (IOException e) {
             System.err.println("Error sending a message to " + nickname);
         }
-    }
+    }}
 
+    public void handleRequestAvailableGames(RequestAvailableGamesMessage msg) {
+        Map<Integer, String> games = mngr.getGamesIDAndMaster();
+        sendMessage(new AvailableGamesMessage(games));
+    }
 
     private void closeConnection() {
         try {

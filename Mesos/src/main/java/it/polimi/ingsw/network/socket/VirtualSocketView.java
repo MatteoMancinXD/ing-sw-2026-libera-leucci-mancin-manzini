@@ -57,13 +57,14 @@ public class VirtualSocketView  implements VirtualView {
     }
 
     private void sendMessage(Serializable message) throws RemoteException {
-        try{
-            out.writeObject(message);
-            out.flush();
-            out.reset();
-        } catch (IOException e) {
-            throw new RemoteException("Socket network error", e);
+        synchronized (out) {
+            try {
+                out.writeObject(message);
+                out.flush();
+                out.reset();
+            } catch (IOException e) {
+                throw new RemoteException("Socket network error", e);
+            }
         }
     }
-
 }

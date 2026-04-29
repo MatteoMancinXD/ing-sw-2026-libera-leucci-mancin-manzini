@@ -2,6 +2,8 @@ package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.view.ui;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +15,8 @@ public class SocketClient implements NetworkClient {
 
     private final String nickname;
     private String token;
-    //ci sarà anche la TUI/GUI
+    private ui userInterface;
+
 
     private Socket socket;
     private ObjectOutputStream out;
@@ -23,6 +26,9 @@ public class SocketClient implements NetworkClient {
         this.nickname = nickname;
     }
 
+    public void setUserInterface(ui userInterface) {
+        this.userInterface = userInterface;
+    }
 
     public void startConnection(String ip, int port) {
         try {
@@ -57,7 +63,7 @@ public class SocketClient implements NetworkClient {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
                 message.onReceive(this);
-                message.process();
+                message.process(userInterface);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Connection lost");
@@ -75,19 +81,15 @@ public class SocketClient implements NetworkClient {
         sendMessageToServer(new LoginMessage(nickname, gameId, numPlayers));
     }
 
-    @Override
-    public void requestAvailableGames() throws RemoteException {
-
-    }
 
     @Override
     public void createGame(String nickname, int numPlayers) {
-        // da completare
+        sendMessageToServer(new CreateGameMessage(token, nickname, numPlayers));
     }
 
     @Override
     public void joinGame(String nickname, int gameID) {
-        // da completare
+        sendMessageToServer(new JoinGameMessage(token, nickname, gameID));
     }
 
     @Override
@@ -113,6 +115,10 @@ public class SocketClient implements NetworkClient {
     @Override
     public void askToEndTurn() {
         // da completare
+    }
+    @Override
+    public void requestAvailableGames() throws RemoteException {
+        sendMessageToServer(new RequestAvailableGamesMessage(token));
     }
 
     @Override

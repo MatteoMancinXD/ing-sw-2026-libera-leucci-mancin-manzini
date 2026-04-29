@@ -5,6 +5,8 @@ import it.polimi.ingsw.network.messages.CreateGameMessage;
 import it.polimi.ingsw.network.messages.LoginMessage;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
+import it.polimi.ingsw.view.cli;
+
 
 import java.util.Scanner;
 
@@ -21,35 +23,23 @@ public class ClientApp {
         System.out.println("1. RMI");
         System.out.println("2. Socket");
         int protocol = kb.nextInt();
+        kb.nextLine();
 
-        System.out.println("1. Create a new game");
-        System.out.println("2. Join a game");
-        int choice = kb.nextInt();
+        cli cliView = new cli(nickname);
 
-        String token = "";
+
 
         if(protocol == 1){
-            RmiClient client = new RmiClient(ui, nickname);
+            RmiClient client = new RmiClient(cliView, nickname);
+            cliView.setNetworkClient(client);
             client.startConnection("127.0.0.1", 1099);
-
-            if(choice == 1) {
-                client.createGame(nickname, 2);
-            } else if (choice == 2) {
-                client.requestAvailableGames();
-                System.out.println("Select game to join: ");
-                int id =  kb.nextInt();
-                client.joinGame(nickname, id);
-            }
-        } else if(protocol == 2){
+        } else if (protocol == 2) {
             SocketClient client = new SocketClient(nickname);
+            client.setUserInterface(cliView);
+            cliView.setNetworkClient(client);
             client.startConnection("127.0.0.1", 5000);
-
-            if(choice == 1) {
-                client.sendMessageToServer(new CreateGameMessage(token, nickname, 2));
-                System.out.println("Message sent");
-            } else if (choice == 2) {
-                //client.sendMessageToServer(new JoinGameMessage(token, nickname, gameID))
-            }
         }
+
+        new Thread(cliView::startInputStream).start();
     }
 }
