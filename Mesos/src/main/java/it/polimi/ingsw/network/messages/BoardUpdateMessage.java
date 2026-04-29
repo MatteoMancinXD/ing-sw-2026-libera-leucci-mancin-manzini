@@ -22,5 +22,4 @@ public class BoardUpdateMessage extends ServerToClientMessage {
     public void process(ui userInterface) {
         userInterface.updateBoard(board, players);
     }
-
 }

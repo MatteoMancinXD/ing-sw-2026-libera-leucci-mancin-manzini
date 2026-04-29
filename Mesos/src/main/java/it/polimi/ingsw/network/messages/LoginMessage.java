@@ -33,7 +33,7 @@ public class LoginMessage extends ClientToServerMessage {
 
     @Override
     public void process(SocketClientHandler handler) {
-        handler.handleLogin(this);
+        //handler.handleLogin(this);
     }
 
     @Override
