@@ -12,6 +12,7 @@ public class BoardUpdateMessage extends ServerToClientMessage {
 
     public BoardUpdateMessage(Board board, List<Player> players) {
         this.board = board;
+        this.players = players;
     }
     public Board getBoard() {
         return board;
