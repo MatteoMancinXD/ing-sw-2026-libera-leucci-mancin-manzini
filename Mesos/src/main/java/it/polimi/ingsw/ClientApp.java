@@ -40,6 +40,7 @@ public class ClientApp {
             client.startConnection("127.0.0.1", 5000);
         }
 
-        new Thread(cliView::startInputStream).start();
+        //new Thread(cliView::startInputStream).start();
+        cliView.startInputStream();
     }
 }

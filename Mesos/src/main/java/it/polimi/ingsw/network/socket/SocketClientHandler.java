@@ -87,6 +87,10 @@ public class SocketClientHandler implements Runnable{
         GameController ctrl = new GameController(gameID, nickname, numPlayers);
         availableGames.put(gameID, ctrl);
         ctrl.addPlayer(view, nickname);
+
+        this.token = UUID.randomUUID().toString();
+        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+        sendMessage(new TokenResponseMessage(this.token));
     }
 
     public void handleJoinGame(JoinGameMessage msg) {
@@ -99,6 +103,10 @@ public class SocketClientHandler implements Runnable{
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
         ctrl.addPlayer(view, nickname);
+
+        this.token = UUID.randomUUID().toString();
+        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+        sendMessage(new TokenResponseMessage(this.token));
     }
 
     public void handleDrawCard(DrawCardMessage msg) {

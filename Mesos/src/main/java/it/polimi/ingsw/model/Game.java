@@ -3,6 +3,8 @@ import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public class Game {
         ArrayList<BuildingCard> allBuildingsInGame = new ArrayList<>();
         try {
             InputStream is = getClass().getResourceAsStream("/json/buildingsInfo.json");
+            if (is == null){throw new RuntimeException("IMPOSSIBILE TROVARE IL FILE JSON BUILDING");}
             TypeReference<Map<String, List<BuildingCard>>> typeRef = new TypeReference<Map<String, List<BuildingCard>>>() {};
             Map<String, List<BuildingCard>> data = mapper.readValue(is, typeRef);
 
@@ -99,6 +102,7 @@ public class Game {
         List<TribeCard> allCardsInGame = new ArrayList<>();
         try {
             InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json");
+            if (is == null) {throw new RuntimeException("IMPOSSIBILE TROVARE IL FILE JSON CARDS");}
             TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<Map<String, List<TribeCard>>>() {};
             Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
 
