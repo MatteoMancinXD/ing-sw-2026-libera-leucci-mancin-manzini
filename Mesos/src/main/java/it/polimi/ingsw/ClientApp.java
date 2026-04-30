@@ -27,8 +27,6 @@ public class ClientApp {
 
         cli cliView = new cli(nickname);
 
-
-
         if(protocol == 1){
             RmiClient client = new RmiClient(cliView, nickname);
             cliView.setNetworkClient(client);
