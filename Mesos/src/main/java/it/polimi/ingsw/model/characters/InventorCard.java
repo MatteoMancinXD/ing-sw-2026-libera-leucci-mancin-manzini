@@ -37,6 +37,6 @@ public class InventorCard extends CharacterCard {
 
     @Override
     public String getShortString() {
-        return String.format("Artist, era=%d, invention=%s", getEra(), invention);
+        return String.format("Inventor: era=%d, invention=%s", getEra(), invention);
     }
 }

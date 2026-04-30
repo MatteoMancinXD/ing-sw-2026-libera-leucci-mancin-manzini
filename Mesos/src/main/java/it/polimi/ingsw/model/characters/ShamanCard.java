@@ -33,6 +33,6 @@ public class ShamanCard extends CharacterCard {
 
     @Override
     public String getShortString() {
-        return String.format("Shaman, era=%d, stars=%d", getEra(), stars);
+        return String.format("Shaman: era=%d, stars=%d", getEra(), stars);
     }
 }

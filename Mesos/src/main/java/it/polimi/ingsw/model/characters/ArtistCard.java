@@ -23,6 +23,6 @@ public class ArtistCard extends CharacterCard {
 
     @Override
     public String getShortString() {
-        return String.format("Artist, era=%d", getEra());
+        return String.format("Artist: era=%d", getEra());
     }
 }

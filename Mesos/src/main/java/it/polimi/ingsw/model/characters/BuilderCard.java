@@ -42,6 +42,6 @@ public class BuilderCard extends CharacterCard {
 
     @Override
     public String getShortString() {
-        return String.format("Builder, era=%d, discount=%d", getEra(), getDiscount());
+        return String.format("Builder: era=%d, discount=%d", getEra(), getDiscount());
     }
 }

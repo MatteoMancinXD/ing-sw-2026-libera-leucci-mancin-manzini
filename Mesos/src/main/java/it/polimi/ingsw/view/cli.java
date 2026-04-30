@@ -238,7 +238,7 @@ public class cli implements ui{
             System.out.println("Tile " + t.getLetter() + ": "+status+", " + t.getUpperRow() + " upper and " + t.getLowerRow() + " lower");
         }
 
-        System.out.println();
+        System.out.println("\n");
 
         //UPPER ROW / LOWER ROW
         System.out.println("------UPPER ROW------ \n");

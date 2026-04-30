@@ -21,6 +21,6 @@ public class HarvesterCard extends CharacterCard {
 
     @Override
     public String getShortString() {
-        return String.format("Harvester, era=%d, SustenanceDiscount=3", getEra());
+        return String.format("Harvester: era=%d, SustenanceDiscount=3", getEra());
     }
 }
