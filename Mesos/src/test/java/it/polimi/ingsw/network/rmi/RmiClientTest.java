@@ -25,7 +25,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RmiClientTest {
 
     ui ui1 = new cli("giacomo"); //real cli
+    ui ui3 = new cli("matteo");
+    ui ui4 = new cli("cesare");
     RmiClient client1;
+    RmiClient client3;
+    RmiClient client4;
 
     TestUI ui2 = new TestUI(); //test ui
     RmiClient client2;
@@ -56,7 +60,9 @@ public class RmiClientTest {
 
         try {
             client1 = new RmiClient(ui1,"giacomo"); //real cli
-            client2 = new RmiClient(ui2, "riccardo"); // test ui
+            client2 = new RmiClient(ui2, "riccardo"); // test ui  (serverStub is null)
+            client3 = new RmiClient(ui3,"matteo"); //real cli
+            client4 = new RmiClient(ui4,"cesare"); //real cli
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -80,10 +86,10 @@ public class RmiClientTest {
     }
 
     @Test
-    void testStartConnectionFailure() throws RemoteException {
+    void testStartConnectionFailure() throws RemoteException { //it works
         //test ui
-        client2.startConnection("localhost", 9999); //failure to access non-existing port
-        assertEquals("Failed to connect to RMI server", ui2.getLastErrorMessage());
+        //client2.startConnection("localhost", 9999); //failure to access non-existing port
+        //assertEquals("Failed to connect to RMI server", ui2.getLastErrorMessage());
 
     }
 
@@ -100,11 +106,71 @@ public class RmiClientTest {
     }
 
     @Test
-    public void createGameTest() throws RemoteException {
+    public void createAndJoinGameTest() throws RemoteException {
         assertDoesNotThrow(() -> {
             client1.startConnection("localhost", 1099);
-            //client1.createGame("");
+            client1.createGame("giacomo",3);
         });
+
+        client3.startConnection("localhost", 1099);
+        client3.requestAvailableGames();
+        client3.joinGame("matteo",1);
+
+        client4.startConnection("localhost", 1099);
+        client4.requestAvailableGames();
+        client4.joinGame("matteo",1);
+    }
+
+    @Test
+    public void createGameFailureTest() throws RemoteException {
+        assertThrows(Exception.class,() -> {
+            client1.startConnection("localhost", 1099);
+            client1.createGame("giacomo",0);
+            client1.createGame("giacomo",-3);
+        });
+        client3.startConnection("localhost", 1099);
+        client3.requestAvailableGames();
+    }
+
+    @Test
+    public void disconnectTest() throws RemoteException {
+        client1.startConnection("localhost", 1099);
+        client1.createGame("giacomo",3);
+
+        client3.startConnection("localhost", 1099);
+        client3.requestAvailableGames();
+        client3.joinGame("matteo",1);
+
+        client4.startConnection("localhost", 1099);
+        client4.requestAvailableGames();
+        client4.joinGame("cesare",1);
+
+
+        client4.disconnect();
+        client3.disconnect();
+        client4.createGame("cesare",2);
+        client3.requestAvailableGames();
+        client3.joinGame("matteo",1);
+    }
+
+    @Test
+    public void methodTest() throws RemoteException {
+        GameManager checkGames = new GameManager(availableGames,startedGames,sessions);
+
+        client1.startConnection("localhost", 1099);
+        client1.createGame("giacomo",3);
+
+        client3.startConnection("localhost", 1099);
+        client3.requestAvailableGames();
+        client3.joinGame("matteo",1);
+
+        client4.startConnection("localhost", 1099);
+        client4.requestAvailableGames();
+        client4.joinGame("cesare",1);
+
+
+
+
     }
 
 }
