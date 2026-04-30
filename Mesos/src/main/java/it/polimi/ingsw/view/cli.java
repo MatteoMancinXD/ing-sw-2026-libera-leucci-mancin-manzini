@@ -205,7 +205,7 @@ public class cli implements ui{
         System.out.println("\n---------------------------------");
 
         if (currentPlayerNickname.equals(this.nickname)) {
-            if (currentGamePhase.equals("PLACING")) {
+            if (currentGamePhase.equals("PLACEMENT")) {
                 this.currentState = CliState.PLACING;
             }
             else if (currentGamePhase.equals("RESOLUTION") || currentGamePhase.equals("EXTRA_PICK")) {

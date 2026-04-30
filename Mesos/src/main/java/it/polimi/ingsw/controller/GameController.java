@@ -49,14 +49,16 @@ public class GameController {
                     game.startGame();
                     System.out.println("Game #" + gameID + " is starting.");
 
-                    broadcastMessage("Game #" + gameID + " starting.");
+                    new Thread(() -> {
+                        broadcastMessage("Game #" + gameID + " starting.");
+                    }).start();
 
                     Board board = game.getBoard();
 
-                    //new Thread(() -> {
+                    new Thread(() -> {
                         broadcastUpdateBoard(board, game.getPlayers());
                         notifyCurrentPlayer();
-                    //}).start();
+                    }).start();
                 }
             }
             return true;
@@ -120,13 +122,13 @@ public class GameController {
     public void broadcastUpdateBoard(Board board, List<Player> players) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
-                //new Thread(() -> {
+                new Thread(() -> {
                     try {
                         entry.getValue().updateBoard(board, players);
                     } catch (RemoteException e) {
                         System.out.println("Client "+ entry.getKey() + " unreachable");
                     }
-                //}).start();
+                }).start();
             }
         }
     }
@@ -134,13 +136,13 @@ public class GameController {
     public void broadcastMessage(String message) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
-                //new Thread(() -> {
+                new Thread(() -> {
                     try {
                         entry.getValue().showMessage(message);
                     } catch (RemoteException e) {
                         System.out.println("Client " + entry.getKey() + " unreachable");
                     }
-                //}).start();
+                }).start();
             }
         }
     }
@@ -154,13 +156,13 @@ public class GameController {
             if (game.getRound() > 10) return;
             String current = game.getCurrentPlayer().getNickname();
             for (VirtualView view : clients.values()) {
-                //new Thread(() -> {
+                new Thread(() -> {
                     try {
                         view.notifyTurn(current, game.getCurrentPhase());
                     } catch (RemoteException e) {
                         System.out.println("Client unreachable.");
                     }
-                //}).start();
+                }).start();
             }
             if (game.getCurrentPhase().equals("EXTRA_PICK")) {
                 new Thread(() -> {

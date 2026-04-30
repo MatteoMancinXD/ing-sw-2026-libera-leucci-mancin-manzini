@@ -36,7 +36,7 @@ public class SocketClientHandler implements Runnable{
             while (true) {
                 ClientToServerMessage message = (ClientToServerMessage) in.readObject();
                 if (message.requiresToken() && !validateToken(message.getToken())) {
-                    sendMessage(new ErrorMessage("Token non valido"));
+                    sendMessage(new ErrorMessage("Token not valid"));
                     continue;
                 }
                 message.process(this);
