@@ -102,14 +102,15 @@ public class cli implements ui{
     public void handleWaitingCommands(String command, String[] parameters) {
         switch(command) {
             case "chat":
-                String message = "";
-                for (String word : parameters) {
-                    if (!word.equals(parameters[0])) {
-                        message += word;
+                StringBuilder message = new StringBuilder();
+                for(int i = 1; i < parameters.length; i++) {
+                    if(i >= 2) {
+                        message.append(" ");
                     }
+                    message.append(parameters[i]);
                 }
                 try {
-                    client.sendChatMessage(message);
+                    client.sendChatMessage(message.toString());
                 } catch (RemoteException e) {
                     showError(e.getMessage());
                 }
