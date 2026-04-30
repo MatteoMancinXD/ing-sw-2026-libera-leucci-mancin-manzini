@@ -15,7 +15,7 @@ public class GameController {
     private Game game;
     private Map<String, VirtualView> clients;
 
-    private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
+
 
     public GameController(int gameID, String gameMaster, int numPlayers) {
         this.gameID = gameID;
@@ -193,7 +193,7 @@ public class GameController {
     //invoked only if currentPlayer refuses to draw all the cards he is able to
     public void controllerEndTurn(String nickname) {
 
-        synchronized (gameLock) {
+        synchronized (game) {
             if (!checkPlayer(nickname)) {
                 System.err.println("It's not " + nickname + "'s turn, so you can't end it");
                 return;
