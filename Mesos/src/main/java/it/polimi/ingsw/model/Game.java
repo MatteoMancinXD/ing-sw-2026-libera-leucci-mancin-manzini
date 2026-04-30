@@ -3,6 +3,8 @@ import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.io.File;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ public class Game {
     private Board board;
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
+    private Set<String> disconnectedPlayers = new HashSet<>();
 
     private int currentDrawnUpper;
     private int currentDrawnLower;
@@ -237,6 +240,9 @@ public class Game {
      */
     public void nextPlayer(){
         currentPlayerIndex++;
+        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+            currentPlayerIndex++;
+        }
 
         currentDrawnLower = 0;
         currentDrawnUpper = 0;
@@ -260,6 +266,10 @@ public class Game {
                 nextTurn();
             }
         }
+    }
+
+    public void setDisconnectedPlayers(Set<String> disconnected) {
+        this.disconnectedPlayers = disconnected;
     }
 
     private Player checkExtraPickBuilding() {

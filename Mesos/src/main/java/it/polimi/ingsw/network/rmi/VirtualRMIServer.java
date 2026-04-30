@@ -82,7 +82,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
 
     @Override
     public void logout(String token) throws RemoteException{
-        GameSession session = mngr.getSessions().remove(token);
+        mngr.getSessions().remove(token);
     }
 
     @Override
@@ -137,12 +137,9 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         GameController ctrl = new GameController(gameID, gameMaster, numPlayers, mngr);
 
         mngr.getAvailableGames().put(gameID, ctrl);
-        mngr.getAvailableGames().get(gameID).addPlayer(view, gameMaster);
-
+        ctrl.addPlayer(view, gameMaster);
         String token = UUID.randomUUID().toString();
-        GameSession session = new GameSession(gameID, gameMaster);
-
-        mngr.getSessions().put(token, session);
+        mngr.getSessions().put(token, new GameSession(gameID, gameMaster));
         clientStub.receiveToken(token);
 
         return gameID;
@@ -151,17 +148,39 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void joinGame(String nickname, int gameID, ClientRemote clientStub) throws RemoteException, IllegalArgumentException {
         VirtualRMIView view = new VirtualRMIView(nickname, clientStub);
-        if(!mngr.getAvailableGames().containsKey(gameID)){
+
+        // controlla se è una riconnessione a partita avviata
+        GameController startedCtrl = mngr.getStartedGames().get(gameID);
+        if (startedCtrl != null && startedCtrl.isPlayerDisconnected(nickname)) {
+            boolean reconnected = startedCtrl.reconnect(nickname, view);
+            if (reconnected) {
+                String token = UUID.randomUUID().toString();
+                mngr.getSessions().put(token, new GameSession(gameID, nickname));
+                clientStub.receiveToken(token);
+                return;
+            }
+        }
+
+        // fallback: cerca in startedGames anche se non nel set disconnessi
+        if (startedCtrl != null) {
+            boolean reconnected = startedCtrl.reconnect(nickname, view);
+            if (reconnected) {
+                String token = UUID.randomUUID().toString();
+                mngr.getSessions().put(token, new GameSession(gameID, nickname));
+                clientStub.receiveToken(token);
+                return;
+            }
+        }
+
+        // join normale a partita in attesa
+        if (!mngr.getAvailableGames().containsKey(gameID)) {
             throw new IllegalArgumentException("Game with ID " + gameID + " does not exist!");
         }
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
         ctrl.addPlayer(view, nickname);
-
         String token = UUID.randomUUID().toString();
-        GameSession session =  new GameSession(gameID, nickname);
-        mngr.getSessions().put(token, session);
-
+        mngr.getSessions().put(token, new GameSession(gameID, nickname));
         clientStub.receiveToken(token);
     }
-}
+    }
