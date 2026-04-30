@@ -148,31 +148,98 @@ public class RmiClientTest {
 
         client4.disconnect();
         client3.disconnect();
+
+        //another game
         client4.createGame("cesare",2);
         client3.requestAvailableGames();
-        client3.joinGame("matteo",1);
+        //client3.joinGame("matteo",1); it doesn't work because the game has already started (it s in startedGames not in availableGames)
     }
 
     @Test
-    public void methodTest() throws RemoteException {
+    public void matchTest() throws RemoteException {
         GameManager checkGames = new GameManager(availableGames,startedGames,sessions);
 
         client1.startConnection("localhost", 1099);
-        client1.createGame("giacomo",3);
+        client1.createGame("giacomo",2);
+        //try{Thread.sleep(50);}catch(InterruptedException e){System.err.println(e);}
+
+        client3.startConnection("localhost", 1099);
+        client3.requestAvailableGames();
+        client3.joinGame("matteo",1);
+        //try{Thread.sleep(50);}catch(InterruptedException e){System.err.println(e);}
+
+        //client4.startConnection("localhost", 1099);
+        //client4.requestAvailableGames(); //void as it should be -> now giacomo's game has started
+
+        client1.askToPlaceTotem(1);
+
+        client3.askToPlaceTotem(2);
+
+       // client1.askToDrawCard(false,0);
+
+      //  client3.askToDrawCard(false,0);
+      //  client3.askToDrawCard(true,0);
+
+
+        client1.disconnect();
+        client3.disconnect();
+    }
+
+    @Test
+    public void sendChatMessageTest() throws RemoteException {
+        client1.startConnection("localhost", 1099);
+        client1.createGame("giacomo",2);
 
         client3.startConnection("localhost", 1099);
         client3.requestAvailableGames();
         client3.joinGame("matteo",1);
 
-        client4.startConnection("localhost", 1099);
-        client4.requestAvailableGames();
-        client4.joinGame("cesare",1);
+        client3.askToPlaceTotem(1);
+        client3.askToPlaceTotem(2);
 
+        client1.sendChatMessage("ciao a tutti");
 
-
-
-
+        client1.disconnect();
+        client3.disconnect();
 
     }
+
+    @Test
+    public void pingTest() throws RemoteException {
+        client1.startConnection("localhost", 1099);
+        client1.ping();
+    }
+
+    @Test
+    public void testReceiveChatMessage() throws RemoteException {
+        String sender = "Sistema";
+        String msg = "Benvenuto nella partita!";
+        client2.receiveChatMessage(sender, msg);
+
+        assertEquals("[CHAT] Sistema: Benvenuto nella partita!", ui2.getLastMessage());
+    }
+
+    @Test
+    public void testReceiveError() throws RemoteException {
+        String errorMsg = "Mossa non valida!";
+        client2.receiveError(errorMsg);
+
+        assertEquals("Server error: Mossa non valida!", ui2.getLastErrorMessage());
+    }
+
+    @Test
+    public void testReceiveBoardUpdate() throws RemoteException {
+        Board mockBoard = new Board(2);
+        List<Player> players = List.of();
+
+        client2.receiveBoardUpdate(mockBoard, players);
+
+        assertNotNull(ui2.getLastBoard());
+    }
+
+
+
+
+
 
 }
