@@ -17,7 +17,7 @@ public class ChatMessage extends ClientToServerMessage{
     }
 
     public void process(SocketClientHandler handler) {
-
+        handler.handleChatMessage(this);
     }
 
 }

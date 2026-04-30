@@ -154,6 +154,20 @@ public class GameController {
         }
     }
 
+    public void broadcastChatMessage(String nickname, String message) {
+        synchronized (clients) {
+            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                new Thread(() -> {
+                    try {
+                        entry.getValue().showMessage("[CHAT]"+nickname+": "+message);
+                    } catch (RemoteException e) {
+                        System.out.println("Client " + entry.getKey() + " unreachable");
+                    }
+                }).start();
+            }
+        }
+    }
+
     public boolean checkPlayer(String nickname) {
         return nickname.equals(game.getCurrentPlayer().getNickname());
     }
@@ -216,4 +230,5 @@ public class GameController {
             }).start();
         }
     }
+
 }

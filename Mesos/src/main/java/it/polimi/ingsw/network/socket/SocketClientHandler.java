@@ -128,7 +128,17 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
+    public void handleRequestGames(RequestGamesMessage msg) {
+        Map<Integer, String> games = mngr.getGamesIDAndMaster();
+        sendMessage(new AvailableGamesMessage(games));
+    }
 
+    public void handleChatMessage(ChatMessage msg) {
+        GameController ctrl = getController();
+        if (ctrl != null) {
+            ctrl.broadcastChatMessage(nickname, msg.getMessage());
+        }
+    }
 
     private GameController getController() {
         GameSession session = mngr.getSessions().get(token);
@@ -151,10 +161,7 @@ public class SocketClientHandler implements Runnable{
         }
     }}
 
-    public void handleRequestGames(RequestGamesMessage msg) {
-        Map<Integer, String> games = mngr.getGamesIDAndMaster();
-        sendMessage(new AvailableGamesMessage(games));
-    }
+
 
     private void closeConnection() {
         try {
