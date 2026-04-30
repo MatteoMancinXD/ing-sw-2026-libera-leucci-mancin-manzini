@@ -61,8 +61,8 @@ public class cli implements ui{
                case "create":
                    try {
                        try {
+                           System.out.println("Sending game creation request...");
                            client.createGame(nickname, Integer.parseInt(parameters[1]));
-                           System.out.println("Game creation request sent");
                        } catch (NumberFormatException e) {
                            System.out.println("Invalid number of players");
                        }
@@ -74,8 +74,8 @@ public class cli implements ui{
                case "join":
                    try {
                        try {
+                           System.out.println("Sending join request...");
                            client.joinGame(nickname, Integer.parseInt(parameters[1]));
-                           System.out.println("Game join request sent");
                        } catch (NumberFormatException e) {
                            System.out.println("Invalid gameID");
                        }
@@ -135,8 +135,8 @@ public class cli implements ui{
                     row = true;
                 }
                 try {
+                    System.out.println("Sending draw request...");
                     client.askToDrawCard(row, Integer.parseInt(parameters[2]));
-                    System.out.println("Draw request sent");
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid index format");
                 }
@@ -171,8 +171,8 @@ public class cli implements ui{
                 break;
             case "totem":
                 try {
+                    System.out.println("Sending totem placing request...");
                     client.askToPlaceTotem(Integer.parseInt(parameters[1]));
-                    System.out.println("Totem placing request sent");
                     this.currentState = CliState.WAITING;
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid number");
@@ -235,8 +235,10 @@ public class cli implements ui{
             else {
                 status = "is free";
             }
-            System.out.println("Tile " + t.getLetter() + ":"+status+" \n");
+            System.out.println("Tile " + t.getLetter() + ": "+status+", " + t.getUpperRow() + " upper and " + t.getLowerRow() + " lower");
         }
+
+        System.out.println();
 
         //UPPER ROW / LOWER ROW
         System.out.println("------UPPER ROW------ \n");

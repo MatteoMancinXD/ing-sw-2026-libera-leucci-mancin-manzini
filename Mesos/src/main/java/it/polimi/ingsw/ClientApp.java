@@ -27,8 +27,6 @@ public class ClientApp {
 
         cli cliView = new cli(nickname);
 
-
-
         if(protocol == 1){
             RmiClient client = new RmiClient(cliView, nickname);
             cliView.setNetworkClient(client);
@@ -40,6 +38,7 @@ public class ClientApp {
             client.startConnection("127.0.0.1", 5000);
         }
 
-        new Thread(cliView::startInputStream).start();
+        //new Thread(cliView::startInputStream).start();
+        cliView.startInputStream();
     }
 }
