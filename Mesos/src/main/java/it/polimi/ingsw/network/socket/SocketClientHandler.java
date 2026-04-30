@@ -49,29 +49,29 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
-    public void handleLogin(LoginMessage msg) {
-        this.nickname = msg.getNickname();
-        int gameID = msg.getGameId();
-        int numPlayers = msg.getNumPlayers();
-
-        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
-
-        VirtualSocketView view = new VirtualSocketView(nickname, out);
-        boolean success;
-
-        if (mngr.getAvailableGames().containsKey(gameID)) {
-            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
-        } else {
-            mngr.getAvailableGames().put(gameID, new GameController(gameID, nickname, numPlayers));
-            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
-            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
-        }
-
-        this.token = UUID.randomUUID().toString();
-        mngr.getSessions().put(token, new GameSession(gameID, nickname));
-        sendMessage(new LoginResponseMessage(token));
-    }
+//    public void handleLogin(LoginMessage msg) {
+//        this.nickname = msg.getNickname();
+//        int gameID = msg.getGameId();
+//        int numPlayers = msg.getNumPlayers();
+//
+//        Map<Integer, GameController> availableGames = mngr.getAvailableGames();
+//
+//        VirtualSocketView view = new VirtualSocketView(nickname, out);
+//        boolean success;
+//
+//        if (mngr.getAvailableGames().containsKey(gameID)) {
+//            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
+//            System.out.println("Player " + nickname + " added to lobby " + gameID + " through socket.");
+//        } else {
+//            mngr.getAvailableGames().put(gameID, new GameController(gameID, nickname, numPlayers, mngr));
+//            mngr.getAvailableGames().get(gameID).addPlayer(view, nickname);
+//            System.out.println("Player " + nickname + " created lobby " + gameID + " through socket.");
+//        }
+//
+//        this.token = UUID.randomUUID().toString();
+//        mngr.getSessions().put(token, new GameSession(gameID, nickname));
+//        sendMessage(new LoginResponseMessage(token));
+//    }
 
     public void handleCreateGame(CreateGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
@@ -84,7 +84,7 @@ public class SocketClientHandler implements Runnable{
         Map<Integer, GameController> availableGames = mngr.getAvailableGames();
         int gameID = mngr.getIdCounter();
 
-        GameController ctrl = new GameController(gameID, nickname, numPlayers);
+        GameController ctrl = new GameController(gameID, nickname, numPlayers, mngr);
         availableGames.put(gameID, ctrl);
         ctrl.addPlayer(view, nickname);
 
@@ -121,7 +121,11 @@ public class SocketClientHandler implements Runnable{
 
     public void handlePlaceTotem(PlaceTotemMessage msg) {
         GameController ctrl = getController();
-        if (ctrl != null) ctrl.placeTotem(nickname, msg.getPos());
+        System.out.println("PlaceTotemMessage received");
+        if (ctrl != null) {
+            ctrl.placeTotem(nickname, msg.getPos());
+            System.out.println("Totem placed.");
+        }
     }
 
 
@@ -129,7 +133,7 @@ public class SocketClientHandler implements Runnable{
     private GameController getController() {
         GameSession session = mngr.getSessions().get(token);
         if (session == null) return null;
-        return mngr.getAvailableGames().get(session.getGameID());
+        return mngr.getStartedGames().get(session.getGameID());
     }
 
     private boolean validateToken(String receivedToken) {

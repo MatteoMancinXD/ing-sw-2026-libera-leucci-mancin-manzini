@@ -128,7 +128,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
 
         int gameID = mngr.getIdCounter();
 
-        GameController ctrl = new GameController(gameID, gameMaster, numPlayers);
+        GameController ctrl = new GameController(gameID, gameMaster, numPlayers, mngr);
 
         mngr.getAvailableGames().put(gameID, ctrl);
         mngr.getAvailableGames().get(gameID).addPlayer(view, gameMaster);

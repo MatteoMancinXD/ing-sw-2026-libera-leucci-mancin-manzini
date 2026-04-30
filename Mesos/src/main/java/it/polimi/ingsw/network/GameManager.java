@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GameManager {
+public class GameManager implements GameStarter {
     Map<Integer, GameController> availableGames;
     Map<Integer, GameController> startedGames;
     Map<String, GameSession> sessions;
@@ -33,12 +33,20 @@ public class GameManager {
 
     public int getIdCounter() { return idCounter.incrementAndGet(); }
 
-    public Map<Integer, String> getGamesIDAndMaster() {
+    public synchronized Map<Integer, String> getGamesIDAndMaster() {
         Map<Integer, String> games = new HashMap<>();
         for(Map.Entry<Integer, GameController> game : availableGames.entrySet()) {
             games.put(game.getKey(), game.getValue().getGameMaster());
         }
 
         return games;
+    }
+
+    @Override
+    public synchronized void onGameStart(int gameID) {
+        if(availableGames.containsKey(gameID)) {
+            GameController ctrl = availableGames.remove(gameID);
+            startedGames.put(gameID, ctrl);
+        }
     }
 }

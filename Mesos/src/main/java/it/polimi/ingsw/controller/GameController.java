@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.network.GameStarter;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.rmi.RemoteException;
@@ -13,14 +14,17 @@ public class GameController {
     private int gameID;
     private String gameMaster;
     private Game game;
+    private GameStarter starter;
     private Map<String, VirtualView> clients;
 
-    private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
+    //private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
 
-    public GameController(int gameID, String gameMaster, int numPlayers) {
+    public GameController(int gameID, String gameMaster, int numPlayers, GameStarter starter) {
         this.gameID = gameID;
         this.gameMaster = gameMaster;
-        game = new Game(numPlayers);
+        this.game = new Game(numPlayers);
+        this.starter = starter;
+
         clients = new HashMap<>();
     }
 
@@ -47,6 +51,8 @@ public class GameController {
 
                 if (game.getPlayers().size() == game.getNumPlayers()) {
                     game.startGame();
+                    starter.onGameStart(gameID);
+
                     System.out.println("Game #" + gameID + " is starting.");
 
                     new Thread(() -> {
@@ -54,10 +60,11 @@ public class GameController {
                     }).start();
 
                     Board board = game.getBoard();
+                    String current = game.getCurrentPlayer().getNickname();
+
 
                     new Thread(() -> {
-                        broadcastUpdateBoard(board, game.getPlayers());
-                        notifyCurrentPlayer();
+                        broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase());
                     }).start();
                 }
             }
@@ -83,8 +90,8 @@ public class GameController {
             try {
                 game.resolveAction(row, idx);
                 new Thread(() -> {
-                    broadcastUpdateBoard(board, game.getPlayers());
-                    notifyCurrentPlayer();
+                    broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                    //notifyCurrentPlayer();
                 }).start();
             } catch (IllegalStateException e) {
                 VirtualView view = clients.get(nickname);
@@ -111,20 +118,20 @@ public class GameController {
 
             game.placeTotem(tileIndex);
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers());
-                notifyCurrentPlayer();
+                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
             }).start();
 
             return true;
         }
     }
 
-    public void broadcastUpdateBoard(Board board, List<Player> players) {
+    public void broadcastUpdateBoard(Board board, List<Player> players, String current, String phase) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                 new Thread(() -> {
                     try {
                         entry.getValue().updateBoard(board, players);
+                        entry.getValue().notifyTurn(current, phase);
                     } catch (RemoteException e) {
                         System.out.println("Client "+ entry.getKey() + " unreachable");
                     }
@@ -184,8 +191,8 @@ public class GameController {
             Board board = game.getBoard();
 
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers());
-                notifyCurrentPlayer();
+                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                //notifyCurrentPlayer();
             }).start();
         }
     }
@@ -193,7 +200,7 @@ public class GameController {
     //invoked only if currentPlayer refuses to draw all the cards he is able to
     public void controllerEndTurn(String nickname) {
 
-        synchronized (gameLock) {
+        synchronized (game) {
             if (!checkPlayer(nickname)) {
                 System.err.println("It's not " + nickname + "'s turn, so you can't end it");
                 return;
@@ -204,8 +211,8 @@ public class GameController {
             //update board
             Board board = game.getBoard();
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers());
-                notifyCurrentPlayer();
+                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                //notifyCurrentPlayer();
             }).start();
         }
     }
