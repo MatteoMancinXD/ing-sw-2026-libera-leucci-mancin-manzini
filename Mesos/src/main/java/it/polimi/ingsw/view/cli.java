@@ -299,6 +299,9 @@ public class cli implements ui{
     @Override
     public void showMessage(String message) {
         System.out.println(message);
+
+        System.out.println("---------------------------------");
+        System.out.print("> ");
     }
 
 }
