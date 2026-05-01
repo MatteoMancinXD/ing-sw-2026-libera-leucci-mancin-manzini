@@ -322,6 +322,7 @@ public class Game {
                 nextTurnOrder.add(p);
             }
         }
+        board.resetTrackTiles();
         this.players = nextTurnOrder;
     }
     /**
