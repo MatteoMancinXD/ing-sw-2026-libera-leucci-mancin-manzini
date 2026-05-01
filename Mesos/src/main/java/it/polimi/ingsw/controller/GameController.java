@@ -85,8 +85,16 @@ public class GameController {
             Card card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
             int foodCost = card.getFoodCost();
 
-            if (foodCost > p.getFood())
+            if (foodCost > p.getFood()){
+                VirtualView view = clients.get(p.getNickname());
+                try {
+                    view.showError("You don't have enough food to buy that card!");
+                } catch (RemoteException e) {
+                    //giocatore disconnesso
+                }
                 return false;
+            }
+
             try {
                 game.resolveAction(row, idx);
                 new Thread(() -> {
