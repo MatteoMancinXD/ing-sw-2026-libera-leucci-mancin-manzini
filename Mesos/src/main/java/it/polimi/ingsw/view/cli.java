@@ -174,7 +174,7 @@ public class cli implements ui{
                 try {
                     System.out.println("Sending totem placing request...");
                     client.askToPlaceTotem(Integer.parseInt(parameters[1]));
-                    this.currentState = CliState.WAITING;
+                    //this.currentState = CliState.WAITING;
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid number");
                 }

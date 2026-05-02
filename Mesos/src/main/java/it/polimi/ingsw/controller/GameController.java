@@ -101,10 +101,10 @@ public class GameController {
                 VirtualView view = clients.get(p.getNickname());
                 try {
                     view.showError("You don't have enough food to buy that card!");
+                    return false;
                 } catch (RemoteException e) {
                     //giocatore disconnesso
                 }
-                return false;
             }
 
             try {
@@ -131,10 +131,26 @@ public class GameController {
             if (!checkPlayer(nickname)) return false;
 
             Board board = game.getBoard();
-            if (tileIndex < 0 || tileIndex > board.getTrack().size() - 1) return false;
+            if (tileIndex < 0 || tileIndex > board.getTrack().size() - 1) {
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.showError("Index out of bound");
+                    return false;
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             Tile tile = board.getTrack().get(tileIndex);
-            if (tile.getStatus()) return false;
+            if (tile.getStatus()) {
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.showError("Tile already occupied by player " + tile.getPlayer().getNickname());
+                    return false;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
 
             game.placeTotem(tileIndex);
             new Thread(() -> {

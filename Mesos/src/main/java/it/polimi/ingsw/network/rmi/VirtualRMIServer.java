@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.GameManager;
 import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.ServerInterface;
+import it.polimi.ingsw.network.messages.ErrorMessage;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -156,7 +157,11 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         }
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
-        ctrl.addPlayer(view, nickname);
+        boolean success = ctrl.addPlayer(view, nickname);
+        if (!success) {
+            view.showError("Nickname already in use or match already filled");
+            return;
+        }
 
         String token = UUID.randomUUID().toString();
         GameSession session =  new GameSession(gameID, nickname);
