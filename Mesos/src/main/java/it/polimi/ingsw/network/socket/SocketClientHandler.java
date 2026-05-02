@@ -102,7 +102,11 @@ public class SocketClientHandler implements Runnable{
         int gameID = msg.getGameID();
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
-        ctrl.addPlayer(view, nickname);
+        boolean success = ctrl.addPlayer(view, nickname);
+        if (!success) {
+            sendMessage(new ErrorMessage("Nickname already in use or match already filled"));
+            return;
+        }
 
         this.token = UUID.randomUUID().toString();
         mngr.getSessions().put(this.token, new GameSession(gameID, nickname));

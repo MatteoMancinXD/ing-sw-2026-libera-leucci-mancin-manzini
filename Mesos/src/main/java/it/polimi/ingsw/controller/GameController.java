@@ -74,6 +74,7 @@ public class GameController {
 
     public boolean drawCard(String nickname, boolean row, int idx) {
         synchronized (game) {
+            Card card = null;
             if (idx < 0)
                 return false;
 
@@ -82,7 +83,18 @@ public class GameController {
             Player p = game.getCurrentPlayer();
             Board board = game.getBoard();
 
-            Card card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
+            try {
+                card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
+            } catch (IndexOutOfBoundsException e) {
+                VirtualView view = clients.get(p.getNickname());
+                try {
+                    view.showError("Index out of bounds! ");
+                    return false;
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
             int foodCost = card.getFoodCost();
 
             if (foodCost > p.getFood()){

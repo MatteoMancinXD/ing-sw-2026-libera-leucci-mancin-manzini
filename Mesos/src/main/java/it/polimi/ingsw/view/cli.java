@@ -277,6 +277,8 @@ public class cli implements ui{
                 System.out.println("Artists: "+p.getArtists().size() +", Builder: "+p.getBuilders().size()+", Harvesters: "+p.getHarvesters().size()+", Hunters: "+p.getHunters().size()+", Inventors: "+p.getInventors().size()+", Shamans: "+p.getShamans().size()+"\n");
             }
         }
+        System.out.println("---------------------------------");
+        System.out.print("> ");
 
     }
 
@@ -285,6 +287,8 @@ public class cli implements ui{
         final String ANSI_RED = "\u001B[31m";       //stampa l'errore in rosso, poi resetta a bianco
         final String ANSI_RESET = "\u001B[0m";
         System.out.println("\n"+ANSI_RED+errorMsg+ANSI_RESET);
+        System.out.println("---------------------------------");
+        System.out.print("> ");
     }
 
     @Override
