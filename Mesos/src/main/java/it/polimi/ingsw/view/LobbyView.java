@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.rmi.RmiClient;
@@ -18,7 +19,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class LobbyView extends Application implements ui {
 
@@ -26,6 +29,9 @@ public class LobbyView extends Application implements ui {
     private Stage primaryStage;
     private Label messageLabel;
     private TextArea gamesListArea;
+
+    private String nickname;
+    private int numPlayers;
 
     @Override
     public void start(Stage stage) {
@@ -123,9 +129,9 @@ public class LobbyView extends Application implements ui {
         messageLabel.setWrapText(true);
 
         createButton.setOnAction(e -> {
-            String nickname = nicknameField.getText().trim();
+            this.nickname = nicknameField.getText().trim();
             String ip = ipField.getText().trim();
-            int numPlayers = numPlayersSpinner.getValue();
+            this.numPlayers = numPlayersSpinner.getValue();
             boolean isRmi = rmiButton.isSelected();
 
             if (nickname.isEmpty()) { showStatusError("Inserisci un nickname."); return; }
@@ -142,7 +148,7 @@ public class LobbyView extends Application implements ui {
         });
 
         joinButton.setOnAction(e -> {
-            String nickname = nicknameField.getText().trim();
+            nickname = nicknameField.getText().trim();
             String ip = ipField.getText().trim();
             String gameIdText = gameIdField.getText().trim();
             boolean isRmi = rmiButton.isSelected();
@@ -184,6 +190,61 @@ public class LobbyView extends Application implements ui {
 
         Scene scene = new Scene(root, 500, 800);
         primaryStage.setScene(scene);
+    }
+
+    private void showGameScreen(Board board, List<Player> players) {
+        BorderPane gameRoot = new BorderPane();
+        gameRoot.setStyle("-fx-background-color: #1a1a2e;");
+
+        // --- Parte Superiore: Info Turno ---
+        HBox topBar = new HBox(20);
+        topBar.setPadding(new Insets(15));
+        Label turnLabel = new Label("In attesa del turno...");
+        turnLabel.setTextFill(Color.web("#e0a830"));
+        topBar.getChildren().add(turnLabel);
+        gameRoot.setTop(topBar);
+
+        // --- Parte Centrale: La Board (Griglia) ---
+        GridPane boardGrid = new GridPane();
+        boardGrid.setAlignment(Pos.CENTER);
+        boardGrid.setHgap(5);
+        boardGrid.setVgap(5);
+        // Esempio: disegna una griglia vuota per ora
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                Button cell = new Button();
+                cell.setPrefSize(60, 60);
+                cell.setStyle("-fx-background-color: #2a2a4a; -fx-border-color: #e0a830;");
+                boardGrid.add(cell, i, j);
+            }
+        }
+        gameRoot.setCenter(boardGrid);
+
+        // --- Parte Destra: Lista Giocatori ---
+        VBox sideBar = new VBox(10);
+        sideBar.setPadding(new Insets(15));
+        sideBar.getChildren().add(makeLabel("GIOCATORI:\n"));
+
+        sideBar.getChildren().add(makeLabel("---STATS---\n"));
+        for (Player p : players) {
+                sideBar.getChildren().add(makeLabel("player: "+ p.getNickname() +"has:\n"));
+                sideBar.getChildren().add(makeLabel("Food: " + p.getFood() + ", Prestige: " + p.getPrestige() + ", Your cards: \n"));
+                List<Card> everyCard = new ArrayList<>();
+                everyCard.addAll(p.getArtists());
+                everyCard.addAll(p.getBuilders());
+                everyCard.addAll(p.getHarvesters());
+                everyCard.addAll(p.getHunters());
+                everyCard.addAll(p.getShamans());
+                everyCard.addAll(p.getInventors());
+                everyCard.addAll(p.getBuildings());
+                gameRoot.setRight(sideBar);
+
+        }
+
+        // --- CAMBIO SCENA ---
+        Scene gameScene = new Scene(gameRoot, 1000, 700); // Più grande della lobby
+        primaryStage.setScene(gameScene);
+        primaryStage.centerOnScreen(); // Opzionale, per centrare la nuova finestra
     }
 
     private void connectClient(String nickname, String ip, boolean isRmi) throws Exception {
@@ -268,7 +329,11 @@ public class LobbyView extends Application implements ui {
     @Override
     public void updateBoard(Board board, List<Player> players) {
         Platform.runLater(() -> {
-            // da implementare nella schermata di gioco
+
+                showGameScreen(board,players); // Cambia la scena
+
+            // Qui aggiornerai i componenti della board (es. pedine, carte)
+            //updateUIElements(board, players);
         });
     }
 
