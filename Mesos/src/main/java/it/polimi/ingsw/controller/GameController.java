@@ -57,6 +57,7 @@ public class GameController {
             if (game.getPlayers().size() == game.getNumPlayers()) {
                 game.startGame();
                 starter.onGameStart(gameID);
+                startPingThread();
                 System.out.println("Game #" + gameID + " is starting.");
 
                 new Thread(() -> broadcastMessage("Game #" + gameID + " starting.")).start();
@@ -221,7 +222,8 @@ public class GameController {
     public boolean reconnect(String nickname, VirtualView view) {
                 synchronized (game) {
                     if (!disconnectedPlayers.contains(nickname)) return false;
-                    disconnectedPlayers.remove(nickname);
+                    game.addReconnectingPlayer(nickname);
+                    disconnectedPlayers.remove(nickname); // rimuovi dai disconnessi subito per annullare il timeout
                     clients.put(nickname, view);
                     System.out.println(nickname + " reconnected to game #" + gameID);
                     broadcastMessage(nickname + " has reconnected.");
@@ -293,5 +295,20 @@ public class GameController {
         }
     }
     public Set<String> getDisconnectedPlayers() { return disconnectedPlayers; }
-
+    private void startPingThread() {
+        scheduler.scheduleAtFixedRate(() -> {
+            synchronized (clients) {
+                List<String> toDisconnect = new ArrayList<>();
+                for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                    if (disconnectedPlayers.contains(entry.getKey())) continue;
+                    try {
+                        entry.getValue().ping();
+                    } catch (RemoteException e) {
+                        toDisconnect.add(entry.getKey());
+                    }
+                }
+                for (String n : toDisconnect) handleDisconnection(n);
+            }
+        }, 5, 5, TimeUnit.SECONDS);
+    }
 }

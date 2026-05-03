@@ -31,6 +31,7 @@ public class Game {
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
     private Set<String> disconnectedPlayers = new HashSet<>();
+    private Set<String> reconnectingPlayers = new HashSet<>();
 
     private int currentDrawnUpper;
     private int currentDrawnLower;
@@ -283,6 +284,9 @@ public class Game {
         this.disconnectedPlayers = disconnected;
     }
 
+    public void addReconnectingPlayer(String nickname) {
+        reconnectingPlayers.add(nickname);
+    }
     private Player checkExtraPickBuilding() {
         for(Player p: players) {
             for(BuildingCard b : p.getBuildings()) {
@@ -308,7 +312,9 @@ public class Game {
      * and reorders the players based on the totems placed on the turn order tile.
      */
     public void nextTurn() {
-
+// sposta i giocatori in coda di riconnessione tra quelli attivi
+        disconnectedPlayers.removeAll(reconnectingPlayers);
+        reconnectingPlayers.clear();
         for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
             List<BuildingCard> buildings = p.getBuildings();
             for(BuildingCard b : buildings) {
