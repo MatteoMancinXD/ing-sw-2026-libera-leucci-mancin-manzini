@@ -81,6 +81,7 @@ public class GameController {
 
                 try {
                     game.resolveAction(row, idx);
+                    System.out.println("DEBUG drawCard - after resolveAction, currentPlayer: " + game.getCurrentPlayer().getNickname() + ", phase: " + game.getCurrentPhase());
                     new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase())).start();
                 } catch (IllegalStateException e) {
                     VirtualView view = clients.get(nickname);
@@ -124,7 +125,8 @@ public class GameController {
     }
 
     public void broadcastMessage(String message) {
-                List<String> toDisconnect = new ArrayList<>();
+        System.out.println("DEBUG broadcastMessage: " + message + " to " + clients.size() + " clients, disconnected: " + disconnectedPlayers);
+        List<String> toDisconnect = new ArrayList<>();
                 synchronized (clients) {
                     for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                         if (disconnectedPlayers.contains(entry.getKey())) continue;
@@ -254,8 +256,8 @@ public class GameController {
 
                     if (connectedCount <= 1) startTimeout();
 
+                    game.setDisconnectedPlayers(disconnectedPlayers);
                     if (game.getCurrentPlayer().getNickname().equals(nickname)) {
-                        game.setDisconnectedPlayers(disconnectedPlayers);
                         game.nextPlayer();
                         Board board = game.getBoard();
                         String current = game.getCurrentPlayer().getNickname();

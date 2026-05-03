@@ -240,7 +240,11 @@ public class Game {
      */
     public void nextPlayer(){
         currentPlayerIndex++;
-        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+        System.out.println("DEBUG nextPlayer - disconnectedPlayers: " + disconnectedPlayers);
+        System.out.println("DEBUG nextPlayer - currentPlayerIndex: " + currentPlayerIndex);
+        while (currentPlayerIndex < players.size() &&
+                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+            System.out.println("DEBUG skipping: " + players.get(currentPlayerIndex).getNickname());
             currentPlayerIndex++;
         }
 
@@ -251,6 +255,11 @@ public class Game {
             if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
                 currentPhase = GamePhase.RESOLUTION;
                 currentPlayerIndex = 0;
+                // salta i disconnessi anche dopo il reset
+                while (currentPlayerIndex < players.size() &&
+                        disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+                    currentPlayerIndex++;
+                }
             }
             else if( currentPhase == GamePhase.RESOLUTION) {
                 Player bonusPlayer = checkExtraPickBuilding();
@@ -265,7 +274,9 @@ public class Game {
             else if (currentPhase == GamePhase.EXTRA_PICK) {
                 nextTurn();
             }
+
         }
+        System.out.println("DEBUG nextPlayer END - currentPlayerIndex: " + currentPlayerIndex + ", phase: " + currentPhase + ", currentPlayer: " + (currentPlayerIndex < players.size() ? players.get(currentPlayerIndex).getNickname() : "OUT OF BOUNDS"));
     }
 
     public void setDisconnectedPlayers(Set<String> disconnected) {
@@ -321,6 +332,11 @@ public class Game {
 
         this.currentPhase = GamePhase.PLACEMENT;
         this.currentPlayerIndex = 0;
+        // salta i disconnessi all'inizio del nuovo turno
+        while (currentPlayerIndex < players.size() &&
+                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+            currentPlayerIndex++;
+        }
         //logica per riordinare i players in base all'ordine sulla tileboard
         ArrayList<Player> nextTurnOrder = new ArrayList<>();
         for(Tile tile: board.getTrack()) {
@@ -333,6 +349,11 @@ public class Game {
             }
         }
         this.players = nextTurnOrder;
+        // salta i disconnessi all'inizio del nuovo turno
+        while (currentPlayerIndex < players.size() &&
+                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+            currentPlayerIndex++;
+        }
     }
     /**
      * Handles the transition to the next era.
@@ -363,11 +384,11 @@ public class Game {
                 break;
             }
         }
-        
-        if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
+
+        if (row && currentDrawnUpper >= Math.min(targetTile.getUpperRow(), board.getUpperRow().size())) {
             throw new IllegalStateException("You already drawn the max number of cards from the upper row");
         }
-        if (!row && currentDrawnLower >= targetTile.getLowerRow()) {
+        if (!row && currentDrawnLower >= Math.min(targetTile.getLowerRow(), board.getLowerRow().size())) {
             throw new IllegalStateException("You already drawn the max number of cards from the lower row");
         }
 
@@ -383,7 +404,8 @@ public class Game {
         p.drawCard(c);
         c.notifyBuildings(p);
 
-        if(currentDrawnLower == targetTile.getLowerRow() && currentDrawnUpper == targetTile.getUpperRow()) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
+        if(currentDrawnLower >= Math.min(targetTile.getLowerRow(), board.getLowerRow().size()) &&
+                currentDrawnUpper >= Math.min(targetTile.getUpperRow(), board.getUpperRow().size())) {
             nextPlayer();
         }
 
