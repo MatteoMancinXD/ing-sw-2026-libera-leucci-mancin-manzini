@@ -35,6 +35,7 @@ public class GuiManager extends Application implements ui {
     private NetworkClient client;
     private String nickname;
     private LobbyView lobbyView;
+    private GameView gameView;
 
 
     //javafx
@@ -46,6 +47,8 @@ public class GuiManager extends Application implements ui {
         // Crea la lobby e la salva come campo per ricevere i callback
         lobbyView = new LobbyView(stage, this);
         lobbyView.show();
+        //creates gameView
+        gameView = new GameView(stage, this);
 
         stage.show();
     }
@@ -95,7 +98,7 @@ public class GuiManager extends Application implements ui {
 
     @Override
     public void updateBoard(Board board, List<Player> players) {
-        Platform.runLater(() -> showGameScreen(board, players));
+        Platform.runLater(() -> gameView.show(board, players));
     }
 
     @Override
@@ -137,70 +140,5 @@ public class GuiManager extends Application implements ui {
         });
     }
 
-    // ------------------------------------------------------------------ //
-    //  DA SPOSTARE IN UN ALTRA CLASSE view                                               //
-    // ------------------------------------------------------------------ //
 
-    private void showGameScreen(Board board, List<Player> players) {
-        BorderPane gameRoot = new BorderPane();
-        gameRoot.setStyle("-fx-background-color: #1a1a2e;");
-
-        // Top bar — turno
-        HBox topBar = new HBox(20);
-        topBar.setPadding(new Insets(15));
-        Label turnLabel = new Label("In attesa del turno...");
-        turnLabel.setTextFill(Color.web("#e0a830"));
-        topBar.getChildren().add(turnLabel);
-        gameRoot.setTop(topBar);
-
-        // Centro — griglia board
-        GridPane boardGrid = new GridPane();
-        boardGrid.setAlignment(Pos.CENTER);
-        boardGrid.setHgap(5);
-        boardGrid.setVgap(5);
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                Button cell = new Button();
-                cell.setPrefSize(60, 60);
-                cell.setStyle("-fx-background-color: #2a2a4a; -fx-border-color: #e0a830;");
-                boardGrid.add(cell, i, j);
-            }
-        }
-        gameRoot.setCenter(boardGrid);
-
-        // Destra — stats giocatori
-        VBox sideBar = new VBox(10);
-        sideBar.setPadding(new Insets(15));
-        sideBar.getChildren().add(makeLabel("GIOCATORI:"));
-        sideBar.getChildren().add(makeLabel("---STATS---"));
-
-        for (Player p : players) {
-            sideBar.getChildren().add(makeLabel("Player: " + p.getNickname()));
-            sideBar.getChildren().add(makeLabel("Food: " + p.getFood() + "  Prestige: " + p.getPrestige()));
-
-            List<Card> everyCard = new ArrayList<>();
-            everyCard.addAll(p.getArtists());
-            everyCard.addAll(p.getBuilders());
-            everyCard.addAll(p.getHarvesters());
-            everyCard.addAll(p.getHunters());
-            everyCard.addAll(p.getShamans());
-            everyCard.addAll(p.getInventors());
-            everyCard.addAll(p.getBuildings());
-            sideBar.getChildren().add(makeLabel("Carte: " + everyCard.size()));
-            sideBar.getChildren().add(new Separator());
-        }
-        gameRoot.setRight(sideBar);
-
-        Scene gameScene = new Scene(gameRoot, 1000, 700);
-        primaryStage.setScene(gameScene);
-        primaryStage.centerOnScreen();
-    }
-
-    //helper ui
-
-    private Label makeLabel(String text) {
-        Label l = new Label(text);
-        l.setTextFill(Color.WHITE);
-        return l;
-    }
 }
