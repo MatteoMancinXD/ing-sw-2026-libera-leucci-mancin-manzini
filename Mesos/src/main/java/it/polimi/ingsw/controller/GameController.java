@@ -11,6 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+
 public class GameController {
     private int gameID;
     private String gameMaster;
@@ -18,6 +19,8 @@ public class GameController {
     private GameStarter starter;
     private Map<String, VirtualView> clients;
     private Set<String> disconnectedPlayers;
+    private ScheduledExecutorService pingScheduler;
+
 
     private static final int TIMEOUT_SECONDS = 60;
     private ScheduledExecutorService scheduler;
@@ -33,6 +36,7 @@ public class GameController {
         this.clients = new HashMap<>();
         this.disconnectedPlayers = new HashSet<>();
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
+        this.pingScheduler = Executors.newSingleThreadScheduledExecutor();
 
     }
 
@@ -296,7 +300,7 @@ public class GameController {
     }
     public Set<String> getDisconnectedPlayers() { return disconnectedPlayers; }
     private void startPingThread() {
-        scheduler.scheduleAtFixedRate(() -> {
+        pingScheduler.scheduleAtFixedRate(() -> {
             synchronized (clients) {
                 List<String> toDisconnect = new ArrayList<>();
                 for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
