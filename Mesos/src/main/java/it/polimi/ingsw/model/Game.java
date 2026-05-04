@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.controller.GameObserver;
 import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,10 +22,13 @@ public class Game {
 
     private int round;
     private int era;
+
     private int numPlayers;
     private int currentPlayerIndex;
-    private GamePhase currentPhase;
     private ArrayList<Player> players;
+
+    private GamePhase currentPhase;
+
     private Board board;
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
@@ -32,13 +36,15 @@ public class Game {
     private int currentDrawnUpper;
     private int currentDrawnLower;
 
+    GameObserver observer;
+
     /**
      * Constructor for the Game class.
      * Initializes the starting parameters of the game, creating the board and the decks.
      *
      * @param numPlayers The number of players participating in the game (between 2 and 5).
      */
-    public Game(int numPlayers) {
+    public Game(int numPlayers, GameObserver observer) {
         this.round = 0;
         this.era = 1;
         this.numPlayers = numPlayers;
@@ -52,6 +58,8 @@ public class Game {
         this.deck = new TribeDeck(AllCards, numPlayers);
         this.buildingDeck = new BuildingDeck(allBuildings, numPlayers);
         //board.setTribeDeck(this.deck);
+
+        this.observer = observer;
     }
 
 
@@ -295,7 +303,7 @@ public class Game {
             }
         }
 
-        board.solveEvents(this.players);
+        board.solveEvents(this.players, observer);
 
         board.clearLowerRow();
         board.shiftRow();

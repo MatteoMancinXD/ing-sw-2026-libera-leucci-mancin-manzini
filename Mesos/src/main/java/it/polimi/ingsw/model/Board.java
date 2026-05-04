@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.controller.GameObserver;
 import it.polimi.ingsw.model.events.SustenanceEvent;
 
 import java.io.Serializable;
@@ -123,13 +124,15 @@ public class Board implements Serializable {
     /**
      * Resolves all event cards currently in  lowerrow.
      */
-    public void solveEvents(ArrayList<Player> players) {
+    public void solveEvents(ArrayList<Player> players, GameObserver observer) {
         EventCard sustenance = null;
 
         for (Card c : lowerRow) {
             if (c instanceof SustenanceEvent) {
                 sustenance = (EventCard) c;
             } else if (c instanceof EventCard) {
+                observer.onEventResolution((EventCard) c);
+
                 for (Player p : players) {
                     ((EventCard) c).solveEventCard(p, players);
                 }
@@ -137,6 +140,7 @@ public class Board implements Serializable {
         }
 
         if (sustenance != null) {
+            observer.onEventResolution(sustenance);
             for (Player p : players) {
                 ((EventCard) sustenance).solveEventCard(p, players);
             }

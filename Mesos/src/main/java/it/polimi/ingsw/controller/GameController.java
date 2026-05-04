@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameController {
+public class GameController implements GameObserver {
     private int gameID;
     private String gameMaster;
     private Game game;
@@ -22,7 +22,7 @@ public class GameController {
     public GameController(int gameID, String gameMaster, int numPlayers, GameStarter starter) {
         this.gameID = gameID;
         this.gameMaster = gameMaster;
-        this.game = new Game(numPlayers);
+        this.game = new Game(numPlayers, this);
         this.starter = starter;
 
         clients = new HashMap<>();
@@ -267,4 +267,9 @@ public class GameController {
         }
     }
 
+    @Override
+    public void onEventResolution(EventCard event) {
+        String desc = event.getShortString();
+        System.out.println("Solving: " + desc);
+    }
 }

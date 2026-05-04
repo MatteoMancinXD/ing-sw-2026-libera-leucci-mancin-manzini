@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GameObserver;
 import it.polimi.ingsw.model.buildings.PrestigeGivingBuilding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +13,27 @@ public class GameTest {
 
     @BeforeEach
     void setup() {
-        game = new Game(2);
+        GameObserver observer = new GameObserver() {
+            @Override
+            public void onEventResolution(EventCard event) {
+
+            }
+        };
+
+        game = new Game(2, observer);
         game.addPlayer(new Player("Player1"));
         game.addPlayer(new Player("Player2")); }
 
     @Test
     void creationTest() {
-        Game g = new Game(2);
+        GameObserver observer = new GameObserver() {
+            @Override
+            public void onEventResolution(EventCard event) {
+
+            }
+        };
+
+        Game g = new Game(2, observer);
         assertEquals(0, g.getRound());
         assertEquals(1, g.getEra());
         assertEquals(2, g.getNumPlayers());
