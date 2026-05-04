@@ -354,11 +354,14 @@ public class Game {
                 break;
             }
         }
-        
-        if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
+
+        int upCards = Math.min(targetTile.getUpperRow(), this.board.getUpperRow().size());
+        int downCards = Math.min(targetTile.getLowerRow(), this.board.getLowerRow().size());
+
+        if (row && currentDrawnUpper >= upCards) {
             throw new IllegalStateException("You already drawn the max number of cards from the upper row");
         }
-        if (!row && currentDrawnLower >= targetTile.getLowerRow()) {
+        if (!row && currentDrawnLower >= downCards) {
             throw new IllegalStateException("You already drawn the max number of cards from the lower row");
         }
 
