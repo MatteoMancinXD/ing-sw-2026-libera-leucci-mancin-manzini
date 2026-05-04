@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.rmi.RmiClient;
@@ -10,18 +9,11 @@ import it.polimi.ingsw.view.ui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * GuiManager is JavaFX's entry point.
@@ -43,6 +35,7 @@ public class GuiManager extends Application implements ui {
     public void start(Stage stage) {
         this.primaryStage = stage;
         stage.setTitle("Mesos");
+
 
         // Crea la lobby e la salva come campo per ricevere i callback
         lobbyView = new LobbyView(stage, this);
@@ -127,17 +120,37 @@ public class GuiManager extends Application implements ui {
 
     @Override
     public void showMessage(String message) {
-        System.out.println("DEBUG showMessage: " + message);
+        System.out.println(message);
         Platform.runLater(() -> {
-            if (lobbyView != null &&
-                    (message.startsWith("Available games:") ||
-                            message.contains("Game #") ||
-                            message.contains("Game ID"))) {
-                lobbyView.updateGamesList(message);
-            } else if (lobbyView != null) {
-                lobbyView.showStatusOk(message);
+
+            // 1. Lista partite → lobby
+            if (message.startsWith("Available games:") ||
+                    message.contains("Game #") ||
+                    message.contains("Game ID")) {
+                if (lobbyView != null) lobbyView.updateGamesList(message);
+                return;
             }
+
+            // 2. Messaggio di chat → formato "nickname: testo"
+            //    GameView sa chi sono i giocatori e decide se è chat
+            if (gameView != null && gameView.tryShowChatMessage(message)) {
+                return;  // GameView ha riconosciuto e mostrato il messaggio
+            }
+
+            // 3. Tutto il resto → messaggio di stato nella lobby
+            if (lobbyView != null) lobbyView.showStatusOk(message);
         });
+    }
+
+
+    public void sendChatMessage(String message) throws Exception {
+        client.sendChatMessage(message);
+    }
+
+
+    //getter
+    public String getNickName(){
+        return this.nickname;
     }
 
 
