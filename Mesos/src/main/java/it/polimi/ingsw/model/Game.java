@@ -30,8 +30,8 @@ public class Game {
     private Board board;
     private TribeDeck deck;
     private BuildingDeck buildingDeck;
-    private Set<String> disconnectedPlayers = new HashSet<>();
-    private Set<String> reconnectingPlayers = new HashSet<>();
+    private List<Player> disconnectedPlayers = new ArrayList<>();
+    private List<Player> reconnectingPlayers = new ArrayList<>();
 
     private int currentDrawnUpper;
     private int currentDrawnLower;
@@ -280,12 +280,16 @@ public class Game {
         System.out.println("DEBUG nextPlayer END - currentPlayerIndex: " + currentPlayerIndex + ", phase: " + currentPhase + ", currentPlayer: " + (currentPlayerIndex < players.size() ? players.get(currentPlayerIndex).getNickname() : "OUT OF BOUNDS"));
     }
 
-    public void setDisconnectedPlayers(Set<String> disconnected) {
-        this.disconnectedPlayers = disconnected;
+    public void addDisconnectedPlayer(String nickname) {
+        Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
+        this.disconnectedPlayers.add(p);
+        this.players.remove(p);
     }
 
     public void addReconnectingPlayer(String nickname) {
-        reconnectingPlayers.add(nickname);
+        Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
+        reconnectingPlayers.add(p);
+        disconnectedPlayers.add(p);
     }
     private Player checkExtraPickBuilding() {
         for(Player p: players) {
@@ -312,9 +316,8 @@ public class Game {
      * and reorders the players based on the totems placed on the turn order tile.
      */
     public void nextTurn() {
-// sposta i giocatori in coda di riconnessione tra quelli attivi
-        disconnectedPlayers.removeAll(reconnectingPlayers);
-        reconnectingPlayers.clear();
+        // sposta i giocatori in coda di riconnessione tra quelli attivi
+        //disconnectedPlayers.removeAll(reconnectingPlayers);
         for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
             List<BuildingCard> buildings = p.getBuildings();
             for(BuildingCard b : buildings) {
@@ -355,6 +358,10 @@ public class Game {
             }
         }
         this.players = nextTurnOrder;
+        this.players.addAll(reconnectingPlayers);
+
+        reconnectingPlayers.clear();
+
         // salta i disconnessi all'inizio del nuovo turno
         while (currentPlayerIndex < players.size() &&
                 disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {

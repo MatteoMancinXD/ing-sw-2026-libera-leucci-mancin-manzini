@@ -262,7 +262,7 @@ public class GameController {
 
                     if (connectedCount <= 1) startTimeout();
 
-                    game.setDisconnectedPlayers(disconnectedPlayers);
+                    game.addDisconnectedPlayer(nickname);
                     if (game.getCurrentPlayer().getNickname().equals(nickname)) {
                         game.nextPlayer();
                         Board board = game.getBoard();
