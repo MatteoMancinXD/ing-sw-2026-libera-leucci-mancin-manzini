@@ -254,8 +254,10 @@ public class Game {
                 currentPhase = GamePhase.RESOLUTION;
                 recalculateDrawOrder();
                 currentPlayerIndex = 0;
-                if (numPlayers == 5 && this.board.getTrack().get(0).getStatus()) {
-                    currentPlayerIndex = 1;
+
+                // If there are 5 player, tile A only adds food, so we manually skip that player's turn
+                if(numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
+                    currentPlayerIndex++;
                 }
             }
             else if( currentPhase == GamePhase.RESOLUTION) {
