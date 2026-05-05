@@ -354,6 +354,7 @@ public class Game {
 
         Player p = this.players.get(currentPlayerIndex);
         Card c = null;
+        boolean event = false;
 
         Tile targetTile = null;
         for(Tile t : this.board.getTrack()) {
@@ -374,10 +375,20 @@ public class Game {
         }
 
         if (row) {
+            c = this.board.getUpperRow().get(index);
+            event = c.isEventCard();
+            if (event) {
+                throw new IllegalArgumentException("You cannot draw an EVENT CARD!!");
+            }
             c = this.board.removeUpper(index);
             currentDrawnUpper++;
         }
         else{
+            c = this.board.getUpperRow().get(index);
+            event = c.isEventCard();
+            if (event) {
+                throw new IllegalArgumentException("You cannot draw an EVENT CARD!!");
+            }
             c = this.board.removeLower(index);
             currentDrawnLower++;
 

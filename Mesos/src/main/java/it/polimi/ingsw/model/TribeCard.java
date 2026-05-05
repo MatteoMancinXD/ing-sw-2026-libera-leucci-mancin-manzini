@@ -38,4 +38,7 @@ public abstract class TribeCard extends Card{
     public int getMinPlayers() {
         return minPlayers;
     }
+
+    public boolean isEventCard() {return false;}
 }
+;

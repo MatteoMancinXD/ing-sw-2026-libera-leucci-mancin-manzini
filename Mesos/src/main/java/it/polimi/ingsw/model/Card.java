@@ -30,4 +30,8 @@ public abstract class Card implements Serializable {
     public int getFoodCost() { return 0; }
 
     public abstract String getShortString();
+
+    public boolean isEventCard() {
+        return false;
+    }
 }

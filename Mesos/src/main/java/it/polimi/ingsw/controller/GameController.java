@@ -113,14 +113,13 @@ public class GameController implements GameObserver {
                     broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
                     //notifyCurrentPlayer();
                 }).start();
-            } catch (IllegalStateException e) {
+            } catch (IllegalStateException | IllegalArgumentException e) {
                 VirtualView view = clients.get(nickname);
                 try {
                     view.showError(e.getMessage());
                 } catch (RemoteException re) {
                     //giocatore disconnesso
                 }
-
             }
             return true;
         }
