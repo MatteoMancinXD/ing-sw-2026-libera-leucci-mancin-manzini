@@ -28,7 +28,7 @@ public class GuiManager extends Application implements ui {
     private String nickname;
     private LobbyView lobbyView;
     private GameView gameView;
-
+    private GameSetup gameSetup;
 
     //javafx
     @Override
@@ -127,7 +127,7 @@ public class GuiManager extends Application implements ui {
             if (message.startsWith("Available games:") ||
                     message.contains("Game #") ||
                     message.contains("Game ID")) {
-                if (lobbyView != null) lobbyView.updateGamesList(message);
+                if (gameSetup != null) gameSetup.updateGamesList(message);
                 return;
             }
 
@@ -151,6 +151,10 @@ public class GuiManager extends Application implements ui {
     //getter
     public String getNickName(){
         return this.nickname;
+    }
+
+    public void setGameSetup(GameSetup gameSetup) {
+        this.gameSetup = gameSetup;
     }
 
 
