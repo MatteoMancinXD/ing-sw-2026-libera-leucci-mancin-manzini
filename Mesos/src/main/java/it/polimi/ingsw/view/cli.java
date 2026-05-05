@@ -64,7 +64,7 @@ public class cli implements ui{
                            System.out.println("Sending game creation request...");
                            client.createGame(nickname, Integer.parseInt(parameters[1]));
                        } catch (NumberFormatException e) {
-                           System.out.println("Invalid number of players");
+                           showError(e.getMessage());
                        }
 
                    } catch (RemoteException e) {
