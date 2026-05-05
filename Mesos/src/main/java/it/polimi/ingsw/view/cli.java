@@ -245,12 +245,14 @@ public class cli implements ui{
         //UPPER ROW / LOWER ROW
         System.out.println("------UPPER ROW------ \n");
         for (Card c : board.getUpperRow()) {
-            System.out.print(c.getShortString()+",  "); //provo a stamparle tutte su una riga (crazy)
+            System.out.println(c.getShortString()); //provo a stamparle tutte su una riga (crazy)
         }
         System.out.println("\n------LOWER ROW------\n");
         for (Card c : board.getLowerRow()) {
-            System.out.print(c.getShortString()+",  ");
+            System.out.println(c.getShortString());
         }
+
+        //System.out.println();
 
         //STATUS PERSONALE + ALTRI PLAYER
         for (Player p : players) {
@@ -271,15 +273,15 @@ public class cli implements ui{
                 System.out.println("\n\n");
             }
         }
+        System.out.println("------OPPONENTS STATS AND CARDS------\n");
         for (Player p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
             if (!p.getNickname().equals(this.nickname)) {
-                System.out.println("------OPPONENTS STATS AND CARDS------\n");
                 System.out.println("Nickname: "+p.getNickname()+", Food: "+p.getFood()+", Prestige: "+p.getPrestige());
                 System.out.println("Artists: "+p.getArtists().size() +", Builder: "+p.getBuilders().size()+", Harvesters: "+p.getHarvesters().size()+", Hunters: "+p.getHunters().size()+", Inventors: "+p.getInventors().size()+", Shamans: "+p.getShamans().size()+"\n");
             }
         }
-        System.out.println("---------------------------------");
-        System.out.print("> ");
+        //System.out.println("---------------------------------");
+        //System.out.print("> ");
 
     }
 
