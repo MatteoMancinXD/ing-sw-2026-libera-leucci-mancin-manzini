@@ -64,7 +64,7 @@ public class cli implements ui{
                            System.out.println("Sending game creation request...");
                            client.createGame(nickname, Integer.parseInt(parameters[1]));
                        } catch (NumberFormatException e) {
-                           System.out.println("Invalid number of players");
+                           showError(e.getMessage());
                        }
 
                    } catch (RemoteException e) {
@@ -254,7 +254,7 @@ public class cli implements ui{
         //STATUS PERSONALE + ALTRI PLAYER
         for (Player p : players) {
             if (p.getNickname().equals(this.nickname)) {
-                System.out.println("------YOUR STATS AND CARDS------\n");
+                System.out.println("\n------YOUR STATS AND CARDS------\n");
                 System.out.println("Food: "+p.getFood()+", Prestige: "+p.getPrestige()+", Your cards: \n");
                 List<Card> everyCard = new ArrayList<>();
                 everyCard.addAll(p.getArtists());
@@ -296,7 +296,7 @@ public class cli implements ui{
         System.out.println("\n\n======GAME OVER======");
         System.out.println("Standings: ");
         for(int i = 0; i < rankings.size(); i++) {
-            System.out.println(i+")"+rankings.get(i));
+            System.out.println((i+1)+")"+rankings.get(i));
         }
     }
 

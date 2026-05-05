@@ -56,7 +56,9 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     public void createGame(String nickName,int numPlayers) throws RemoteException{
         Map<Integer, String> games = serverStub.getAvailableGames();
-
+        if (numPlayers < 2 || numPlayers > 5) {
+            throw new NumberFormatException("Invalid number of players! ");
+        }
         try {
             //see if else in login method in VirtualRMIServer
             int id = serverStub.createGame(this.nickname, numPlayers, this);

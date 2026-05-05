@@ -87,6 +87,9 @@ public class SocketClient implements NetworkClient {
 
     @Override
     public void createGame(String nickname, int numPlayers) {
+        if (numPlayers < 2 || numPlayers > 5) {
+            throw new NumberFormatException("Invalid number of players! ");
+        }
         sendMessageToServer(new CreateGameMessage(token, nickname, numPlayers));
     }
 
