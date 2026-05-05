@@ -103,6 +103,7 @@ public class cli implements ui{
         switch(command) {
             case "chat":
                 StringBuilder message = new StringBuilder();
+                message.append("[CHAT] ");
                 for(int i = 1; i < parameters.length; i++) {
                     if(i >= 2) {
                         message.append(" ");
