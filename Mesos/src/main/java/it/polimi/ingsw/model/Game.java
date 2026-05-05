@@ -252,6 +252,7 @@ public class Game {
         if(currentPlayerIndex >= players.size()) {      //Fine player
             if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
                 currentPhase = GamePhase.RESOLUTION;
+                recalculateDrawOrder();
                 currentPlayerIndex = 0;
             }
             else if( currentPhase == GamePhase.RESOLUTION) {
@@ -268,6 +269,17 @@ public class Game {
                 nextTurn();
             }
         }
+    }
+
+    public void recalculateDrawOrder() {
+        ArrayList<Player> drawOrder = new ArrayList<>();
+        for(Tile tile: board.getTrack()) {
+            if (tile.getStatus()) {
+                Player p = tile.getPlayer();
+                drawOrder.add(p);
+            }
+        }
+        this.players = drawOrder;
     }
 
     private Player checkExtraPickBuilding() {
