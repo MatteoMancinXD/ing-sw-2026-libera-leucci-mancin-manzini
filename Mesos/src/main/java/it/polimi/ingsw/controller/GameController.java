@@ -194,7 +194,7 @@ public class GameController implements GameObserver {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                 new Thread(() -> {
                     try {
-                        entry.getValue().showMessage("[CHAT] "+nickname+": "+message);
+                        entry.getValue().showMessage(nickname+": "+message);
                     } catch (RemoteException e) {
                         System.out.println("Client " + entry.getKey() + " unreachable");
                     }
