@@ -1,14 +1,18 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteRef;
 import java.util.List;
 
 public interface VirtualView {
 
     //Interfaccia che rappresenta un generico client
+
+    void eventResolution(EventCard card) throws RemoteException;
 
     void updateBoard(Board board, List<Player> players) throws RemoteException;
 

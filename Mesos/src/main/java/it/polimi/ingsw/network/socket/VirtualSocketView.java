@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.messages.*;
@@ -19,6 +20,11 @@ public class VirtualSocketView  implements VirtualView {
     public VirtualSocketView(String nickname, ObjectOutputStream out) {
         this.nickname = nickname;
         this.out = out;
+    }
+
+    @Override
+    public void eventResolution(EventCard card) throws RemoteException {
+        sendMessage(new EventResolutionMessage(card));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -21,6 +22,11 @@ public class VirtualRMIView implements VirtualView {
 
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void eventResolution(EventCard card) throws RemoteException {
+        clientStub.receiveEventResolution(card);
     }
 
     @Override

@@ -270,5 +270,16 @@ public class GameController implements GameObserver {
     public void onEventResolution(EventCard event) {
         String desc = event.getShortString();
         System.out.println("Solving: " + desc);
+
+        synchronized (clients) {
+            for(VirtualView view : clients.values()) {
+                try {
+                    view.eventResolution(event);
+                } catch (RemoteException e) {
+                    System.out.println("Client unreachable");
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }

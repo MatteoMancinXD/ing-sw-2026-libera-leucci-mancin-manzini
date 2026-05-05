@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
@@ -170,6 +171,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     @Override
     public void receiveToken(String token)  throws RemoteException {
         this.token = token;
+    }
+
+    @Override
+    public void receiveEventResolution(EventCard card) throws RemoteException {
+        userInterface.showMessage("Event resolved: " + card.getShortString());
     }
 
     @Override
