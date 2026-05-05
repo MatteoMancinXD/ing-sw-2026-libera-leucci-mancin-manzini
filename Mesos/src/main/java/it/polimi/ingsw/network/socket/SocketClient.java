@@ -62,11 +62,15 @@ public class SocketClient implements NetworkClient {
         try {
             while (true) {
                 ServerToClientMessage message = (ServerToClientMessage) in.readObject();
+                System.out.println("Message received from server");
                 message.onReceive(this);
+                System.out.println("Message onReceive done");
                 message.process(userInterface);
+                System.out.println("Message process done");
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Connection lost");
+            System.err.println("Connection lost\n");
+            e.printStackTrace();
         } finally {
             disconnect();
         }
