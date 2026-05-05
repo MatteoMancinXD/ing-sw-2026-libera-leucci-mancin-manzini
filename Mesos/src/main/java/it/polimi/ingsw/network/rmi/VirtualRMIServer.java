@@ -118,7 +118,7 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         }
 
         if (controller != null) {
-            controller.broadcastMessage(nickname + ": " + message);  //logic here
+            controller.broadcastChatMessage(nickname, message);  //logic here
         } else {
             throw new RemoteException("Chat error: Game " + gameID + " not found.");
         }
