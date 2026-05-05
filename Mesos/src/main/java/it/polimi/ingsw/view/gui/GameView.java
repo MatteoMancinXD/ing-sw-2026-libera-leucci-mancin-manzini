@@ -129,9 +129,9 @@ public class GameView {
         // Controlla se il messaggio inizia con "nickname: "
         for (String nick : playersNicknames) {
             if (message.startsWith(nick + ": ")) {
-                String text = message.substring(nick.length() + 2); // rimuove "nickname: "
-                if(nick.equals(manager.getNickName())) return true;
-                chatView.appendMessage(nick, text);
+                String text = message.substring(nick.length() + 2); // removes "nickname: "
+                if(nick.equals(manager.getNickName())) return true; //if you sent the message don't reprint your message again
+                chatView.appendMessage(nick, text); //if the message comes from someone else then print it
                 return true;
             }
         }
