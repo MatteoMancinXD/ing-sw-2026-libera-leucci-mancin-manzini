@@ -254,6 +254,9 @@ public class Game {
                 currentPhase = GamePhase.RESOLUTION;
                 recalculateDrawOrder();
                 currentPlayerIndex = 0;
+                if (numPlayers == 5 && this.board.getTrack().get(0).getStatus()) {
+                    currentPlayerIndex = 1;
+                }
             }
             else if( currentPhase == GamePhase.RESOLUTION) {
                 Player bonusPlayer = checkExtraPickBuilding();
