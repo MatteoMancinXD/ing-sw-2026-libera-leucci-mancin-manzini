@@ -137,8 +137,12 @@ public class cli implements ui{
                     row = true;
                 }
                 try {
-                    System.out.println("Sending draw request...");
-                    client.askToDrawCard(row, Integer.parseInt(parameters[2]));
+                    if(parameters.length == 3) {
+                        System.out.println("Sending draw request...");
+                        client.askToDrawCard(row, Integer.parseInt(parameters[2]));
+                    } else {
+                        System.out.println("Use draw <row> <index> command.");
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid index format");
                 }

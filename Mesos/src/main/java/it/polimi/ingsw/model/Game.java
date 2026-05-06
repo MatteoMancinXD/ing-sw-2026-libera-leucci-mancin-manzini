@@ -56,6 +56,8 @@ public class Game {
         ArrayList<BuildingCard> allBuildings = loadBuildingsFromJson();
 
         this.deck = new TribeDeck(AllCards, numPlayers);
+        deck.shuffle();
+
         this.buildingDeck = new BuildingDeck(allBuildings, numPlayers);
         //board.setTribeDeck(this.deck);
 
