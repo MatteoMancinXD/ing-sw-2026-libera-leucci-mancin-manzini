@@ -81,6 +81,11 @@ public class GameSetup {
                 try {
                     manager.createGame(manager.getNickName(), numPlayers);
                     showStatusOk("Richiesta di creazione inviata...");
+                    Platform.runLater(() -> {
+                        GameWaiting gameWaiting = new GameWaiting(stage, manager);
+                        manager.setGameWaiting(gameWaiting);
+                        gameWaiting.show();
+                    });
                 } catch (Exception ex) {
                     showStatusError("Errore: " + ex.getMessage());
                 }
@@ -103,6 +108,11 @@ public class GameSetup {
                     int gameId = Integer.parseInt(gameIdText);
                     manager.joinGame(manager.getNickName(), gameId);
                     showStatusOk("Richiesta di join inviata...");
+                    Platform.runLater(() -> {
+                        GameWaiting gameWaiting = new GameWaiting(stage, manager);
+                        manager.setGameWaiting(gameWaiting);
+                        gameWaiting.show();
+                    });
                 } catch (NumberFormatException ex) {
                     showStatusError("Game ID non valido.");
                 } catch (Exception ex) {

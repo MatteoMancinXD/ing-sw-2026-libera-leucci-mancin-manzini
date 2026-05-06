@@ -29,6 +29,7 @@ public class GuiManager extends Application implements ui {
     private LobbyView lobbyView;
     private GameView gameView;
     private GameSetup gameSetup;
+    private GameWaiting gameWaiting;
 
     //javafx
     @Override
@@ -139,6 +140,9 @@ public class GuiManager extends Application implements ui {
 
             // 3. Tutto il resto → messaggio di stato nella lobby
             if (lobbyView != null) lobbyView.showStatusOk(message);
+
+            // 4. Aggiornamento schermata di caricamento
+            if (gameWaiting != null) gameWaiting.updateWaitingLabel(message);
         });
     }
 
@@ -155,6 +159,10 @@ public class GuiManager extends Application implements ui {
 
     public void setGameSetup(GameSetup gameSetup) {
         this.gameSetup = gameSetup;
+    }
+
+    public void setGameWaiting(GameWaiting gameWaiting) {
+        this.gameWaiting = gameWaiting;
     }
 
 
