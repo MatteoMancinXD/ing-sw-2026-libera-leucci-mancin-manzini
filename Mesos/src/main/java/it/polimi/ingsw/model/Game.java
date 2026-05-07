@@ -198,6 +198,8 @@ public class Game {
      * @return A list containing the winning player(s).
      */
     public ArrayList<Player> endGame() {
+        System.out.println("GAME IS ENDING");
+
         Player winner =  players.getFirst();
         ArrayList<Player> winners = new ArrayList<>();
         winners.add(winner);
@@ -238,6 +240,8 @@ public class Game {
             }
         }
         winners.add(winner);
+
+        observer.onGameEnd(winners);
         return winners;
     }
     /**

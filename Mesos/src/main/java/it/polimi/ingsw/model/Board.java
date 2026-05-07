@@ -81,7 +81,7 @@ public class Board implements Serializable {
 
         // La upperrow riceve numPlayers + 4 carte ad ogni round
         int i = 0;
-        while (i < numPlayers + 4) {
+        while (i < numPlayers + 4 && deck.size() > 0) {
             Card c = deck.draw();
             if (c == null) {break;}
             upperRow.add(c);

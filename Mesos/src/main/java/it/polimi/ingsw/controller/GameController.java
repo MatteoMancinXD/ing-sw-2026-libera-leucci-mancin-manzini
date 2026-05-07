@@ -282,4 +282,14 @@ public class GameController implements GameObserver {
             }
         }
     }
+
+    @Override
+    public void onGameEnd(ArrayList<Player> winners) {
+        StringBuilder message = new StringBuilder();
+        for(int i = 0; i < winners.size(); i++) {
+            message.append((i+1) + ". :" + winners.get(i).getNickname() + "\n");
+        }
+
+        new Thread(() -> { broadcastMessage(message.toString()); }).start();
+    }
 }

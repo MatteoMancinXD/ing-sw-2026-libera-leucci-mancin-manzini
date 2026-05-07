@@ -65,4 +65,8 @@ public class TribeDeck {
     public TribeCard draw() {
         return cards.removeFirst();
     }
+
+    public int size() {
+        return cards.size();
+    }
 }
