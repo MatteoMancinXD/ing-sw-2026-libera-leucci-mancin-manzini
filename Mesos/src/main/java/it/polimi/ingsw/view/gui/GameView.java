@@ -128,12 +128,14 @@ public class GameView {
                 System.err.println("Errore nel caricamento dell'immagine: " + path);
             }
         }
+
         HBox track =  new HBox(trackSize + 1);
 
-
-
+        //to do
 
         HBox lowerRow = new HBox(lowerRowSize);
+
+        //to do
 
         table.getChildren().addAll(upperRow,totemPlacer, track, lowerRow);
 
