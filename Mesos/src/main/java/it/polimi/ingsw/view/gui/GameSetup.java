@@ -146,9 +146,18 @@ public class GameSetup {
         stage.setScene(scene);
     }
 
+
+
     public void updateGamesList(String text) {
         Platform.runLater(() -> {
-            if (gamesListArea != null) gamesListArea.setText(text);
+            if (gamesListArea != null) {
+                if (text.startsWith("Available games:")) {
+                    gamesListArea.clear();          // svuota solo quando inizia una nuova lista
+                    gamesListArea.appendText(text + "\n");
+                } else if (text.startsWith("Game #")) {
+                    gamesListArea.appendText(text + "\n");  // aggiunge senza sovrascrivere (setText sovrascrive)
+                }
+            }
         });
     }
 
