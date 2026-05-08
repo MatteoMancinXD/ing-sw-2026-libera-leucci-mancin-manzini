@@ -102,4 +102,7 @@ public abstract class BuildingCard extends Card{
         return String.format("%s : foodcost=%d, prestige bonus=%d", this.getClass(),  this.getFoodCost(), this.getPrestigeGain());
     }
 
+    @Override
+    public boolean isBuildingCard() {return true;}
+
 }

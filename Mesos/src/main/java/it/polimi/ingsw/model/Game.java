@@ -198,16 +198,11 @@ public class Game {
      * @return A list containing the winning player(s).
      */
     public ArrayList<Player> endGame() {
-        System.out.println("GAME IS ENDING");
 
-        Player winner =  players.getFirst();
-        ArrayList<Player> winners = new ArrayList<>();
-        winners.add(winner);
-
-        for (Player p: this.players) {                  //Aggiunta di prestigio finale per buildings e builder
+        for (Player p: this.players) {
             for(BuildingCard b : p.getBuildings()) {
                 p.editPrestige(b.getPrestigeGain());
-                b.onGameEnd(p);                         //Attivazione effetti building onGameEnd()
+                b.onGameEnd(p);
             }
             List<BuilderCard> builders = p.getBuilders();
             for (BuilderCard b : builders) {
@@ -215,34 +210,19 @@ public class Game {
             }
         }
 
+        ArrayList<Player> rankings = new ArrayList<>(this.players);
 
-
-        for (int i = 1; i < players.size(); i++) {
-            Player p = players.get(i);
-
-            if (p.getPrestige() > winner.getPrestige()) {
-                // Nuovo record assoluto di prestigio
-                winner = p;
-                winners.clear();
-                winners.add(winner);
+        rankings.sort((p1, p2) -> {
+            if (p1.getPrestige() != p2.getPrestige()) {
+                return Integer.compare(p2.getPrestige(), p1.getPrestige());
             }
-            else if (p.getPrestige() == winner.getPrestige()) {
-                // Spareggio sul prestigio
-                if (p.getFood() > winner.getFood()) {
-                    winner = p;
-                    winners.clear();
-                    winners.add(winner);
-                }
-                else if (p.getFood() == winner.getFood()) {
-                    // Parità totale: vittoria condivisa
-                    winners.add(p);
-                }
+            else {
+                return Integer.compare(p2.getFood(), p1.getFood());
             }
-        }
-        winners.add(winner);
+            });
 
-        observer.onGameEnd(winners);
-        return winners;
+        observer.onGameEnd(rankings);
+        return rankings;
     }
     /**
      * Advances the turn to the next player.
@@ -407,7 +387,7 @@ public class Game {
             currentDrawnUpper++;
         }
         else{
-            c = this.board.getUpperRow().get(index);
+            c = this.board.getLowerRow().get(index);
             event = c.isEventCard();
             if (event) {
                 throw new IllegalArgumentException("You cannot draw an EVENT CARD!!");

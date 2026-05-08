@@ -75,25 +75,43 @@ public class Board implements Serializable {
                     i++;
                 }
             }
-            fillBuildings(1, numPlayers, bDeck);  // Gli edifici di era I vengono prelevati dalla riserva e messi nella upperrow
-            initialized = true;
-        }
 
-        // La upperrow riceve numPlayers + 4 carte ad ogni round
-        int numBuildings = bDeck.getBuildingCardsForPlayers().get(numPlayers).get(currentEra - 1);
-        int i = 0;
-        while (upperRow.size() < numPlayers + 4 + numBuildings && deck.size() > 0) {
-            Card c = deck.draw();
-            if (c == null) {break;}
-            upperRow.add(c);
-            i++;
-            if (c.getEra() > currentEra) {
-                eraChanged = true;
+            while (upperRow.size() < numPlayers + 4){
+                Card c = deck.draw();
+                if (c == null) {
+                    break;
+                }
+                upperRow.add(c);
+            }
+
+            fillBuildings(1, numPlayers, bDeck);  // Gli edifici di era I vengono prelevati dalla riserva e messi nella upperrow
+
+            initialized = true;
+        }// La upperrow riceve numPlayers + 4 carte ad ogni round
+        else {
+            int numBuildings = findBuildings();
+            while (upperRow.size() < numPlayers + 4 + numBuildings && deck.size() > 0) {
+                Card c = deck.draw();
+                if (c == null) {break;}
+                upperRow.add(c);
+                if (c.getEra() > currentEra) {
+                    eraChanged = true;
+                }
             }
         }
-
         return eraChanged;
     }
+
+    private int findBuildings() {
+        int numBuildings = 0;
+        for (Card c : upperRow) {
+            if (c.isBuildingCard()) {
+                numBuildings++;
+            }
+        }
+        return numBuildings;
+    }
+
     /**
      * Removes all cards that are not building type from the lowerrow at the end of a round. Building cards remain until the next era transition.
      */
