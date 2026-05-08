@@ -6,8 +6,11 @@ import it.polimi.ingsw.model.Player;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -36,6 +39,11 @@ public class GameView {
             playersNicknames.add(p.getNickname());
         }
 
+        int numPlayers = players.size();
+        int upperRowSize = board.getUpperRow().size();
+        int lowerRowSize = board.getLowerRow().size();
+        int trackSize = board.getTrack().size();
+
 
 
 
@@ -51,19 +59,30 @@ public class GameView {
         gameRoot.setTop(topBar);
 
         // Centro — griglia board
-        GridPane boardGrid = new GridPane();
-        boardGrid.setAlignment(Pos.CENTER);
-        boardGrid.setHgap(5);
-        boardGrid.setVgap(5);
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                Button cell = new Button();
-                cell.setPrefSize(60, 60);
-                cell.setStyle("-fx-background-color: #2a2a4a; -fx-border-color: #e0a830;");
-                boardGrid.add(cell, i, j);
-            }
+        VBox table = new VBox();
+        table.setPadding(new Insets(15));
+
+        HBox upperRow = new HBox(upperRowSize);
+        for(int i = 0; i < upperRowSize; i++) {
+            Button card = new Button();
+
+            int id = board.getUpperRow().get(i).getId();
+            String imgPath = String.format("/assets/cards/front/front_%03d.png", id);
+            Image img = new Image(imgPath);
+            ImageView imgView = new ImageView(img);
+
+            imgView.setFitHeight(150);
+            imgView.setPreserveRatio(true);
+            card.setGraphic(imgView);
+
+            upperRow.getChildren().add(card);
         }
-        gameRoot.setCenter(boardGrid);
+        HBox track =  new HBox(trackSize + 1);
+        HBox lowerRow = new HBox(lowerRowSize);
+
+        table.getChildren().addAll(upperRow, track, lowerRow);
+
+        gameRoot.setCenter(table);
 
         // -------------------------------------------------------
         // Destra: BorderPane — stats in alto (scroll), chat in basso (fissa)
