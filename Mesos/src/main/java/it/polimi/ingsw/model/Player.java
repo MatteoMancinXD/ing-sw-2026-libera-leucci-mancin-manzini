@@ -47,6 +47,8 @@ public class Player implements Serializable {
         this.totStars = 0;
     }
 
+    public Player () {}
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }

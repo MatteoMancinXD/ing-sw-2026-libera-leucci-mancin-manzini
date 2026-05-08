@@ -34,4 +34,6 @@ public abstract class Card implements Serializable {
     public boolean isEventCard() {
         return false;
     }
+
+    public boolean isBuildingCard() {return false;}
 }
