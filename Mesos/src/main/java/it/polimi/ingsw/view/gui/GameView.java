@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameView {
 
@@ -77,10 +79,63 @@ public class GameView {
 
             upperRow.getChildren().add(card);
         }
+
+        // totem placing tile
+        HBox totemPlacer = new HBox(20); // Spacing
+        totemPlacer.setAlignment(Pos.CENTER_LEFT);
+        totemPlacer.setPadding(new Insets(30, 0, 30, 50));
+
+        String path = null;
+        Rectangle2D viewport = null;
+
+        switch (numPlayers) {
+            case 2 -> {
+                path = "/assets/board/rear/rear_1.png";
+                viewport = new Rectangle2D(1070, 100, 330, 460);
+            }
+            case 4 -> {
+                path = "/assets/board/rear/rear_0.png";
+                viewport = new Rectangle2D(1070, 100, 330, 480);
+            }
+            case 3 -> {
+                path = "/assets/board/front/front_1.png";
+                viewport = new Rectangle2D(70, 100, 330, 460);
+            }
+            case 5 -> {
+                path = "/assets/board/front/front_0.png";
+                viewport = new Rectangle2D(70, 100, 330, 480);
+            }
+        }
+
+        if (path != null) {
+            try {
+                Image sheet = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+                ImageView totemCard = new ImageView(sheet);
+                totemCard.setViewport(viewport);
+                totemCard.setFitHeight(150);
+                totemCard.setPreserveRatio(true);
+
+                Button totemButton = new Button();
+                totemButton.setGraphic(totemCard);
+
+
+
+                //bottone trasparente no animazioni
+                totemButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+
+                totemPlacer.getChildren().add(totemButton);
+            } catch (Exception e) {
+                System.err.println("Errore nel caricamento dell'immagine: " + path);
+            }
+        }
         HBox track =  new HBox(trackSize + 1);
+
+
+
+
         HBox lowerRow = new HBox(lowerRowSize);
 
-        table.getChildren().addAll(upperRow, track, lowerRow);
+        table.getChildren().addAll(upperRow,totemPlacer, track, lowerRow);
 
         gameRoot.setCenter(table);
 
