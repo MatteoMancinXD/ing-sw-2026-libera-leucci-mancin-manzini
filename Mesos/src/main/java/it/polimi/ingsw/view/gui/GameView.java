@@ -81,9 +81,9 @@ public class GameView {
         }
 
         // totem placing tile
-        HBox totemPlacer = new HBox(20); // Spacing
-        totemPlacer.setAlignment(Pos.CENTER_LEFT);
-        totemPlacer.setPadding(new Insets(30, 0, 30, 50));
+        HBox totemAndTrack = new HBox(trackSize+2); // Spacing
+        //totemPlacer.setAlignment(Pos.CENTER_LEFT);
+        totemAndTrack.setPadding(new Insets(30, 0, 30, 50));
 
         String path = null;
         Rectangle2D viewport = null;
@@ -91,7 +91,7 @@ public class GameView {
         switch (numPlayers) {
             case 2 -> {
                 path = "/assets/board/rear/rear_1.png";
-                viewport = new Rectangle2D(1070, 100, 330, 460);
+                viewport = new Rectangle2D(1070, 100, 330, 480);
             }
             case 4 -> {
                 path = "/assets/board/rear/rear_0.png";
@@ -99,7 +99,7 @@ public class GameView {
             }
             case 3 -> {
                 path = "/assets/board/front/front_1.png";
-                viewport = new Rectangle2D(70, 100, 330, 460);
+                viewport = new Rectangle2D(70, 100, 330, 480);
             }
             case 5 -> {
                 path = "/assets/board/front/front_0.png";
@@ -121,23 +121,98 @@ public class GameView {
 
 
                 //bottone trasparente no animazioni
-                totemButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                //totemButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
 
-                totemPlacer.getChildren().add(totemButton);
+                totemAndTrack.getChildren().add(totemButton);
             } catch (Exception e) {
                 System.err.println("Errore nel caricamento dell'immagine: " + path);
             }
         }
 
-        HBox track =  new HBox(trackSize + 1);
+     //   HBox track =  new HBox(trackSize + 1);
 
-        //to do
+        //track.setAlignment(Pos.CENTER);
+        //totemPlacer.setPadding(new Insets(30, 0, 30, 50));
+
+        for(int i = 0; i < trackSize; i++) {
+            Button card = new Button();
+            String tilePath = null;
+            Rectangle2D tileViewport = null;
+
+            char letter = board.getTrack().get(i).getLetter();
+                switch(letter) {
+                    case 'A' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(450, 65, 330, 480);
+                    }
+                    case 'B' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(760, 65, 330, 480);
+                    }
+                    case 'C' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(1060, 65, 330, 480);
+                    }
+                    case 'D' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(65,  590, 330, 480);
+                    }
+                    case 'E' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(460, 590, 330, 480);
+                    }
+                    case 'F' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(760, 590, 330, 480);
+                    }
+                    case 'G' -> {
+                        tilePath = "/assets/board/front/front_0.png";
+                        tileViewport = new Rectangle2D(1075, 590, 330, 480);
+                    }
+                }
+
+            if (tilePath != null) {
+                try {
+                    Image sheet = new Image(Objects.requireNonNull(getClass().getResourceAsStream(tilePath)));
+                    ImageView tileCard = new ImageView(sheet);
+                    tileCard.setViewport(tileViewport);
+                    tileCard.setFitHeight(150);
+                    tileCard.setPreserveRatio(true);
+
+                    Button tileButton = new Button();
+                    tileButton.setGraphic(tileCard);
+
+
+
+                    //bottone trasparente no animazioni
+                    //tileButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+
+                    totemAndTrack.getChildren().add(tileButton);
+                } catch (Exception e) {
+                    System.err.println("Errore nel caricamento dell'immagine: " + path);
+                }
+            }
+        }
+
 
         HBox lowerRow = new HBox(lowerRowSize);
 
-        //to do
+        for(int i = 0; i < lowerRowSize; i++) {
+            Button card = new Button();
 
-        table.getChildren().addAll(upperRow,totemPlacer, track, lowerRow);
+            int id = board.getLowerRow().get(i).getId();
+            String imgPath = String.format("/assets/cards/front/front_%03d.png", id);
+            Image img = new Image(imgPath);
+            ImageView imgView = new ImageView(img);
+
+            imgView.setFitHeight(150);
+            imgView.setPreserveRatio(true);
+            card.setGraphic(imgView);
+
+            lowerRow.getChildren().add(card);
+        }
+
+        table.getChildren().addAll(upperRow,totemAndTrack, lowerRow);
 
         gameRoot.setCenter(table);
 
