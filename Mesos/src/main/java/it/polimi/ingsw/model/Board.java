@@ -68,7 +68,7 @@ public class Board implements Serializable {
                 }
 
                 // Gli eventi vanno sempre nella riga superiore
-                if (c instanceof EventCard) {
+                if (c.isEventCard()) {
                     upperRow.add(c);
                 } else {
                     lowerRow.add(c);
@@ -80,8 +80,9 @@ public class Board implements Serializable {
         }
 
         // La upperrow riceve numPlayers + 4 carte ad ogni round
+        int numBuildings = bDeck.getBuildingCardsForPlayers().get(numPlayers).get(currentEra - 1);
         int i = 0;
-        while (i < numPlayers + 4 && deck.size() > 0) {
+        while (upperRow.size() < numPlayers + 4 + numBuildings && deck.size() > 0) {
             Card c = deck.draw();
             if (c == null) {break;}
             upperRow.add(c);
