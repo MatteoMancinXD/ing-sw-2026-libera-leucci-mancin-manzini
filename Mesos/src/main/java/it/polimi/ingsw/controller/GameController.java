@@ -285,11 +285,27 @@ public class GameController implements GameObserver {
 
     @Override
     public void onGameEnd(ArrayList<Player> winners) {
-        StringBuilder message = new StringBuilder();
-        for(int i = 0; i < winners.size(); i++) {
-            message.append((i+1) + ". :" + winners.get(i).getNickname() + "\n");
-        }
+        List<String> rankings = new ArrayList<>();
+        for (Player p : winners) rankings.add(p.getNickname());
 
-        new Thread(() -> { broadcastMessage(message.toString()); }).start();
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < winners.size(); i++) {
+            message.append((i + 1) + ". :" + winners.get(i).getNickname() + "\n");
+        }
+        new Thread(() -> {
+            broadcastMessage(message.toString());
+        }).start();
+
+        synchronized (clients) {
+            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                new Thread(() -> {
+                    try {
+                        entry.getValue().notifyGameEnd(rankings);
+                    } catch (RemoteException e) {
+                        System.out.println("Client " + entry.getKey() + " unreachable");
+                    }
+                }).start();
+            }
+        }
     }
 }
