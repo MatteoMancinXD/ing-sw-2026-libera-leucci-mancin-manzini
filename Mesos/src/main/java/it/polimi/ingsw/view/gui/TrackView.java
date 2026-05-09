@@ -42,24 +42,25 @@ public class TrackView {
     //  Private helpers
 
     private static void addTotemCard(HBox container, int numPlayers) {
-        String path;
-        Rectangle2D viewport;
+        String path = "/assets/board/order/order_" + numPlayers + ".png";
 
+        /*
         switch (numPlayers) {
             case 2 -> { path = "/assets/board/rear/rear_1.png";   viewport = new Rectangle2D(1065, 100, 330, 480); }
-            case 3 -> { path = "/assets/board/front/front_1.png"; viewport = new Rectangle2D(80,   100, 330, 480); }
+            case 3 -> { path = "/assets/board/front/front_1.png"; viewport = new Rectangle2D(50,   58, 140, 226); }
             case 4 -> { path = "/assets/board/rear/rear_0.png";   viewport = new Rectangle2D(1065, 100, 330, 480); }
-            case 5 -> { path = "/assets/board/front/front_0.png"; viewport = new Rectangle2D(85,   85, 330, 480); }
+            case 5 -> { path = "/assets/board/front/front_0.png"; viewport = new Rectangle2D(50,   58, 140, 226); }
             default -> { return; }
         }
+        */
 
-        addImageButton(container, path, viewport);
+        addImageButton(container, path);
     }
 
     private static void addTileCard(HBox container, char letter) {
-        String path = "/assets/board/front/front_0.png";
-        Rectangle2D viewport;
+        String path = "/assets/board/tiles/tile_" + letter + ".png";
 
+        /*
         switch (letter) {
             case 'A' -> viewport = new Rectangle2D(465,  65,  330, 480);
             case 'B' -> viewport = new Rectangle2D(760,  65,  330, 480);
@@ -70,16 +71,17 @@ public class TrackView {
             case 'G' -> viewport = new Rectangle2D(1065, 590, 330, 480);
             default  -> { return; }
         }
+        */
 
-        addImageButton(container, path, viewport);
+        addImageButton(container, path);
     }
 
-    private static void addImageButton(HBox container, String path, Rectangle2D viewport) {
+    private static void addImageButton(HBox container, String path) {
         try {
             Image sheet = new Image(Objects.requireNonNull(
                     TrackView.class.getResourceAsStream(path)));
             ImageView imgView = new ImageView(sheet);
-            imgView.setViewport(viewport);
+
             imgView.setFitHeight(TILE_HEIGHT);
             imgView.setPreserveRatio(true);
 
