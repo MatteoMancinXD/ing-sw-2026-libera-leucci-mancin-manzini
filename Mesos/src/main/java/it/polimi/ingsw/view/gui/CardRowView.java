@@ -18,11 +18,12 @@ public class CardRowView {
      * @param height display height of each card image
      * @return HBox containing all card buttons
      */
-    public static HBox build(List<Card> cards, double height) {
+    public static HBox build(List<Card> cards, double height, boolean isUpperRow, GuiManager manager, boolean enabled) {
         HBox row = new HBox(cards.size());
 
         for (Card card : cards) {
             Button btn = new Button();
+            btn.setDisable(!enabled);
             int id = card.getId();
             //in resources, find front folder, in it there are more png images called for ex. front_000
             String imgPath = String.format("/assets/cards/front/front_%03d.png", id); //those last 3 digits are the id
@@ -42,6 +43,11 @@ public class CardRowView {
             }
 
             row.getChildren().add(btn);
+            int index = cards.indexOf(card);
+            btn.setOnAction(e -> {
+                try { manager.drawCard(isUpperRow, index); }
+                catch (Exception ex) { System.err.println("Errore draw: " + ex.getMessage()); }
+            });
         }
 
         return row;

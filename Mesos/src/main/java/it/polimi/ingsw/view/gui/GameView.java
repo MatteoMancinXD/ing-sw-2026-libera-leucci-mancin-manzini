@@ -28,6 +28,11 @@ public class GameView {
     private final GuiManager manager;
     private List<String> playersNicknames = new ArrayList<>();
     private ChatView chatView;
+    private Label turnLabel;
+    private Board lastBoard;
+    private List<Player> lastPlayers;
+    private String currentPlayerNickname = "";
+    private String currentPhase = "";
 
     public GameView(Stage stage, GuiManager manager) {
         this.stage = stage;
@@ -36,6 +41,8 @@ public class GameView {
 
     public void show(Board board, List<Player> players) {
 
+        this.lastBoard = board;
+        this.lastPlayers = players;
         // Save nicknames for chat recognition
         playersNicknames.clear();
         for (Player p : players) playersNicknames.add(p.getNickname());
@@ -49,8 +56,10 @@ public class GameView {
         // Top bar  STILL TO DO
         HBox topBar = new HBox(20);
         topBar.setPadding(new Insets(15));
-        Label turnLabel = new Label("In attesa del turno...");   //STILL TO DO
-        turnLabel.setTextFill(Color.web("#e0a830"));
+        if (turnLabel == null) {
+            turnLabel = new Label("In attesa del turno...");
+            turnLabel.setTextFill(Color.web("#e0a830"));
+        }
         topBar.getChildren().add(turnLabel);
         gameRoot.setTop(topBar);
 
@@ -68,10 +77,12 @@ public class GameView {
 
 
         table.setPadding(new Insets(15));
+        boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
+
         table.getChildren().addAll(
-                CardRowView.build(board.getUpperRow(), 150),
-                TrackView.build(board.getTrack(), numPlayers),
-                CardRowView.build(board.getLowerRow(), 150)
+                CardRowView.build(board.getUpperRow(), 150, true, manager, isMyTurn && currentPhase.equals("RESOLUTION")),
+                TrackView.build(board.getTrack(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
+                CardRowView.build(board.getLowerRow(), 150, false, manager, isMyTurn && currentPhase.equals("RESOLUTION"))
         );
         gameRoot.setCenter(tableScroll);
 
@@ -105,5 +116,22 @@ public class GameView {
             }
         }
         return false;
+    }
+    public void updateTurnLabel(String nickname, String phase) {
+        this.currentPlayerNickname = nickname;
+        this.currentPhase = phase;
+        if (turnLabel == null) return;
+        String myNick = manager.getNickName();
+        if (nickname.equals(myNick)) {
+            turnLabel.setText("È il tuo turno! Fase: " + phase);
+            turnLabel.setTextFill(Color.web("#00ff88"));
+        } else {
+            turnLabel.setText("Turno di: " + nickname + " | Fase: " + phase);
+            turnLabel.setTextFill(Color.web("#e0a830"));
+        }
+        if (lastBoard != null && lastPlayers != null) {
+            show(lastBoard, lastPlayers);
+        }
+
     }
 }

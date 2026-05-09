@@ -24,7 +24,7 @@ public class TrackView {
      * @param numPlayers number of players (determines which totem card to show)
      * @return HBox containing totem card + all tile buttons
      */
-    public static HBox build(List<Tile> tiles, int numPlayers) {
+    public static HBox build(List<Tile> tiles, int numPlayers, GuiManager manager, boolean enabled) {
         HBox totemAndTrack = new HBox(tiles.size() + 2);
         totemAndTrack.setPadding(new Insets(30, 0, 30, 50));
 
@@ -33,8 +33,8 @@ public class TrackView {
 
         // --- Track tiles ---
         for (Tile tile : tiles) {
-            addTileCard(totemAndTrack, tile.getLetter());
-        }
+            int idx = tiles.indexOf(tile);
+            addTileCard(totemAndTrack, tile.getLetter(), idx, manager, enabled);        }
 
         return totemAndTrack;
     }
@@ -57,7 +57,7 @@ public class TrackView {
         addImageButton(container, path);
     }
 
-    private static void addTileCard(HBox container, char letter) {
+    private static void addTileCard(HBox container, char letter, int index, GuiManager manager, boolean enabled) {
         String path = "/assets/board/tiles/tile_" + letter + ".png";
 
         /*
@@ -73,10 +73,15 @@ public class TrackView {
         }
         */
 
-        addImageButton(container, path);
+        Button btn = addImageButton(container, path);
+        if (btn != null) btn.setDisable(!enabled);
+        if (btn != null) btn.setOnAction(e -> {
+            try { manager.placeTotem(index); }
+            catch (Exception ex) { System.err.println("Errore totem: " + ex.getMessage()); }
+        });
     }
 
-    private static void addImageButton(HBox container, String path) {
+    private static Button addImageButton(HBox container, String path) {
         try {
             Image sheet = new Image(Objects.requireNonNull(
                     TrackView.class.getResourceAsStream(path)));
@@ -90,8 +95,10 @@ public class TrackView {
             btn.setStyle(TILE_STYLE);
 
             container.getChildren().add(btn);
+            return btn;
         } catch (Exception e) {
             System.err.println("Errore caricamento immagine: " + path);
+            return null;
         }
     }
 }

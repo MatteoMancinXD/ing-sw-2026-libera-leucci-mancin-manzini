@@ -87,6 +87,15 @@ public class GuiManager extends Application implements ui {
         client.requestAvailableGames();
     }
 
+    public void drawCard(boolean row, int index) throws Exception {
+        System.out.println("DEBUG GUI drawCard row=" + row + " index=" + index);
+        client.askToDrawCard(row, index);
+    }
+
+    public void placeTotem(int index) throws Exception {
+        System.out.println("DEBUG GUI placeTotem index=" + index);
+        client.askToPlaceTotem(index);
+    }
 
     //ui methods
 
@@ -108,15 +117,14 @@ public class GuiManager extends Application implements ui {
     @Override
     public void notifyTurn(String currentPlayerNickname, String gamePhase) {
         Platform.runLater(() -> {
-            // aggiorna la label del turno nella schermata di gioco
-        });
+            if (gameView != null) gameView.updateTurnLabel(currentPlayerNickname, gamePhase);        });
     }
 
     @Override
     public void notifyEndGame(List<String> rankings) {
         Platform.runLater(() -> {
-            // mostra schermata finale con classifica
-        });
+            EndGameView endGameView = new EndGameView(primaryStage, this);
+            endGameView.show(rankings);        });
     }
 
     @Override
