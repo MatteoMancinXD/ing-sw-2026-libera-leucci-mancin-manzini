@@ -1,34 +1,41 @@
 {
   "era1": [
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
       "id": 1,
-      "minPlayers": 2
+      "minPlayers": 2,
+      "getsFood": true
     },
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
       "id": 2,
-      "minPlayers": 2
+      "minPlayers": 2,
+      "getsFood": true
     },
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
       "id": 3,
-      "minPlayers": 2
+      "minPlayers": 2,
+      "getsFood": false
     },
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
       "id": 4,
-      "minPlayers": 2
+      "minPlayers": 3,
+      "getsFood": false
     },
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
       "id": 5,
-      "minPlayers": 3
+      "minPlayers": 3,
+      "getsFood": false
     },
     {
-      "type": "ARTIST",
+      "type": "BUILDER",
       "id": 6,
-      "minPlayers": 4
+      "minPlayers": 2,
+      "discount": -1,
+      "pps": 3
     },
     {
       "type": "BUILDER",
@@ -40,9 +47,9 @@
     {
       "type": "BUILDER",
       "id": 8,
-      "minPlayers": 2,
-      "discount": -1,
-      "pps": 3
+      "minPlayers": 5,
+      "discount": -2,
+      "pps": 1
     },
     {
       "type": "BUILDER",
@@ -52,11 +59,9 @@
       "pps": 2
     },
     {
-      "type": "BUILDER",
+      "type": "HARVESTER",
       "id": 10,
-      "minPlayers": 5,
-      "discount": -2,
-      "pps": 1
+      "minPlayers": 2
     },
     {
       "type": "HARVESTER",
@@ -66,77 +71,73 @@
     {
       "type": "HARVESTER",
       "id": 12,
-      "minPlayers": 2
-    },
-    {
-      "type": "HARVESTER",
-      "id": 13,
       "minPlayers": 3
     },
     {
       "type": "HARVESTER",
-      "id": 14,
+      "id": 13,
       "minPlayers": 5
     },
     {
-      "type": "HUNTER",
-      "id": 15,
-      "minPlayers": 2,
-      "getsFood": true
+      "type": "ARTIST",
+      "id": 14,
+      "minPlayers": 2
     },
     {
-      "type": "HUNTER",
+      "type": "ARTIST",
+      "id": 15,
+      "minPlayers": 2
+    },
+    {
+      "type": "ARTIST",
       "id": 16,
-      "minPlayers": 2,
-      "getsFood": true
+      "minPlayers": 2
     },
     {
       "type": "HUNTER",
       "id": 17,
-      "minPlayers": 2,
-      "getsFood": false
+      "minPlayers": 3
     },
     {
-      "type": "HUNTER",
+      "type": "ARTIST",
       "id": 18,
-      "minPlayers": 3,
-      "getsFood": false
+      "minPlayers": 4
     },
     {
-      "type": "HUNTER",
+      "type": "INVENTOR",
       "id": 19,
-      "minPlayers": 3,
-      "getsFood": false
-    },
-    {
-      "type": "INVENTOR",
-      "id": 20,
-      "minPlayers": 2,
-      "invention": "BREAD"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 21,
       "minPlayers": 2,
       "invention": "PELT"
     },
     {
       "type": "INVENTOR",
-      "id": 22,
+      "id": 20,
       "minPlayers": 2,
       "invention": "STONE"
     },
     {
       "type": "INVENTOR",
-      "id": 23,
+      "id": 21,
       "minPlayers": 2,
       "invention": "ARROW"
     },
     {
       "type": "INVENTOR",
-      "id": 24,
+      "id": 22,
+      "minPlayers": 2,
+      "invention": "BREAD"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 23,
       "minPlayers": 4,
       "invention": "ROPE"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 24,
+      "minPlayers": 4,
+      "invention": "FLUTE"
     },
     {
       "type": "INVENTOR",
@@ -145,22 +146,22 @@
       "invention": "POT"
     },
     {
-      "type": "INVENTOR",
+      "type": "SHAMAN",
       "id": 26,
-      "minPlayers": 4,
-      "invention": "FLUTE"
+      "minPlayers": 5,
+      "stars": 2
     },
     {
       "type": "SHAMAN",
       "id": 27,
       "minPlayers": 2,
-      "stars": 1
+      "stars": 2
     },
     {
       "type": "SHAMAN",
       "id": 28,
       "minPlayers": 2,
-      "stars": 2
+      "stars": 1
     },
     {
       "type": "SHAMAN",
@@ -169,58 +170,87 @@
       "stars": 1
     },
     {
-      "type": "SHAMAN",
-      "id": 30,
-      "minPlayers": 5,
-      "stars": 2
-    },
-    {
       "type": "HUNT",
-      "id": 31,
-      "minPlayers": 2,
-      "finalEvent": false
-    },
-    {
-      "type": "PAINTINGS",
-      "id": 32,
-      "minPlayers": 2,
-      "finalEvent": false
-    },
-    {
-      "type": "RITUAL",
-      "id": 33,
+      "id": 85,
       "minPlayers": 2,
       "finalEvent": false
     },
     {
       "type": "SUSTENANCE",
-      "id": 34,
+      "id": 86,
+      "minPlayers": 2,
+      "finalEvent": false
+    },
+    {
+      "type": "RITUAL",
+      "id": 87,
+      "minPlayers": 2,
+      "finalEvent": false
+    },
+    {
+      "type": "PAINTINGS",
+      "id": 88,
       "minPlayers": 2,
       "finalEvent": false
     }
   ],
   "era2": [
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
+      "id": 30,
+      "minPlayers": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 31,
+      "minPlayers": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 32,
+      "minPlayers": 3,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 33,
+      "minPlayers": 2,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 34,
+      "minPlayers": 4,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
       "id": 35,
-      "minPlayers": 2
+      "minPlayers": 5,
+      "getsFood": false
     },
     {
-      "type": "ARTIST",
+      "type": "BUILDER",
       "id": 36,
-      "minPlayers": 2
+      "minPlayers": 2,
+      "discount": -1,
+      "pps": 4
     },
     {
-      "type": "ARTIST",
+      "type": "BUILDER",
       "id": 37,
-      "minPlayers": 3
+      "minPlayers": 2,
+      "discount": -2,
+      "pps": 1
     },
     {
       "type": "BUILDER",
       "id": 38,
-      "minPlayers": 2,
-      "discount": -2,
-      "pps": 1
+      "minPlayers": 3,
+      "discount": -1,
+      "pps": 2
     },
     {
       "type": "BUILDER",
@@ -230,74 +260,68 @@
       "pps": 3
     },
     {
-      "type": "BUILDER",
-      "id": 40,
-      "minPlayers": 2,
-      "discount": -1,
-      "pps": 4
-    },
-    {
-      "type": "BUILDER",
-      "id": 41,
-      "minPlayers": 3,
-      "discount": -1,
-      "pps": 2
-    },
-    {
       "type": "HARVESTER",
-      "id": 42,
+      "id": 40,
       "minPlayers": 2
     },
     {
       "type": "HARVESTER",
-      "id": 43,
+      "id": 41,
       "minPlayers": 3
     },
     {
       "type": "HARVESTER",
-      "id": 44,
+      "id": 42,
       "minPlayers": 4
     },
     {
       "type": "HARVESTER",
-      "id": 45,
+      "id": 43,
       "minPlayers": 5
     },
     {
-      "type": "HUNTER",
+      "type": "ARTIST",
+      "id": 44,
+      "minPlayers": 3
+    },
+    {
+      "type": "ARTIST",
+      "id": 45,
+      "minPlayers": 2
+    },
+    {
+      "type": "ARTIST",
       "id": 46,
-      "minPlayers": 2,
-      "getsFood": true
+      "minPlayers": 2
     },
     {
-      "type": "HUNTER",
+      "type": "ARTIST",
       "id": 47,
-      "minPlayers": 2,
-      "getsFood": false
+      "minPlayers": 2
     },
     {
-      "type": "HUNTER",
+      "type": "INVENTOR",
       "id": 48,
       "minPlayers": 2,
-      "getsFood": false
+      "invention": "DOLL"
     },
     {
-      "type": "HUNTER",
+      "type": "INVENTOR",
       "id": 49,
-      "minPlayers": 3,
-      "getsFood": false
-    },
-    {
-      "type": "HUNTER",
-      "id": 50,
       "minPlayers": 4,
-      "getsFood": true
+      "invention": "HOOK"
     },
     {
-      "type": "HUNTER",
+      "type": "INVENTOR",
+      "id": 50,
+      "minPlayers": 2,
+      "invention": "ROPE"
+    },
+    {
+      "type": "INVENTOR",
       "id": 51,
-      "minPlayers": 5,
-      "getsFood": false
+      "minPlayers": 2,
+      "invention": "FLUTE"
     },
     {
       "type": "INVENTOR",
@@ -309,94 +333,122 @@
       "type": "INVENTOR",
       "id": 53,
       "minPlayers": 2,
-      "invention": "FLUTE"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 54,
-      "minPlayers": 2,
-      "invention": "ROPE"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 55,
-      "minPlayers": 2,
-      "invention": "DOLL"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 56,
-      "minPlayers": 2,
       "invention": "PELT"
     },
     {
-      "type": "INVENTOR",
-      "id": 57,
-      "minPlayers": 4,
-      "invention": "HOOK"
-    },
-    {
       "type": "SHAMAN",
-      "id": 58,
+      "id": 54,
       "minPlayers": 2,
       "stars": 2
     },
     {
       "type": "SHAMAN",
-      "id": 59,
+      "id": 55,
       "minPlayers": 2,
       "stars": 2
     },
     {
       "type": "SHAMAN",
-      "id": 60,
-      "minPlayers": 2,
+      "id": 56,
+      "minPlayers": 5,
       "stars": 1
     },
     {
       "type": "SHAMAN",
-      "id": 61,
-      "minPlayers": 2,
+      "id": 57,
+      "minPlayers": 5,
       "stars": 2
     },
     {
       "type": "HUNT",
-      "id": 62,
-      "minPlayers": 2,
-      "finalEvent": false
-    },
-    {
-      "type": "PAINTINGS",
-      "id": 63,
-      "minPlayers": 2,
-      "finalEvent": false
-    },
-    {
-      "type": "RITUAL",
-      "id": 64,
+      "id": 89,
       "minPlayers": 2,
       "finalEvent": false
     },
     {
       "type": "SUSTENANCE",
-      "id": 65,
+      "id": 90,
+      "minPlayers": 2,
+      "finalEvent": false
+    },
+    {
+      "type": "RITUAL",
+      "id": 91,
+      "minPlayers": 2,
+      "finalEvent": false
+    },
+    {
+      "type": "PAINTINGS",
+      "id": 92,
       "minPlayers": 2,
       "finalEvent": false
     }
   ],
   "era3": [
     {
-      "type": "ARTIST",
+      "type": "HUNTER",
+      "id": 58,
+      "minPlayers": 5,
+      "getsFood": true
+    },
+    {
+      "type": "HUNTER",
+      "id": 59,
+      "minPlayers": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 60,
+      "minPlayers": 2,
+      "getsFood": false
+    },
+    {
+      "type": "HUNTER",
+      "id": 61,
+      "minPlayers": 2,
+      "getsFood": true
+    },
+    {
+      "type": "BUILDER",
+      "id": 62,
+      "minPlayers": 2,
+      "discount": -1,
+      "pps": 5
+    },
+    {
+      "type": "BUILDER",
+      "id": 63,
+      "minPlayers": 2,
+      "discount": -2,
+      "pps": 3
+    },
+    {
+      "type": "BUILDER",
+      "id": 64,
+      "minPlayers": 5,
+      "discount": -1,
+      "pps": 4
+    },
+    {
+      "type": "BUILDER",
+      "id": 65,
+      "minPlayers": 2,
+      "discount": -2,
+      "pps": 2
+    },
+    {
+      "type": "HARVESTER",
       "id": 66,
-      "minPlayers": 2
+      "minPlayers": 5
     },
     {
-      "type": "ARTIST",
+      "type": "HARVESTER",
       "id": 67,
-      "minPlayers": 2
+      "minPlayers": 4
     },
     {
-      "type": "ARTIST",
+      "type": "HARVESTER",
       "id": 68,
       "minPlayers": 2
     },
@@ -406,141 +458,89 @@
       "minPlayers": 5
     },
     {
-      "type": "BUILDER",
+      "type": "ARTIST",
       "id": 70,
-      "minPlayers": 2,
-      "discount": -2,
-      "pps": 3
-    },
-    {
-      "type": "BUILDER",
-      "id": 71,
-      "minPlayers": 2,
-      "discount": -1,
-      "pps": 5
-    },
-    {
-      "type": "BUILDER",
-      "id": 72,
-      "minPlayers": 2,
-      "discount": -2,
-      "pps": 2
-    },
-    {
-      "type": "BUILDER",
-      "id": 73,
-      "minPlayers": 5,
-      "discount": -1,
-      "pps": 4
-    },
-    {
-      "type": "HARVESTER",
-      "id": 74,
       "minPlayers": 2
     },
     {
-      "type": "HARVESTER",
-      "id": 75,
-      "minPlayers": 4
+      "type": "ARTIST",
+      "id": 71,
+      "minPlayers": 2
     },
     {
-      "type": "HARVESTER",
-      "id": 76,
-      "minPlayers": 5
-    },
-    {
-      "type": "HUNTER",
-      "id": 77,
-      "minPlayers": 2,
-      "getsFood": true
-    },
-    {
-      "type": "HUNTER",
-      "id": 78,
-      "minPlayers": 2,
-      "getsFood": false
-    },
-    {
-      "type": "HUNTER",
-      "id": 79,
-      "minPlayers": 2,
-      "getsFood": false
-    },
-    {
-      "type": "HUNTER",
-      "id": 80,
-      "minPlayers": 5,
-      "getsFood": true
+      "type": "ARTIST",
+      "id": 72,
+      "minPlayers": 2
     },
     {
       "type": "INVENTOR",
-      "id": 81,
-      "minPlayers": 2,
-      "invention": "BREAD"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 82,
-      "minPlayers": 2,
-      "invention": "HOOK"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 83,
-      "minPlayers": 2,
+      "id": 73,
+      "minPlayers": 4,
       "invention": "NECKLACE"
     },
     {
       "type": "INVENTOR",
-      "id": 84,
-      "minPlayers": 2,
-      "invention": "DOLL"
-    },
-    {
-      "type": "INVENTOR",
-      "id": 85,
+      "id": 74,
       "minPlayers": 3,
       "invention": "STONE"
     },
     {
       "type": "INVENTOR",
-      "id": 86,
+      "id": 75,
       "minPlayers": 3,
       "invention": "ARROW"
     },
     {
       "type": "INVENTOR",
-      "id": 87,
-      "minPlayers": 4,
+      "id": 76,
+      "minPlayers": 2,
+      "invention": "DOLL"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 77,
+      "minPlayers": 2,
+      "invention": "HOOK"
+    },
+    {
+      "type": "INVENTOR",
+      "id": 78,
+      "minPlayers": 2,
       "invention": "NECKLACE"
     },
     {
-      "type": "SHAMAN",
-      "id": 88,
+      "type": "INVENTOR",
+      "id": 79,
       "minPlayers": 2,
-      "stars": 3
+      "invention": "BREAD"
     },
     {
       "type": "SHAMAN",
-      "id": 89,
-      "minPlayers": 2,
-      "stars": 3
-    },
-    {
-      "type": "SHAMAN",
-      "id": 90,
-      "minPlayers": 2,
-      "stars": 2
-    },
-    {
-      "type": "SHAMAN",
-      "id": 91,
+      "id": 80,
       "minPlayers": 3,
       "stars": 2
     },
     {
       "type": "SHAMAN",
-      "id": 92,
+      "id": 81,
+      "minPlayers": 2,
+      "stars": 3
+    },
+    {
+      "type": "SHAMAN",
+      "id": 82,
+      "minPlayers": 2,
+      "stars": 2
+    },
+    {
+      "type": "SHAMAN",
+      "id": 83,
+      "minPlayers": 2,
+      "stars": 3
+    },
+    {
+      "type": "SHAMAN",
+      "id": 84,
       "minPlayers": 4,
       "stars": 2
     },
@@ -557,13 +557,13 @@
       "finalEvent": false
     },
     {
-      "type": "RITUAL",
+      "type": "SUSTENANCE",
       "id": 95,
       "minPlayers": 2,
       "finalEvent": true
     },
     {
-      "type": "SUSTENANCE",
+      "type": "RITUAL",
       "id": 96,
       "minPlayers": 2,
       "finalEvent": true

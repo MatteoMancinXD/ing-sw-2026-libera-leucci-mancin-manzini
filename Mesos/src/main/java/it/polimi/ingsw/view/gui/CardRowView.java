@@ -26,7 +26,7 @@ public class CardRowView {
             btn.setDisable(!enabled);
             int id = card.getId();
             //in resources, find front folder, in it there are more png images called for ex. front_000
-            String imgPath = String.format("/assets/cards/front/front_%03d.png", id); //those last 3 digits are the id
+            String imgPath = String.format("/assets/cards/front/front_%03d.png", id-1); //those last 3 digits are the id
             //so %03d means if the id=42 -> front_042.png
 
             var stream = CardRowView.class.getResourceAsStream(imgPath);
