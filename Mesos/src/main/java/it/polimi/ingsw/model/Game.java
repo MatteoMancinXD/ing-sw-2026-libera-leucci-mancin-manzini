@@ -321,6 +321,10 @@ public class Game {
         }
 
         this.currentPhase = GamePhase.PLACEMENT;
+
+
+
+
         this.currentPlayerIndex = 0;
         //logica per riordinare i players in base all'ordine sulla tileboard
         ArrayList<Player> nextTurnOrder = new ArrayList<>();
@@ -333,8 +337,21 @@ public class Game {
                 nextTurnOrder.add(p);
             }
         }
-        board.resetTrackTiles();
         this.players = nextTurnOrder;
+        //Dare prestigio in base all order tile:
+        OrderTile oTile = board.getOrder();
+        for (int i = 0; i < this.players.size(); i++) {
+            try {
+                players.get(i).editFood(oTile.getModifiers()[i]);
+            } catch (IllegalArgumentException e) {
+                players.get(i).editFood(-2);      //se non ha abbastanza cibo si toglie 2 di prestigio
+            }
+
+        }
+
+
+        board.resetTrackTiles();
+
     }
     /**
      * Handles the transition to the next era.
