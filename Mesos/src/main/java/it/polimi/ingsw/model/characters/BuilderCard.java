@@ -32,6 +32,7 @@ public class BuilderCard extends CharacterCard {
 
     @Override
     public void assignTo(Player player) {
+        player.editDiscount(this.discount);
         player.addBuilder(this);
     }
 

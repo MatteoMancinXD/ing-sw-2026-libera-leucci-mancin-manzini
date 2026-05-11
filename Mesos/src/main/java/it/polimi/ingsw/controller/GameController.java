@@ -97,12 +97,8 @@ public class GameController implements GameObserver {
 
             }
 
-
             int foodCost = card.getFoodCost();
-            int discount = 0;
-            for(BuilderCard b : p.getBuilders()) {
-                discount += b.getDiscount();
-            }
+            int discount = p.getTotDiscount();
 
             if (foodCost > (p.getFood() + discount)){
                 VirtualView view = clients.get(p.getNickname());

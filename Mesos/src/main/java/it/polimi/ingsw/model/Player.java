@@ -29,6 +29,7 @@ public class Player implements Serializable {
     private ArrayList<BuildingCard> buildings;
 
     private int totStars;
+    private int totDiscount;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -76,6 +77,10 @@ public class Player implements Serializable {
         return totStars;
     }
 
+    public int getTotDiscount() {
+        return totDiscount;
+    }
+
     public void drawCard(Card c){
         c.assignTo(this);
     }
@@ -99,14 +104,10 @@ public class Player implements Serializable {
 
     public void buyBuilding(BuildingCard building){
         int cost = building.getFoodCost();
-        int discount = 0;
-        for(BuilderCard c : this.builders){
-            discount += c.getDiscount();
-        }
 
         // if discount <= cost the player loses less food, otherwise doesn't pay any
-        if(discount <= cost){
-            editFood(-(cost - discount));
+        if(totDiscount <= cost){
+            editFood(-(cost - totDiscount));
         }
 
         building.onPurchase(this);
@@ -125,6 +126,10 @@ public class Player implements Serializable {
 
     public void editStars(int amount) {
         this.totStars = this.totStars + amount;
+    }
+
+    public void editDiscount(int amount) {
+        this.totDiscount = this.totDiscount + amount;
     }
 
 }
