@@ -27,7 +27,7 @@ public class CardRowView {
             int id = card.getId();
             //in resources, find front folder, in it there are more png images called for ex. front_000
             String imgPath = String.format("/assets/cards/front/front_%03d.png", id-1); //those last 3 digits are the id
-            //so %03d means if the id=42 -> front_042.png
+            //so %03d means if the id=42 -> front_041.png (0-based indexing for sprites)
 
             var stream = CardRowView.class.getResourceAsStream(imgPath);
             if (stream != null) {   //if image's path is found then ...

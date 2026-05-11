@@ -322,29 +322,26 @@ public class Game {
 
         this.currentPhase = GamePhase.PLACEMENT;
 
-
-
-
         this.currentPlayerIndex = 0;
         //logica per riordinare i players in base all'ordine sulla tileboard
-        ArrayList<Player> nextTurnOrder = new ArrayList<>();
+        //ArrayList<Player> nextTurnOrder = new ArrayList<>();
         for(Tile tile: board.getTrack()) {
             if (tile.getStatus()) {
                 Player p = tile.getPlayer();
                 for(BuildingCard b : p.getBuildings()) {
-                    b.onOrderTilePlacement(p, nextTurnOrder.size(), board.getOrder());
+                    b.onOrderTilePlacement(p, players.size(), board.getOrder());
                 }
-                nextTurnOrder.add(p);
+                //nextTurnOrder.add(p);
             }
         }
-        this.players = nextTurnOrder;
+        //this.players = nextTurnOrder;
         //Dare prestigio in base all order tile:
         OrderTile oTile = board.getOrder();
         for (int i = 0; i < this.players.size(); i++) {
             try {
                 players.get(i).editFood(oTile.getModifiers()[i]);
             } catch (IllegalArgumentException e) {
-                players.get(i).editFood(-2);      //se non ha abbastanza cibo si toglie 2 di prestigio
+                players.get(i).editPrestige(-2);      //se non ha abbastanza cibo si toglie 2 di prestigio
             }
 
         }

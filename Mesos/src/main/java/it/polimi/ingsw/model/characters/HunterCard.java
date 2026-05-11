@@ -23,6 +23,10 @@ public class HunterCard extends CharacterCard {
 
     @Override
     public void assignTo(Player player) {
+        if(getsFood){
+            int numHunters = player.getHunters().size();
+            player.editFood(numHunters);
+        }
         player.addHunter(this);
     }
 
