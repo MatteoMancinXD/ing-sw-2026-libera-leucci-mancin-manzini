@@ -122,6 +122,21 @@ class PlayerTest {
     }
 
     @Test
+    void nonNegativeFoodTest() {
+        Player p = new Player("Player1");
+        BuildingCard building = new  RitualEventNoMalusBuilding(1,1,5,0);
+        BuilderCard builder = new  BuilderCard(2, 1, 2, 0, 3);
+
+        p.editFood(2);
+        p.drawCard(builder);
+        p.drawCard(building);
+
+        assertEquals(0, p.getFood());
+        assertEquals(1, p.getBuilders().size());
+        assertEquals(1, p.getBuildings().size());
+    }
+
+    @Test
     void immutabilityTest() {
         Player p =  new Player("Player1");
         BuildingCard bc = new InventorSetForFoodBuilding(1,1,0,0);

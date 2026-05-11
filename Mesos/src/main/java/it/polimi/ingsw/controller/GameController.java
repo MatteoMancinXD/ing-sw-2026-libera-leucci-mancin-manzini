@@ -97,6 +97,7 @@ public class GameController implements GameObserver {
             }
             int foodCost = card.getFoodCost();
 
+            /*
             if (foodCost > p.getFood()){
                 VirtualView view = clients.get(p.getNickname());
                 try {
@@ -106,6 +107,7 @@ public class GameController implements GameObserver {
                     //giocatore disconnesso
                 }
             }
+            */
 
             try {
                 game.resolveAction(row, idx);

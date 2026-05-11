@@ -34,28 +34,28 @@
       "type": "BUILDER",
       "id": 6,
       "minPlayers": 2,
-      "discount": -1,
+      "discount": 1,
       "pps": 3
     },
     {
       "type": "BUILDER",
       "id": 7,
       "minPlayers": 2,
-      "discount": -2,
+      "discount": 2,
       "pps": 0
     },
     {
       "type": "BUILDER",
       "id": 8,
       "minPlayers": 5,
-      "discount": -2,
+      "discount": 2,
       "pps": 1
     },
     {
       "type": "BUILDER",
       "id": 9,
       "minPlayers": 2,
-      "discount": -1,
+      "discount": 1,
       "pps": 2
     },
     {
@@ -235,28 +235,28 @@
       "type": "BUILDER",
       "id": 36,
       "minPlayers": 2,
-      "discount": -1,
+      "discount": 1,
       "pps": 4
     },
     {
       "type": "BUILDER",
       "id": 37,
       "minPlayers": 2,
-      "discount": -2,
+      "discount": 2,
       "pps": 1
     },
     {
       "type": "BUILDER",
       "id": 38,
       "minPlayers": 3,
-      "discount": -1,
+      "discount": 1,
       "pps": 2
     },
     {
       "type": "BUILDER",
       "id": 39,
       "minPlayers": 2,
-      "discount": -2,
+      "discount": 2,
       "pps": 3
     },
     {
@@ -413,28 +413,28 @@
       "type": "BUILDER",
       "id": 62,
       "minPlayers": 2,
-      "discount": -1,
+      "discount": 1,
       "pps": 5
     },
     {
       "type": "BUILDER",
       "id": 63,
       "minPlayers": 2,
-      "discount": -2,
+      "discount": 2,
       "pps": 3
     },
     {
       "type": "BUILDER",
       "id": 64,
       "minPlayers": 5,
-      "discount": -1,
+      "discount": 1,
       "pps": 4
     },
     {
       "type": "BUILDER",
       "id": 65,
       "minPlayers": 2,
-      "discount": -2,
+      "discount": 2,
       "pps": 2
     },
     {
