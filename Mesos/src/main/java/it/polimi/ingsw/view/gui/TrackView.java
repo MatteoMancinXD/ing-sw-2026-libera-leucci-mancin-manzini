@@ -8,6 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
+
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +23,8 @@ public class TrackView {
 
     private static final double TILE_HEIGHT = 150;
     private static final String TILE_STYLE  = "-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent;";
+    private static final Map<String, String> playerColors = new HashMap<>();
+    private static final String[] COLORS = {"#e0a830", "#00ff88", "#ff4444", "#44aaff", "#ff44ff"};
 
     /**
      * @param tiles      list of tiles from the board
@@ -34,7 +41,7 @@ public class TrackView {
         // --- Track tiles ---
         for (Tile tile : tiles) {
             int idx = tiles.indexOf(tile);
-            addTileCard(totemAndTrack, tile.getLetter(), idx, manager, enabled);        }
+            addTileCard(totemAndTrack, tile, idx, manager, enabled);        }
 
         return totemAndTrack;
     }
@@ -57,8 +64,8 @@ public class TrackView {
         addImageButton(container, path);
     }
 
-    private static void addTileCard(HBox container, char letter, int index, GuiManager manager, boolean enabled) {
-        String path = "/assets/board/tiles/tile_" + letter + ".png";
+    private static void addTileCard(HBox container, Tile tile, int index, GuiManager manager, boolean enabled) {
+        String path = "/assets/board/tiles/tile_" + tile.getLetter() + ".png";
 
         /*
         switch (letter) {
@@ -75,6 +82,10 @@ public class TrackView {
 
         Button btn = addImageButton(container, path);
         if (btn != null) btn.setDisable(!enabled);
+        if (btn != null && tile.getStatus()) {
+            String color = playerColor(tile.getPlayer().getNickname());
+            btn.setStyle("-fx-border-color: " + color + "; -fx-border-width: 4; -fx-border-radius: 4; -fx-background-color: transparent; -fx-padding: 0;");
+        }
         if (btn != null) btn.setOnAction(e -> {
             try { manager.placeTotem(index); }
             catch (Exception ex) { System.err.println("Errore totem: " + ex.getMessage()); }
@@ -100,5 +111,12 @@ public class TrackView {
             System.err.println("Errore caricamento immagine: " + path);
             return null;
         }
+    }
+    private static String playerColor(String nickname) {
+        if (!playerColors.containsKey(nickname)) {
+            int index = playerColors.size() % COLORS.length;
+            playerColors.put(nickname, COLORS[index]);
+        }
+        return playerColors.get(nickname);
     }
 }
