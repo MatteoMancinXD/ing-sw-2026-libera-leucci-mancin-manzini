@@ -18,6 +18,11 @@ public class GameTest {
             public void onEventResolution(EventCard event) {
 
             }
+
+            @Override
+            public void onGameEnd(ArrayList<Player> winners) {
+
+            }
         };
 
         game = new Game(2, observer);
@@ -29,6 +34,11 @@ public class GameTest {
         GameObserver observer = new GameObserver() {
             @Override
             public void onEventResolution(EventCard event) {
+
+            }
+
+            @Override
+            public void onGameEnd(ArrayList<Player> winners) {
 
             }
         };
