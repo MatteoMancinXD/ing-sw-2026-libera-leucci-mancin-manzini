@@ -107,7 +107,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
     public void receiveChatMessage(String sender, String message) throws RemoteException {
-        userInterface.showMessage("[CHAT] " + sender + ": " + message);
+        userInterface.showChatMessage(sender, message);
     }
 
 

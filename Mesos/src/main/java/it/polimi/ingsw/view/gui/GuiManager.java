@@ -143,9 +143,9 @@ public class GuiManager extends Application implements ui {
 
             // 2. Messaggio di chat → formato "nickname: testo"
             //    GameView sa chi sono i giocatori e decide se è chat
-            if (gameView != null && gameView.tryShowChatMessage(message)) {
-                return;  // GameView ha riconosciuto e mostrato il messaggio
-            }
+            //if (gameView != null && gameView.tryShowChatMessage(message)) {
+            //    return;  // GameView ha riconosciuto e mostrato il messaggio
+            //}
 
             // 3. Tutto il resto → messaggio di stato nella lobby
             if (lobbyView != null) lobbyView.showStatusOk(message);
@@ -153,6 +153,11 @@ public class GuiManager extends Application implements ui {
             // 4. Aggiornamento schermata di caricamento
             if (gameWaiting != null) gameWaiting.updateWaitingLabel(message);
         });
+    }
+
+    @Override
+    public void showChatMessage(String sender, String message) {
+        gameView.tryShowChatMessage(sender, message);
     }
 
 

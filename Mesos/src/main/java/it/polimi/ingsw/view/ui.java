@@ -18,4 +18,6 @@ public interface ui {
 
     void showMessage(String message);
 
+    void showChatMessage(String sender, String message);
+
 }

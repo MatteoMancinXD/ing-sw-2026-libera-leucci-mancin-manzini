@@ -54,6 +54,11 @@ public class VirtualRMIView implements VirtualView {
     }
 
     @Override
+    public void showChatMessage(String sender, String message) throws RemoteException {
+        clientStub.receiveChatMessage(sender, message);
+    }
+
+    @Override
     public void notifyGameEnd(List<String> rankings) throws RemoteException {
         clientStub.receiveGameEnd(rankings);
     }

@@ -24,6 +24,8 @@ public interface VirtualView {
 
     void showMessage(String message) throws RemoteException;
 
+    void showChatMessage(String sender, String message) throws RemoteException;
+
     void notifyGameEnd(List<String> rankings) throws RemoteException;
 
     void ping() throws RemoteException;

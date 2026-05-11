@@ -103,7 +103,7 @@ public class cli implements ui{
         switch(command) {
             case "chat":
                 StringBuilder message = new StringBuilder();
-                message.append("[CHAT] ");
+                //message.append("[CHAT] ");
                 for(int i = 1; i < parameters.length; i++) {
                     if(i >= 2) {
                         message.append(" ");
@@ -310,6 +310,14 @@ public class cli implements ui{
     @Override
     public void showMessage(String message) {
         System.out.println(message);
+
+        System.out.println("---------------------------------");
+        System.out.print("> ");
+    }
+
+    @Override
+    public void showChatMessage(String sender, String message) {
+        System.out.println("[CHAT] " + sender + ": " + message);
 
         System.out.println("---------------------------------");
         System.out.print("> ");

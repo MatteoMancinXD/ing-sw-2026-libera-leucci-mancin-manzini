@@ -53,6 +53,11 @@ public class VirtualSocketView  implements VirtualView {
     }
 
     @Override
+    public void showChatMessage(String sender, String message) throws RemoteException {
+        sendMessage(new BroadcastChatMessage(sender, message));
+    }
+
+    @Override
     public void askBonusExtraPick() throws RemoteException {
         sendMessage(new BonusPickMessage());
     }

@@ -107,18 +107,18 @@ public class GameView {
      * Called by GuiManager.showMessage() for every incoming message.
      * Returns true if the message was a chat message and was displayed.
      */
-    public boolean tryShowChatMessage(String message) {
-        if (chatView == null || playersNicknames.isEmpty()) return false;
-
-        for (String nick : playersNicknames) {
-            if (message.startsWith(nick + ": ")) {
-                if (nick.equals(manager.getNickName())) return true; // don't echo own messages
-                String text = message.substring(nick.length() + 2);
-                chatView.appendMessage(nick, text);
-                return true;
-            }
+    public boolean tryShowChatMessage(String sender, String message) {
+        if (chatView == null || playersNicknames.isEmpty()) {
+            return false;
         }
-        return false;
+
+        if (sender.equals(manager.getNickName())) {
+            return true;    // don't echo your own messages
+        }
+
+        chatView.appendMessage(sender, message);
+        return true;
+
     }
     public void updateTurnLabel(String nickname, String phase) {
         this.currentPlayerNickname = nickname;
