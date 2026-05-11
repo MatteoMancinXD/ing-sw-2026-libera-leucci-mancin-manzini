@@ -89,7 +89,10 @@ public class GameView {
         table.setAlignment(Pos.TOP_LEFT);
 
         // Right: player stats + chat
-        gameRoot.setRight(PlayerPanel.build(players, manager.getNickName(), manager));
+        PlayerPanel playerPanel = new PlayerPanel(players, manager.getNickName(), manager);
+        this.chatView = playerPanel.getChatView();
+        gameRoot.setRight(playerPanel.getRightPanel());
+
 
         // Scene
         Scene gameScene = new Scene(gameRoot, 1100, 700);

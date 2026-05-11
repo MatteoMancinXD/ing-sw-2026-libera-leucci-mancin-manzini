@@ -17,15 +17,16 @@ import java.util.List;
 public class PlayerPanel {
 
     private static final double CHAT_HEIGHT = 280;
-
+    private ChatView chatView;
+    private BorderPane rightPanel;
     /**
      * @param players   list of players to show stats for
      * @param localNick nickname of the local player (to mark as YOU)
      * @param manager   GuiManager reference passed to ChatView
      * @return BorderPane ready to be set as gameRoot.setRight()
      */
-    public static BorderPane build(List<Player> players, String localNick, GuiManager manager) {
-        BorderPane rightPanel = new BorderPane();
+    public PlayerPanel(List<Player> players, String localNick, GuiManager manager) {
+        rightPanel = new BorderPane();
         rightPanel.setPrefWidth(220);
         rightPanel.setStyle("-fx-background-color: #1a1a2e;");
 
@@ -36,7 +37,7 @@ public class PlayerPanel {
         statsScroll.setStyle("-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;");
 
         // --- Chat (fixed height at bottom) ---
-        ChatView chatView = new ChatView(manager, "Game Chat");
+        chatView = new ChatView(manager, "Game Chat");
         VBox chatContainer = chatView.getRoot();
         chatContainer.setPrefHeight(CHAT_HEIGHT);
         chatContainer.setMaxHeight(CHAT_HEIGHT);
@@ -44,8 +45,11 @@ public class PlayerPanel {
         rightPanel.setCenter(statsScroll);
         rightPanel.setBottom(chatContainer);
 
-        return rightPanel;
+
     }
+
+    public ChatView getChatView()   { return chatView; }
+    public BorderPane getRightPanel() { return rightPanel; }
 
     //  Private helpers
 
@@ -74,6 +78,8 @@ public class PlayerPanel {
 
         return sideBar;
     }
+
+
 
     private static Label makeLabel(String text) {
         Label l = new Label(text);
