@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.characters.BuilderCard;
 import it.polimi.ingsw.network.GameStarter;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -95,10 +96,15 @@ public class GameController implements GameObserver {
                 }
 
             }
-            int foodCost = card.getFoodCost();
 
-            /*
-            if (foodCost > p.getFood()){
+
+            int foodCost = card.getFoodCost();
+            int discount = 0;
+            for(BuilderCard b : p.getBuilders()) {
+                discount += b.getDiscount();
+            }
+
+            if (foodCost > (p.getFood() + discount)){
                 VirtualView view = clients.get(p.getNickname());
                 try {
                     view.showError("You don't have enough food to buy that card!");
@@ -107,7 +113,7 @@ public class GameController implements GameObserver {
                     //giocatore disconnesso
                 }
             }
-            */
+
 
             try {
                 game.resolveAction(row, idx);
