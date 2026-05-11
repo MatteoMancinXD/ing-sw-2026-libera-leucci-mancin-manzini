@@ -324,17 +324,17 @@ public class Game {
 
         this.currentPlayerIndex = 0;
         //logica per riordinare i players in base all'ordine sulla tileboard
-        //ArrayList<Player> nextTurnOrder = new ArrayList<>();
+        int pos = 0;
         for(Tile tile: board.getTrack()) {
             if (tile.getStatus()) {
                 Player p = tile.getPlayer();
                 for(BuildingCard b : p.getBuildings()) {
-                    b.onOrderTilePlacement(p, players.size(), board.getOrder());
+                    b.onOrderTilePlacement(p, pos, board.getOrder());
                 }
-                //nextTurnOrder.add(p);
+                pos++;
             }
         }
-        //this.players = nextTurnOrder;
+
         //Dare prestigio in base all order tile:
         OrderTile oTile = board.getOrder();
         for (int i = 0; i < this.players.size(); i++) {
