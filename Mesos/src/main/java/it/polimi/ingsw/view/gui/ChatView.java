@@ -184,7 +184,7 @@ public class ChatView {
             try {
                 manager.sendChatMessage(text);
                 // Mostra subito il tuo messaggio localmente senza aspettare il server
-                appendMessage("Tu", text);
+                appendMessage("You", text);
             } catch (Exception ex) {
                 Text sysText = new Text("Errore invio: " + ex.getMessage());
             }
