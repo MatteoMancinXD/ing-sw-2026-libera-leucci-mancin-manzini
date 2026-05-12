@@ -118,7 +118,7 @@ public class Board implements Serializable {
     public void clearLowerRow() {
         ArrayList<Card> surviving = new ArrayList<>();
         for (Card c : lowerRow) {
-            if (c instanceof BuildingCard)
+            if (c.isBuildingCard())
                 surviving.add(c);
         }
         lowerRow = surviving;
@@ -130,7 +130,7 @@ public class Board implements Serializable {
         ArrayList<Card> keepUp = new ArrayList<>();
         ArrayList<Card> goDown = new ArrayList<>();
         for (Card c : upperRow) {
-            if (c instanceof BuildingCard)
+            if (c.isBuildingCard())
                 keepUp.add(c);
             else
                 goDown.add(c);
@@ -147,9 +147,9 @@ public class Board implements Serializable {
         EventCard sustenance = null;
 
         for (Card c : lowerRow) {
-            if (c instanceof SustenanceEvent) {
+            if (c.isSustenanceEvent()) {
                 sustenance = (EventCard) c;
-            } else if (c instanceof EventCard) {
+            } else if (c.isEventCard()) {
                 observer.onEventResolution((EventCard) c);
 
                 for (Player p : players) {
@@ -173,7 +173,7 @@ public class Board implements Serializable {
         // Scarta gli edifici rimasti nella riga inferiore
         ArrayList<Card> lowerNoBuildings = new ArrayList<>();
         for (Card c : lowerRow) {
-            if (!(c instanceof BuildingCard))
+            if (!(c.isBuildingCard()))
                 lowerNoBuildings.add(c);
         }
         lowerRow = lowerNoBuildings;
@@ -182,7 +182,7 @@ public class Board implements Serializable {
         ArrayList<Card> buildings = new ArrayList<>();
         ArrayList<Card> rest = new ArrayList<>();
         for (Card c : upperRow) {
-            if (c instanceof BuildingCard)
+            if (c.isBuildingCard())
                 buildings.add(c);
             else
                 rest.add(c);
