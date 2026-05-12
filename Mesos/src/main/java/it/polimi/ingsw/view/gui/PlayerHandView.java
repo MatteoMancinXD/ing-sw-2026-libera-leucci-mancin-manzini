@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -15,48 +16,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PlayerHandView — bottom bar showing all cards owned by the local player.
- * Character cards and building cards are shown with their images.
+ * PlayerHandView — bottom section showing all cards owned by each player.
+ * Local player is shown first, then opponents.
+ * Each player gets one horizontal scrollable row.
  */
 public class PlayerHandView {
 
-    private static final double CARD_HEIGHT = 100;
+    private static final double CARD_HEIGHT = 90;
 
     /**
-     * Builds the bottom bar with all cards of the local player.
+     * Builds the bottom section with one card row per player.
      * @param players   full list of players
-     * @param localNick nickname of the local player
-     * @return ScrollPane ready to be set as gameRoot.setBottom()
+     * @param localNick nickname of the local player (shown first)
+     * @return VBox ready to be set as gameRoot.setBottom()
      */
-    public static ScrollPane build(List<Player> players, String localNick) {
-        HBox cardStrip = new HBox(8);
-        cardStrip.setPadding(new Insets(10, 15, 10, 15));
+    public static VBox build(List<Player> players, String localNick) {
+        VBox allRows = new VBox(0);
+        allRows.setStyle("-fx-background-color: #12122a; -fx-border-color: #e0a830; -fx-border-width: 1 0 0 0;");
+
+        List<Player> ordered = new ArrayList<>();
+        players.stream().filter(p -> p.getNickname().equals(localNick)).findFirst().ifPresent(ordered::add);
+        players.stream().filter(p -> !p.getNickname().equals(localNick)).forEach(ordered::add);
+
+        for (Player p : ordered) {
+            allRows.getChildren().add(buildPlayerRow(p, localNick));
+        }
+
+        return allRows;
+    }
+
+    private static HBox buildPlayerRow(Player player, String localNick) {
+        HBox row = new HBox(0);
+        row.setStyle("-fx-background-color: #12122a;");
+
+        // intestazione con nickname
+        boolean isLocal = player.getNickname().equals(localNick);
+        String labelText = isLocal
+                ? "▶ " + player.getNickname() + " (tu)"
+                : "  " + player.getNickname();
+
+        Label nameLabel = new Label(labelText);
+        nameLabel.setTextFill(isLocal ? Color.web("#e0a830") : Color.web("#aaaaaa"));
+        nameLabel.setPrefWidth(120);
+        nameLabel.setMinWidth(120);
+        nameLabel.setPadding(new Insets(5, 8, 5, 8));
+        nameLabel.setWrapText(false);
+        nameLabel.setStyle("-fx-background-color: #1a1a2e; -fx-font-weight: " + (isLocal ? "bold" : "normal") + ";");
+
+        // raccoglie tutte le carte del giocatore
+        List<Card> allCards = new ArrayList<>();
+        allCards.addAll(player.getArtists());
+        allCards.addAll(player.getBuilders());
+        allCards.addAll(player.getHarvesters());
+        allCards.addAll(player.getHunters());
+        allCards.addAll(player.getShamans());
+        allCards.addAll(player.getInventors());
+        allCards.addAll(player.getBuildings());
+
+        // striscia carte scrollabile
+        HBox cardStrip = new HBox(4);
+        cardStrip.setPadding(new Insets(4, 8, 4, 8));
         cardStrip.setStyle("-fx-background-color: #12122a;");
 
-        // trova il giocatore locale
-        Player localPlayer = players.stream()
-                .filter(p -> p.getNickname().equals(localNick))
-                .findFirst()
-                .orElse(null);
-
-        if (localPlayer == null) {
-            ScrollPane empty = new ScrollPane(cardStrip);
-            empty.setPrefHeight(CARD_HEIGHT + 30);
-            return empty;
-        }
-        List<Card> allCards = new ArrayList<>();
-        allCards.addAll(localPlayer.getArtists());
-        allCards.addAll(localPlayer.getBuilders());
-        allCards.addAll(localPlayer.getHarvesters());
-        allCards.addAll(localPlayer.getHunters());
-        allCards.addAll(localPlayer.getShamans());
-        allCards.addAll(localPlayer.getInventors());
-        allCards.addAll(localPlayer.getBuildings());
-
         if (allCards.isEmpty()) {
-            Label empty = new Label("Nessuna carta in mano");
-            empty.setTextFill(Color.web("#666688"));
-            empty.setPadding(new Insets(10));
+            Label empty = new Label("nessuna carta");
+            empty.setTextFill(Color.web("#444466"));
+            empty.setPadding(new Insets(4));
             cardStrip.getChildren().add(empty);
         } else {
             for (Card card : allCards) {
@@ -64,27 +89,22 @@ public class PlayerHandView {
             }
         }
 
-
-        VBox wrapper = new VBox(4);
-        wrapper.setStyle("-fx-background-color: #12122a;");
-        Label title = new Label("Le tue carte:");
-        title.setTextFill(Color.web("#e0a830"));
-        title.setPadding(new Insets(4, 0, 0, 15));
-        wrapper.getChildren().addAll(title, cardStrip);
-
-        ScrollPane scroll = new ScrollPane(wrapper);
+        ScrollPane scroll = new ScrollPane(cardStrip);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setFitToHeight(true);
-        scroll.setPrefHeight(CARD_HEIGHT + 50);
-        scroll.setMaxHeight(CARD_HEIGHT + 50);
-        scroll.setStyle("-fx-background: #12122a; -fx-background-color: #12122a; -fx-border-color: #e0a830; -fx-border-width: 1 0 0 0;");
+        scroll.setPrefHeight(CARD_HEIGHT + 20);
+        scroll.setMaxHeight(CARD_HEIGHT + 20);
+        scroll.setStyle("-fx-background: #12122a; -fx-background-color: #12122a; -fx-border-color: transparent;");
 
-        return scroll;
+        row.getChildren().addAll(nameLabel, scroll);
+        HBox.setHgrow(scroll, javafx.scene.layout.Priority.ALWAYS);
+
+        return row;
     }
 
     private static VBox buildCardNode(Card card) {
-        VBox node = new VBox(4);
+        VBox node = new VBox(2);
         node.setStyle("-fx-alignment: center;");
 
         int id = card.getId();
@@ -96,9 +116,7 @@ public class PlayerHandView {
             ImageView imgView = new ImageView(img);
             imgView.setFitHeight(CARD_HEIGHT);
             imgView.setPreserveRatio(true);
-
-
-
+            Tooltip.install(imgView, new Tooltip(card.getShortString()));
             node.getChildren().add(imgView);
         }
 
