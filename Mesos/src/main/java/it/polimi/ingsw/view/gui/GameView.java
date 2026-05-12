@@ -93,6 +93,8 @@ public class GameView {
         this.chatView = playerPanel.getChatView();
         gameRoot.setRight(playerPanel.getRightPanel());
 
+        gameRoot.setBottom(PlayerHandView.build(players, manager.getNickName()));
+
 
         // Scene
         Scene gameScene = new Scene(gameRoot, 1100, 700);
