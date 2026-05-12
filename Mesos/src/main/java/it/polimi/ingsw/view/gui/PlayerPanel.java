@@ -92,7 +92,6 @@ public class PlayerPanel {
     }
 
 
-
     private static Label makeLabel(String text) {
         Label l = new Label(text);
         l.setTextFill(Color.WHITE);
