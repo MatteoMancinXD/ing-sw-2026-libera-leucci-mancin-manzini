@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.Player;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * PlayerPanel builds the right panel: player stats (scrollable) + chat (fixed at bottom).
@@ -64,15 +66,25 @@ public class PlayerPanel {
                     ? "Player: " + p.getNickname() + " (YOU)"
                     : "Player: " + p.getNickname();
 
+
+            String buildingsText = p.getBuildings().stream()
+                    .map(b -> b.getClass().getSimpleName())
+                    .collect(Collectors.joining("\n"));
+
+
+
             sideBar.getChildren().add(makeLabel(name));
             sideBar.getChildren().add(makeLabel("Food: " + p.getFood() + "  Prestige: " + p.getPrestige()));
+            sideBar.getChildren().add(makeLabel("Stars: "    + p.getTotStars()));
             sideBar.getChildren().add(makeLabel("Artists: "    + p.getArtists().size()));
-            sideBar.getChildren().add(makeLabel("Builders: "   + p.getBuilders().size()));
+            sideBar.getChildren().add(makeLabel("Builders: "   + p.getBuilders().size() + " tot bonus: " + p.getBuilders().stream().mapToInt(BuilderCard::getDiscount).sum()));
             sideBar.getChildren().add(makeLabel("Harvesters: " + p.getHarvesters().size()));
             sideBar.getChildren().add(makeLabel("Hunters: "    + p.getHunters().size()));
             sideBar.getChildren().add(makeLabel("Shamans: "    + p.getShamans().size()));
             sideBar.getChildren().add(makeLabel("Inventors: "  + p.getInventors().size()));
             sideBar.getChildren().add(makeLabel("Buildings: "  + p.getBuildings().size()));
+            sideBar.getChildren().add(makeLabel("Buildings list:\n" + buildingsText));
+
             sideBar.getChildren().add(new Separator());
         }
 
