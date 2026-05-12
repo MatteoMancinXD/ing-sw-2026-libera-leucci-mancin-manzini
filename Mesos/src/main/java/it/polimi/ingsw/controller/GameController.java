@@ -6,10 +6,7 @@ import it.polimi.ingsw.network.GameStarter;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameController implements GameObserver {
     private int gameID;
@@ -17,6 +14,7 @@ public class GameController implements GameObserver {
     private Game game;
     private GameStarter starter;
     private Map<String, VirtualView> clients;
+    private Set<Totem> availableTotems;
 
     //private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
 
@@ -26,7 +24,26 @@ public class GameController implements GameObserver {
         this.game = new Game(numPlayers, this);
         this.starter = starter;
 
+        availableTotems = new HashSet<>(Arrays.asList(Totem.values()));
         clients = new HashMap<>();
+    }
+
+    public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }
+    public void selectTotem(String nickname, Totem totem) {
+        synchronized(availableTotems) {
+            if (availableTotems.contains(totem)) {
+                availableTotems.remove(totem);
+                game.assignTotem(nickname, totem);
+            } else {
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.showError("Totem already taken by another player");
+                    return;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public String getGameMaster() {

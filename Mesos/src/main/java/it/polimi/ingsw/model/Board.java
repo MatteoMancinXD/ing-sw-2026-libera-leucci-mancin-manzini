@@ -143,7 +143,7 @@ public class Board implements Serializable {
     /**
      * Resolves all event cards currently in  lowerrow.
      */
-    public void solveEvents(ArrayList<Player> players, GameObserver observer) {
+    public void solveEvents(List<Player> players, GameObserver observer) {
         EventCard sustenance = null;
 
         for (Card c : lowerRow) {

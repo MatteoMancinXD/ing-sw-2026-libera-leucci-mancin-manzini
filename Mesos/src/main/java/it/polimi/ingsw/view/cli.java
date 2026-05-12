@@ -1,15 +1,13 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.NetworkClient;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class cli implements ui{
 
@@ -318,6 +316,16 @@ public class cli implements ui{
     @Override
     public void showChatMessage(String sender, String message) {
         System.out.println("[CHAT] " + sender + ": " + message);
+
+
+    }
+
+    @Override
+    public void showAvailableTotems(Set<Totem> totems) {
+        System.out.println("Available Totems: ");
+        for(Totem totem: totems) {
+            System.out.println("  " + totem.toString());
+        }
 
         System.out.println("---------------------------------");
         System.out.print("> ");

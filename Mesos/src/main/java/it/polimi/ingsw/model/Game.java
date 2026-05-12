@@ -7,10 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents the main class of the Model, orchestrating the entire game flow.
@@ -25,7 +22,7 @@ public class Game {
 
     private int numPlayers;
     private int currentPlayerIndex;
-    private ArrayList<Player> players;
+    private List<Player> players;
 
     private GamePhase currentPhase;
 
@@ -450,4 +447,8 @@ public class Game {
         nextPlayer();
     }
 
+    public void assignTotem(String nickname, Totem totem) {
+        Player player = players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElse(null);
+        player.setTotem(totem);
+    }
 }

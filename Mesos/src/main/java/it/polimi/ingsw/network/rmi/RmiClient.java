@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
 import it.polimi.ingsw.view.ui;
@@ -12,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
@@ -135,6 +137,25 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
             serverStub.placeTotem(token, index);
         } catch(RemoteException e) {
             userInterface.showError("Connection error: Failed to place totem");
+        }
+    }
+
+    @Override
+    public void requestAvailableTotems() {
+        try {
+            Set<Totem> totems = serverStub.getAvailableTotems(token);
+            userInterface.showAvailableTotems(totems);
+        } catch(RemoteException e) {
+            userInterface.showError("Failed to request available totems");
+        }
+    }
+
+    @Override
+    public void askToSelectTotem(Totem totem) {
+        try {
+            serverStub.selectTotem(token, totem);
+        } catch(RemoteException e) {
+            userInterface.showError("Connection error: Failed to select totem");
         }
     }
 

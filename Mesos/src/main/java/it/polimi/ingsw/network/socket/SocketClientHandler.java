@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.socket;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.GameManager;
 import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.messages.*;
@@ -10,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class SocketClientHandler implements Runnable{
@@ -173,5 +175,12 @@ public class SocketClientHandler implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleRequestTotems(String token) {
+        GameController ctrl = getController();
+        Set<Totem> totems = ctrl.getAvailableTotems();
+
+        sendMessage(new AvailableTotemsMessage(totems));
     }
 }
