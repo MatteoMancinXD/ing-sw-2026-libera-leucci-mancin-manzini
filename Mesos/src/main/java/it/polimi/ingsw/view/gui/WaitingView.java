@@ -8,12 +8,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class GameWaiting {
+public class WaitingView {
     private final Stage stage;
     private final GuiManager manager;
     private Label messageLabel;
 
-    public GameWaiting(Stage stage, GuiManager manager) {
+    public WaitingView(Stage stage, GuiManager manager) {
         this.stage = stage;
         this.manager = manager;
     }

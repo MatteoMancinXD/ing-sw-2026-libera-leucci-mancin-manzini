@@ -82,8 +82,8 @@ public class GameSetup {
                     manager.createGame(manager.getNickName(), numPlayers);
                     showStatusOk("Richiesta di creazione inviata...");
                     Platform.runLater(() -> {
-                        GameWaiting gameWaiting = new GameWaiting(stage, manager);
-                        manager.setGameWaiting(gameWaiting);
+                        WaitingView gameWaiting = new WaitingView(stage, manager);
+                        manager.setWaitingView(gameWaiting);
                         gameWaiting.show();
                     });
                 } catch (Exception ex) {
@@ -109,8 +109,8 @@ public class GameSetup {
                     manager.joinGame(manager.getNickName(), gameId);
                     showStatusOk("Richiesta di join inviata...");
                     Platform.runLater(() -> {
-                        GameWaiting gameWaiting = new GameWaiting(stage, manager);
-                        manager.setGameWaiting(gameWaiting);
+                        WaitingView gameWaiting = new WaitingView(stage, manager);
+                        manager.setWaitingView(gameWaiting);
                         gameWaiting.show();
                     });
                 } catch (NumberFormatException ex) {

@@ -115,9 +115,7 @@ public class SocketClient implements NetworkClient {
     }
 
     @Override
-    public void askToSelectTotem(Totem totem) {
-
-    }
+    public void askToSelectTotem(Totem totem) { sendMessageToServer(new SelectTotemMessage(token, totem)); }
 
     @Override
     public void askToSkipBonus() {

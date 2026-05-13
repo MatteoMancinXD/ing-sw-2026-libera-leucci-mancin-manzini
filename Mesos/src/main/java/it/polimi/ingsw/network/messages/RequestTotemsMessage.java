@@ -8,10 +8,7 @@ public class RequestTotemsMessage extends ClientToServerMessage{
     }
 
     @Override
-    public boolean requiresToken() { return true; }
-
-    @Override
     public void process(SocketClientHandler handler) {
-        handler.handleRequestTotems(getToken());
+        handler.handleRequestTotems(this);
     }
 }

@@ -4,10 +4,8 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.NetworkClient;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class cli implements ui{
 
@@ -42,7 +40,13 @@ public class cli implements ui{
                 case LOBBY:
                     handleLobbyCommands(command, parameters);
                     break;
-                case  WAITING:
+                case TOTEM:
+                    handleTotemCommands(command, parameters);
+                    break;
+                case STARTING:
+                    System.out.println("You can't do anything.\nWaiting for game to start");
+                    break;
+                case WAITING:
                     handleWaitingCommands(command, parameters);
                     break;
                 case DRAWING:
@@ -51,6 +55,30 @@ public class cli implements ui{
                 case PLACING:
                     handlePlacingCommands(command, parameters);
             }
+        }
+    }
+
+    private void handleTotemCommands(String command, String[] parameters) {
+        switch(command) {
+            case "totems":
+                client.requestAvailableTotems();
+                break;
+            case "select":
+                String selected = parameters[1].toUpperCase();
+                List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
+                if(stringTotems.contains(selected)) {
+                    Totem selectedTotem = Totem.valueOf(selected);
+                    client.askToSelectTotem(selectedTotem);
+                } else {
+                    showError("Totem selected not valid.\nChoose either red, yellow, cyan, purple or white");
+                }
+                break;
+            case "help":
+                System.out.println("Totem selection commands: totems  |  select *color*  ");
+                break;
+            default:
+                System.out.println("Invalid command");
+
         }
     }
 

@@ -154,7 +154,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void askToSelectTotem(Totem totem) {
         try {
             serverStub.selectTotem(token, totem);
-        } catch(RemoteException e) {
+        } catch(RemoteException | IllegalArgumentException e) {
             userInterface.showError("Connection error: Failed to select totem");
         }
     }

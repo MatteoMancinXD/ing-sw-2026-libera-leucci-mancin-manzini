@@ -29,18 +29,45 @@ public class GameController implements GameObserver {
     }
 
     public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }
+
     public void selectTotem(String nickname, Totem totem) {
         synchronized(availableTotems) {
             if (availableTotems.contains(totem)) {
                 availableTotems.remove(totem);
                 game.assignTotem(nickname, totem);
+
+                boolean everyoneReady = true;
+                for(Player p : game.getPlayers()) {
+                    if (p.getTotem() == null) {
+                        everyoneReady = false;
+                        break;
+                    }
+                }
+
+                if (game.getPlayers().size() == game.getNumPlayers() && everyoneReady) {
+                    game.startGame();
+                    starter.onGameStart(gameID);
+
+                    System.out.println("Game #" + gameID + " is starting.");
+
+                    new Thread(() -> {
+                        broadcastMessage("Game #" + gameID + " starting.");
+                    }).start();
+
+                    Board board = game.getBoard();
+                    String current = game.getCurrentPlayer().getNickname();
+
+
+                    new Thread(() -> {
+                        broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase());
+                    }).start();
+                }
             } else {
                 VirtualView view = clients.get(nickname);
                 try {
-                    view.showError("Totem already taken by another player");
-                    return;
+                    view.showError("Totem not available");
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -66,25 +93,6 @@ public class GameController implements GameObserver {
                 System.out.println(nickname + " joined game #" + gameID);
                 String msg = "Current players: " + curr + "/" + max + "...";
                 broadcastMessage(msg);
-
-                if (game.getPlayers().size() == game.getNumPlayers()) {
-                    game.startGame();
-                    starter.onGameStart(gameID);
-
-                    System.out.println("Game #" + gameID + " is starting.");
-
-                    new Thread(() -> {
-                        broadcastMessage("Game #" + gameID + " starting.");
-                    }).start();
-
-                    Board board = game.getBoard();
-                    String current = game.getCurrentPlayer().getNickname();
-
-
-                    new Thread(() -> {
-                        broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase());
-                    }).start();
-                }
             }
             return true;
         }

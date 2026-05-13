@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -29,7 +31,7 @@ public class GuiManager extends Application implements ui {
     private LobbyView lobbyView;
     private GameView gameView;
     private GameSetup gameSetup;
-    private GameWaiting gameWaiting;
+    private WaitingView waitingView;
 
     //javafx
     @Override
@@ -151,13 +153,18 @@ public class GuiManager extends Application implements ui {
             if (lobbyView != null) lobbyView.showStatusOk(message);
 
             // 4. Aggiornamento schermata di caricamento
-            if (gameWaiting != null) gameWaiting.updateWaitingLabel(message);
+            if (waitingView != null) waitingView.updateWaitingLabel(message);
         });
     }
 
     @Override
     public void showChatMessage(String sender, String message) {
         gameView.tryShowChatMessage(sender, message);
+    }
+
+    @Override
+    public void showAvailableTotems(Set<Totem> totems) {
+        //waitingView.showTotems(totems);
     }
 
 
@@ -175,8 +182,8 @@ public class GuiManager extends Application implements ui {
         this.gameSetup = gameSetup;
     }
 
-    public void setGameWaiting(GameWaiting gameWaiting) {
-        this.gameWaiting = gameWaiting;
+    public void setWaitingView(WaitingView waitingView) {
+        this.waitingView = waitingView;
     }
 
 
