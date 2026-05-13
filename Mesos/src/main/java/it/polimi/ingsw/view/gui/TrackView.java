@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.OrderTile;
 import it.polimi.ingsw.model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -7,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +26,8 @@ public class TrackView {
 
     private static final double TILE_HEIGHT = 150;
     private static final String TILE_STYLE  = "-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent;";
+    private static final double TOTEM_HEIGHT = 45;
+    private static final double TOTEM_OFFX = 34;
     private static final Map<String, String> playerColors = new HashMap<>();
     private static final String[] COLORS = {"#e0a830", "#00ff88", "#ff4444", "#44aaff", "#ff44ff"};
 
@@ -31,12 +36,12 @@ public class TrackView {
      * @param numPlayers number of players (determines which totem card to show)
      * @return HBox containing totem card + all tile buttons
      */
-    public static HBox build(List<Tile> tiles, int numPlayers, GuiManager manager, boolean enabled) {
+    public static HBox build(OrderTile order, List<Tile> tiles, int numPlayers, GuiManager manager, boolean enabled) {
         HBox totemAndTrack = new HBox(tiles.size() + 2);
         totemAndTrack.setPadding(new Insets(30, 0, 30, 50));
 
         // --- Totem placement card ---
-        addTotemCard(totemAndTrack, numPlayers);
+        addTotemCard(totemAndTrack, order, numPlayers);
 
         // --- Track tiles ---
         for (Tile tile : tiles) {
@@ -48,7 +53,7 @@ public class TrackView {
 
     //  Private helpers
 
-    private static void addTotemCard(HBox container, int numPlayers) {
+    private static void addTotemCard(HBox container, OrderTile order, int numPlayers) {
         String path = "/assets/board/order/order_" + numPlayers + ".png";
 
         /*
@@ -61,7 +66,24 @@ public class TrackView {
         }
         */
 
-        addImageButton(container, path);
+        try {
+            Image sheet = new Image(Objects.requireNonNull(
+                    TrackView.class.getResourceAsStream(path)));
+            ImageView imgView = new ImageView(sheet);
+
+            imgView.setFitHeight(TILE_HEIGHT);
+            imgView.setPreserveRatio(true);
+
+            Button btn = new Button();
+
+
+            btn.setGraphic(imgView);
+            btn.setStyle(TILE_STYLE);
+
+            container.getChildren().add(btn);
+        } catch (Exception e) {
+            System.err.println("Errore caricamento immagine: " + path);
+        }
     }
 
     private static void addTileCard(HBox container, Tile tile, int index, GuiManager manager, boolean enabled) {
@@ -79,8 +101,68 @@ public class TrackView {
             default  -> { return; }
         }
         */
+        try {
+            Image sheet = new Image(Objects.requireNonNull(
+                    TrackView.class.getResourceAsStream(path)));
+            ImageView imgView = new ImageView(sheet);
 
-        Button btn = addImageButton(container, path);
+            imgView.setFitHeight(TILE_HEIGHT);
+            imgView.setPreserveRatio(true);
+
+            Button btn = new Button();
+
+            StackPane contentStack = new StackPane();
+            contentStack.getChildren().add(imgView);
+
+            if(tile.getStatus()) {
+                String totemPath = "/assets/totems/totem_" + tile.getPlayer().getTotem().toString() + ".png";
+                Image totemSheet = new Image(Objects.requireNonNull(TrackView.class.getResourceAsStream(totemPath)));
+                ImageView totemView = new ImageView(totemSheet);
+
+                totemView.setFitHeight(TOTEM_HEIGHT);
+                totemView.setPreserveRatio(true);
+
+                Pane overlayPane = new Pane();
+                overlayPane.getChildren().add(totemView);
+                totemView.setLayoutX(TOTEM_OFFX);
+                totemView.setLayoutY(0);
+
+                contentStack.getChildren().add(overlayPane);
+            }
+
+            btn.setDisable(!enabled);
+
+            btn.setOnAction(e -> {
+                try { manager.placeTotem(index); }
+                catch (Exception ex) { System.err.println("Errore totem: " + ex.getMessage()); }
+            });
+
+            btn.setGraphic(contentStack);
+            btn.setStyle(TILE_STYLE);
+
+            container.getChildren().add(btn);
+        } catch (Exception e) {
+            System.err.println("Errore caricamento immagine: " + path);
+
+        }
+
+        /*
+        if(btn != null) {
+            btn.setDisable(!enabled);
+
+            if(tile.getStatus()) {
+                String color = playerColor(tile.getPlayer().getNickname());
+                btn.setStyle("-fx-border-color: " + color + "; -fx-border-width: 4; -fx-border-radius: 4; -fx-background-color: transparent; -fx-padding: 0;");
+            }
+
+            btn.setOnAction(e -> {
+                try { manager.placeTotem(index); }
+                catch (Exception ex) { System.err.println("Errore totem: " + ex.getMessage()); }
+            });
+        }
+        */
+
+        /*
         if (btn != null) btn.setDisable(!enabled);
         if (btn != null && tile.getStatus()) {
             String color = playerColor(tile.getPlayer().getNickname());
@@ -90,6 +172,7 @@ public class TrackView {
             try { manager.placeTotem(index); }
             catch (Exception ex) { System.err.println("Errore totem: " + ex.getMessage()); }
         });
+         */
     }
 
     private static Button addImageButton(HBox container, String path) {
