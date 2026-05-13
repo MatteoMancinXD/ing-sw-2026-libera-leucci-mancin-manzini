@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.OrderTile;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -28,8 +29,17 @@ public class TrackView {
     private static final String TILE_STYLE  = "-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent;";
     private static final double TOTEM_HEIGHT = 45;
     private static final double TOTEM_OFFX = 34;
+    private static final double PLACE_HEIGHT = 20;
+
     private static final Map<String, String> playerColors = new HashMap<>();
     private static final String[] COLORS = {"#e0a830", "#00ff88", "#ff4444", "#44aaff", "#ff44ff"};
+
+    private static final Map<Integer, Integer> order_offset_y = Map.ofEntries(
+            Map.entry(2, 10),
+            Map.entry(3, 0),
+            Map.entry(4, 0),
+            Map.entry(5, 0)
+    );
 
     /**
      * @param tiles      list of tiles from the board
@@ -74,15 +84,39 @@ public class TrackView {
             imgView.setFitHeight(TILE_HEIGHT);
             imgView.setPreserveRatio(true);
 
+            StackPane contentStack = new StackPane();
+            contentStack.getChildren().add(imgView);
+
+            Pane overlayPane = new Pane();
+            double offset_y = order_offset_y.get(numPlayers);
+
+            for(int i = 0; i < order.getPlayers().size(); i++) {
+                Player p = order.getPlayers().get(i);
+                if(p == null) { continue; }
+
+                String totemPath = "/assets/totems/totem_" + p.getTotem().toString() + ".png";
+                Image totemSheet = new Image(Objects.requireNonNull(TrackView.class.getResourceAsStream(totemPath)));
+                ImageView totemView = new ImageView(totemSheet);
+
+                totemView.setFitHeight(TOTEM_HEIGHT);
+                totemView.setPreserveRatio(true);
+
+                overlayPane.getChildren().add(totemView);
+                totemView.setLayoutX(TOTEM_OFFX);
+                totemView.setLayoutY(offset_y + i * PLACE_HEIGHT);
+            }
+
+            contentStack.getChildren().add(overlayPane);
+
             Button btn = new Button();
 
-
-            btn.setGraphic(imgView);
+            btn.setGraphic(contentStack);
             btn.setStyle(TILE_STYLE);
 
             container.getChildren().add(btn);
         } catch (Exception e) {
             System.err.println("Errore caricamento immagine: " + path);
+            e.printStackTrace();
         }
     }
 

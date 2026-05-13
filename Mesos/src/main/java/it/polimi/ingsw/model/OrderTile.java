@@ -1,18 +1,25 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.view.gui.PlayerPanel;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the turn order tile where players move their totems at the end of the placement phase.
  */
 public class OrderTile implements Serializable {
     private int[] modifiers;
+    private List<Player> players;
     /**
      * Creates the order tile and sets up food modifiers for the given player count. The first player gains 3 food, the second gains 1, middle players gain nothing, and the last player loses 1 food.
      * @param numPlayers number of players in the game
      */
     public OrderTile(int numPlayers) {
         this.modifiers = new int[numPlayers];
+        this.players = new ArrayList<>();
+
         setupModifiers(numPlayers);    }
     /**
      * Initializes the modifiers array based on game rules.
@@ -50,6 +57,8 @@ public class OrderTile implements Serializable {
      */
     public int[] getModifiers() { return modifiers; }
 
+    public List<Player> getPlayers() { return new ArrayList<>(players); }
 
+    public void setPlayers(List<Player> players) { this.players = players; }
 
 }

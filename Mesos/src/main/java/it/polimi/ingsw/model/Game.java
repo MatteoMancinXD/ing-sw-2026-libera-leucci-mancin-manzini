@@ -172,6 +172,9 @@ public class Game {
     public void startGame() {
         board.fill(this.numPlayers, this.era, this.deck, this.buildingDeck);       //Round 0 : .fill riempie entrambe le righe e i buildings
         Collections.shuffle(players);        //Shuffle dei player per avere un ordine casuale all'inizio
+
+        board.getOrder().setPlayers(players);
+
         for (int i = 0; i < this.players.size(); i++) {
             Player p = this.players.get(i);
             if(i==0) {                  //Primo giocatore prende 2 cibo
@@ -318,6 +321,7 @@ public class Game {
         }
 
         this.currentPhase = GamePhase.PLACEMENT;
+        this.board.getOrder().setPlayers(this.players);
 
         this.currentPlayerIndex = 0;
         //logica per riordinare i players in base all'ordine sulla tileboard
@@ -444,6 +448,11 @@ public class Game {
         }
         Player p = players.get(currentPlayerIndex);
         board.getTrack().get(pos).place(p);             //place imposta lo Status della Tile a True e salva il player
+
+        List<Player> orderPlayers = this.board.getOrder().getPlayers();
+        orderPlayers.set(currentPlayerIndex, null);
+        this.board.getOrder().setPlayers(orderPlayers);
+
         nextPlayer();
     }
 
