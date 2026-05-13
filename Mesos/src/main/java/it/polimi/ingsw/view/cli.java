@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.NetworkClient;
 
 import java.rmi.RemoteException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -357,6 +358,17 @@ public class cli implements ui{
 
         System.out.println("---------------------------------");
         System.out.print("> ");
+    }
+
+    @Override
+    public void onTotemSelected() {
+        System.out.println("Totem selected succesfully");
+        currentState = CliState.STARTING;
+    }
+
+    @Override
+    public void onGameParticipation() {
+        currentState = CliState.TOTEM;
     }
 
 }

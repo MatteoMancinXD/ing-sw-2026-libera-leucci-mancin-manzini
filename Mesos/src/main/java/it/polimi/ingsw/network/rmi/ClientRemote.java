@@ -30,4 +30,7 @@ public interface ClientRemote extends Remote{
 
     void ping() throws RemoteException;
 
+    void onTotemSelected() throws RemoteException;
+
+    void onGameParticipation() throws RemoteException;
 }

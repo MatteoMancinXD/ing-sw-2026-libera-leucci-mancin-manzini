@@ -201,4 +201,14 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     @Override
     public void ping() throws RemoteException {}
+
+    @Override
+    public void onTotemSelected() {
+        userInterface.onTotemSelected();
+    }
+
+    @Override
+    public void onGameParticipation() {
+        userInterface.onGameParticipation();
+    }
 }

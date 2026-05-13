@@ -23,4 +23,8 @@ public interface ui {
     void showChatMessage(String sender, String message);
 
     void showAvailableTotems(Set<Totem> totems);
+
+    void onTotemSelected();
+
+    void onGameParticipation();
 }

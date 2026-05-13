@@ -167,6 +167,12 @@ public class GuiManager extends Application implements ui {
         //waitingView.showTotems(totems);
     }
 
+    @Override
+    public void onTotemSelected() {}
+
+    @Override
+    public void onGameParticipation() {}
+
 
     public void sendChatMessage(String message) throws Exception {
         client.sendChatMessage(message);

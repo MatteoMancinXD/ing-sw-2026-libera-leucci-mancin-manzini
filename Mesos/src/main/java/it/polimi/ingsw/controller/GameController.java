@@ -36,6 +36,13 @@ public class GameController implements GameObserver {
                 availableTotems.remove(totem);
                 game.assignTotem(nickname, totem);
 
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.notifyTotemSelected();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+
                 boolean everyoneReady = true;
                 for(Player p : game.getPlayers()) {
                     if (p.getTotem() == null) {
@@ -86,6 +93,12 @@ public class GameController implements GameObserver {
             } else {
                 game.addPlayer(new Player(nickname));
                 clients.put(nickname, view);
+
+                try {
+                    view.notifyGameParticipation();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
 
                 int curr = game.getPlayers().size();
                 int max = game.getNumPlayers();
