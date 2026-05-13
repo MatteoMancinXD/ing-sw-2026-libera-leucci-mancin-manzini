@@ -82,9 +82,9 @@ public class GameSetup {
                     manager.createGame(manager.getNickName(), numPlayers);
                     showStatusOk("Richiesta di creazione inviata...");
                     Platform.runLater(() -> {
-                        WaitingView gameWaiting = new WaitingView(stage, manager);
-                        manager.setWaitingView(gameWaiting);
-                        gameWaiting.show();
+                        TotemSelectView totemSelectView = new TotemSelectView(stage, manager);
+                        manager.setTotemSelectView(totemSelectView);
+                        totemSelectView.show();
                     });
                 } catch (Exception ex) {
                     showStatusError("Errore: " + ex.getMessage());
@@ -109,8 +109,8 @@ public class GameSetup {
                     manager.joinGame(manager.getNickName(), gameId);
                     showStatusOk("Richiesta di join inviata...");
                     Platform.runLater(() -> {
-                        WaitingView gameWaiting = new WaitingView(stage, manager);
-                        manager.setWaitingView(gameWaiting);
+                        TotemSelectView gameWaiting = new TotemSelectView(stage, manager);
+                        manager.setTotemSelectView(gameWaiting);
                         gameWaiting.show();
                     });
                 } catch (NumberFormatException ex) {

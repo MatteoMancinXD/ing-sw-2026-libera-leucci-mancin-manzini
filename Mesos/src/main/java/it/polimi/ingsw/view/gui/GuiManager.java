@@ -31,6 +31,7 @@ public class GuiManager extends Application implements ui {
     private LobbyView lobbyView;
     private GameView gameView;
     private GameSetup gameSetup;
+    private TotemSelectView totemSelectView;
     private WaitingView waitingView;
 
     //javafx
@@ -153,7 +154,7 @@ public class GuiManager extends Application implements ui {
             if (lobbyView != null) lobbyView.showStatusOk(message);
 
             // 4. Aggiornamento schermata di caricamento
-            if (waitingView != null) waitingView.updateWaitingLabel(message);
+            if (totemSelectView != null) totemSelectView.updateWaitingLabel(message);
         });
     }
 
@@ -164,7 +165,7 @@ public class GuiManager extends Application implements ui {
 
     @Override
     public void showAvailableTotems(Set<Totem> totems) {
-        //waitingView.showTotems(totems);
+        totemSelectView.showTotems(totems);
     }
 
     @Override
@@ -188,9 +189,21 @@ public class GuiManager extends Application implements ui {
         this.gameSetup = gameSetup;
     }
 
-    public void setWaitingView(WaitingView waitingView) {
-        this.waitingView = waitingView;
+    public void setTotemSelectView(TotemSelectView totemSelectView) {
+        this.totemSelectView = totemSelectView;
     }
 
 
+    public void requestAvailableTotems() {
+        client.requestAvailableTotems();
+    }
+
+    public void selectTotem(String strTotem) {
+        Totem totem = Totem.valueOf(strTotem.toUpperCase());
+        client.askToSelectTotem(totem);
+    }
+
+    public void setWaitingView(WaitingView waitingView) {
+        this.waitingView = waitingView;
+    }
 }
