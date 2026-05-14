@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.network.NetworkClient;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class cli implements ui{
 
     private final String nickname;
     private CliState currentState;
+
+    private List<LeaderboardEntryBean> globalRanks;
+    private int numPlayers;
 
     public cli (String nickname) {
         this.scanner = new Scanner(System.in);
@@ -52,8 +56,24 @@ public class cli implements ui{
                     break;
                 case PLACING:
                     handlePlacingCommands(command, parameters);
+                    break;
+                case END_GAME:
+                    handleEndGameCommands(command, parameters);
             }
         }
+    }
+
+    public void handleEndGameCommands(String command, String[] parameters) {
+
+        switch (command) {
+            case "show_ranks":
+                showGlobalRanks();
+                break;
+            case "help":
+                System.out.println("End game commands: show_ranks");
+                break;
+        }
+
     }
 
     public void handleLobbyCommands(String command, String[] parameters) {
@@ -90,7 +110,7 @@ public class cli implements ui{
                    } catch (RemoteException e) {
                        showError(e.getMessage());
                    }
-
+                    break;
                case "help":
                    System.out.println("Lobby commands: create *num_players*  |  join *game_id*  | list ");
                    break;
@@ -299,12 +319,24 @@ public class cli implements ui{
     }
 
     @Override
-    public void notifyEndGame(List<String> rankings) {
+    public void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks) {
+        this.currentState = CliState.END_GAME;
+        this.globalRanks = globalRanks;
+        this.numPlayers = rankings.size();
         System.out.println("\n\n======GAME OVER======");
         System.out.println("Standings: ");
         for(int i = 0; i < rankings.size(); i++) {
             System.out.println((i+1)+")"+rankings.get(i));
         }
+        System.out.println("\nYour position in global ranking: ");
+        //Mostra la posizione nella classica totale salvata sul DB del player
+        for (int i = 0; i < globalRanks.size(); i++) {
+            if (globalRanks.get(i).getNickname().equals(this.nickname)) {
+                System.out.println((i+1)+")YOU, total prestige points: "+globalRanks.get(i).getScore());
+                break;
+            }
+        }
+
     }
 
     @Override
@@ -321,6 +353,13 @@ public class cli implements ui{
 
         System.out.println("---------------------------------");
         System.out.print("> ");
+    }
+
+    private void showGlobalRanks() {
+        System.out.println("\n\n======GLOBAL RANKINGS FOR "+this.numPlayers+" PLAYERS GAMES======");
+        for(int i = 0; i < this.globalRanks.size(); i++) {
+            System.out.println((i+1)+")"+globalRanks.get(i).getNickname()+" - Total Prestige Points: "+globalRanks.get(i).getScore());
+        }
     }
 
 }

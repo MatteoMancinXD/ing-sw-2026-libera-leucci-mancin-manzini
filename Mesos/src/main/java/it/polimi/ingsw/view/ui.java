@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ui {
 
     void notifyTurn(String currentPlayerNickname, String gamePhase);
 
-    void notifyEndGame(List<String> rankings);
+    void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks);
 
     void showMessage(String message);
 

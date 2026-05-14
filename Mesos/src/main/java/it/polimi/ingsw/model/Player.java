@@ -115,7 +115,7 @@ public class Player implements Serializable {
 
     public void editFood(int amount) throws IllegalArgumentException{
         if (amount + food < 0) {
-            throw new IllegalArgumentException("Food cannot go below zero!");
+            throw new IllegalArgumentException("Food cannot go below zero!AvailableFood = "+this.food+", cost"+amount);
         }
         this.food = this.food + amount;
     }

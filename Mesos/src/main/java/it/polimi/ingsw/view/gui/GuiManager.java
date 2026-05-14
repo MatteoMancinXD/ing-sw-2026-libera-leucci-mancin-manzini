@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.view.ui;
@@ -121,7 +122,7 @@ public class GuiManager extends Application implements ui {
     }
 
     @Override
-    public void notifyEndGame(List<String> rankings) {
+    public void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks) {
         System.out.println("DEBUG notifyEndGame: " + rankings);
         Platform.runLater(() -> {
             EndGameView endGameView = new EndGameView(primaryStage, this);

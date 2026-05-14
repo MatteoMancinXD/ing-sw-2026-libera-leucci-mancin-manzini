@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.view.ui;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -160,8 +161,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void receiveGameEnd(List<String> rankings) throws RemoteException {
-        userInterface.notifyEndGame(rankings);
+    public void receiveGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException {
+        userInterface.notifyEndGame(rankings, globalRanks);
     }
     @Override
     public void receiveMessage(String message) throws RemoteException {
