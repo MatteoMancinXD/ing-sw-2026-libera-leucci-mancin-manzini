@@ -24,6 +24,7 @@ public class TotemSelectView {
     private Label totemsLabel;
     private TextArea totemsList;
     private Label errorLabel;
+    private ComboBox<String> totemCombo;
 
     public TotemSelectView(Stage stage, GuiManager manager) {
         this.stage = stage;
@@ -63,7 +64,10 @@ public class TotemSelectView {
         styleButton(updateBtn, "#2a2a4a", "#e0a830");
 
         Label selectLabel = makeLabel("Select totem:");
-        TextField totemInput = makeTextField("Eg: red");
+        totemCombo = new ComboBox<>();
+        totemCombo.setPromptText("Select a totem...");
+        totemCombo.setStyle("-fx-background-color: #2a2a4a; -fx-text-fill: white;");
+        totemCombo.setPrefWidth(200);
 
         List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
 
@@ -71,17 +75,17 @@ public class TotemSelectView {
 
         Button selectBtn = new Button("Select");
         selectBtn.setOnAction(event -> {
-            String strTotem = totemInput.getText().toUpperCase();
-            if(stringTotems.contains(strTotem)) {
+            String selected = totemCombo.getValue();
+            if (selected == null) { showStatusError("Seleziona un totem."); return; }
+            final String finalTotem = selected.toUpperCase();
+            if (stringTotems.contains(finalTotem)) {
                 new Thread(() -> {
-                    //System.out.println("Totem selected...");
                     Platform.runLater(() -> {
                         WaitingView waitingView = new WaitingView(stage, manager);
                         manager.setWaitingView(waitingView);
                         waitingView.show();
                     });
-                    manager.selectTotem(strTotem);
-                    //System.out.println("Going to waiting screen");
+                    manager.selectTotem(finalTotem);
                 }).start();
             } else {
                 showStatusError("Please enter a valid totem");
@@ -96,7 +100,7 @@ public class TotemSelectView {
                 totemsLabel, totemsList,
                 updateBtn,
                 new Separator(),
-                selectLabel, totemInput,
+                selectLabel, totemCombo,
                 selectBtn,
                 errorLabel
         );
@@ -117,6 +121,10 @@ public class TotemSelectView {
 
     public void showTotems(Set<Totem> totems) {
         totemsList.clear();
+        totemCombo.getItems().clear();
+        for (Totem t : totems) {
+            totemCombo.getItems().add(t.toString());
+        }
 
         for(Totem t: totems) {
             totemsList.appendText(t.toString() + "\n");
