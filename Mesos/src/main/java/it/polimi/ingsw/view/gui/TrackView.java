@@ -27,18 +27,18 @@ public class TrackView {
 
     private static final double TILE_HEIGHT = 150;
     private static final String TILE_STYLE  = "-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent;";
-    private static final double TOTEM_HEIGHT = 45;
-    private static final double TOTEM_OFFX = 34;
-    private static final double PLACE_HEIGHT = 20;
+    private static final double TOTEM_HEIGHT = 28;
+    private static final double TOTEM_OFFX = 40;
+    private static final double PLACE_HEIGHT = 25;
 
     private static final Map<String, String> playerColors = new HashMap<>();
     private static final String[] COLORS = {"#e0a830", "#00ff88", "#ff4444", "#44aaff", "#ff44ff"};
 
     private static final Map<Integer, Integer> order_offset_y = Map.ofEntries(
-            Map.entry(2, 10),
-            Map.entry(3, 0),
-            Map.entry(4, 0),
-            Map.entry(5, 0)
+            Map.entry(2, 8),
+            Map.entry(3, 8),
+            Map.entry(4, 8),
+            Map.entry(5, 8)
     );
 
     /**
@@ -159,7 +159,7 @@ public class TrackView {
                 Pane overlayPane = new Pane();
                 overlayPane.getChildren().add(totemView);
                 totemView.setLayoutX(TOTEM_OFFX);
-                totemView.setLayoutY(0);
+                totemView.setLayoutY(15);
 
                 contentStack.getChildren().add(overlayPane);
             }
