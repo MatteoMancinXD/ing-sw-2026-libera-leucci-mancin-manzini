@@ -30,7 +30,7 @@ public class BuildingDeck {
 
         for(int era = 0; era < 3; era++) {
             for(int j = 0; j < buildingCardsForPlayers.get(numPlayers).get(era); j++) {
-                this.cards.add(eras.get(era).getFirst());
+                this.cards.add(eras.get(era).get(j));
             }
         }
     }

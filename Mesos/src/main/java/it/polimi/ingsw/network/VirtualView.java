@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteRef;
@@ -26,7 +27,7 @@ public interface VirtualView {
 
     void showChatMessage(String sender, String message) throws RemoteException;
 
-    void notifyGameEnd(List<String> rankings) throws RemoteException;
+    void notifyGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException;
 
     void ping() throws RemoteException;
 

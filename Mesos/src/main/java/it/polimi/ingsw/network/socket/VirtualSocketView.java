@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
@@ -43,8 +44,8 @@ public class VirtualSocketView implements VirtualView {
     }
 
     @Override
-    public void notifyGameEnd(List<String> rankings)throws RemoteException {
-        sendMessage(new EndGameMessage(rankings));
+    public void notifyGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks)throws RemoteException {
+        sendMessage(new EndGameMessage(rankings, globalRanks));
     }
 
     @Override

@@ -4,9 +4,16 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import it.polimi.ingsw.network.GameStarter;
 import it.polimi.ingsw.network.VirtualView;
+import it.polimi.ingsw.network.db.DatabaseManagerDAO;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameController implements GameObserver {
     private int gameID;
@@ -326,28 +333,46 @@ public class GameController implements GameObserver {
     }
 
     @Override
-    public void onGameEnd(ArrayList<Player> winners) {
+    public void onGameEnd(ArrayList<Player> players) {
         List<String> rankings = new ArrayList<>();
-        for (Player p : winners) rankings.add(p.getNickname());
+        for (Player p : players) rankings.add(p.getNickname());
 
         StringBuilder message = new StringBuilder();
-        for (int i = 0; i < winners.size(); i++) {
-            message.append((i + 1) + ". :" + winners.get(i).getNickname() + "\n");
+        for (int i = 0; i < players.size(); i++) {
+            message.append((i + 1) + ". :" + players.get(i).getNickname() + "\n");
         }
         new Thread(() -> {
             broadcastMessage(message.toString());
         }).start();
 
-        synchronized (clients) {
-            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
-                new Thread(() -> {
-                    try {
-                        entry.getValue().notifyGameEnd(rankings);
-                    } catch (RemoteException e) {
-                        System.out.println("Client " + entry.getKey() + " unreachable");
+        new Thread(() -> {
+            try {
+                DatabaseManagerDAO db = DatabaseManagerDAO.getInstance();
+                try {
+                    db.saveMatchResults(players, players.size());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                List<LeaderboardEntryBean> globalLeaderboard =  db.getLeaderboardByPlayerCount(players.size());
+
+                synchronized (clients) {
+                    for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                        new Thread(() -> {
+                            try {
+                                entry.getValue().notifyGameEnd(rankings, globalLeaderboard);
+                            } catch (RemoteException e) {
+                                System.out.println("Client " + entry.getKey() + " unreachable");
+                            }
+                        }).start();
                     }
-                }).start();
+                }
+            } catch (Exception e) {
+                System.out.println("DB saving error");
+                e.printStackTrace();
             }
-        }
+
+        }).start();
+
     }
 }
