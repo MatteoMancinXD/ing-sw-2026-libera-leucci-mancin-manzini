@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.socket;
 
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.view.ui;
@@ -109,6 +110,14 @@ public class SocketClient implements NetworkClient {
     }
 
     @Override
+    public void requestAvailableTotems() {
+        sendMessageToServer(new RequestTotemsMessage(token));
+    }
+
+    @Override
+    public void askToSelectTotem(Totem totem) { sendMessageToServer(new SelectTotemMessage(token, totem)); }
+
+    @Override
     public void askToSkipBonus() {
         sendMessageToServer(new SkipBonusMessage(token));
     }
@@ -135,6 +144,4 @@ public class SocketClient implements NetworkClient {
             e.printStackTrace();
         }
     }
-
-
 }

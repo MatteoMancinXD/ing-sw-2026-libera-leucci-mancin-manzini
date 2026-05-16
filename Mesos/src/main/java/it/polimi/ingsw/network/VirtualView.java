@@ -30,4 +30,8 @@ public interface VirtualView {
     void notifyGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException;
 
     void ping() throws RemoteException;
+
+    void notifyTotemSelected() throws RemoteException;
+
+    void notifyGameParticipation() throws RemoteException;
 }

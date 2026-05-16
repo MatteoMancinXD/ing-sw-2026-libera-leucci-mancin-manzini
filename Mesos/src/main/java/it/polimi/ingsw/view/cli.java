@@ -1,16 +1,13 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.SQLOutput;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class cli implements ui{
 
@@ -48,7 +45,13 @@ public class cli implements ui{
                 case LOBBY:
                     handleLobbyCommands(command, parameters);
                     break;
-                case  WAITING:
+                case TOTEM:
+                    handleTotemCommands(command, parameters);
+                    break;
+                case STARTING:
+                    System.out.println("You can't do anything.\nWaiting for game to start");
+                    break;
+                case WAITING:
                     handleWaitingCommands(command, parameters);
                     break;
                 case DRAWING:
@@ -63,6 +66,28 @@ public class cli implements ui{
         }
     }
 
+    private void handleTotemCommands(String command, String[] parameters) {
+        switch(command) {
+            case "totems":
+                client.requestAvailableTotems();
+                break;
+            case "select":
+                String selected = parameters[1].toUpperCase();
+                List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
+                if(stringTotems.contains(selected)) {
+                    Totem selectedTotem = Totem.valueOf(selected);
+                    client.askToSelectTotem(selectedTotem);
+                } else {
+                    showError("Totem selected not valid.\nChoose either red, yellow, cyan, purple or white");
+                }
+                break;
+            case "help":
+                System.out.println("Totem selection commands: totems  |  select *color*  ");
+                break;
+            default:
+                System.out.println("Invalid command");
+
+        }
     public void handleEndGameCommands(String command, String[] parameters) {
 
         switch (command) {
@@ -351,10 +376,29 @@ public class cli implements ui{
     public void showChatMessage(String sender, String message) {
         System.out.println("[CHAT] " + sender + ": " + message);
 
+
+    }
+
+    @Override
+    public void showAvailableTotems(Set<Totem> totems) {
+        System.out.println("Available Totems: ");
+        for(Totem totem: totems) {
+            System.out.println("  " + totem.toString());
+        }
+
         System.out.println("---------------------------------");
         System.out.print("> ");
     }
 
+    @Override
+    public void onTotemSelected() {
+        System.out.println("Totem selected succesfully");
+        currentState = CliState.STARTING;
+    }
+
+    @Override
+    public void onGameParticipation() {
+        currentState = CliState.TOTEM;
     private void showGlobalRanks() {
         System.out.println("\n\n======GLOBAL RANKINGS FOR "+this.numPlayers+" PLAYERS GAMES======");
         for(int i = 0; i < this.globalRanks.size(); i++) {

@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class VirtualSocketView  implements VirtualView {
+public class VirtualSocketView implements VirtualView {
 
     private final String nickname;
     private final ObjectOutputStream out;
@@ -66,6 +66,16 @@ public class VirtualSocketView  implements VirtualView {
     @Override
     public void ping() throws RemoteException {
 
+    }
+
+    @Override
+    public void notifyTotemSelected() throws RemoteException {
+        sendMessage(new TotemSelectedMessage());
+    }
+
+    @Override
+    public void notifyGameParticipation() throws RemoteException {
+        sendMessage(new GameParticipationMessage());
     }
 
     private void sendMessage(Serializable message) throws RemoteException {

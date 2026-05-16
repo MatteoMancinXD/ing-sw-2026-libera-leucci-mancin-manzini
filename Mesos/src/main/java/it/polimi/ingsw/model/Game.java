@@ -7,10 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents the main class of the Model, orchestrating the entire game flow.
@@ -25,7 +22,7 @@ public class Game {
 
     private int numPlayers;
     private int currentPlayerIndex;
-    private ArrayList<Player> players;
+    private List<Player> players;
 
     private GamePhase currentPhase;
 
@@ -175,6 +172,9 @@ public class Game {
     public void startGame() {
         board.fill(this.numPlayers, this.era, this.deck, this.buildingDeck);       //Round 0 : .fill riempie entrambe le righe e i buildings
         Collections.shuffle(players);        //Shuffle dei player per avere un ordine casuale all'inizio
+
+        board.getOrder().setPlayers(players);
+
         for (int i = 0; i < this.players.size(); i++) {
             Player p = this.players.get(i);
             if(i==0) {                  //Primo giocatore prende 2 cibo
@@ -321,6 +321,7 @@ public class Game {
         }
 
         this.currentPhase = GamePhase.PLACEMENT;
+        this.board.getOrder().setPlayers(this.players);
 
         this.currentPlayerIndex = 0;
         //logica per riordinare i players in base all'ordine sulla tileboard
@@ -447,7 +448,16 @@ public class Game {
         }
         Player p = players.get(currentPlayerIndex);
         board.getTrack().get(pos).place(p);             //place imposta lo Status della Tile a True e salva il player
+
+        List<Player> orderPlayers = this.board.getOrder().getPlayers();
+        orderPlayers.set(currentPlayerIndex, null);
+        this.board.getOrder().setPlayers(orderPlayers);
+
         nextPlayer();
     }
 
+    public void assignTotem(String nickname, Totem totem) {
+        Player player = players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElse(null);
+        player.setTotem(totem);
+    }
 }

@@ -19,6 +19,8 @@ public class Player implements Serializable {
     private int food;
     private int prestige;
 
+    private Totem totem;
+
     private List<HunterCard> hunters;
     private List<BuilderCard> builders;
     private List<HarvesterCard> harvesters;
@@ -132,4 +134,9 @@ public class Player implements Serializable {
         this.totDiscount = this.totDiscount + amount;
     }
 
+    public void setTotem(Totem totem) {
+        this.totem = totem;
+    }
+
+    public Totem getTotem() { return this.totem; }
 }

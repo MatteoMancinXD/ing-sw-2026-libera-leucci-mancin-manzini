@@ -81,7 +81,7 @@ public class GameView {
 
         table.getChildren().addAll(
                 CardRowView.build(board.getUpperRow(), 150, true, manager, isMyTurn && currentPhase.equals("RESOLUTION")),
-                TrackView.build(board.getTrack(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
+                TrackView.build(board.getOrder(), board.getTrack(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
                 CardRowView.build(board.getLowerRow(), 150, false, manager, isMyTurn && currentPhase.equals("RESOLUTION"))
         );
         gameRoot.setCenter(tableScroll);
