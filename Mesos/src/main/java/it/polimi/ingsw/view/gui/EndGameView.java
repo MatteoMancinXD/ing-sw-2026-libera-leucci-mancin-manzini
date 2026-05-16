@@ -1,9 +1,12 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.network.db.DatabaseManagerDAO;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -22,21 +25,26 @@ public class EndGameView {
 
     private final Stage stage;
     private final GuiManager manager;
+    private final DatabaseManagerDAO databaseManagerDAO;
 
     public EndGameView(Stage stage, GuiManager manager) {
         this.stage = stage;
         this.manager = manager;
+        this.databaseManagerDAO = DatabaseManagerDAO.getInstance();
     }
 
     public void show(List<String> rankings) {
+        int numPlayers = rankings.size();
+
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(50));
+        root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #1a1a2e;");
+
 
         // Titolo
         Text title = new Text("GAME OVER");
-        title.setFont(Font.font("Georgia", FontWeight.BOLD, 48));
+        title.setFont(Font.font("Georgia", FontWeight.BOLD, 40));
         title.setFill(Color.web("#e0a830"));
 
         // Hai vinto o perso?
@@ -52,7 +60,7 @@ public class EndGameView {
         rankingTitle.setFont(Font.font("Georgia", FontWeight.BOLD, 18));
         rankingTitle.setTextFill(Color.web("#e0a830"));
 
-        VBox rankingBox = new VBox(10);
+        VBox rankingBox = new VBox(8);
         rankingBox.setAlignment(Pos.CENTER);
 
         for (int i = 0; i < rankings.size(); i++) {
@@ -71,15 +79,78 @@ public class EndGameView {
             rankingBox.getChildren().add(rankLabel);
         }
 
+        //historical ranking (from DB)
+        Separator separator = new Separator();
+        separator.setMaxWidth(300);
+
+        Label globalRankingTitle = new Label("Classifica Globale Storica (" + numPlayers + " giocatori):");
+        globalRankingTitle.setFont(Font.font("Georgia", FontWeight.BOLD, 16));
+        globalRankingTitle.setTextFill(Color.web("#e0a830"));
+
+        VBox globalRankingBox = new VBox(6);
+        globalRankingBox.setAlignment(Pos.TOP_CENTER);
+        globalRankingBox.setPadding(new Insets(10));
+
+
+        try {
+            //reach database
+            List<LeaderboardEntryBean> globalLeaderboard = databaseManagerDAO.getLeaderboardByPlayerCount(numPlayers);
+
+            if (globalLeaderboard.isEmpty()) {
+                Label emptyLabel = new Label("No historical data");
+                emptyLabel.setFont(Font.font("Georgia", 12));
+                emptyLabel.setTextFill(Color.GRAY);
+                globalRankingBox.getChildren().add(emptyLabel);
+            } else {
+
+                for (int i = 0; i < globalLeaderboard.size(); i++) {
+                    LeaderboardEntryBean entry = globalLeaderboard.get(i);
+
+
+                    String globalEntryText = (i + 1) + ". " + entry.getNickname() + " — Punti Totali: " + entry.getScore();
+
+                    Label globalRankLabel = new Label(globalEntryText);
+                    globalRankLabel.setFont(Font.font("Georgia", 13));
+                    globalRankLabel.setTextFill(Color.web("#d1d1e0"));
+                    globalRankingBox.getChildren().add(globalRankLabel);
+                }
+            }
+        } catch (Exception e) {
+            // print if DB doesnt work
+            Label errorLabel = new Label("Impossibile caricare la classifica globale.");
+            errorLabel.setFont(Font.font("Georgia", 12));
+            errorLabel.setTextFill(Color.RED);
+            globalRankingBox.getChildren().add(errorLabel);
+            e.printStackTrace();
+        }
+
+        //historical ranking's scrollpane
+        ScrollPane globalScrollPane = new ScrollPane(globalRankingBox);
+        globalScrollPane.setFitToWidth(true);
+        globalScrollPane.setPrefHeight(250);
+        globalScrollPane.setStyle("-fx-background: #1a1a2e; -fx-background-color: #1a1a2e; -fx-control-inner-background: #1a1a2e;");
+
+
+
         root.getChildren().addAll(
                 title,
                 resultText,
-                new Separator(),
                 rankingTitle,
-                rankingBox
+                rankingBox,
+                separator,
+                globalRankingTitle,
+                globalScrollPane
         );
 
-        Scene scene = new Scene(root, 500, 500);
+
+
+
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;");
+
+
+        Scene scene = new Scene(root, 500, 600);
         stage.setScene(scene);
         stage.centerOnScreen();
     }
