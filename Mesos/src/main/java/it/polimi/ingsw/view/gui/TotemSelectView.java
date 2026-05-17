@@ -70,6 +70,28 @@ public class TotemSelectView {
         totemCombo.setPrefWidth(200);
 
         List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
+        totemCombo.setCellFactory(lv -> {
+            ListCell<String> cell = new ListCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
+                    setTextFill(Color.WHITE);
+                    setStyle("-fx-background-color: #2a2a4a;");
+                }
+            };
+            return cell;
+        });
+
+        totemCombo.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setTextFill(Color.WHITE);
+                setStyle("-fx-background-color: #2a2a4a;");
+            }
+        });
 
         errorLabel = new Label();
 
