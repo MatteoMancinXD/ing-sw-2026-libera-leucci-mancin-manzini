@@ -381,8 +381,32 @@ public class Game {
             }
         }
 
-        int upCards = Math.min(targetTile.getUpperRow(), this.board.getUpperRow().size());
-        int downCards = Math.min(targetTile.getLowerRow(), this.board.getLowerRow().size());
+        int availableCardsUpperRow = 0;
+        int availableCardsLowerRow = 0;
+
+        for (Card cUpper : this.board.getUpperRow()) {
+            if (!cUpper.isEventCard() && !cUpper.isBuildingCard()) {  //se una carta è un evento o un building non viene aggiunta alle available
+                availableCardsUpperRow++;
+            }
+            if (cUpper.isBuildingCard()) {
+                if (cUpper.getFoodCost() <= (this.players.get(currentPlayerIndex).getFood() + this.players.get(currentPlayerIndex).getTotDiscount())) {  //se il building può essere comprato dal player di turno, viene aggiunto alle available
+                    availableCardsUpperRow++;
+                }
+            }
+        }
+        for (Card cLower : this.board.getLowerRow()) {
+            if (!cLower.isEventCard() && !cLower.isBuildingCard()) {
+                availableCardsLowerRow++;
+            }
+            if (cLower.isBuildingCard()) {
+                if (cLower.getFoodCost() <= (this.players.get(currentPlayerIndex).getFood() + this.players.get(currentPlayerIndex).getTotDiscount())) {
+                    availableCardsLowerRow++;
+                }
+            }
+        }
+
+        int upCards = Math.min(targetTile.getUpperRow(), availableCardsUpperRow);
+        int downCards = Math.min(targetTile.getLowerRow(), availableCardsLowerRow);
 
         if (row && currentDrawnUpper >= upCards) {
             throw new IllegalStateException("You already drawn the max number of cards from the upper row");
