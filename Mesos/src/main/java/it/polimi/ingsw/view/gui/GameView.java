@@ -26,8 +26,10 @@ public class GameView {
 
     private final Stage stage;
     private final GuiManager manager;
+
     private List<String> playersNicknames = new ArrayList<>();
     private ChatView chatView;
+    private PlayerPanel playerPanel;
     private Label turnLabel;
     private Board lastBoard;
     private List<Player> lastPlayers;
@@ -48,12 +50,13 @@ public class GameView {
         for (Player p : players) playersNicknames.add(p.getNickname());
 
         int numPlayers = players.size();
+        boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
 
         // Root
         BorderPane gameRoot = new BorderPane();
         gameRoot.setStyle("-fx-background-color: #1a1a2e;");
 
-        // Top bar  STILL TO DO
+        // Top bar
         HBox topBar = new HBox(20);
         topBar.setPadding(new Insets(15));
         if (turnLabel == null) {
@@ -77,7 +80,7 @@ public class GameView {
 
 
         table.setPadding(new Insets(15));
-        boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
+
 
         table.getChildren().addAll(
                 CardRowView.build(board.getUpperRow(), 150, true, manager, isMyTurn && currentPhase.equals("RESOLUTION")),
@@ -88,10 +91,21 @@ public class GameView {
 
         table.setAlignment(Pos.TOP_LEFT);
 
-        // Right: player stats + chat
-        PlayerPanel playerPanel = new PlayerPanel(players, manager.getNickName(), manager);
-        this.chatView = playerPanel.getChatView();
+
+
+
+        // PlayerPanel is created only once to preserve chat history.
+        // then only the stats are updated.
+        if (playerPanel == null) {
+            playerPanel = new PlayerPanel(players, manager.getNickName(), manager);
+            chatView = playerPanel.getChatView();
+        } else {
+            playerPanel.updateStats(players, manager.getNickName());
+        }
         gameRoot.setRight(playerPanel.getRightPanel());
+
+
+
 
 
         // Scene
@@ -123,18 +137,22 @@ public class GameView {
     public void updateTurnLabel(String nickname, String phase) {
         this.currentPlayerNickname = nickname;
         this.currentPhase = phase;
-        if (turnLabel == null) return;
-        String myNick = manager.getNickName();
-        if (nickname.equals(myNick)) {
-            turnLabel.setText("È il tuo turno! Fase: " + phase);
-            turnLabel.setTextFill(Color.web("#00ff88"));
-        } else {
-            turnLabel.setText("Turno di: " + nickname + " | Fase: " + phase);
-            turnLabel.setTextFill(Color.web("#e0a830"));
+
+        if (turnLabel != null) {
+            if (nickname.equals(manager.getNickName())) {
+                turnLabel.setText("È il tuo turno! Fase: " + phase);
+                turnLabel.setTextFill(Color.web("#00ff88"));
+            } else {
+                turnLabel.setText("Turno di: " + nickname + " | Fase: " + phase);
+                turnLabel.setTextFill(Color.web("#e0a830"));
+            }
         }
+
+        // Refresh board to update interactive state of buttons
         if (lastBoard != null && lastPlayers != null) {
             show(lastBoard, lastPlayers);
         }
+
 
     }
 }
