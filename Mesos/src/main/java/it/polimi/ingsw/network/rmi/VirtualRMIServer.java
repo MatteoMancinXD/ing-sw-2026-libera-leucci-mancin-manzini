@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.rmi;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.GameManager;
 import it.polimi.ingsw.network.GameSession;
 import it.polimi.ingsw.network.ServerInterface;
@@ -10,6 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class VirtualRMIServer extends UnicastRemoteObject implements ServerInterface {
@@ -99,6 +101,31 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
         }
 
         if(controller != null) controller.controllerEndTurn(nickname); //controllerEndTurn manually ends the turn asking the Model
+    }
+
+    @Override
+    public Set<Totem> getAvailableTotems(String token) {
+        GameSession session = mngr.getSessions().get(token);
+
+        int gameID = session.getGameID();
+        String nickname = session.getNickname();
+
+        GameController controller = mngr.getAvailableGames().get(gameID);
+
+        return controller.getAvailableTotems();
+    }
+
+    @Override
+    public void selectTotem(String token, Totem totem) throws RemoteException {
+        GameSession session = mngr.getSessions().get(token);
+
+        int gameID = session.getGameID();
+        String nickname = session.getNickname();
+
+        GameController controller = mngr.getAvailableGames().get(gameID);
+        if(controller != null) {
+            controller.selectTotem(nickname, totem);
+        }
     }
 
     @Override

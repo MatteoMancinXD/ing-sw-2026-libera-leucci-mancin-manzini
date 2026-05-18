@@ -6,34 +6,39 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class GameWaiting {
+public class WaitingView {
     private final Stage stage;
     private final GuiManager manager;
-    private Label messageLabel;
 
-    public GameWaiting(Stage stage, GuiManager manager) {
+    public WaitingView(Stage stage, GuiManager manager) {
         this.stage = stage;
         this.manager = manager;
     }
 
     public void show() {
-        VBox root = new VBox();
+        VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #1a1a2e;");
 
-        messageLabel = makeLabel("It's only you");
+        Text title = new Text("MESOS");
+        title.setFont(Font.font("Georgia", FontWeight.BOLD, 48));
+        title.setFill(Color.web("#e0a830"));
 
-        root.getChildren().add(messageLabel);
+        Label waitingLabel = makeLabel("Waiting for other players to select a totem...");
+
+        root.getChildren().addAll(
+                title,
+                waitingLabel
+        );
 
         Scene scene = new Scene(root, 500, 600);
         stage.setScene(scene);
-    }
-
-    public void updateWaitingLabel(String message) {
-        messageLabel.setText(message);
     }
 
     private Label makeLabel(String text) {
@@ -41,4 +46,5 @@ public class GameWaiting {
         l.setTextFill(Color.WHITE);
         return l;
     }
+
 }

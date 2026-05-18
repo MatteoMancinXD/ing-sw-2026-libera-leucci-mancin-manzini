@@ -68,4 +68,14 @@ public class VirtualRMIView implements VirtualView {
     public void ping() throws RemoteException {
         clientStub.ping();
     }
+
+    @Override
+    public void notifyTotemSelected() throws RemoteException {
+        clientStub.onTotemSelected();
+    }
+
+    @Override
+    public void notifyGameParticipation() throws RemoteException {
+        clientStub.onGameParticipation();
+    }
 }

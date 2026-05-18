@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.db.DatabaseManagerDAO;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.RemoteException;
+import java.util.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class GameController implements GameObserver {
     private Game game;
     private GameStarter starter;
     private Map<String, VirtualView> clients;
+    private Set<Totem> availableTotems;
 
     //private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
 
@@ -29,31 +31,34 @@ public class GameController implements GameObserver {
         this.game = new Game(numPlayers, this);
         this.starter = starter;
 
+        availableTotems = new HashSet<>(Arrays.asList(Totem.values()));
         clients = new HashMap<>();
     }
 
-    public String getGameMaster() {
-        return gameMaster;
-    }
+    public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }
 
-    public boolean addPlayer(VirtualView view, String nickname) {
-        synchronized (game) {
-            if (game.getPlayers().size() == game.getNumPlayers()) {
-                return false;
-            } else if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
-                return false;
-            } else {
-                game.addPlayer(new Player(nickname));
-                clients.put(nickname, view);
+    public void selectTotem(String nickname, Totem totem) {
+        synchronized(availableTotems) {
+            if (availableTotems.contains(totem)) {
+                availableTotems.remove(totem);
+                game.assignTotem(nickname, totem);
 
-                int curr = game.getPlayers().size();
-                int max = game.getNumPlayers();
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.notifyTotemSelected();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
 
-                System.out.println(nickname + " joined game #" + gameID);
-                String msg = "Current players: " + curr + "/" + max + "...";
-                broadcastMessage(msg);
+                boolean everyoneReady = true;
+                for(Player p : game.getPlayers()) {
+                    if (p.getTotem() == null) {
+                        everyoneReady = false;
+                        break;
+                    }
+                }
 
-                if (game.getPlayers().size() == game.getNumPlayers()) {
+                if (game.getPlayers().size() == game.getNumPlayers() && everyoneReady) {
                     game.startGame();
                     starter.onGameStart(gameID);
 
@@ -71,6 +76,43 @@ public class GameController implements GameObserver {
                         broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase());
                     }).start();
                 }
+            } else {
+                VirtualView view = clients.get(nickname);
+                try {
+                    view.showError("Totem not available");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public String getGameMaster() {
+        return gameMaster;
+    }
+
+    public boolean addPlayer(VirtualView view, String nickname) {
+        synchronized (game) {
+            if (game.getPlayers().size() == game.getNumPlayers()) {
+                return false;
+            } else if (game.getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
+                return false;
+            } else {
+                game.addPlayer(new Player(nickname));
+                clients.put(nickname, view);
+
+                try {
+                    view.notifyGameParticipation();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+
+                int curr = game.getPlayers().size();
+                int max = game.getNumPlayers();
+
+                System.out.println(nickname + " joined game #" + gameID);
+                String msg = "Current players: " + curr + "/" + max + "...";
+                broadcastMessage(msg);
             }
             return true;
         }
