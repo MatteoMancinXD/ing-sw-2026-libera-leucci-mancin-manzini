@@ -38,7 +38,7 @@ public class GameController implements GameObserver {
     public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }
 
     public void selectTotem(String nickname, Totem totem) {
-        synchronized(availableTotems) {
+        synchronized(game) {
             if (availableTotems.contains(totem)) {
                 availableTotems.remove(totem);
                 game.assignTotem(nickname, totem);

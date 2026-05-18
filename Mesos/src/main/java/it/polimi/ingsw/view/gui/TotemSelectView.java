@@ -46,7 +46,7 @@ public class TotemSelectView {
         totemsLabel = makeLabel("Available totems:");
         totemsList = new TextArea();
         totemsList.setEditable(false);
-        totemsList.setPrefHeight(150);
+        totemsList.setPrefHeight(115);
         totemsList.setPrefWidth(400);
         totemsList.setPromptText("Click \"Update\" to see available totems");
         styleTextArea(totemsList);
@@ -129,6 +129,8 @@ public class TotemSelectView {
 
         Scene scene = new Scene(root, 500, 600);
         stage.setScene(scene);
+
+        manager.requestAvailableTotems();
     }
 
     public void updateWaitingLabel(String message) {
