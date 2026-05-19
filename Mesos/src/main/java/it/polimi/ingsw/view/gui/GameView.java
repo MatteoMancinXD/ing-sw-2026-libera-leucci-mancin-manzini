@@ -116,8 +116,21 @@ public class GameView {
 
         // Scene
         Scene gameScene = new Scene(gameRoot, 1100, 700);
+        // salva dimensioni e stato corrente
+        boolean wasMaximized = stage.isMaximized();
+        double prevWidth  = stage.getWidth();
+        double prevHeight = stage.getHeight();
+        double prevX      = stage.getX();
+        double prevY      = stage.getY();
         stage.setScene(gameScene);
-        stage.centerOnScreen();
+        if (wasMaximized) {
+            stage.setMaximized(true);
+        } else {
+            stage.setWidth(prevWidth);
+            stage.setHeight(prevHeight);
+            stage.setX(prevX);
+            stage.setY(prevY);
+        }
     }
 
 
