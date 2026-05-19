@@ -19,6 +19,8 @@ public class Player implements Serializable {
     private int food;
     private int prestige;
 
+    private Totem totem;
+
     private List<HunterCard> hunters;
     private List<BuilderCard> builders;
     private List<HarvesterCard> harvesters;
@@ -115,7 +117,7 @@ public class Player implements Serializable {
 
     public void editFood(int amount) throws IllegalArgumentException{
         if (amount + food < 0) {
-            throw new IllegalArgumentException("Food cannot go below zero!");
+            throw new IllegalArgumentException("Food cannot go below zero!AvailableFood = "+this.food+", cost"+amount);
         }
         this.food = this.food + amount;
     }
@@ -132,4 +134,9 @@ public class Player implements Serializable {
         this.totDiscount = this.totDiscount + amount;
     }
 
+    public void setTotem(Totem totem) {
+        this.totem = totem;
+    }
+
+    public Totem getTotem() { return this.totem; }
 }

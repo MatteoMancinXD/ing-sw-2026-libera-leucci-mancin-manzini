@@ -3,8 +3,10 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.view.ui;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -12,6 +14,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
@@ -139,6 +142,25 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
+    public void requestAvailableTotems() {
+        try {
+            Set<Totem> totems = serverStub.getAvailableTotems(token);
+            userInterface.showAvailableTotems(totems);
+        } catch(RemoteException e) {
+            userInterface.showError("Failed to request available totems");
+        }
+    }
+
+    @Override
+    public void askToSelectTotem(Totem totem) {
+        try {
+            serverStub.selectTotem(token, totem);
+        } catch(RemoteException | IllegalArgumentException e) {
+            userInterface.showError("Connection error: Failed to select totem");
+        }
+    }
+
+    @Override
     public void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException {
         userInterface.updateBoard(board, players);
     }
@@ -160,8 +182,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void receiveGameEnd(List<String> rankings) throws RemoteException {
-        userInterface.notifyEndGame(rankings);
+    public void receiveGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException {
+        userInterface.notifyEndGame(rankings, globalRanks);
     }
     @Override
     public void receiveMessage(String message) throws RemoteException {
@@ -180,4 +202,14 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     @Override
     public void ping() throws RemoteException {}
+
+    @Override
+    public void onTotemSelected() {
+        userInterface.onTotemSelected();
+    }
+
+    @Override
+    public void onGameParticipation() {
+        userInterface.onGameParticipation();
+    }
 }

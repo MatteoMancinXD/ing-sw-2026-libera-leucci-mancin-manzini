@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -22,7 +23,7 @@ public interface ClientRemote extends Remote{
 
     void receiveMessage(String message) throws RemoteException;
 
-    void receiveGameEnd(List<String> rankings) throws RemoteException;
+    void receiveGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException;
 
     void receiveToken(String token) throws RemoteException;
 
@@ -30,4 +31,7 @@ public interface ClientRemote extends Remote{
 
     void ping() throws RemoteException;
 
+    void onTotemSelected() throws RemoteException;
+
+    void onGameParticipation() throws RemoteException;
 }

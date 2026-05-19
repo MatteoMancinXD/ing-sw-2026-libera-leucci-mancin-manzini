@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
+import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.view.ui;
@@ -13,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -29,7 +32,8 @@ public class GuiManager extends Application implements ui {
     private LobbyView lobbyView;
     private GameView gameView;
     private GameSetup gameSetup;
-    private GameWaiting gameWaiting;
+    private TotemSelectView totemSelectView;
+    private WaitingView waitingView;
 
     //javafx
     @Override
@@ -121,7 +125,7 @@ public class GuiManager extends Application implements ui {
     }
 
     @Override
-    public void notifyEndGame(List<String> rankings) {
+    public void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks) {
         System.out.println("DEBUG notifyEndGame: " + rankings);
         Platform.runLater(() -> {
             EndGameView endGameView = new EndGameView(primaryStage, this);
@@ -151,7 +155,7 @@ public class GuiManager extends Application implements ui {
             if (lobbyView != null) lobbyView.showStatusOk(message);
 
             // 4. Aggiornamento schermata di caricamento
-            if (gameWaiting != null) gameWaiting.updateWaitingLabel(message);
+            if (totemSelectView != null) totemSelectView.updateWaitingLabel(message);
         });
     }
 
@@ -159,6 +163,17 @@ public class GuiManager extends Application implements ui {
     public void showChatMessage(String sender, String message) {
         gameView.tryShowChatMessage(sender, message);
     }
+
+    @Override
+    public void showAvailableTotems(Set<Totem> totems) {
+        totemSelectView.showTotems(totems);
+    }
+
+    @Override
+    public void onTotemSelected() {}
+
+    @Override
+    public void onGameParticipation() {}
 
 
     public void sendChatMessage(String message) throws Exception {
@@ -175,9 +190,21 @@ public class GuiManager extends Application implements ui {
         this.gameSetup = gameSetup;
     }
 
-    public void setGameWaiting(GameWaiting gameWaiting) {
-        this.gameWaiting = gameWaiting;
+    public void setTotemSelectView(TotemSelectView totemSelectView) {
+        this.totemSelectView = totemSelectView;
     }
 
 
+    public void requestAvailableTotems() {
+        client.requestAvailableTotems();
+    }
+
+    public void selectTotem(String strTotem) {
+        Totem totem = Totem.valueOf(strTotem.toUpperCase());
+        client.askToSelectTotem(totem);
+    }
+
+    public void setWaitingView(WaitingView waitingView) {
+        this.waitingView = waitingView;
+    }
 }
