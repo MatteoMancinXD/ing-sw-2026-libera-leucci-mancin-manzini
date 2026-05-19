@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -87,9 +88,13 @@ public class GameView {
                 TrackView.build(board.getOrder(), board.getTrack(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
                 CardRowView.build(board.getLowerRow(), 150, false, manager, isMyTurn && currentPhase.equals("RESOLUTION"))
         );
-        gameRoot.setCenter(tableScroll);
+        VBox handSection = PlayerHandView.build(players, manager.getNickName());
 
-        table.setAlignment(Pos.TOP_LEFT);
+        SplitPane splitPane = new SplitPane();
+        splitPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        splitPane.getItems().addAll(tableScroll, handSection);
+        splitPane.setDividerPositions(0.65);
+        splitPane.setStyle("-fx-background-color: #1a1a2e;");
 
 
 
@@ -102,6 +107,7 @@ public class GameView {
         } else {
             playerPanel.updateStats(players, manager.getNickName());
         }
+        gameRoot.setCenter(splitPane);
         gameRoot.setRight(playerPanel.getRightPanel());
 
 

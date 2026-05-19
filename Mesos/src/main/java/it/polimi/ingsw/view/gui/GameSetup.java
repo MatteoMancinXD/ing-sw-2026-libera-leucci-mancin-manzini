@@ -108,11 +108,6 @@ public class GameSetup {
                     int gameId = Integer.parseInt(gameIdText);
                     manager.joinGame(manager.getNickName(), gameId);
                     showStatusOk("Richiesta di join inviata...");
-                    Platform.runLater(() -> {
-                        TotemSelectView gameWaiting = new TotemSelectView(stage, manager);
-                        manager.setTotemSelectView(gameWaiting);
-                        gameWaiting.show();
-                    });
                 } catch (NumberFormatException ex) {
                     showStatusError("Game ID non valido.");
                 } catch (Exception ex) {

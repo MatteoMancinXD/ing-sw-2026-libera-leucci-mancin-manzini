@@ -173,7 +173,13 @@ public class GuiManager extends Application implements ui {
     public void onTotemSelected() {}
 
     @Override
-    public void onGameParticipation() {}
+    public void onGameParticipation() {
+        Platform.runLater(() -> {
+            TotemSelectView gameWaiting = new TotemSelectView(primaryStage, this);
+            setTotemSelectView(gameWaiting);
+            gameWaiting.show();
+        });
+    }
 
 
     public void sendChatMessage(String message) throws Exception {
