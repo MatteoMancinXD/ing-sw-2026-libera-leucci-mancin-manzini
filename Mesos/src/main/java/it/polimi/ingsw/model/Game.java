@@ -23,8 +23,6 @@ public class Game {
     private int numPlayers;
     private int currentPlayerIndex;
     private List<Player> players;
-    private List<Player> disconnectedPlayers = new ArrayList<>();
-    private List<Player> reconnectingPlayers = new ArrayList<>();
 
     private GamePhase currentPhase;
 
@@ -78,17 +76,6 @@ public class Game {
     }
     public String getCurrentPhase() {  return currentPhase.toString(); }
     public Player getCurrentPlayer() { return players.get(currentPlayerIndex);}
-
-    public void addDisconnectedPlayer(String nickname) {
-        Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
-        this.disconnectedPlayers.add(p);
-        this.players.remove(p);
-    }
-    public void addReconnectingPlayer(String nickname) {
-        Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
-        reconnectingPlayers.add(p);
-        disconnectedPlayers.add(p);
-    }
 
     private ArrayList<BuildingCard> loadBuildingsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
@@ -245,13 +232,6 @@ public class Game {
     public void nextPlayer(){
         currentPlayerIndex++;
 
-        System.out.println("DEBUG nextPlayer - disconnectedPlayers: " + disconnectedPlayers);
-        System.out.println("DEBUG nextPlayer - currentPlayerIndex: " + currentPlayerIndex);
-        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            System.out.println("DEBUG skipping: " + players.get(currentPlayerIndex).getNickname());
-            currentPlayerIndex++;
-        }
-
         currentDrawnLower = 0;
         currentDrawnUpper = 0;
 
@@ -260,10 +240,6 @@ public class Game {
                 currentPhase = GamePhase.RESOLUTION;
                 recalculateDrawOrder();
                 currentPlayerIndex = 0;
-                // salta i disconnessi anche dopo il reset
-                while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-                    currentPlayerIndex++;
-                }
 
                 // If there are 5 player, tile A only adds food, so we manually skip that player's turn
                 if(numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
@@ -284,7 +260,6 @@ public class Game {
                 nextTurn();
             }
         }
-        System.out.println("DEBUG nextPlayer END - currentPlayerIndex: " + currentPlayerIndex + ", phase: " + currentPhase + ", currentPlayer: " + (currentPlayerIndex < players.size() ? players.get(currentPlayerIndex).getNickname() : "OUT OF BOUNDS"));
     }
 
     public void recalculateDrawOrder() {
@@ -323,8 +298,7 @@ public class Game {
      * and reorders the players based on the totems placed on the turn order tile.
      */
     public void nextTurn() {
-        // sposta i giocatori in coda di riconnessione tra quelli attivi
-        //disconnectedPlayers.removeAll(reconnectingPlayers)
+
         for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
             List<BuildingCard> buildings = p.getBuildings();
             for(BuildingCard b : buildings) {
@@ -350,12 +324,6 @@ public class Game {
         this.board.getOrder().setPlayers(this.players);
 
         this.currentPlayerIndex = 0;
-
-        // salta i disconnessi all'inizio del nuovo turno
-        while (currentPlayerIndex < players.size() &&
-                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            currentPlayerIndex++;
-        }
         //logica per riordinare i players in base all'ordine sulla tileboard
         int pos = 0;
         for(Tile tile: board.getTrack()) {
@@ -379,13 +347,7 @@ public class Game {
 
         }
 
-        // salta i disconnessi all'inizio del nuovo turno
-        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            currentPlayerIndex++;
-        }
-        this.players.addAll(reconnectingPlayers);
 
-        reconnectingPlayers.clear();
         board.resetTrackTiles();
 
     }
