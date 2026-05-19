@@ -107,6 +107,7 @@ public class GameView {
         } else {
             playerPanel.updateStats(players, manager.getNickName());
         }
+        gameRoot.setCenter(splitPane);
         gameRoot.setRight(playerPanel.getRightPanel());
 
 
