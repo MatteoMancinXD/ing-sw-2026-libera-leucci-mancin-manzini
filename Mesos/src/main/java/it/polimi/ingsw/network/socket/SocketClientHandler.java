@@ -47,6 +47,19 @@ public class SocketClientHandler implements Runnable{
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Player " + nickname + " disconnected.");
         } finally {
+            if (nickname != null) {
+                // cerca in startedGames prima, poi in availableGames
+                GameController ctrl = getController();
+                if (ctrl == null && token != null) {
+                    GameSession session = mngr.getSessions().get(token);
+                    if (session != null) {
+                        ctrl = mngr.getAvailableGames().get(session.getGameID());
+                    }
+                }
+                if (ctrl != null) {
+                    ctrl.handleDisconnection(nickname);
+                }
+            }
             closeConnection();
         }
     }
@@ -97,13 +110,39 @@ public class SocketClientHandler implements Runnable{
 
     public void handleJoinGame(JoinGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
-
-        System.out.println("JoinGameMessage received");
-
         this.nickname = msg.getNickname();
         int gameID = msg.getGameID();
+        System.out.println("JoinGameMessage received");
+
+        GameController startedCtrl = mngr.getStartedGames().get(gameID);
+        if (startedCtrl != null && startedCtrl.isPlayerDisconnected(nickname)) {
+            boolean reconnected = startedCtrl.reconnect(nickname, view);
+            if (reconnected) {
+                this.token = UUID.randomUUID().toString();
+                mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+                sendMessage(new TokenResponseMessage(this.token));
+                System.out.println(nickname + " reconnected to game #" + gameID);
+                return;
+            }
+        }
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
+
+        if (ctrl == null) {
+            // fallback: cerca in startedGames per riconnessione anche se non nel set disconnessi
+            ctrl = mngr.getStartedGames().get(gameID);
+            if (ctrl != null) {
+                boolean reconnected = ctrl.reconnect(nickname, view);
+                if (reconnected) {
+                    this.token = UUID.randomUUID().toString();
+                    mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+                    sendMessage(new TokenResponseMessage(this.token));
+                    return;
+                }
+            }
+            sendMessage(new ErrorMessage("Game " + gameID + " not found"));
+            return;
+        }
         boolean success = ctrl.addPlayer(view, nickname);
         if (!success) {
             sendMessage(new ErrorMessage("Nickname already in use or match already filled"));
