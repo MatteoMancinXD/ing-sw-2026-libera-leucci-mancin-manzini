@@ -37,6 +37,8 @@ public class GameController implements GameObserver {
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> timeoutTask;
 
+    private boolean gameStarted = false;
+
     //private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
 
     public GameController(int gameID, String gameMaster, int numPlayers, GameStarter starter) {
@@ -78,6 +80,9 @@ public class GameController implements GameObserver {
 
                 if (game.getPlayers().size() == game.getNumPlayers() && everyoneReady) {
                     game.startGame();
+
+                    this.gameStarted = true;
+
                     starter.onGameStart(gameID);
 
                     System.out.println("Game #" + gameID + " is starting.");
@@ -121,6 +126,7 @@ public class GameController implements GameObserver {
             broadcastMessage("Current players: " + curr + "/" + max + "...");
             if (game.getPlayers().size() == game.getNumPlayers()) {
                 game.startGame();
+                this.gameStarted = true;
                 starter.onGameStart(gameID);
                 startPingThread();
                 System.out.println("Game #" + gameID + " is starting.");
@@ -327,21 +333,41 @@ public class GameController implements GameObserver {
 
         }
     }
-        public boolean reconnect(String nickname, VirtualView view) {
-            synchronized (game) {
-                if (!disconnectedPlayers.contains(nickname)) return false;
-                game.addReconnectingPlayer(nickname);
-                disconnectedPlayers.remove(nickname); // rimuovi dai disconnessi subito per annullare il timeout
-                clients.put(nickname, view);
-                System.out.println(nickname + " reconnected to game #" + gameID);
-                broadcastMessage(nickname + " has reconnected.");
-                cancelTimeout();
-                Board board = game.getBoard();
-                String current = game.getCurrentPlayer().getNickname();
-                new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase())).start();
-                return true;
-            }
+//        public boolean reconnect(String nickname, VirtualView view) {
+//            synchronized (game) {
+//                if (!disconnectedPlayers.contains(nickname)) return false;
+//                game.addReconnectingPlayer(nickname);
+//                disconnectedPlayers.remove(nickname); // rimuovi dai disconnessi subito per annullare il timeout
+//                clients.put(nickname, view);
+//                System.out.println(nickname + " reconnected to game #" + gameID);
+//                broadcastMessage(nickname + " has reconnected.");
+//                cancelTimeout();
+//                Board board = game.getBoard();
+//                String current = game.getCurrentPlayer().getNickname();
+//                new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase())).start();
+//                return true;
+//            }
+//        }
+public boolean reconnect(String nickname, VirtualView view) {
+    synchronized (game) {
+        if (!clients.containsKey(nickname)) return false;
+        game.addReconnectingPlayer(nickname);
+
+        disconnectedPlayers.remove(nickname);
+        clients.put(nickname, view);
+
+        System.out.println(nickname + " reconnected successfully to game #" + gameID);
+        broadcastMessage(nickname + " has reconnected.");
+        cancelTimeout();
+
+        if (gameStarted) {
+            Board board = game.getBoard();
+            String current = game.getCurrentPlayer().getNickname();
+            new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase())).start();
         }
+        return true;
+    }
+}
 
         public boolean isPlayerDisconnected(String nickname) {
             return disconnectedPlayers.contains(nickname);
@@ -351,29 +377,35 @@ public class GameController implements GameObserver {
             return game.getPlayers().size() == game.getNumPlayers();
         }
 
-        public void handleDisconnection(String nickname) {
-            synchronized (game) {
-                if (!clients.containsKey(nickname)) return;
-                if (disconnectedPlayers.contains(nickname)) return; // già disconnesso
+    public void handleDisconnection(String nickname) {
+        synchronized (game) {
+            if (!clients.containsKey(nickname)) return;
+            if (disconnectedPlayers.contains(nickname)) return; // Già disconnesso
 
-                disconnectedPlayers.add(nickname);
-                System.out.println(nickname + " disconnected from game #" + gameID);
-                broadcastMessage(nickname + " has disconnected. Their turns will be skipped.");
+            disconnectedPlayers.add(nickname);
+            System.out.println(nickname + " disconnected from game #" + gameID);
+            broadcastMessage(nickname + " has disconnected. Their turns will be skipped.");
 
-                long connectedCount = clients.keySet().stream()
-                        .filter(n -> !disconnectedPlayers.contains(n))
-                        .count();
+            if (!gameStarted) {
+                game.getPlayers().removeIf(p -> p.getNickname().equals(nickname));
+                return;
+            }
 
-                if (connectedCount <= 1) startTimeout();
-                game.addDisconnectedPlayer(nickname);
-                if (game.getCurrentPlayer().getNickname().equals(nickname)) {
-                    game.nextPlayer();
-                    Board board = game.getBoard();
-                    String current = game.getCurrentPlayer().getNickname();
-                    new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase())).start();
-                }
+            long connectedCount = clients.keySet().stream()
+                    .filter(n -> !disconnectedPlayers.contains(n))
+                    .count();
+
+            if (connectedCount <= 1) startTimeout();
+            boolean wasTheirTurn = game.getCurrentPlayer().getNickname().equals(nickname);
+            game.addDisconnectedPlayer(nickname);
+            if (wasTheirTurn) {
+                game.nextPlayer();
+                Board board = game.getBoard();
+                String current = game.getCurrentPlayer().getNickname();
+                new Thread(() -> broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase())).start();
             }
         }
+    }
 
         private void startTimeout() {
             cancelTimeout();
@@ -469,8 +501,10 @@ public class GameController implements GameObserver {
     }
     private void startPingThread() {
         pingScheduler.scheduleAtFixedRate(() -> {
+            List<String> toDisconnect = new ArrayList<>();
+
+            // Blocchiamo i client solo per il tempo strettamente necessario a fare i ping
             synchronized (clients) {
-                List<String> toDisconnect = new ArrayList<>();
                 for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                     if (disconnectedPlayers.contains(entry.getKey())) continue;
                     try {
@@ -479,8 +513,14 @@ public class GameController implements GameObserver {
                         toDisconnect.add(entry.getKey());
                     }
                 }
-                for (String n : toDisconnect) handleDisconnection(n);
             }
+
+            // ATTENZIONE: Chiamiamo handleDisconnection FUORI dal blocco synchronized(clients)
+            // per evitare il Deadlock con il GameLock!
+            for (String n : toDisconnect) {
+                handleDisconnection(n);
+            }
+
         }, 5, 5, TimeUnit.SECONDS);
     }
 }

@@ -24,7 +24,7 @@ public class Game {
     private int currentPlayerIndex;
     private List<Player> players;
     private List<Player> disconnectedPlayers = new ArrayList<>();
-    private List<Player> reconnectingPlayers = new ArrayList<>();
+    //private List<Player> reconnectingPlayers = new ArrayList<>();
 
     private GamePhase currentPhase;
 
@@ -81,13 +81,16 @@ public class Game {
 
     public void addDisconnectedPlayer(String nickname) {
         Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
-        this.disconnectedPlayers.add(p);
-        this.players.remove(p);
+        if (p != null) {
+            this.disconnectedPlayers.add(p); // Lo mettiamo solo nella blacklist
+        }
     }
+
     public void addReconnectingPlayer(String nickname) {
-        Player p = this.players.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
-        reconnectingPlayers.add(p);
-        disconnectedPlayers.add(p);
+        Player p = this.disconnectedPlayers.stream().filter(p1 -> p1.getNickname().equals(nickname)).findFirst().orElse(null);
+        if (p != null) {
+            disconnectedPlayers.remove(p); // Lo togliamo dalla blacklist e torna a giocare istantaneamente
+        }
     }
 
     private ArrayList<BuildingCard> loadBuildingsFromJson() {
@@ -242,59 +245,120 @@ public class Game {
      * Automatically handles the phase change (from PLACEMENT to RESOLUTION) or
      * advances to the next round if all players have completed their actions.
      */
-    public void nextPlayer(){
+//    public void nextPlayer(){
+//        currentPlayerIndex++;
+//
+//        System.out.println("DEBUG nextPlayer - disconnectedPlayers: " + disconnectedPlayers);
+//        System.out.println("DEBUG nextPlayer - currentPlayerIndex: " + currentPlayerIndex);
+//        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+//            System.out.println("DEBUG skipping: " + players.get(currentPlayerIndex).getNickname());
+//            currentPlayerIndex++;
+//        }
+//
+//        currentDrawnLower = 0;
+//        currentDrawnUpper = 0;
+//
+//        if(currentPlayerIndex >= players.size()) {      //Fine player
+//            if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
+//                currentPhase = GamePhase.RESOLUTION;
+//                recalculateDrawOrder();
+//                currentPlayerIndex = 0;
+//                // salta i disconnessi anche dopo il reset
+//                while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+//                    currentPlayerIndex++;
+//                }
+//
+//                // If there are 5 player, tile A only adds food, so we manually skip that player's turn
+//                if(numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
+//                    currentPlayerIndex++;
+//                }
+//            }
+//            else if( currentPhase == GamePhase.RESOLUTION) {
+//                Player bonusPlayer = checkExtraPickBuilding();
+//                if (bonusPlayer != null) {
+//                    currentPhase = GamePhase.EXTRA_PICK;
+//                    currentPlayerIndex = players.indexOf(bonusPlayer);          //Impostiamo "a mano" il player index al player che ha il building extra pick
+//                }
+//                else {
+//                    nextTurn();
+//                }
+//            }
+//            else if (currentPhase == GamePhase.EXTRA_PICK) {
+//                nextTurn();
+//            }
+//        }
+//        System.out.println("DEBUG nextPlayer END - currentPlayerIndex: " + currentPlayerIndex + ", phase: " + currentPhase + ", currentPlayer: " + (currentPlayerIndex < players.size() ? players.get(currentPlayerIndex).getNickname() : "OUT OF BOUNDS"));
+//    }
+    public void nextPlayer() {
         currentPlayerIndex++;
-
-        System.out.println("DEBUG nextPlayer - disconnectedPlayers: " + disconnectedPlayers);
-        System.out.println("DEBUG nextPlayer - currentPlayerIndex: " + currentPlayerIndex);
-        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            System.out.println("DEBUG skipping: " + players.get(currentPlayerIndex).getNickname());
-            currentPlayerIndex++;
-        }
-
         currentDrawnLower = 0;
         currentDrawnUpper = 0;
 
-        if(currentPlayerIndex >= players.size()) {      //Fine player
-            if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
+        if (currentPlayerIndex >= players.size()) {
+            if (currentPhase == GamePhase.PLACEMENT) {
                 currentPhase = GamePhase.RESOLUTION;
                 recalculateDrawOrder();
                 currentPlayerIndex = 0;
-                // salta i disconnessi anche dopo il reset
-                while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+                if (numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
                     currentPlayerIndex++;
                 }
-
-                // If there are 5 player, tile A only adds food, so we manually skip that player's turn
-                if(numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
-                    currentPlayerIndex++;
-                }
-            }
-            else if( currentPhase == GamePhase.RESOLUTION) {
+            } else if (currentPhase == GamePhase.RESOLUTION) {
                 Player bonusPlayer = checkExtraPickBuilding();
                 if (bonusPlayer != null) {
                     currentPhase = GamePhase.EXTRA_PICK;
-                    currentPlayerIndex = players.indexOf(bonusPlayer);          //Impostiamo "a mano" il player index al player che ha il building extra pick
-                }
-                else {
+                    currentPlayerIndex = players.indexOf(bonusPlayer);
+                } else {
                     nextTurn();
+                    return; // Importante: nextTurn azzera già l'indice, usciamo.
                 }
-            }
-            else if (currentPhase == GamePhase.EXTRA_PICK) {
+            } else if (currentPhase == GamePhase.EXTRA_PICK) {
                 nextTurn();
+                return;
             }
         }
-        System.out.println("DEBUG nextPlayer END - currentPlayerIndex: " + currentPlayerIndex + ", phase: " + currentPhase + ", currentPlayer: " + (currentPlayerIndex < players.size() ? players.get(currentPlayerIndex).getNickname() : "OUT OF BOUNDS"));
+
+        // SALTO DEI GIOCATORI DISCONNESSI
+        // Se il giocatore a questo indice è nella blacklist, andiamo avanti
+        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex))) {
+            currentPlayerIndex++;
+            if (currentPlayerIndex >= players.size()) {
+                // Se saltando i disconnessi abbiamo finito il giro, passiamo alla prossima fase!
+                nextPlayer();
+                return;
+            }
+        }
     }
 
+//    public void recalculateDrawOrder() {
+//        ArrayList<Player> drawOrder = new ArrayList<>();
+//        for(Tile tile: board.getTrack()) {
+//            if (tile.getStatus()) {
+//                Player p = tile.getPlayer();
+//                drawOrder.add(p);
+//            }
+//        }
+//        this.players = drawOrder;
+//    }
     public void recalculateDrawOrder() {
         ArrayList<Player> drawOrder = new ArrayList<>();
+
+        // 1. Mettiamo in ordine chi ha giocato normalmente e piazzato il Totem
         for(Tile tile: board.getTrack()) {
             if (tile.getStatus()) {
                 Player p = tile.getPlayer();
                 drawOrder.add(p);
             }
         }
+
+        // 2. IL FIX CHE SALVA LA GRAFICA:
+        // Recuperiamo i giocatori offline (o chi ha saltato il turno) che non sono sui Totem.
+        // Li aggiungiamo in fondo alla fila per NON far rimpicciolire l'array!
+        for (Player p : this.players) {
+            if (!drawOrder.contains(p)) {
+                drawOrder.add(p);
+            }
+        }
+
         this.players = drawOrder;
     }
 
@@ -322,51 +386,75 @@ public class Game {
      * Resolves events, restores the board, advances the round counter (or ends the game),
      * and reorders the players based on the totems placed on the turn order tile.
      */
+//    public void nextTurn() {
+//        // sposta i giocatori in coda di riconnessione tra quelli attivi
+//        //disconnectedPlayers.removeAll(reconnectingPlayers)
+//        for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
+//            List<BuildingCard> buildings = p.getBuildings();
+//            for(BuildingCard b : buildings) {
+//                b.onRoundEnd(p);
+//            }
+//        }
+//
+//        board.solveEvents(this.players, observer);
+//
+//        board.clearLowerRow();
+//        board.shiftRow();
+//        if(board.fill(numPlayers, era, this.deck, this.buildingDeck)) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
+//            nextEra();
+//        }
+//
+//        this.round++;
+//        if (this.round > 10) {
+//            endGame();
+//            return;
+//        }
+//
+//        this.currentPhase = GamePhase.PLACEMENT;
+//        this.board.getOrder().setPlayers(this.players);
+//
+//        this.currentPlayerIndex = 0;
+//
+//        // salta i disconnessi all'inizio del nuovo turno
+//        while (currentPlayerIndex < players.size() &&
+//                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+//            currentPlayerIndex++;
+//        }
+//        //logica per riordinare i players in base all'ordine sulla tileboard
+//        int pos = 0;
+//        for(Tile tile: board.getTrack()) {
+//            if (tile.getStatus()) {
+//                Player p = tile.getPlayer();
+//                for(BuildingCard b : p.getBuildings()) {
+//                    b.onOrderTilePlacement(p, pos, board.getOrder());
+//                }
+//                pos++;
+//            }
+//        }
+//
+//        //Dare prestigio in base all order tile:
+//        OrderTile oTile = board.getOrder();
+//        for (int i = 0; i < this.players.size(); i++) {
+//            try {
+//                players.get(i).editFood(oTile.getModifiers()[i]);
+//            } catch (IllegalArgumentException e) {
+//                players.get(i).editPrestige(-2);      //se non ha abbastanza cibo si toglie 2 di prestigio
+//            }
+//
+//        }
+//
+//        // salta i disconnessi all'inizio del nuovo turno
+//        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
+//            currentPlayerIndex++;
+//        }
+//        this.players.addAll(reconnectingPlayers);
+//
+//        reconnectingPlayers.clear();
+//        board.resetTrackTiles();
+//
+//    }
     public void nextTurn() {
-        // sposta i giocatori in coda di riconnessione tra quelli attivi
-        //disconnectedPlayers.removeAll(reconnectingPlayers)
-        for(Player p : this.players) {                              //Attivazione effetti building onRoundEnd()
-            List<BuildingCard> buildings = p.getBuildings();
-            for(BuildingCard b : buildings) {
-                b.onRoundEnd(p);
-            }
-        }
-
-        board.solveEvents(this.players, observer);
-
-        board.clearLowerRow();
-        board.shiftRow();
-        if(board.fill(numPlayers, era, this.deck, this.buildingDeck)) {              //Round !=0 : .fill() riempie solo la riga superiore ; Fill Boolean() true = nextEra, false = niente
-            nextEra();
-        }
-
-        this.round++;
-        if (this.round > 10) {
-            endGame();
-            return;
-        }
-
-        this.currentPhase = GamePhase.PLACEMENT;
-        this.board.getOrder().setPlayers(this.players);
-
-        this.currentPlayerIndex = 0;
-
-        // salta i disconnessi all'inizio del nuovo turno
-        while (currentPlayerIndex < players.size() &&
-                disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            currentPlayerIndex++;
-        }
-        //logica per riordinare i players in base all'ordine sulla tileboard
-        int pos = 0;
-        for(Tile tile: board.getTrack()) {
-            if (tile.getStatus()) {
-                Player p = tile.getPlayer();
-                for(BuildingCard b : p.getBuildings()) {
-                    b.onOrderTilePlacement(p, pos, board.getOrder());
-                }
-                pos++;
-            }
-        }
+        // ... (resto del tuo codice iniziale del metodo nextTurn rimane uguale) ...
 
         //Dare prestigio in base all order tile:
         OrderTile oTile = board.getOrder();
@@ -374,20 +462,21 @@ public class Game {
             try {
                 players.get(i).editFood(oTile.getModifiers()[i]);
             } catch (IllegalArgumentException e) {
-                players.get(i).editPrestige(-2);      //se non ha abbastanza cibo si toglie 2 di prestigio
+                players.get(i).editPrestige(-2);
             }
-
         }
 
-        // salta i disconnessi all'inizio del nuovo turno
-        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex).getNickname())) {
-            currentPlayerIndex++;
-        }
-        this.players.addAll(reconnectingPlayers);
-
-        reconnectingPlayers.clear();
+        this.currentPlayerIndex = 0; // Si ricomincia dal primo giocatore per il nuovo turno
         board.resetTrackTiles();
 
+        // SALTO DEI GIOCATORI DISCONNESSI ALL'INIZIO DEL ROUND
+        while (currentPlayerIndex < players.size() && disconnectedPlayers.contains(players.get(currentPlayerIndex))) {
+            currentPlayerIndex++;
+            if (currentPlayerIndex >= players.size()) {
+                nextPlayer();
+                return;
+            }
+        }
     }
     /**
      * Handles the transition to the next era.
@@ -512,7 +601,7 @@ public class Game {
         board.getTrack().get(pos).place(p);             //place imposta lo Status della Tile a True e salva il player
 
         List<Player> orderPlayers = this.board.getOrder().getPlayers();
-        orderPlayers.set(currentPlayerIndex, null);
+        //orderPlayers.set(currentPlayerIndex, null);
         this.board.getOrder().setPlayers(orderPlayers);
 
         nextPlayer();

@@ -95,25 +95,74 @@ public class SocketClientHandler implements Runnable{
         sendMessage(new TokenResponseMessage(this.token));
     }
 
-    public void handleJoinGame(JoinGameMessage msg) {
-        VirtualSocketView view = new VirtualSocketView(nickname, out);
+//    public void handleJoinGame(JoinGameMessage msg) {
+//        VirtualSocketView view = new VirtualSocketView(nickname, out);
+//
+//        System.out.println("JoinGameMessage received");
+//
+//        this.nickname = msg.getNickname();
+//        int gameID = msg.getGameID();
+//
+//        GameController ctrl = mngr.getAvailableGames().get(gameID);
+//        boolean success = ctrl.addPlayer(view, nickname);
+//        if (!success) {
+//            sendMessage(new ErrorMessage("Nickname already in use or match already filled"));
+//            return;
+//        }
+//
+//        this.token = UUID.randomUUID().toString();
+//        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+//        sendMessage(new TokenResponseMessage(this.token));
+//    }
+public void handleJoinGame(JoinGameMessage msg) {
+    System.out.println("JoinGameMessage received");
 
-        System.out.println("JoinGameMessage received");
+    // 1. PRIMA assegniamo il nickname!
+    this.nickname = msg.getNickname();
+    int gameID = msg.getGameID();
 
-        this.nickname = msg.getNickname();
-        int gameID = msg.getGameID();
+    // 2. ORA creiamo la view con il nickname corretto
+    VirtualSocketView view = new VirtualSocketView(nickname, out);
 
-        GameController ctrl = mngr.getAvailableGames().get(gameID);
-        boolean success = ctrl.addPlayer(view, nickname);
-        if (!success) {
-            sendMessage(new ErrorMessage("Nickname already in use or match already filled"));
-            return;
-        }
+    // 3. Cerchiamo il controller in entrambe le mappe
+    GameController ctrl = mngr.getAvailableGames().get(gameID);
+    boolean isReconnection = false;
 
-        this.token = UUID.randomUUID().toString();
-        mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
-        sendMessage(new TokenResponseMessage(this.token));
+    // Se non è in quelle disponibili, cerchiamo in quelle già iniziate
+    if (ctrl == null) {
+        ctrl = mngr.getStartedGames().get(gameID);
+        isReconnection = true;
     }
+
+    // Se è ancora null, la partita non esiste proprio
+    if (ctrl == null) {
+        sendMessage(new ErrorMessage("Game not found!"));
+        return;
+    }
+
+    // 4. Ora ctrl è sicuramente valido. Proviamo ad aggiungere o riconnettere il giocatore
+    boolean success;
+
+    // (Nota: se il tuo ctrl.addPlayer gestisce IN AUTOMATICO anche le riconnessioni,
+    // puoi lasciare semplicemente "success = ctrl.addPlayer(view, nickname);")
+    if (isReconnection) {
+        System.out.println("Attempting reconnection for " + nickname + " to game " + gameID);
+        // Assicurati di avere questo metodo nel GameController come discusso nel messaggio precedente
+        success = ctrl.reconnect(nickname, view);
+    } else {
+        success = ctrl.addPlayer(view, nickname);
+    }
+
+    if (!success) {
+        sendMessage(new ErrorMessage("Nickname already in use, match filled, or player not in this game"));
+        return;
+    }
+
+    // 5. Generiamo il token per la sessione
+    this.token = UUID.randomUUID().toString();
+    mngr.getSessions().put(this.token, new GameSession(gameID, nickname));
+    sendMessage(new TokenResponseMessage(this.token));
+}
 
     public void handleDrawCard(DrawCardMessage msg) {
         GameController ctrl = getController();
