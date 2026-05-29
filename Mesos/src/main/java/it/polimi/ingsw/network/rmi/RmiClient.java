@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.ServerInterface;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import it.polimi.ingsw.view.ui;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -161,7 +163,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException {
+    public void receiveBoardUpdate(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
         userInterface.updateBoard(board, players);
     }
 

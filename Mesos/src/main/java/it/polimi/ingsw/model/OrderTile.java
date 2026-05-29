@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.network.snapshots.OrderTileSnapshot;
 import it.polimi.ingsw.view.gui.PlayerPanel;
 
 import java.io.Serializable;
@@ -60,5 +61,13 @@ public class OrderTile implements Serializable {
     public List<Player> getPlayers() { return new ArrayList<>(players); }
 
     public void setPlayers(List<Player> players) { this.players = players; }
+
+    public OrderTileSnapshot toSnapshot()
+    {
+        return new OrderTileSnapshot(
+                modifiers,
+                players.stream().map(p -> p == null ? null : p.toSnapshot()).toList()
+        );
+    }
 
 }

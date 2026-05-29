@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.network.snapshots.CardSnapshot;
+
 import java.io.Serializable;
 
 public abstract class Card implements Serializable {
@@ -38,4 +40,6 @@ public abstract class Card implements Serializable {
     public boolean isBuildingCard() {return false;}
 
     public boolean isSustenanceEvent() {return false;}
+
+    public CardSnapshot toSnapshot() { return new CardSnapshot(id, getShortString()); }
 }

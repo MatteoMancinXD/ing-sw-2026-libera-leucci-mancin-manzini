@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.characters.*;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -28,7 +29,7 @@ public class PlayerPanel {
      * @param manager   GuiManager reference passed to ChatView
      * @return BorderPane ready to be set as gameRoot.setRight()
      */
-    public PlayerPanel(List<Player> players, String localNick, GuiManager manager) {
+    public PlayerPanel(List<PlayerSnapshot> players, String localNick, GuiManager manager) {
         rightPanel = new BorderPane();
         rightPanel.setPrefWidth(220);
         rightPanel.setStyle("-fx-background-color: #1a1a2e;");
@@ -56,7 +57,7 @@ public class PlayerPanel {
 
     //update player stats without touching the chat
     //called on every updateBoard() after the first show()
-    public void updateStats(List<Player> players, String localNick) {
+    public void updateStats(List<PlayerSnapshot> players, String localNick) {
         sideBar.getChildren().clear();
         fillStats(players, localNick);          // refill with updated data
     }
@@ -64,32 +65,32 @@ public class PlayerPanel {
     //  Private helpers
 
     //called by updateStats() and by constructor
-    private void fillStats(List<Player> players, String localNick) {
+    private void fillStats(List<PlayerSnapshot> players, String localNick) {
         sideBar.getChildren().add(makeLabel("PLAYERS:"));
         sideBar.getChildren().add(makeLabel("---STATS---"));
 
-        for (Player p : players) {
-            String name = p.getNickname().equals(localNick)
-                    ? "Player: " + p.getNickname() + " (YOU)"
-                    : "Player: " + p.getNickname();
+        for (PlayerSnapshot p : players) {
+            String name = p.nickname().equals(localNick)
+                    ? "Player: " + p.nickname() + " (YOU)"
+                    : "Player: " + p.nickname();
 
 
-            String buildingsText = p.getBuildings().stream()
+            String buildingsText = p.buildings().stream()
                     .map(b -> b.getClass().getSimpleName())
                     .collect(Collectors.joining("\n"));
 
 
 
             sideBar.getChildren().add(makeLabel(name));
-            sideBar.getChildren().add(makeLabel("Food: " + p.getFood() + "  Prestige: " + p.getPrestige()));
-            sideBar.getChildren().add(makeLabel("Stars: "    + p.getTotStars()));
-            sideBar.getChildren().add(makeLabel("Artists: "    + p.getArtists().size()));
-            sideBar.getChildren().add(makeLabel("Builders: "   + p.getBuilders().size() + " tot bonus: " + p.getBuilders().stream().mapToInt(BuilderCard::getDiscount).sum()));
-            sideBar.getChildren().add(makeLabel("Harvesters: " + p.getHarvesters().size()));
-            sideBar.getChildren().add(makeLabel("Hunters: "    + p.getHunters().size()));
-            sideBar.getChildren().add(makeLabel("Shamans: "    + p.getShamans().size()));
-            sideBar.getChildren().add(makeLabel("Inventors: "  + p.getInventors().size()));
-            sideBar.getChildren().add(makeLabel("Buildings: "  + p.getBuildings().size()));
+            sideBar.getChildren().add(makeLabel("Food: " + p.food() + "  Prestige: " + p.prestige()));
+            sideBar.getChildren().add(makeLabel("Stars: "    + p.totStars()));
+            sideBar.getChildren().add(makeLabel("Artists: "    + p.artists().size()));
+            sideBar.getChildren().add(makeLabel("Builders: "   + p.builders().size() + " tot bonus: " + p.totDiscount()));
+            sideBar.getChildren().add(makeLabel("Harvesters: " + p.harvesters().size()));
+            sideBar.getChildren().add(makeLabel("Hunters: "    + p.hunters().size()));
+            sideBar.getChildren().add(makeLabel("Shamans: "    + p.shamans().size()));
+            sideBar.getChildren().add(makeLabel("Inventors: "  + p.inventors().size()));
+            sideBar.getChildren().add(makeLabel("Buildings: "  + p.buildings().size()));
             sideBar.getChildren().add(makeLabel("Buildings list:\n" + buildingsText));
 
             sideBar.getChildren().add(new Separator());

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characters.*;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.io.Serializable;
 import java.util.*;
@@ -139,4 +140,22 @@ public class Player implements Serializable {
     }
 
     public Totem getTotem() { return this.totem; }
+
+    public PlayerSnapshot toSnapshot() {
+        return new PlayerSnapshot(
+                nickname,
+                food,
+                prestige,
+                totem,
+                hunters.stream().map(Card::toSnapshot).toList(),
+                builders.stream().map(Card::toSnapshot).toList(),
+                harvesters.stream().map(Card::toSnapshot).toList(),
+                artists.stream().map(Card::toSnapshot).toList(),
+                inventors.stream().map(Card::toSnapshot).toList(),
+                shamans.stream().map(Card::toSnapshot).toList(),
+                buildings.stream().map(Card::toSnapshot).toList(),
+                totStars,
+                totDiscount
+        );
+    }
 }

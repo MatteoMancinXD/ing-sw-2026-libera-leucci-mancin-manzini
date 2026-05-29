@@ -1,11 +1,13 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.characters.BuilderCard;
 import it.polimi.ingsw.network.GameStarter;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.db.DatabaseManagerDAO;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.GameSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -71,9 +73,9 @@ public class GameController implements GameObserver {
                     Board board = game.getBoard();
                     String current = game.getCurrentPlayer().getNickname();
 
-
+                    GameSnapshot snap = game.toSnapshot();
                     new Thread(() -> {
-                        broadcastUpdateBoard(board, game.getPlayers(), current, game.getCurrentPhase());
+                        broadcastUpdate(snap);
                     }).start();
                 }
             } else {
@@ -158,8 +160,10 @@ public class GameController implements GameObserver {
 
             try {
                 game.resolveAction(row, idx);
+
+                GameSnapshot snap = game.toSnapshot();
                 new Thread(() -> {
-                    broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                    broadcastUpdate(snap);
                     //notifyCurrentPlayer();
                 }).start();
             } catch (IllegalStateException | IllegalArgumentException e) {
@@ -201,21 +205,28 @@ public class GameController implements GameObserver {
             }
 
             game.placeTotem(tileIndex);
+            GameSnapshot snap = game.toSnapshot();
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                broadcastUpdate(snap);
             }).start();
 
             return true;
         }
     }
 
-    public void broadcastUpdateBoard(Board board, List<Player> players, String current, String phase) {
+    public void broadcastUpdate(GameSnapshot game) {
         synchronized (clients) {
+            BoardSnapshot board = game.board();
+            List<PlayerSnapshot> players = game.players();
+            String phase = game.phase().toString();
+            int currentIdx = game.currentPlayerIndex();
+            String currentNick = players.get(currentIdx).nickname();
+
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                 new Thread(() -> {
                     try {
                         entry.getValue().updateBoard(board, players);
-                        entry.getValue().notifyTurn(current, phase);
+                        entry.getValue().notifyTurn(currentNick, phase);
                     } catch (RemoteException e) {
                         System.out.println("Client "+ entry.getKey() + " unreachable");
                     }
@@ -286,10 +297,10 @@ public class GameController implements GameObserver {
         synchronized (game) {
             if (!checkPlayer(nickname)) return;
             game.skipExtraPick();
-            Board board = game.getBoard();
 
+            GameSnapshot snap = game.toSnapshot();
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                broadcastUpdate(snap);
                 //notifyCurrentPlayer();
             }).start();
         }
@@ -307,9 +318,9 @@ public class GameController implements GameObserver {
             game.nextTurn();
 
             //update board
-            Board board = game.getBoard();
+            GameSnapshot snap = game.toSnapshot();
             new Thread(() -> {
-                broadcastUpdateBoard(board, game.getPlayers(), game.getCurrentPlayer().getNickname(), game.getCurrentPhase());
+                broadcastUpdate(snap);
                 //notifyCurrentPlayer();
             }).start();
         }

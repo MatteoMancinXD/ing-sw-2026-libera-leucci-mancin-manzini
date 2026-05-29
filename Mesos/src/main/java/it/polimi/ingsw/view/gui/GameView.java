@@ -3,6 +3,8 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -32,8 +34,8 @@ public class GameView {
     private ChatView chatView;
     private PlayerPanel playerPanel;
     private Label turnLabel;
-    private Board lastBoard;
-    private List<Player> lastPlayers;
+    private BoardSnapshot lastBoard;
+    private List<PlayerSnapshot> lastPlayers;
     private String currentPlayerNickname = "";
     private String currentPhase = "";
 
@@ -42,13 +44,13 @@ public class GameView {
         this.manager = manager;
     }
 
-    public void show(Board board, List<Player> players) {
+    public void show(BoardSnapshot board, List<PlayerSnapshot> players) {
 
         this.lastBoard = board;
         this.lastPlayers = players;
         // Save nicknames for chat recognition
         playersNicknames.clear();
-        for (Player p : players) playersNicknames.add(p.getNickname());
+        for (PlayerSnapshot p : players) playersNicknames.add(p.nickname());
 
         int numPlayers = players.size();
         boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
@@ -84,9 +86,9 @@ public class GameView {
 
 
         table.getChildren().addAll(
-                CardRowView.build(board.getUpperRow(), 150, true, manager, isMyTurn && currentPhase.equals("RESOLUTION")),
-                TrackView.build(board.getOrder(), board.getTrack(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
-                CardRowView.build(board.getLowerRow(), 150, false, manager, isMyTurn && currentPhase.equals("RESOLUTION"))
+                CardRowView.build(board.upperRow(), 150, true, manager, isMyTurn && currentPhase.equals("RESOLUTION")),
+                TrackView.build(board.order(), board.track(), numPlayers, manager, isMyTurn && currentPhase.equals("PLACEMENT")),
+                CardRowView.build(board.lowerRow(), 150, false, manager, isMyTurn && currentPhase.equals("RESOLUTION"))
         );
         VBox handSection = PlayerHandView.build(players, manager.getNickName());
 

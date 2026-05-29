@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -31,7 +33,7 @@ public class VirtualRMIView implements VirtualView {
     }
 
     @Override
-    public void updateBoard(Board board, List<Player> players) throws RemoteException {
+    public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
         clientStub.receiveBoardUpdate(board, players);
     }
     @Override

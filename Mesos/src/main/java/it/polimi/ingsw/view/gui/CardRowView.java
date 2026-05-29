@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Card;
+import it.polimi.ingsw.network.snapshots.CardSnapshot;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,13 +19,13 @@ public class CardRowView {
      * @param height display height of each card image
      * @return HBox containing all card buttons
      */
-    public static HBox build(List<Card> cards, double height, boolean isUpperRow, GuiManager manager, boolean enabled) {
+    public static HBox build(List<CardSnapshot> cards, double height, boolean isUpperRow, GuiManager manager, boolean enabled) {
         HBox row = new HBox(cards.size());
 
-        for (Card card : cards) {
+        for (CardSnapshot card : cards) {
             Button btn = new Button();
             btn.setDisable(!enabled);
-            int id = card.getId();
+            int id = card.id();
             //in resources, find front folder, in it there are more png images called for ex. front_000
             String imgPath = String.format("/assets/cards/front/front_%03d.png", id-1); //those last 3 digits are the id
             //so %03d means if the id=42 -> front_041.png (0-based indexing for sprites)

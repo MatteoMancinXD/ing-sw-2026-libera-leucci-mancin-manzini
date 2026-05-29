@@ -3,6 +3,10 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.CardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
+import it.polimi.ingsw.network.snapshots.TileSnapshot;
 
 import java.rmi.RemoteException;
 import java.sql.SQLOutput;
@@ -274,59 +278,59 @@ public class cli implements ui {
     }
 
     @Override
-    public void updateBoard(Board board, List<Player> players) {
+    public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) {
         System.out.println("\n======BOARD UPDATE!======\n");
 
         //TILE TRACK
-        for (Tile t : board.getTrack()) {
+        for (TileSnapshot t : board.track()) {
             String status = "";
-            if (t.getStatus()) {
-                String player = t.getPlayer().getNickname();
+            if (t.status()) {
+                String player = t.player().nickname();
                 status = "Occupied by " + player;
             } else {
                 status = "is free";
             }
-            System.out.println("Tile " + t.getLetter() + ": " + status + ", " + t.getUpperRow() + " upper and " + t.getLowerRow() + " lower");
+            System.out.println("Tile " + t.letter() + ": " + status + ", " + t.upperRow() + " upper and " + t.lowerRow() + " lower");
         }
 
         System.out.println("\n");
 
         //UPPER ROW / LOWER ROW
         System.out.println("------UPPER ROW------ \n");
-        for (Card c : board.getUpperRow()) {
-            System.out.println(c.getShortString()); //provo a stamparle tutte su una riga (crazy)
+        for (CardSnapshot c : board.upperRow()) {
+            System.out.println(c.desc()); //provo a stamparle tutte su una riga (crazy)
         }
         System.out.println("\n------LOWER ROW------\n");
-        for (Card c : board.getLowerRow()) {
-            System.out.println(c.getShortString());
+        for (CardSnapshot c : board.lowerRow()) {
+            System.out.println(c.desc());
         }
 
         //System.out.println();
 
         //STATUS PERSONALE + ALTRI PLAYER
-        for (Player p : players) {
-            if (p.getNickname().equals(this.nickname)) {
+        for (PlayerSnapshot p : players) {
+            if (p.nickname().equals(this.nickname)) {
                 System.out.println("\n------YOUR STATS AND CARDS------\n");
-                System.out.println("Food: " + p.getFood() + ", Prestige: " + p.getPrestige() + ", Your cards: \n");
-                List<Card> everyCard = new ArrayList<>();
-                everyCard.addAll(p.getArtists());
-                everyCard.addAll(p.getBuilders());
-                everyCard.addAll(p.getHarvesters());
-                everyCard.addAll(p.getHunters());
-                everyCard.addAll(p.getShamans());
-                everyCard.addAll(p.getInventors());
-                everyCard.addAll(p.getBuildings());
-                for (Card c : everyCard) {
-                    System.out.print(c.getShortString() + ",  ");
+                System.out.println("Food: " + p.food() + ", Prestige: " + p.prestige() + ", Your cards: \n");
+                List<CardSnapshot> everyCard = new ArrayList<>();
+                everyCard.addAll(p.artists());
+                everyCard.addAll(p.builders());
+                everyCard.addAll(p.harvesters());
+                everyCard.addAll(p.hunters());
+                everyCard.addAll(p.shamans());
+                everyCard.addAll(p.inventors());
+                everyCard.addAll(p.buildings());
+                for (CardSnapshot c : everyCard) {
+                    System.out.print(c.desc() + ",  ");
                 }
                 System.out.println("\n\n");
             }
         }
         System.out.println("------OPPONENTS STATS AND CARDS------\n");
-        for (Player p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
-            if (!p.getNickname().equals(this.nickname)) {
-                System.out.println("Nickname: " + p.getNickname() + ", Food: " + p.getFood() + ", Prestige: " + p.getPrestige());
-                System.out.println("Artists: " + p.getArtists().size() + ", Builder: " + p.getBuilders().size() + ", Harvesters: " + p.getHarvesters().size() + ", Hunters: " + p.getHunters().size() + ", Inventors: " + p.getInventors().size() + ", Shamans: " + p.getShamans().size() + "\n");
+        for (PlayerSnapshot p : players) {      //due cicli diversi per carte personali e stats di altri per printare prima le proprie carte sempre
+            if (!p.nickname().equals(this.nickname)) {
+                System.out.println("Nickname: " + p.nickname() + ", Food: " + p.food() + ", Prestige: " + p.prestige());
+                System.out.println("Artists: " + p.artists().size() + ", Builder: " + p.builders().size() + ", Harvesters: " + p.harvesters().size() + ", Hunters: " + p.hunters().size() + ", Inventors: " + p.inventors().size() + ", Shamans: " + p.shamans().size() + "\n");
             }
         }
         //System.out.println("---------------------------------");

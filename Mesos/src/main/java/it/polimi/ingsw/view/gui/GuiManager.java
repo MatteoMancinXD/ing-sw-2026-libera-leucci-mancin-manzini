@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.NetworkClient;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.rmi.RmiClient;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.view.ui;
 
@@ -104,7 +106,7 @@ public class GuiManager extends Application implements ui {
     //ui methods
 
     @Override
-    public void updateBoard(Board board, List<Player> players) {
+    public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) {
         Platform.runLater(() -> gameView.show(board, players));
     }
 

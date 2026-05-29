@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.OrderTile;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.network.snapshots.OrderTileSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
+import it.polimi.ingsw.network.snapshots.TileSnapshot;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -46,7 +49,7 @@ public class TrackView {
      * @param numPlayers number of players (determines which totem card to show)
      * @return HBox containing totem card + all tile buttons
      */
-    public static HBox build(OrderTile order, List<Tile> tiles, int numPlayers, GuiManager manager, boolean enabled) {
+    public static HBox build(OrderTileSnapshot order, List<TileSnapshot> tiles, int numPlayers, GuiManager manager, boolean enabled) {
         HBox totemAndTrack = new HBox(tiles.size() + 2);
         totemAndTrack.setPadding(new Insets(30, 0, 30, 50));
 
@@ -54,7 +57,7 @@ public class TrackView {
         addTotemCard(totemAndTrack, order, numPlayers);
 
         // --- Track tiles ---
-        for (Tile tile : tiles) {
+        for (TileSnapshot tile : tiles) {
             int idx = tiles.indexOf(tile);
             addTileCard(totemAndTrack, tile, idx, manager, enabled);        }
 
@@ -63,7 +66,7 @@ public class TrackView {
 
     //  Private helpers
 
-    private static void addTotemCard(HBox container, OrderTile order, int numPlayers) {
+    private static void addTotemCard(HBox container, OrderTileSnapshot order, int numPlayers) {
         String path = "/assets/board/order/order_" + numPlayers + ".png";
 
         /*
@@ -90,11 +93,11 @@ public class TrackView {
             Pane overlayPane = new Pane();
             double offset_y = order_offset_y.get(numPlayers);
 
-            for(int i = 0; i < order.getPlayers().size(); i++) {
-                Player p = order.getPlayers().get(i);
+            for(int i = 0; i < order.players().size(); i++) {
+                PlayerSnapshot p = order.players().get(i);
                 if(p == null) { continue; }
 
-                String totemPath = "/assets/totems/totem_" + p.getTotem().toString() + ".png";
+                String totemPath = "/assets/totems/totem_" + p.totem().toString() + ".png";
                 Image totemSheet = new Image(Objects.requireNonNull(TrackView.class.getResourceAsStream(totemPath)));
                 ImageView totemView = new ImageView(totemSheet);
 
@@ -120,8 +123,8 @@ public class TrackView {
         }
     }
 
-    private static void addTileCard(HBox container, Tile tile, int index, GuiManager manager, boolean enabled) {
-        String path = "/assets/board/tiles/tile_" + tile.getLetter() + ".png";
+    private static void addTileCard(HBox container, TileSnapshot tile, int index, GuiManager manager, boolean enabled) {
+        String path = "/assets/board/tiles/tile_" + tile.letter() + ".png";
 
         /*
         switch (letter) {
@@ -148,8 +151,8 @@ public class TrackView {
             StackPane contentStack = new StackPane();
             contentStack.getChildren().add(imgView);
 
-            if(tile.getStatus()) {
-                String totemPath = "/assets/totems/totem_" + tile.getPlayer().getTotem().toString() + ".png";
+            if(tile.status()) {
+                String totemPath = "/assets/totems/totem_" + tile.player().totem().toString() + ".png";
                 Image totemSheet = new Image(Objects.requireNonNull(TrackView.class.getResourceAsStream(totemPath)));
                 ImageView totemView = new ImageView(totemSheet);
 

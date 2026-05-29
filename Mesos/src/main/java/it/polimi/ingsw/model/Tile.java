@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.network.snapshots.TileSnapshot;
+
 import java.io.Serializable;
 
 /**
@@ -90,4 +92,16 @@ public class Tile implements Serializable {
      * @return immediate food bonus granted by this tile
      */
     public int getFoodBonus() { return foodBonus;   }
+
+    public TileSnapshot toSnapshot() {
+        return new TileSnapshot(
+                minPlayers,
+                letter,
+                upperRow,
+                lowerRow,
+                foodBonus,
+                status,
+                player == null ? null : player.toSnapshot()
+        );
+    }
 }

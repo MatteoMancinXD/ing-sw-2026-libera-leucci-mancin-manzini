@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -13,7 +15,7 @@ import java.util.List;
 public interface ClientRemote extends Remote{
     void receiveEventResolution(EventCard card) throws RemoteException;
 
-    void receiveBoardUpdate(Board board, List<Player> players) throws RemoteException;
+    void receiveBoardUpdate(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException;
 
     void receiveError(String errorMessage) throws RemoteException;
 

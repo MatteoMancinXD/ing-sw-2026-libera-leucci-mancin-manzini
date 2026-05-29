@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -29,7 +31,7 @@ public class VirtualSocketView implements VirtualView {
     }
 
     @Override
-    public void updateBoard(Board board, List<Player> players) throws RemoteException {
+    public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
         sendMessage(new BoardUpdateMessage(board, players));
     }
 

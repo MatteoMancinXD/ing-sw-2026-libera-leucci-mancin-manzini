@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.buildings.ExtraPickBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.polimi.ingsw.network.snapshots.GameSnapshot;
 
 import java.io.File;
 import java.io.InputStream;
@@ -483,5 +484,17 @@ public class Game {
     public void assignTotem(String nickname, Totem totem) {
         Player player = players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElse(null);
         player.setTotem(totem);
+    }
+
+    public GameSnapshot toSnapshot() {
+        return new GameSnapshot(
+                round,
+                era,
+                numPlayers,
+                currentPlayerIndex,
+                players.stream().map(Player::toSnapshot).toList(),
+                currentPhase,
+                board.toSnapshot()
+        );
     }
 }

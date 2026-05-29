@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.network.snapshots.CardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -30,30 +32,30 @@ public class PlayerHandView {
      * @param localNick nickname of the local player (shown first)
      * @return VBox ready to be set as gameRoot.setBottom()
      */
-    public static VBox build(List<Player> players, String localNick) {
+    public static VBox build(List<PlayerSnapshot> players, String localNick) {
         VBox allRows = new VBox(0);
         allRows.setStyle("-fx-background-color: #12122a; -fx-border-color: #e0a830; -fx-border-width: 1 0 0 0;");
 
-        List<Player> ordered = new ArrayList<>();
-        players.stream().filter(p -> p.getNickname().equals(localNick)).findFirst().ifPresent(ordered::add);
-        players.stream().filter(p -> !p.getNickname().equals(localNick)).forEach(ordered::add);
+        List<PlayerSnapshot> ordered = new ArrayList<>();
+        players.stream().filter(p -> p.nickname().equals(localNick)).findFirst().ifPresent(ordered::add);
+        players.stream().filter(p -> !p.nickname().equals(localNick)).forEach(ordered::add);
 
-        for (Player p : ordered) {
+        for (PlayerSnapshot p : ordered) {
             allRows.getChildren().add(buildPlayerRow(p, localNick));
         }
 
         return allRows;
     }
 
-    private static HBox buildPlayerRow(Player player, String localNick) {
+    private static HBox buildPlayerRow(PlayerSnapshot player, String localNick) {
         HBox row = new HBox(0);
         row.setStyle("-fx-background-color: #12122a;");
 
         // intestazione con nickname
-        boolean isLocal = player.getNickname().equals(localNick);
+        boolean isLocal = player.nickname().equals(localNick);
         String labelText = isLocal
-                ? "▶ " + player.getNickname() + " (tu)"
-                : "  " + player.getNickname();
+                ? "▶ " + player.nickname() + " (tu)"
+                : "  " + player.nickname();
 
         Label nameLabel = new Label(labelText);
         nameLabel.setTextFill(isLocal ? Color.web("#e0a830") : Color.web("#aaaaaa"));
@@ -64,14 +66,14 @@ public class PlayerHandView {
         nameLabel.setStyle("-fx-background-color: #1a1a2e; -fx-font-weight: " + (isLocal ? "bold" : "normal") + ";");
 
         // raccoglie tutte le carte del giocatore
-        List<Card> allCards = new ArrayList<>();
-        allCards.addAll(player.getArtists());
-        allCards.addAll(player.getBuilders());
-        allCards.addAll(player.getHarvesters());
-        allCards.addAll(player.getHunters());
-        allCards.addAll(player.getShamans());
-        allCards.addAll(player.getInventors());
-        allCards.addAll(player.getBuildings());
+        List<CardSnapshot> allCards = new ArrayList<>();
+        allCards.addAll(player.artists());
+        allCards.addAll(player.builders());
+        allCards.addAll(player.harvesters());
+        allCards.addAll(player.hunters());
+        allCards.addAll(player.shamans());
+        allCards.addAll(player.inventors());
+        allCards.addAll(player.buildings());
 
         // striscia carte scrollabile
         HBox cardStrip = new HBox(4);
@@ -84,7 +86,7 @@ public class PlayerHandView {
             empty.setPadding(new Insets(4));
             cardStrip.getChildren().add(empty);
         } else {
-            for (Card card : allCards) {
+            for (CardSnapshot card : allCards) {
                 cardStrip.getChildren().add(buildCardNode(card));
             }
         }
@@ -103,11 +105,11 @@ public class PlayerHandView {
         return row;
     }
 
-    private static VBox buildCardNode(Card card) {
+    private static VBox buildCardNode(CardSnapshot card) {
         VBox node = new VBox(2);
         node.setStyle("-fx-alignment: center;");
 
-        int id = card.getId();
+        int id = card.id();
         String imgPath = String.format("/assets/cards/front/front_%03d.png", id - 1);
 
         var stream = PlayerHandView.class.getResourceAsStream(imgPath);
@@ -116,7 +118,7 @@ public class PlayerHandView {
             ImageView imgView = new ImageView(img);
             imgView.setFitHeight(CARD_HEIGHT);
             imgView.setPreserveRatio(true);
-            Tooltip.install(imgView, new Tooltip(card.getShortString()));
+            Tooltip.install(imgView, new Tooltip(card.desc()));
             node.getChildren().add(imgView);
         }
 

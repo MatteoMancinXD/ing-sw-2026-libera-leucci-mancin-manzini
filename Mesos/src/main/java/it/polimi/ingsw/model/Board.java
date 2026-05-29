@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.GameObserver;
 import it.polimi.ingsw.model.events.SustenanceEvent;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -245,4 +246,13 @@ public class Board implements Serializable {
     public List<Card> getUpperRow() {return upperRow;}
     public List<Card> getLowerRow() {return lowerRow;}
     public OrderTile getOrder() {return order;}
+
+    public BoardSnapshot toSnapshot() {
+        return new BoardSnapshot(
+                upperRow.stream().map(Card::toSnapshot).toList(),
+                lowerRow.stream().map(Card::toSnapshot).toList(),
+                track.stream().map(Tile::toSnapshot).toList(),
+                order.toSnapshot()
+        );
+    }
 }

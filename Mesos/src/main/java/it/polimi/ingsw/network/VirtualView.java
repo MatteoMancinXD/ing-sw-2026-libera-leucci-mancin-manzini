@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteRef;
@@ -15,7 +17,7 @@ public interface VirtualView {
 
     void eventResolution(EventCard card) throws RemoteException;
 
-    void updateBoard(Board board, List<Player> players) throws RemoteException;
+    void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException;
 
     void notifyTurn(String currentPlayerNickname, String gamePhase) throws RemoteException;
 
