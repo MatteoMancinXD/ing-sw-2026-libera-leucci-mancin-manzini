@@ -37,8 +37,8 @@ public class VirtualRMIView implements VirtualView {
         clientStub.receiveBoardUpdate(board, players);
     }
     @Override
-    public void notifyTurn(String currentPlayerNickname, String gamePhase) throws RemoteException {
-        clientStub.receiveTurnNotification(currentPlayerNickname, gamePhase);
+    public void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
+        clientStub.receiveTurnNotification(currentPlayerNickname, gamePhase, round, era);
     }
 
     @Override

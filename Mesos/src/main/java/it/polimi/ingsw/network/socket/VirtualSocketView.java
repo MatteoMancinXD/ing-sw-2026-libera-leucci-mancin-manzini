@@ -41,8 +41,8 @@ public class VirtualSocketView implements VirtualView {
     }
 
     @Override
-    public void notifyTurn(String currentPlayerNickname, String gamePhase) throws RemoteException {
-        sendMessage(new TurnNotificationMessage(currentPlayerNickname, gamePhase));
+    public void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
+        sendMessage(new TurnNotificationMessage(currentPlayerNickname, gamePhase, round, era));
     }
 
     @Override

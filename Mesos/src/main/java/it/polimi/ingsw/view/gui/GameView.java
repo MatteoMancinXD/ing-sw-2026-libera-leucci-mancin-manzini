@@ -155,18 +155,22 @@ public class GameView {
         return true;
 
     }
-    public void updateTurnLabel(String nickname, String phase) {
+    public void updateTurnLabel(String nickname, String phase, int round, int era) {
         this.currentPlayerNickname = nickname;
         this.currentPhase = phase;
 
+        StringBuilder turnLabelText = new StringBuilder("Era: " + era + " Round: " + round + " | ");
+
         if (turnLabel != null) {
             if (nickname.equals(manager.getNickName())) {
-                turnLabel.setText("È il tuo turno! Fase: " + phase);
+                turnLabelText.append("È il tuo turno | Fase: " + phase);
                 turnLabel.setTextFill(Color.web("#00ff88"));
             } else {
-                turnLabel.setText("Turno di: " + nickname + " | Fase: " + phase);
+                turnLabelText.append("Turno di: " + nickname + " | Fase: " + phase);
                 turnLabel.setTextFill(Color.web("#e0a830"));
             }
+
+            turnLabel.setText(turnLabelText.toString());
         }
 
         // Refresh board to update interactive state of buttons

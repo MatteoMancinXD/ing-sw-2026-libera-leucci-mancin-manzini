@@ -219,14 +219,18 @@ public class GameController implements GameObserver {
             BoardSnapshot board = game.board();
             List<PlayerSnapshot> players = game.players();
             String phase = game.phase().toString();
+
             int currentIdx = game.currentPlayerIndex();
             String currentNick = players.get(currentIdx).nickname();
+
+            int round = game.round();
+            int era = game.era();
 
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
                 new Thread(() -> {
                     try {
                         entry.getValue().updateBoard(board, players);
-                        entry.getValue().notifyTurn(currentNick, phase);
+                        entry.getValue().notifyTurn(currentNick, phase, round, era);
                     } catch (RemoteException e) {
                         System.out.println("Client "+ entry.getKey() + " unreachable");
                     }
@@ -267,6 +271,7 @@ public class GameController implements GameObserver {
         return nickname.equals(game.getCurrentPlayer().getNickname());
     }
 
+    /*
     public void notifyCurrentPlayer() {
         synchronized (clients) {
             if (game.getRound() > 10) return;
@@ -291,6 +296,7 @@ public class GameController implements GameObserver {
             }
         }
     }
+    */
 
     //invoked if the player decides not to use the "extra pick" bonus
     public void skipExtraPick(String nickname) {

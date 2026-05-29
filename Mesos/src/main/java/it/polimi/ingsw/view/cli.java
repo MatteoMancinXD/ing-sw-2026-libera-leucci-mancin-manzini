@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.snapshots.BoardSnapshot;
 import it.polimi.ingsw.network.snapshots.CardSnapshot;
 import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import it.polimi.ingsw.network.snapshots.TileSnapshot;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.rmi.RemoteException;
 import java.sql.SQLOutput;
@@ -258,8 +259,9 @@ public class cli implements ui {
     }
 
     @Override
-    public void notifyTurn(String currentPlayerNickname, String currentGamePhase) {
+    public void notifyTurn(String currentPlayerNickname, String currentGamePhase, int round, int era) {
         System.out.println("\n---------------------------------");
+        System.out.println("Era: " + era + ", round: " + round);
 
         if (currentPlayerNickname.equals(this.nickname)) {
             if (currentGamePhase.equals("PLACEMENT")) {

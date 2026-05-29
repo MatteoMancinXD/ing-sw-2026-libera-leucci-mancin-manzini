@@ -121,9 +121,9 @@ public class GuiManager extends Application implements ui {
     }
 
     @Override
-    public void notifyTurn(String currentPlayerNickname, String gamePhase) {
+    public void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era) {
         Platform.runLater(() -> {
-            if (gameView != null) gameView.updateTurnLabel(currentPlayerNickname, gamePhase);        });
+            if (gameView != null) gameView.updateTurnLabel(currentPlayerNickname, gamePhase, round, era);        });
     }
 
     @Override

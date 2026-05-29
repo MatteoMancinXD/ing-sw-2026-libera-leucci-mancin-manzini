@@ -173,8 +173,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void receiveTurnNotification(String currentPlayerNickname, String gamePhase) throws RemoteException {
-        userInterface.notifyTurn(currentPlayerNickname, gamePhase);
+    public void receiveTurnNotification(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
+        userInterface.notifyTurn(currentPlayerNickname, gamePhase, round, era);
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface ui {
 
     void showError(String errorMessage);
 
-    void notifyTurn(String currentPlayerNickname, String gamePhase);
+    void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era);
 
     void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks);
 
