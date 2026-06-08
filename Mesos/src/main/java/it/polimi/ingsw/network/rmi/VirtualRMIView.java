@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.snapshots.BoardSnapshot;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Set;
 
 
 //Client Handler RMI
@@ -79,5 +81,10 @@ public class VirtualRMIView implements VirtualView {
     @Override
     public void notifyGameParticipation() throws RemoteException {
         clientStub.onGameParticipation();
+    }
+
+    @Override
+    public void updateAvailableTotems(Set<Totem> totems) throws RemoteException {
+        clientStub.receiveAvailableTotemsUpdate(totems);
     }
 }

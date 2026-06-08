@@ -45,50 +45,53 @@ public class GameController implements GameObserver {
 
     public void selectTotem(String nickname, Totem totem) {
         synchronized(game) {
-            if (availableTotems.contains(totem)) {
-                availableTotems.remove(totem);
-                game.assignTotem(nickname, totem);
-
-                VirtualView view = clients.get(nickname);
-                try {
-                    view.notifyTotemSelected();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-
-                boolean everyoneReady = true;
-                for(Player p : game.getPlayers()) {
-                    if (p.getTotem() == null) {
-                        everyoneReady = false;
-                        break;
-                    }
-                }
-
-                if (game.getPlayers().size() == game.getNumPlayers() && everyoneReady) {
-                    game.startGame();
-                    starter.onGameStart(gameID);
-
-                    System.out.println("Game #" + gameID + " is starting.");
-
-                    new Thread(() -> {
-                        broadcastMessage("Game #" + gameID + " starting.");
-                    }).start();
-
-                    Board board = game.getBoard();
-                    String current = game.getCurrentPlayer().getNickname();
-
-                    GameSnapshot snap = game.toSnapshot();
-                    new Thread(() -> {
-                        broadcastUpdate(snap);
-                    }).start();
-                }
-            } else {
+            if(!availableTotems.contains(totem)) {
                 VirtualView view = clients.get(nickname);
                 try {
                     view.showError("Totem not available");
+                    return;
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            availableTotems.remove(totem);
+            game.assignTotem(nickname, totem);
+
+            VirtualView view = clients.get(nickname);
+            try {
+                view.notifyTotemSelected();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
+            boolean everyoneReady = true;
+            for(Player p : game.getPlayers()) {
+                if (p.getTotem() == null) {
+                    everyoneReady = false;
+                    break;
+                }
+            }
+
+            if (game.getPlayers().size() == game.getNumPlayers() && everyoneReady) {
+                game.startGame();
+                starter.onGameStart(gameID);
+
+                System.out.println("Game #" + gameID + " is starting.");
+
+                new Thread(() -> {
+                    broadcastMessage("Game #" + gameID + " starting.");
+                }).start();
+
+                Board board = game.getBoard();
+                String current = game.getCurrentPlayer().getNickname();
+
+                GameSnapshot snap = game.toSnapshot();
+                new Thread(() -> {
+                    broadcastUpdate(snap);
+                }).start();
+            } else {
+                broadcastUpdateAvailableTotems(availableTotems);
             }
         }
     }
@@ -263,6 +266,20 @@ public class GameController implements GameObserver {
                 new Thread(() -> {
                     try {
                         entry.getValue().showChatMessage(nickname, message);
+                    } catch (RemoteException e) {
+                        System.out.println("Client " + entry.getKey() + " unreachable");
+                    }
+                }).start();
+            }
+        }
+    }
+
+    public void broadcastUpdateAvailableTotems(Set<Totem> totems) {
+        synchronized (clients) {
+            for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
+                new Thread(() -> {
+                    try {
+                        entry.getValue().updateAvailableTotems(totems);
                     } catch (RemoteException e) {
                         System.out.println("Client " + entry.getKey() + " unreachable");
                     }

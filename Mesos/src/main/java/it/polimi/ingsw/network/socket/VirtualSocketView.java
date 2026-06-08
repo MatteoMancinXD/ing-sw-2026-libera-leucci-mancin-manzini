@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.socket;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.messages.*;
@@ -14,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Set;
 
 public class VirtualSocketView implements VirtualView {
 
@@ -36,7 +38,7 @@ public class VirtualSocketView implements VirtualView {
     }
 
     @Override
-    public void  showError(String errorMessage) throws RemoteException {
+    public void showError(String errorMessage) throws RemoteException {
         sendMessage(new ErrorMessage(errorMessage));
     }
 
@@ -78,6 +80,11 @@ public class VirtualSocketView implements VirtualView {
     @Override
     public void notifyGameParticipation() throws RemoteException {
         sendMessage(new GameParticipationMessage());
+    }
+
+    @Override
+    public void updateAvailableTotems(Set<Totem> totems) throws RemoteException {
+        sendMessage(new AvailableTotemsMessage(totems));
     }
 
     private void sendMessage(Serializable message) throws RemoteException {

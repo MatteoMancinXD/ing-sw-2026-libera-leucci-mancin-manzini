@@ -214,4 +214,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void onGameParticipation() {
         userInterface.onGameParticipation();
     }
+
+    @Override
+    public void receiveAvailableTotemsUpdate(Set<Totem> totems) { userInterface.showAvailableTotems(totems); }
 }

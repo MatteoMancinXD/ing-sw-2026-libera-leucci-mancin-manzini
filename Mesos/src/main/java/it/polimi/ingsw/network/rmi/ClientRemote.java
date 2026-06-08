@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.rmi;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.snapshots.BoardSnapshot;
 import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Set;
 
 
 public interface ClientRemote extends Remote{
@@ -36,4 +38,6 @@ public interface ClientRemote extends Remote{
     void onTotemSelected() throws RemoteException;
 
     void onGameParticipation() throws RemoteException;
+
+    void receiveAvailableTotemsUpdate(Set<Totem> totems) throws RemoteException;
 }

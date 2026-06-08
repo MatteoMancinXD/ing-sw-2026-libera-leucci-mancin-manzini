@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.EventCard;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
 import it.polimi.ingsw.network.snapshots.BoardSnapshot;
 import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteRef;
 import java.util.List;
+import java.util.Set;
 
 public interface VirtualView {
 
@@ -36,4 +38,6 @@ public interface VirtualView {
     void notifyTotemSelected() throws RemoteException;
 
     void notifyGameParticipation() throws RemoteException;
+
+    void updateAvailableTotems(Set<Totem> totems) throws RemoteException;
 }
