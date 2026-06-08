@@ -42,7 +42,7 @@ public class Game {
      *
      * @param numPlayers The number of players participating in the game (between 2 and 5).
      */
-    public Game(int numPlayers, GameObserver observer) {
+    public Game(int numPlayers) {
         this.round = 0;
         this.era = 1;
         this.numPlayers = numPlayers;
@@ -58,7 +58,9 @@ public class Game {
 
         this.buildingDeck = new BuildingDeck(allBuildings, numPlayers);
         //board.setTribeDeck(this.deck);
+    }
 
+    public void addObserver(GameObserver observer) {
         this.observer = observer;
     }
 

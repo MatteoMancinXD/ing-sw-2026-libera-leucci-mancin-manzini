@@ -30,7 +30,9 @@ public class GameController implements GameObserver {
     public GameController(int gameID, String gameMaster, int numPlayers, GameStarter starter) {
         this.gameID = gameID;
         this.gameMaster = gameMaster;
-        this.game = new Game(numPlayers, this);
+        this.game = new Game(numPlayers);
+        game.addObserver(this);
+
         this.starter = starter;
 
         availableTotems = new HashSet<>(Arrays.asList(Totem.values()));

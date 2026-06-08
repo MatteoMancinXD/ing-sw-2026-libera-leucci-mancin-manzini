@@ -13,37 +13,13 @@ public class GameTest {
 
     @BeforeEach
     void setup() {
-        GameObserver observer = new GameObserver() {
-            @Override
-            public void onEventResolution(EventCard event) {
-
-            }
-
-            @Override
-            public void onGameEnd(ArrayList<Player> winners) {
-
-            }
-        };
-
-        game = new Game(2, observer);
+        game = new Game(2);
         game.addPlayer(new Player("Player1"));
         game.addPlayer(new Player("Player2")); }
 
     @Test
     void creationTest() {
-        GameObserver observer = new GameObserver() {
-            @Override
-            public void onEventResolution(EventCard event) {
-
-            }
-
-            @Override
-            public void onGameEnd(ArrayList<Player> winners) {
-
-            }
-        };
-
-        Game g = new Game(2, observer);
+        Game g = new Game(2);
         assertEquals(0, g.getRound());
         assertEquals(1, g.getEra());
         assertEquals(2, g.getNumPlayers());
