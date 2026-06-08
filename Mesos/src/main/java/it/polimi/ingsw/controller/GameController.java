@@ -27,16 +27,18 @@ public class GameController implements GameObserver {
 
     //private final Object gameLock = new Object(); //only used in controllerEndTurn (see the method below)
 
-    public GameController(int gameID, String gameMaster, int numPlayers, GameStarter starter) {
+    public GameController(int gameID, String gameMaster, int numPlayers) {
         this.gameID = gameID;
         this.gameMaster = gameMaster;
         this.game = new Game(numPlayers);
         game.addObserver(this);
 
-        this.starter = starter;
-
         availableTotems = new HashSet<>(Arrays.asList(Totem.values()));
         clients = new HashMap<>();
+    }
+
+    public void addStarter(GameStarter starter) {
+        this.starter = starter;
     }
 
     public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }

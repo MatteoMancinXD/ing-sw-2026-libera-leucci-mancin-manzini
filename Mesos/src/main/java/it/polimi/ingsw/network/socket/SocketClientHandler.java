@@ -86,7 +86,9 @@ public class SocketClientHandler implements Runnable{
         Map<Integer, GameController> availableGames = mngr.getAvailableGames();
         int gameID = mngr.getIdCounter();
 
-        GameController ctrl = new GameController(gameID, nickname, numPlayers, mngr);
+        GameController ctrl = new GameController(gameID, nickname, numPlayers);
+        ctrl.addStarter(mngr);
+
         availableGames.put(gameID, ctrl);
         ctrl.addPlayer(view, nickname);
 
