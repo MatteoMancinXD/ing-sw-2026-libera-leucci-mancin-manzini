@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.network.db.DatabaseManagerDAO;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import javafx.css.SimpleStyleableDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,7 +34,7 @@ public class EndGameView {
         this.databaseManagerDAO = DatabaseManagerDAO.getInstance();
     }
 
-    public void show(List<String> rankings) {
+    public void show(List<String> rankings, List<LeaderboardEntryBean> globalLeaderboard) {
         int numPlayers = rankings.size();
 
         VBox root = new VBox(20);
@@ -92,36 +93,25 @@ public class EndGameView {
         globalRankingBox.setPadding(new Insets(10));
 
 
-        try {
-            //reach database
-            List<LeaderboardEntryBean> globalLeaderboard = databaseManagerDAO.getLeaderboardByPlayerCount(numPlayers);
 
-            if (globalLeaderboard.isEmpty()) {
-                Label emptyLabel = new Label("No historical data");
-                emptyLabel.setFont(Font.font("Georgia", 12));
-                emptyLabel.setTextFill(Color.GRAY);
-                globalRankingBox.getChildren().add(emptyLabel);
-            } else {
+        if (globalLeaderboard.isEmpty()) {
+            Label emptyLabel = new Label("No historical data");
+            emptyLabel.setFont(Font.font("Georgia", 12));
+            emptyLabel.setTextFill(Color.GRAY);
+            globalRankingBox.getChildren().add(emptyLabel);
+        } else {
 
-                for (int i = 0; i < globalLeaderboard.size(); i++) {
-                    LeaderboardEntryBean entry = globalLeaderboard.get(i);
+            for (int i = 0; i < globalLeaderboard.size(); i++) {
+                LeaderboardEntryBean entry = globalLeaderboard.get(i);
 
 
-                    String globalEntryText = (i + 1) + ". " + entry.getNickname() + " — Punti Totali: " + entry.getScore();
+                String globalEntryText = (i + 1) + ". " + entry.getNickname() + " — Punti Totali: " + entry.getScore();
 
-                    Label globalRankLabel = new Label(globalEntryText);
-                    globalRankLabel.setFont(Font.font("Georgia", 13));
-                    globalRankLabel.setTextFill(Color.web("#d1d1e0"));
-                    globalRankingBox.getChildren().add(globalRankLabel);
-                }
+                Label globalRankLabel = new Label(globalEntryText);
+                globalRankLabel.setFont(Font.font("Georgia", 13));
+                globalRankLabel.setTextFill(Color.web("#d1d1e0"));
+                globalRankingBox.getChildren().add(globalRankLabel);
             }
-        } catch (Exception e) {
-            // print if DB doesnt work
-            Label errorLabel = new Label("Impossibile caricare la classifica globale.");
-            errorLabel.setFont(Font.font("Georgia", 12));
-            errorLabel.setTextFill(Color.RED);
-            globalRankingBox.getChildren().add(errorLabel);
-            e.printStackTrace();
         }
 
         //historical ranking's scrollpane

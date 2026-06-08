@@ -131,7 +131,8 @@ public class GuiManager extends Application implements ui {
         System.out.println("DEBUG notifyEndGame: " + rankings);
         Platform.runLater(() -> {
             EndGameView endGameView = new EndGameView(primaryStage, this);
-            endGameView.show(rankings);        });
+            endGameView.show(rankings, globalRanks);
+        });
     }
 
     @Override
