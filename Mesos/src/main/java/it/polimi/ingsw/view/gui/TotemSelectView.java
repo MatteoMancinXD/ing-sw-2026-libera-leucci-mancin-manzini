@@ -31,7 +31,7 @@ public class TotemSelectView {
         this.manager = manager;
     }
 
-    public void show() {
+    public void show(Set<Totem> totems) {
         VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
@@ -114,6 +114,7 @@ public class TotemSelectView {
             }
         });
         styleButton(selectBtn,"#e0a830", "#2a2a4a");
+        showTotems(totems);
 
         root.getChildren().addAll(
                 title,
@@ -129,8 +130,6 @@ public class TotemSelectView {
 
         Scene scene = new Scene(root, 500, 600);
         stage.setScene(scene);
-
-        manager.requestAvailableTotems();
     }
 
     public void updateWaitingLabel(String message) {

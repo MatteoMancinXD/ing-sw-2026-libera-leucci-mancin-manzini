@@ -37,7 +37,7 @@ public interface VirtualView {
 
     void notifyTotemSelected() throws RemoteException;
 
-    void notifyGameParticipation() throws RemoteException;
+    void notifyGameParticipation(Set<Totem> totems) throws RemoteException;
 
     void updateAvailableTotems(Set<Totem> totems) throws RemoteException;
 }

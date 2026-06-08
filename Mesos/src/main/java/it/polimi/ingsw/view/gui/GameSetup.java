@@ -81,11 +81,11 @@ public class GameSetup {
                 try {
                     manager.createGame(manager.getNickName(), numPlayers);
                     showStatusOk("Richiesta di creazione inviata...");
-                    Platform.runLater(() -> {
-                        TotemSelectView totemSelectView = new TotemSelectView(stage, manager);
-                        manager.setTotemSelectView(totemSelectView);
-                        totemSelectView.show();
-                    });
+//                    Platform.runLater(() -> {
+//                        TotemSelectView totemSelectView = new TotemSelectView(stage, manager);
+//                        manager.setTotemSelectView(totemSelectView);
+//                        totemSelectView.show();
+//                    });
                 } catch (Exception ex) {
                     showStatusError("Errore: " + ex.getMessage());
                 }

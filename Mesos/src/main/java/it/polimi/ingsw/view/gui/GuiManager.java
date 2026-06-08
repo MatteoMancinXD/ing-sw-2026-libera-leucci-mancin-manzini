@@ -176,11 +176,12 @@ public class GuiManager extends Application implements ui {
     public void onTotemSelected() {}
 
     @Override
-    public void onGameParticipation() {
+    public void onGameParticipation(Set<Totem> totems) {
+        System.out.println("onGameParticipation() called");
         Platform.runLater(() -> {
-            TotemSelectView gameWaiting = new TotemSelectView(primaryStage, this);
-            setTotemSelectView(gameWaiting);
-            gameWaiting.show();
+            TotemSelectView totemSelect = new TotemSelectView(primaryStage, this);
+            setTotemSelectView(totemSelect);
+            totemSelect.show(totems);
         });
     }
 
@@ -202,7 +203,6 @@ public class GuiManager extends Application implements ui {
     public void setTotemSelectView(TotemSelectView totemSelectView) {
         this.totemSelectView = totemSelectView;
     }
-
 
     public void requestAvailableTotems() {
         client.requestAvailableTotems();

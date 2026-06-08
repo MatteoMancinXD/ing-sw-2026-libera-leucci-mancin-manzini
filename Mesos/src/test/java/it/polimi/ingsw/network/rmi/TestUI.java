@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Totem;
 import it.polimi.ingsw.network.db.LeaderboardEntryBean;
+import it.polimi.ingsw.network.snapshots.BoardSnapshot;
+import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import it.polimi.ingsw.view.ui;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Set;
 public class TestUI implements ui{
     private String lastMessage = "";
     private String lastErrorMessage = "";
-    private Board lastBoard = null;
+    private BoardSnapshot lastBoard = null;
 
     @Override
     public void showError(String msg) {
@@ -23,15 +25,15 @@ public class TestUI implements ui{
         return lastErrorMessage;
     }
 
-    public void updateBoard(Board board, List<Player> players){
+    public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players){
         this.lastBoard = board;
     }
 
-    public Board getLastBoard() {
+    public BoardSnapshot getLastBoard() {
         return lastBoard;
     }
 
-    public void notifyTurn(String currentPlayerNickname, String gamePhase){}
+    public void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era){}
 
     @Override
     public void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks) {
@@ -60,7 +62,7 @@ public class TestUI implements ui{
     }
 
     @Override
-    public void onGameParticipation() {
+    public void onGameParticipation(Set<Totem> totems) {
 
     }
 

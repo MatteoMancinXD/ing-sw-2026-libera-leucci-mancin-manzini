@@ -387,6 +387,10 @@ public class cli implements ui {
 
     @Override
     public void showAvailableTotems(Set<Totem> totems) {
+        if(!currentState.equals(CliState.TOTEM)) {
+            return;
+        }
+
         System.out.println("Available Totems: ");
         for (Totem totem : totems) {
             System.out.println("  " + totem.toString());
@@ -403,9 +407,9 @@ public class cli implements ui {
     }
 
     @Override
-    public void onGameParticipation() {
+    public void onGameParticipation(Set<Totem> totems) {
         currentState = CliState.TOTEM;
-
+        showAvailableTotems(totems);
     }
 
     private void showGlobalRanks() {

@@ -78,8 +78,8 @@ public class VirtualSocketView implements VirtualView {
     }
 
     @Override
-    public void notifyGameParticipation() throws RemoteException {
-        sendMessage(new GameParticipationMessage());
+    public void notifyGameParticipation(Set<Totem> totems) throws RemoteException {
+        sendMessage(new GameParticipationMessage(totems));
     }
 
     @Override

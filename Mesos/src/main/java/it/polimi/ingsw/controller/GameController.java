@@ -110,8 +110,9 @@ public class GameController implements GameObserver {
                 game.addPlayer(new Player(nickname));
                 clients.put(nickname, view);
 
+                Set<Totem> totems = availableTotems;
                 try {
-                    view.notifyGameParticipation();
+                    view.notifyGameParticipation(totems);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

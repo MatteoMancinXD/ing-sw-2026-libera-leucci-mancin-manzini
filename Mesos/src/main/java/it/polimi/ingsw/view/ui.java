@@ -29,5 +29,5 @@ public interface ui {
 
     void onTotemSelected();
 
-    void onGameParticipation();
+    void onGameParticipation(Set<Totem> totems);
 }

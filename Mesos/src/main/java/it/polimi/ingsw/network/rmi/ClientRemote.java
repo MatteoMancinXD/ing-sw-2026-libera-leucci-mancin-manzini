@@ -37,7 +37,7 @@ public interface ClientRemote extends Remote{
 
     void onTotemSelected() throws RemoteException;
 
-    void onGameParticipation() throws RemoteException;
+    void onGameParticipation(Set<Totem> totems) throws RemoteException;
 
     void receiveAvailableTotemsUpdate(Set<Totem> totems) throws RemoteException;
 }

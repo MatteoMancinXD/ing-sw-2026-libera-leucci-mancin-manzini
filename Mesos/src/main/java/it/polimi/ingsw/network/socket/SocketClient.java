@@ -81,9 +81,11 @@ public class SocketClient implements NetworkClient {
 
     public void setToken(String token) { this.token = token; }
 
+    /*
     public void login(int gameId, int numPlayers) {
         sendMessageToServer(new LoginMessage(nickname, gameId, numPlayers));
     }
+     */
 
 
     @Override

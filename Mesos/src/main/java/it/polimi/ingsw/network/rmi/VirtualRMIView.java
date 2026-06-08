@@ -79,8 +79,8 @@ public class VirtualRMIView implements VirtualView {
     }
 
     @Override
-    public void notifyGameParticipation() throws RemoteException {
-        clientStub.onGameParticipation();
+    public void notifyGameParticipation(Set<Totem> totems) throws RemoteException {
+        clientStub.onGameParticipation(totems);
     }
 
     @Override

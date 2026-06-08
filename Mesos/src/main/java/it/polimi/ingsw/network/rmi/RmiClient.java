@@ -211,8 +211,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
     @Override
-    public void onGameParticipation() {
-        userInterface.onGameParticipation();
+    public void onGameParticipation(Set<Totem> totems) {
+        userInterface.onGameParticipation(totems);
     }
 
     @Override
