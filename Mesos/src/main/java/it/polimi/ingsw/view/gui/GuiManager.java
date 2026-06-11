@@ -164,12 +164,16 @@ public class GuiManager extends Application implements ui {
 
     @Override
     public void showChatMessage(String sender, String message) {
-        gameView.tryShowChatMessage(sender, message);
+        Platform.runLater(() -> {
+            gameView.tryShowChatMessage(sender, message);
+        });
     }
 
     @Override
     public void showAvailableTotems(Set<Totem> totems) {
-        totemSelectView.showTotems(totems);
+        Platform.runLater(() -> {
+            totemSelectView.showTotems(totems);
+        });
     }
 
     @Override
