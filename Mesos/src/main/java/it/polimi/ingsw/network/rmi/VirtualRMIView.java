@@ -14,7 +14,14 @@ import java.util.List;
 import java.util.Set;
 
 
-//Client Handler RMI
+/**
+ * Server-side RMI adapter that implements {@link VirtualView}.
+ * Wraps a {@link ClientRemote} stub and delegates all view operations
+ * to the remote client. One instance is created per connected RMI player.
+ *
+ * @see ClientRemote
+ * @see VirtualView
+ */
 public class VirtualRMIView implements VirtualView {
 
     private final String nickname;

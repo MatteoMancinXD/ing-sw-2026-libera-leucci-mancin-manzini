@@ -18,6 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * RMI implementation of both {@link NetworkClient} (outgoing requests to the server)
+ * and {@link ClientRemote} (incoming callbacks from the server).
+ * Extends {@link UnicastRemoteObject} to be remotely accessible by the server.
+ * Delegates all incoming server notifications to the {@link ui} interface
+ * for display in either CLI or GUI.
+ *
+ * @see ClientRemote
+ * @see NetworkClient
+ * @see VirtualRMIServer
+ */
 public class RmiClient extends UnicastRemoteObject implements ClientRemote, NetworkClient {
 
     private String token;
@@ -31,6 +42,12 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         this.userInterface = userInterface;
     }
 
+    /**
+     * Establishes the RMI connection by looking up the server stub in the RMI registry.
+     * @param serverIP the IP address of the RMI server
+     * @param port     the RMI registry port (typically 1099)
+     * @throws RemoteException if the connection fails
+     */
     public void startConnection(String serverIP, int port) throws RemoteException {
         try {
             userInterface.showMessage("Connecting to " + serverIP + ":" + port);
