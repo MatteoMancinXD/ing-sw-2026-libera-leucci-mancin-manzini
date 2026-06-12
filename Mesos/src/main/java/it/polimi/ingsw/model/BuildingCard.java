@@ -40,6 +40,17 @@ import it.polimi.ingsw.model.buildings.sustenancebuildings.*;
         @JsonSubTypes.Type(value = SustenanceForInventorsBuilding.class, name = "SustenanceForInventorsBuilding")
 
 })
+
+/**
+ * Abstract class representing a building card that can be purchased by a player.
+ * Buildings have a food cost and grant prestige points at end of game.
+ * They also provide passive effects through hook methods that are called
+ * during specific game events (round end, card purchase, event resolution, etc.).
+ * Default hook implementations return neutral values so that only relevant
+ * subclasses need to override them, avoiding the use of {@code instanceof}.
+ *
+ * @see Player#buyBuilding(BuildingCard)
+ */
 public abstract class BuildingCard extends Card{
     private int foodCost; //purchase cost
     private int prestigeGain; //prestige gain at the end of the game
@@ -88,12 +99,37 @@ public abstract class BuildingCard extends Card{
 
 
     // Hook methods to handle building events
+
+    /**
+     * Called when this building is purchased. Override in subclasses
+     * that grant immediate effects on purchase.
+     * @param player the player who purchased this building
+     */
     public void onPurchase(Player player) {}     //used in RitualEventBonusStarsBuilding
+
+    /**
+     * Called at the end of each round. Override in subclasses
+     * that grant recurring effects.
+     * @param player the owner of this building
+     */
     public void onRoundEnd(Player player) {}
+
+    /**
+     * Called at the end of the game. Override in subclasses
+     * that grant final scoring bonuses.
+     * @param player the owner of this building
+     */
     public void onGameEnd(Player player) {}
     //public void onCharacterCardGameEnd(Player player, CharacterCard card) {}; useless
+
+    /**
+     * Called when the owner acquires a new character card.
+     * @param player the owner of this building
+     * @param card   the character card just acquired
+     */
     public void onCharacterCardPurchase(Player player, CharacterCard card) {}
 
+    /** @return true if this building grants an extra pick phase */
     public boolean grantsExtraPick() {return false;}
     public void onOrderTilePlacement(Player player, int position, OrderTile order) {}
 
