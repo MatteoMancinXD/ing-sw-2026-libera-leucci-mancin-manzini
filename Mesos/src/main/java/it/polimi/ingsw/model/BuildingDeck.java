@@ -46,6 +46,11 @@ public class BuildingDeck {
         this.cards = new ArrayList<>();
     }
 
+
+    /**
+     * Shuffles the deck, preventing different eras cards to mix together.
+     * 3 different arrays for every era are shuffled independently
+     */
     public void shuffle() {
         ArrayList<BuildingCard> era1 = new ArrayList<>();
         ArrayList<BuildingCard> era2 = new ArrayList<>();

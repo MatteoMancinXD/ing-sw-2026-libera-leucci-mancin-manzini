@@ -63,6 +63,9 @@ public abstract class BuildingCard extends Card{
         this.prestigeGain = prestigeGain;
     }
 
+    /**
+     * Plain constructor used by Jackson library when mapping cards from the JSON file
+     */
     public BuildingCard() {}
 
     public void setFoodCost (int foodCost) {this.foodCost = foodCost;}

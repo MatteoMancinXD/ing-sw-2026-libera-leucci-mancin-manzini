@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.snapshots.BoardSnapshot;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Represents the main game board. Manages the two rows, the track tiles, the building card display. Also handles row shifting and event resolution between rounds.
  */
@@ -103,6 +104,11 @@ public class Board implements Serializable {
         return eraChanged;
     }
 
+    /**
+     * Count the number of buildings in the upperRow: used by fill() method to determinate how many cards to place into the
+     * upper row each round
+     * @return the number of buildings
+     */
     private int findBuildings() {
         int numBuildings = 0;
         for (Card c : upperRow) {
@@ -234,10 +240,21 @@ public class Board implements Serializable {
         this.buildingPool = buildings;
     }
 
+
+    /**
+     * Removes and return the card in the selected position from the upper row
+     * @param pos the position of the choosen card in the upperRow
+     * @return the choosen card
+     */
     public Card removeUpper(int pos) {
         return this.upperRow.remove(pos);
     }
 
+    /**
+     * Removes and return the card in the selected position from the lower row
+     * @param pos the position of the choosen card in the lower Row
+     * @return the choosen card
+     */
     public Card removeLower(int pos) {
         return this.lowerRow.remove(pos);
     }

@@ -105,6 +105,11 @@ public class Player implements Serializable {
 
     public List<BuildingCard> getBuildings(){ return new ArrayList<>(buildings); }
 
+    /**
+     * Handle the buying of a building by a player.
+     * It checks if the player has enough food to buy it, and
+     * @param building is the building card the player wants to buy
+     */
     public void buyBuilding(BuildingCard building){
         int cost = building.getFoodCost();
 
@@ -116,6 +121,11 @@ public class Player implements Serializable {
         building.onPurchase(this);
     }
 
+    /**
+     * Handles the player's food payments.
+     * @param amount is the amount of food to pay
+     * @throws IllegalArgumentException if the player cannot pay that amount of food
+     */
     public void editFood(int amount) throws IllegalArgumentException{
         if (amount + food < 0) {
             throw new IllegalArgumentException("Food cannot go below zero!AvailableFood = "+this.food+", cost"+amount);
@@ -123,6 +133,10 @@ public class Player implements Serializable {
         this.food = this.food + amount;
     }
 
+    /**
+     * Handles the player's prestige editing
+     * @param amount is the number (can be a negative number) pf prestige points to add or remove
+     */
     public void editPrestige(int amount) {
         this.prestige = this.prestige + amount;
     }

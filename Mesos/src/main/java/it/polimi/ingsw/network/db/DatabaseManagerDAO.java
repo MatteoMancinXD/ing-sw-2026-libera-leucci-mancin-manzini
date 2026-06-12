@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Data Access Object (DAO) responsible for managing database interactions.
+ * * This class implements the Singleton design pattern to ensure a single, centralized
+ * access point to the database throughout the application's lifecycle. It handles:
+ * - Loading connection properties from the {@code db.properties} file.
+ * - Establishing connections to the SQL database.
+ * - Persisting game results and player scores at the end of a match.
+ * - Retrieving leaderboard statistics based on the game mode (number of players).
+ */
 public class DatabaseManagerDAO {
 
     private static DatabaseManagerDAO instance;
@@ -17,7 +26,13 @@ public class DatabaseManagerDAO {
     private DatabaseManagerDAO() {
         loadProperties();
     }
-
+    /**
+     * Retrieves the singleton instance of the {@code DatabaseManagerDAO}.
+     * * The method is synchronized to guarantee thread safety during the initial
+     * instantiation in a multi-threaded environment.
+     *
+     * @return the single, shared instance of {@code DatabaseManagerDAO}
+     */
     public static synchronized DatabaseManagerDAO getInstance() {
         if (instance == null) {
             instance = new DatabaseManagerDAO();
@@ -25,7 +40,10 @@ public class DatabaseManagerDAO {
         return instance;
     }
 
-    //recupera le credenziali dal file di connessione al db (root + password)
+    /**
+     * Loads the database connection credentials (URL, username, and password)
+     * from the {@code db.properties} configuration file located in the resources folder.
+     */
     private void loadProperties() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
             Properties props = new Properties();
@@ -38,11 +56,28 @@ public class DatabaseManagerDAO {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Establishes and returns a new connection to the database using the loaded properties.
+     *
+     * @return a {@link Connection} object to the database
+     * @throws SQLException if a database access error occurs or the url is null
+     */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
 
+    /**
+     * Persists the results of a completed match into the database.
+     * * This method performs a series of database operations to save the game state:
+     * 1. Creates a new entry in the {@code game} table with the current date and player count.
+     * 2. Retrieves the auto-generated unique identifier for the new game.
+     * 3. Ensures every {@link Player} is registered in the {@code user} table.
+     * 4. Creates entries in the {@code play} table to link each player to the game.
+     *
+     * @param players    the list of {@link Player}s who participated in the match
+     * @param numPlayers the total number of players in the match (defines the game mode)
+     * @throws SQLException if a database access error occurs or if the game ID generation fails
+     */
     public void saveMatchResults(List<Player> players, int numPlayers) throws SQLException {
 
         try (Connection con = getConnection()) {
@@ -93,7 +128,15 @@ public class DatabaseManagerDAO {
         }
 
     }
-
+    /**
+     * Retrieves the leaderboard for a specific game mode, ranked by total prestige points.
+     * * The leaderboard is calculated by summing the prestige points obtained by each player
+     * across all games played with the specified number of players. The result is ordered
+     * in descending order (highest score first).
+     *
+     * @param numPlayers the number of players defining the game mode (e.g., 2, 3, or 4 players)
+     * @return a list of {@link LeaderboardEntryBean} objects representing the ranked players
+     */
     public List<LeaderboardEntryBean> getLeaderboardByPlayerCount(int numPlayers) {
         List<LeaderboardEntryBean> leaderboard = new ArrayList<>();
 

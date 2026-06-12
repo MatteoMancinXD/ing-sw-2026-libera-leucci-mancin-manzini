@@ -32,7 +32,7 @@ public class TribeDeck {
     }
 
     /**
-     * Shuffles the deck segmenting the cards by era, shuffling them, and piling the up
+     * Shuffles the deck segmenting the cards by era, shuffling them, and piling them up
      */
     public void shuffle() {
         ArrayList<TribeCard> era1 = new ArrayList<>();
@@ -66,7 +66,7 @@ public class TribeDeck {
     }
 
     /**
-     * Draws the first card in the deck
+     * Draws the first card in the deck by removing it
      * @return drawn card
      */
     public TribeCard draw() {

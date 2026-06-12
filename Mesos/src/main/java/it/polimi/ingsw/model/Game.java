@@ -404,7 +404,8 @@ public class Game {
      * The choosen card is placed in the collection of the current player
      * @param row is true if the card to be drawn is from the upper row, false if not
      * @param index indicates the index of the choosen card from the row (upper or lower)
-     * @throws IllegalStateException if the player choices are more than the possible choices the Tile offers
+     * @throws IllegalStateException if the player choices are more than the possible choices the Tile offers on the 2 rows
+     * @throws IllegalArgumentException if the player try to draw an event card
     */
     public void resolveAction(boolean row, int index) {         //row = true riga sopra, row = false riga sotto
 

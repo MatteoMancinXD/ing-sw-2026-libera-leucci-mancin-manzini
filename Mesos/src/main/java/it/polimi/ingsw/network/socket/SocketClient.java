@@ -12,6 +12,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * Implementation of the {@link NetworkClient} interface using TCP sockets.
+ * This class manages the network communication from the client side, maintaining
+ * the I/O streams, handling the background listening thread, and dispatching
+ * player actions as serialized messages to the server.
+ */
 public class SocketClient implements NetworkClient {
 
     private final String nickname;
@@ -31,6 +37,14 @@ public class SocketClient implements NetworkClient {
         this.userInterface = userInterface;
     }
 
+    /**
+     * Establishes a TCP connection to the game server.
+     * Initializes the object streams and spawns a dedicated background thread
+     * to continuously listen for incoming server messages.
+     *
+     * @param ip   the server's IP address
+     * @param port the server's listening port
+     */
     public void startConnection(String ip, int port) {
         try {
             System.out.println("Connecting to server:  " + ip + ":" + port + "...");
@@ -48,6 +62,12 @@ public class SocketClient implements NetworkClient {
         }
     }
 
+    /**
+     * Serializes and sends a message to the server over the output stream.
+     * Flushes and resets the stream to prevent caching issues with previously sent objects.
+     *
+     * @param message the {@link ClientToServerMessage} to send
+     */
     public void sendMessageToServer(ClientToServerMessage message) {
         try {
             out.writeObject(message);
@@ -58,7 +78,11 @@ public class SocketClient implements NetworkClient {
         }
     }
 
-
+    /**
+     * Infinite loop executed by the background listening thread.
+     * Reads incoming messages from the server, triggers their internal reception logic,
+     * and delegates the UI updates to the user interface.
+     */
     private void listenToServer() {
         try {
             while (true) {
@@ -138,6 +162,9 @@ public class SocketClient implements NetworkClient {
         sendMessageToServer(new RequestGamesMessage(token));
     }
 
+    /**
+     * Closes the socket connection and releases associated network resources.
+     */
     @Override
     public void disconnect() {
         try {

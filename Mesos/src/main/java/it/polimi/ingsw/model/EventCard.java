@@ -17,6 +17,9 @@ public abstract class EventCard extends TribeCard{
         this.finalEvent = finalEvent;
     }
 
+    /**
+     * Plain constructor used by Jackson
+     */
     public EventCard(){
         super(0,0,0); //jackson default
     }
