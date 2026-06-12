@@ -75,6 +75,11 @@ public class SocketClientHandler implements Runnable{
 //        sendMessage(new LoginResponseMessage(token));
 //    }
 
+    /**
+     * Creates a game with the properties expressed in the message, adds the sender
+     * to the list of players for the game, sends him his token and registers the session.
+     * @param msg: Socket message used to express the intention to create a game
+     */
     public void handleCreateGame(CreateGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
 
@@ -97,6 +102,11 @@ public class SocketClientHandler implements Runnable{
         sendMessage(new TokenResponseMessage(this.token));
     }
 
+    /**
+     * Adds the sender to the list of players of the game specified in the message,
+     * sends him his token and registers his session.
+     * @param msg: Socket message used to declare which game is to be joined
+     */
     public void handleJoinGame(JoinGameMessage msg) {
         VirtualSocketView view = new VirtualSocketView(nickname, out);
 
@@ -117,6 +127,10 @@ public class SocketClientHandler implements Runnable{
         sendMessage(new TokenResponseMessage(this.token));
     }
 
+    /**
+     * Gets the game's controller to handle the card drawing
+     * @param msg: contains info about the card to be drawn
+     */
     public void handleDrawCard(DrawCardMessage msg) {
         GameController ctrl = getController();
         if (ctrl != null) ctrl.drawCard(nickname, msg.getUpperRow(), msg.getIndex());
@@ -127,6 +141,10 @@ public class SocketClientHandler implements Runnable{
         if (ctrl != null) ctrl.skipExtraPick(nickname);
     }
 
+    /**
+     * Gets the game's controller to handle the totem placement.
+     * @param msg: contains info about where to place the totem
+     */
     public void handlePlaceTotem(PlaceTotemMessage msg) {
         GameController ctrl = getController();
         System.out.println("PlaceTotemMessage received");
@@ -136,11 +154,19 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Gets the list of games available for joining and sends it to the requester
+     * @param msg: contains the list of available games
+     */
     public void handleRequestGames(RequestGamesMessage msg) {
         Map<Integer, String> games = mngr.getGamesIDAndMaster();
         sendMessage(new AvailableGamesMessage(games));
     }
 
+    /**
+     * Gets the game's controller to handle the delivery of the message
+     * @param msg: contains the message to be sent
+     */
     public void handleChatMessage(ChatMessage msg) {
         GameController ctrl = getController();
         if (ctrl != null) {
@@ -148,16 +174,29 @@ public class SocketClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Gets the game controller corresponding to the session the token is linked to.
+     * @return the aforementioned game controller
+     */
     private GameController getController() {
         GameSession session = mngr.getSessions().get(token);
         if (session == null) return null;
         return mngr.getStartedGames().get(session.getGameID());
     }
 
+    /**
+     * checks the validity of the received token (if it is requested)
+     * @param receivedToken: token passed from the message
+     * @return true if token is valid, false otherwise
+     */
     private boolean validateToken(String receivedToken) {
         return this.token != null && this.token.equals(receivedToken);
     }
 
+    /**
+     * sends a ServerToClientMessage to the client
+     * @param message: message to be sent
+     */
     private void sendMessage(ServerToClientMessage message) {
         synchronized (out) {
         try {
@@ -170,15 +209,19 @@ public class SocketClientHandler implements Runnable{
     }}
 
 
-
     private void closeConnection() {
         try {
             socket.close();
         } catch (IOException e) {
+            System.out.println("Failed to close connection");
             e.printStackTrace();
         }
     }
 
+    /**
+     * Gets the set of available totems and sends it to the requester
+     * @param msg: message that demands the set of available totems
+     */
     public void handleRequestTotems(RequestTotemsMessage msg) {
         String token = msg.getToken();
 
@@ -191,6 +234,10 @@ public class SocketClientHandler implements Runnable{
         sendMessage(new AvailableTotemsMessage(totems));
     }
 
+    /**
+     * Gets the game's controller to handle the selection of the specified totem by the player
+     * @param msg: contains info about the totem to select
+     */
     public void handleSelectTotems(SelectTotemMessage msg) {
         String token = msg.getToken();
         Totem totem = msg.getTotem();
