@@ -2,7 +2,14 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
-//To be completed
+/**
+ * Represents the deck of building cards available in the game.
+ * The number of buildings per era depends on the player count,
+ * as defined by the {@code buildingCardsForPlayers} map.
+ * Cards are shuffled within each era independently.
+ *
+ * @see BuildingCard
+ */
 public class BuildingDeck {
     private Map<Integer,List<Integer>> buildingCardsForPlayers = Map.ofEntries(
             Map.entry(2, Arrays.asList(1,2,3)),
@@ -70,13 +77,19 @@ public class BuildingDeck {
         cards.addAll(era3);
     }
 
+    /**
+     * Draws the first building card from the deck.
+     * @return the drawn building card
+     */
     public BuildingCard draw() {
         return cards.removeFirst();
     }
 
+    /** @return the list of building cards remaining in the deck */
     public ArrayList<BuildingCard> getBuildingsCards() {
         return cards;
     }
 
+    /** @return mapping from player count to list of building counts per era */
     public Map<Integer,List<Integer>> getBuildingCardsForPlayers() {return  buildingCardsForPlayers;}
 }

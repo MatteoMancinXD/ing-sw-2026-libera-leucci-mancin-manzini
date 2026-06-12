@@ -60,6 +60,11 @@ public class Game {
         //board.setTribeDeck(this.deck);
     }
 
+    /**
+     * Registers a {@link GameObserver} to receive callbacks for game events
+     * such as event resolution and game end.
+     * @param observer the observer to register
+     */
     public void addObserver(GameObserver observer) {
         this.observer = observer;
     }
@@ -68,18 +73,31 @@ public class Game {
     public void setRound(int round){
         this.round = round;
     }
+
+    /** @return the current round number (1 to 10) */
     public int getRound() {
         return this.round;
     }
     public void setEra(int era) {
         this.era = era;
     }
+
+    /** @return the current era (1, 2, or 3) */
     public int getEra() {
         return era;
     }
+
+    /** @return the current game phase as a string ("PLACEMENT", "RESOLUTION", or "EXTRA_PICK") */
     public String getCurrentPhase() {  return currentPhase.toString(); }
+
+    /** @return the player whose turn it currently is */
     public Player getCurrentPlayer() { return players.get(currentPlayerIndex);}
 
+    /**
+     * Loads building cards from the JSON resource file at {@code /json/buildingsInfo.json}.
+     * Uses Jackson polymorphic deserialization to instantiate the correct subclass for each building.
+     * @return list of all building cards loaded from the file
+     */
     private ArrayList<BuildingCard> loadBuildingsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<BuildingCard> allBuildingsInGame = new ArrayList<>();
@@ -106,7 +124,11 @@ public class Game {
     }
 
 
-
+    /**
+     * Loads tribe cards from the JSON resource file at {@code /json/cardsInfo.json}.
+     * Cards are organized by era in the JSON and the era number is assigned during parsing.
+     * @return list of all tribe cards loaded from the file
+     */
     private List<TribeCard> loadCardsFromJson() {
         ObjectMapper mapper = new ObjectMapper();
         List<TribeCard> allCardsInGame = new ArrayList<>();
@@ -153,7 +175,8 @@ public class Game {
     }
 
     public Board getBoard() {return board; }
-    // return the list of players inside game
+
+    /** @return the list of players in the game, ordered by current turn order */
     public List<Player> getPlayers() {
         return players;
     }
@@ -264,7 +287,10 @@ public class Game {
             }
         }
     }
-
+    /**
+     * Reorders the player list based on the track tile positions for the resolution phase.
+     * Players are ordered from the first occupied tile to the last.
+     */
     public void recalculateDrawOrder() {
         ArrayList<Player> drawOrder = new ArrayList<>();
         for(Tile tile: board.getTrack()) {
@@ -276,6 +302,10 @@ public class Game {
         this.players = drawOrder;
     }
 
+    /**
+     * Checks whether any player owns the Extra Pick building.
+     * @return the player who owns the building, or null if nobody does
+     */
     private Player checkExtraPickBuilding() {
         for(Player p: players) {
             for(BuildingCard b : p.getBuildings()) {
@@ -287,6 +317,11 @@ public class Game {
         return null;
     }
 
+    /**
+     * Skips the extra pick phase when the player chooses not to use
+     * the Extra Pick building bonus.
+     * @throws IllegalStateException if the current phase is not EXTRA_PICK
+     */
     public void skipExtraPick() throws IllegalStateException {  //Metodo per gestire il caso in cui l'utente decide di NON prendere la carta extra
         if(this.currentPhase != GamePhase.EXTRA_PICK) {
             throw new IllegalStateException();
@@ -447,6 +482,12 @@ public class Game {
 
     }
 
+    /**
+     * Resolves the extra pick action, drawing one card from the upper row
+     * for the player who owns the Extra Pick building.
+     * @param pos the index of the card to draw from the upper row
+     * @throws IllegalArgumentException if the current phase is not EXTRA_PICK
+     */
     public void resolveExtraPick(int pos) {
 
         if (this.currentPhase != GamePhase.EXTRA_PICK) {
@@ -483,6 +524,11 @@ public class Game {
         nextPlayer();
     }
 
+    /**
+     * Assigns a totem color to a player identified by their nickname.
+     * @param nickname the nickname of the player
+     * @param totem    the totem color to assign
+     */
     public void assignTotem(String nickname, Totem totem) {
         Player player = players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElse(null);
         player.setTotem(totem);

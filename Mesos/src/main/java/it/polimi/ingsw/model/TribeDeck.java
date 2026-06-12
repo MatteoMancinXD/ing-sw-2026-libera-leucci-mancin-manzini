@@ -3,6 +3,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents the main deck of 96 tribe cards used during the game.
+ * Cards are filtered by minimum player count and shuffled by era
+ * so that era 1 cards are drawn first, then era 2, then era 3.
+ *
+ * @see TribeCard
+ */
 public class TribeDeck {
     private ArrayList<TribeCard> cards;
 
