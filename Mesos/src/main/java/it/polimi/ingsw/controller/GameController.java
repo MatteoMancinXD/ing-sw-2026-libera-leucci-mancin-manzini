@@ -16,7 +16,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Server-side controller that manages a single game session.
+ * Acts as the intermediary between the {@link it.polimi.ingsw.model.Game} model
+ * and the connected clients via {@link VirtualView}.
+ * Handles player actions (totem placement, card drawing), enforces turn order,
+ * broadcasts game state updates, and manages totem selection before game start.
+ * Implements {@link GameObserver} to receive callbacks for event resolution
+ * and game end from the model.
+ *
+ * @see Game
+ * @see VirtualView
+ * @see GameObserver
+ */
 public class GameController implements GameObserver {
     private int gameID;
     private String gameMaster;
@@ -37,12 +49,24 @@ public class GameController implements GameObserver {
         clients = new HashMap<>();
     }
 
+    /**
+     * Registers a {@link GameStarter} callback to notify the network layer when
+     * the game starts and should be moved from available to started games.
+     * @param starter the game starter callback
+     */
     public void addStarter(GameStarter starter) {
         this.starter = starter;
     }
 
+    /** @return the set of totem colors not yet chosen by any player */
     public Set<Totem> getAvailableTotems() { return new HashSet<>(availableTotems); }
 
+    /**
+     * Handles a player's totem color selection. If all players have selected
+     * their totems and the lobby is full, the game starts automatically.
+     * @param nickname the nickname of the player selecting the totem
+     * @param totem    the totem color to assign
+     */
     public void selectTotem(String nickname, Totem totem) {
         synchronized(game) {
             if(!availableTotems.contains(totem)) {
@@ -96,10 +120,19 @@ public class GameController implements GameObserver {
         }
     }
 
+    /** @return the nickname of the player who created this game */
     public String getGameMaster() {
         return gameMaster;
     }
 
+    /**
+     * Adds a player to the game lobby. Notifies all connected clients
+     * of the updated player count and sends the available totems to the new player.
+     * @param view     the virtual view representing the player's connection
+     * @param nickname the player's unique nickname
+     * @return true if the player was successfully added, false if the lobby is full
+     *         or the nickname is already taken
+     */
     public boolean addPlayer(VirtualView view, String nickname) {
         synchronized (game) {
             if (game.getPlayers().size() == game.getNumPlayers()) {
@@ -128,6 +161,14 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Processes a card draw request from a player during the resolution phase.
+     * Validates turn order, card index, and food cost before delegating to the model.
+     * @param nickname the nickname of the requesting player
+     * @param row      true to draw from the upper row, false for the lower row
+     * @param idx      the index of the card to draw within the row
+     * @return true if the draw was processed, false if rejected
+     */
     public boolean drawCard(String nickname, boolean row, int idx) {
         synchronized (game) {
             Card card = null;
@@ -186,6 +227,13 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Processes a totem placement request from a player during the placement phase.
+     * Validates turn order, tile index, and tile availability before delegating to the model.
+     * @param nickname  the nickname of the requesting player
+     * @param tileIndex the index of the tile on the track to place the totem on
+     * @return true if the placement was processed, false if rejected
+     */
     public boolean placeTotem(String nickname, int tileIndex) {
         synchronized (game) {
             if (!checkPlayer(nickname)) return false;
@@ -222,6 +270,12 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Broadcasts the current game state snapshot to all connected clients.
+     * Sends both the board update and the turn notification in the same thread
+     * to ensure consistency.
+     * @param game the current game state snapshot
+     */
     public void broadcastUpdate(GameSnapshot game) {
         synchronized (clients) {
             BoardSnapshot board = game.board();
@@ -247,6 +301,10 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Sends a text message to all connected clients.
+     * @param message the message to broadcast
+     */
     public void broadcastMessage(String message) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
@@ -261,6 +319,11 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Broadcasts a chat message from one player to all connected clients.
+     * @param nickname the sender's nickname
+     * @param message  the chat message content
+     */
     public void broadcastChatMessage(String nickname, String message) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
@@ -275,6 +338,10 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Sends the updated set of available totems to all connected clients.
+     * @param totems the set of still available totem colors
+     */
     public void broadcastUpdateAvailableTotems(Set<Totem> totems) {
         synchronized (clients) {
             for (Map.Entry<String, VirtualView> entry : clients.entrySet()) {
@@ -289,6 +356,11 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * Checks whether it is currently the specified player's turn.
+     * @param nickname the nickname to check
+     * @return true if it is this player's turn
+     */
     public boolean checkPlayer(String nickname) {
         return nickname.equals(game.getCurrentPlayer().getNickname());
     }
@@ -320,8 +392,10 @@ public class GameController implements GameObserver {
     }
     */
 
-    //invoked if the player decides not to use the "extra pick" bonus
-    public void skipExtraPick(String nickname) {
+    /**
+     * Skips the extra pick phase for a player who declines the bonus draw.
+     * @param nickname the nickname of the player skipping
+     */    public void skipExtraPick(String nickname) {
         synchronized (game) {
             if (!checkPlayer(nickname)) return;
             game.skipExtraPick();
@@ -334,7 +408,11 @@ public class GameController implements GameObserver {
         }
     }
 
-    //invoked only if currentPlayer refuses to draw all the cards he is able to
+    /**
+     * Manually ends the current player's turn, advancing to the next player.
+     * Used when a player chooses not to draw all available cards.
+     * @param nickname the nickname of the player ending their turn
+     */
     public void controllerEndTurn(String nickname) {
 
         synchronized (game) {
@@ -354,6 +432,10 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Notifies all connected clients about the event being resolved.
+     */
     @Override
     public void onEventResolution(EventCard event) {
         String desc = event.getShortString();
@@ -371,6 +453,11 @@ public class GameController implements GameObserver {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Saves match results to the database, retrieves the global leaderboard,
+     * and sends the final rankings and leaderboard to all connected clients.
+     */
     @Override
     public void onGameEnd(ArrayList<Player> players) {
         List<String> rankings = new ArrayList<>();
