@@ -24,6 +24,16 @@ import it.polimi.ingsw.model.characters.*;
         @JsonSubTypes.Type(value = SustenanceEvent.class, name = "SUSTENANCE")
 
 })
+
+/**
+ * Abstract class representing a tribe card drawn from the main deck.
+ * Tribe cards include both {@link CharacterCard} (characters) and {@link EventCard} (events).
+ * Each tribe card has a minimum player count that determines whether it is
+ * included in the deck for a given game size.
+ *
+ * @see CharacterCard
+ * @see EventCard
+ */
 public abstract class TribeCard extends Card{
     private int minPlayers;
 
@@ -35,6 +45,7 @@ public abstract class TribeCard extends Card{
     protected TribeCard() {
     }
 
+    /** @return the minimum number of players required for this card to be in the deck */
     public int getMinPlayers() {
         return minPlayers;
     }
