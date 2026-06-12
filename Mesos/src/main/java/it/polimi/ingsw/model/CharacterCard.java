@@ -5,7 +5,14 @@ import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
 import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 import it.polimi.ingsw.model.characters.BuilderCard;
 
-
+/**
+ * Abstract class representing a character card that can be acquired by a player.
+ * Character types include Artist, Builder, Harvester, Hunter, Inventor, and Shaman.
+ * When acquired, character cards notify the player's buildings to trigger
+ * any purchase-related effects.
+ *
+ * @see BuildingCard#onCharacterCardPurchase(Player, CharacterCard)
+ */
 public abstract class CharacterCard extends TribeCard{
     public CharacterCard(int id, int era, int minPlayers) {
         super(id, era, minPlayers);
