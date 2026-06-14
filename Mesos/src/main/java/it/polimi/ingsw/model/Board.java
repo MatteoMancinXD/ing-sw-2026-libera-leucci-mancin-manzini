@@ -157,7 +157,9 @@ public class Board implements Serializable {
             if (c.isSustenanceEvent()) {
                 sustenance = (EventCard) c;
             } else if (c.isEventCard()) {
-                observer.onEventResolution((EventCard) c);
+                if(observer != null) {
+                    observer.onEventResolution((EventCard) c);
+                }
 
                 for (Player p : players) {
                     ((EventCard) c).solveEventCard(p, players);

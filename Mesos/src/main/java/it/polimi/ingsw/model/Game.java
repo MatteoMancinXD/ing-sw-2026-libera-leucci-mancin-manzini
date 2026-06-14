@@ -247,7 +247,9 @@ public class Game {
             }
             });
 
-        observer.onGameEnd(rankings);
+        if(observer != null) {
+            observer.onGameEnd(rankings);
+        }
         return rankings;
     }
     /**
