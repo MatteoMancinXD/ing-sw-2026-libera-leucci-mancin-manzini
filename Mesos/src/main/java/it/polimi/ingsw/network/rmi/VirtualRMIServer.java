@@ -201,6 +201,10 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     public int createGame(String gameMaster, int numPlayers, ClientRemote clientStub) throws RemoteException{
         VirtualRMIView view = new VirtualRMIView(gameMaster, clientStub);
 
+        if(numPlayers < 2 ||  numPlayers > 5){
+            return -1;
+        }
+
         int gameID = mngr.getIdCounter();
 
         GameController ctrl = new GameController(gameID, gameMaster, numPlayers);

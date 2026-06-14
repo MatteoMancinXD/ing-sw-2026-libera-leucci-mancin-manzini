@@ -88,6 +88,11 @@ public class SocketClientHandler implements Runnable{
         this.nickname = msg.getNickname();
         int numPlayers =  msg.getNumPlayers();
 
+        if(numPlayers < 2 || numPlayers > 5) {
+            sendMessage(new ErrorMessage("Invalid number of players"));
+            return;
+        }
+
         Map<Integer, GameController> availableGames = mngr.getAvailableGames();
         int gameID = mngr.getIdCounter();
 

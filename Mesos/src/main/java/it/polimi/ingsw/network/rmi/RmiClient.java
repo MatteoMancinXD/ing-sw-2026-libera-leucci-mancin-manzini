@@ -84,7 +84,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         try {
             //see if else in login method in VirtualRMIServer
             int id = serverStub.createGame(this.nickname, numPlayers, this);
-            userInterface.showMessage("You created the game with id: " + id);
+            if(id == -1){
+                userInterface.showError("Failed to create game");
+            } else {
+                userInterface.showMessage("You created the game with id: " + id);
+            }
         } catch (RemoteException e) {
             userInterface.showError("Failed to create game!");
         }
