@@ -121,6 +121,11 @@ public class SocketClientHandler implements Runnable{
         int gameID = msg.getGameID();
 
         GameController ctrl = mngr.getAvailableGames().get(gameID);
+        if(ctrl == null) {
+            sendMessage(new ErrorMessage("No game with such ID available"));
+            return;
+        }
+
         boolean success = ctrl.addPlayer(view, nickname);
         if (!success) {
             sendMessage(new ErrorMessage("Nickname already in use or match already filled"));
