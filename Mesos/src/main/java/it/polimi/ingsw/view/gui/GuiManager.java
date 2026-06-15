@@ -143,7 +143,8 @@ public class GuiManager extends Application implements ui {
             // 1. Lista partite → lobby
             if (message.startsWith("Available games:") ||
                     message.contains("Game #") ||
-                    message.contains("Game ID")) {
+                    message.contains("Game ID") ||
+                    message.contains("No available games")) {
                 if (gameSetup != null) gameSetup.updateGamesList(message);
                 return;
             }
