@@ -86,12 +86,12 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
 
     /**
      * Sends a game creation request to the server
-     * @param nickname
-     * @param numPlayers
-     * @throws RemoteException
+     * @param nickname: nickname of player creating the game
+     * @param numPlayers: total number of players for the game
+     * @throws RemoteException: method fails to create the game
      */
     public void createGame(String nickname,int numPlayers) throws RemoteException{
-        Map<Integer, String> games = serverStub.getAvailableGames();
+        //Map<Integer, String> games = serverStub.getAvailableGames();
         if (numPlayers < 2 || numPlayers > 5) {
             throw new NumberFormatException("Invalid number of players! ");
         }
