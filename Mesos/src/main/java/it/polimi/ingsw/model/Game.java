@@ -479,7 +479,7 @@ public class Game {
         p.drawCard(c);
         c.notifyBuildings(p);
 
-        if(currentDrawnLower == targetTile.getLowerRow() && currentDrawnUpper == targetTile.getUpperRow()) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
+        if(currentDrawnLower == downCards && currentDrawnUpper == upCards) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
             nextPlayer();
         }
 
