@@ -57,7 +57,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
         catch (Exception e) {
             userInterface.showError("Failed to connect to RMI server");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -80,7 +80,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
             }
         }catch (Exception e) {
             userInterface.showError("Failed to request available games");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
