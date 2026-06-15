@@ -423,37 +423,14 @@ public class Game {
             }
         }
 
-        int availableCardsUpperRow = 0;
-        int availableCardsLowerRow = 0;
-
-        for (Card cUpper : this.board.getUpperRow()) {
-            if (!cUpper.isEventCard() && !cUpper.isBuildingCard()) {  //se una carta è un evento o un building non viene aggiunta alle available
-                availableCardsUpperRow++;
-            }
-            if (cUpper.isBuildingCard()) {
-                if (cUpper.getFoodCost() <= (this.players.get(currentPlayerIndex).getFood() + this.players.get(currentPlayerIndex).getTotDiscount())) {  //se il building può essere comprato dal player di turno, viene aggiunto alle available
-                    availableCardsUpperRow++;
-                }
-            }
-        }
-        for (Card cLower : this.board.getLowerRow()) {
-            if (!cLower.isEventCard() && !cLower.isBuildingCard()) {
-                availableCardsLowerRow++;
-            }
-            if (cLower.isBuildingCard()) {
-                if (cLower.getFoodCost() <= (this.players.get(currentPlayerIndex).getFood() + this.players.get(currentPlayerIndex).getTotDiscount())) {
-                    availableCardsLowerRow++;
-                }
-            }
+        if (targetTile == null) {
+            throw new IllegalStateException("No tile found for this player! ");
         }
 
-        int upCards = Math.min(targetTile.getUpperRow(), availableCardsUpperRow);
-        int downCards = Math.min(targetTile.getLowerRow(), availableCardsLowerRow);
-
-        if (row && currentDrawnUpper >= upCards) {
+        if (row && currentDrawnUpper >= targetTile.getUpperRow()) {
             throw new IllegalStateException("You already drawn the max number of cards from the upper row");
         }
-        if (!row && currentDrawnLower >= downCards) {
+        if (!row && currentDrawnLower >= targetTile.getLowerRow()) {
             throw new IllegalStateException("You already drawn the max number of cards from the lower row");
         }
 
@@ -462,6 +439,12 @@ public class Game {
             event = c.isEventCard();
             if (event) {
                 throw new IllegalArgumentException("You cannot draw an EVENT CARD!!");
+            }
+            if (c.isBuildingCard()) {
+                int totalFood = p.getFood() + p.getTotDiscount();
+                if (c.getFoodCost() > totalFood) {
+                    throw new IllegalArgumentException("You don't have enough food to buy this building! ");
+                }
             }
             c = this.board.removeUpper(index);
             currentDrawnUpper++;
@@ -472,6 +455,12 @@ public class Game {
             if (event) {
                 throw new IllegalArgumentException("You cannot draw an EVENT CARD!!");
             }
+            if (c.isBuildingCard()) {
+                int totalFood = p.getFood() + p.getTotDiscount();
+                if (c.getFoodCost() > totalFood) {
+                    throw new IllegalArgumentException("You don't have enough food to buy this building! ");
+                }
+            }
             c = this.board.removeLower(index);
             currentDrawnLower++;
 
@@ -479,10 +468,37 @@ public class Game {
         p.drawCard(c);
         c.notifyBuildings(p);
 
-        if(currentDrawnLower >= downCards && currentDrawnUpper >= upCards) {  //nextplayer se il giocatore ha pescato tutte le carte che poteva
+        int remainingAllowedUpper = targetTile.getUpperRow() - currentDrawnUpper;
+        int remainingAllowedLower = targetTile.getLowerRow() - currentDrawnLower;
+
+        int availableUpper = countPlayableCards(this.board.getUpperRow(), p);
+        int availableLower = countPlayableCards(this.board.getLowerRow(), p);
+
+        boolean canStillDrawUpper = (remainingAllowedUpper > 0) && (availableUpper > 0); //il player può ancora pescare da sopra
+        boolean canStillDrawLower = (remainingAllowedLower > 0) && (availableLower > 0);    //il player può ancora pescare da sotto
+
+        // se non può pescare ne da sopra ne da sotto --> nextplayer
+        if (!canStillDrawUpper && !canStillDrawLower) {
             nextPlayer();
         }
 
+    }
+
+    /**
+     * Private support method to count how many drawable cards are available in a given row
+     */
+    private int countPlayableCards(List<Card> rowCards, Player p) {
+        int available = 0;
+        int totalFood = p.getFood() + p.getTotDiscount();
+
+        for (Card card : rowCards) {
+            if (!card.isEventCard() && !card.isBuildingCard()) {
+                available++;
+            } else if (card.isBuildingCard() && card.getFoodCost() <= totalFood) {
+                available++;
+            }
+        }
+        return available;
     }
 
     /**
