@@ -108,7 +108,13 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
-    public void joinGame(String nickName, int gameID) throws RemoteException{
+    /**
+     * Adds the player to the list of players of a certain game
+     * @param nickname: player's nickname
+     * @param gameID: id of the game to join
+     * @throws RemoteException: method fails to join the game
+     */
+    public void joinGame(String nickname, int gameID) throws RemoteException{
        try {
             serverStub.joinGame(this.nickname, gameID,this);
            userInterface.showMessage("You joined the game with id: "+gameID);
@@ -137,6 +143,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Sends a message to all players in the game
+     * @param message: message to be sent
+     * @throws RemoteException: method fails to send mesasge
+     */
     public void sendChatMessage(String message) throws RemoteException{
         try {
             if (token != null) {
@@ -146,6 +157,8 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
             userInterface.showError("Error couldn't send chat message");
         }
     }
+
+
     public void receiveChatMessage(String sender, String message) throws RemoteException {
         userInterface.showChatMessage(sender, message);
     }
@@ -162,6 +175,11 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Requests to draw a certain card
+     * @param row: true if the card is in the upper row, false otherwise
+     * @param idx: offset of the card in its row
+     */
     public void askToDrawCard(boolean row, int idx) {
         try {
             serverStub.drawCard(token, row, idx);
@@ -170,6 +188,10 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Requests to place the totem on a certain tile
+     * @param index: index of the tile in the offer track
+     */
     public void askToPlaceTotem(int index) {
         try {
             serverStub.placeTotem(token, index);
@@ -178,6 +200,9 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Requests the set of available totems
+     */
     @Override
     public void requestAvailableTotems() {
         try {
@@ -188,6 +213,10 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Requests to assign the player a certain totem
+     * @param totem: totem selected by the player
+     */
     @Override
     public void askToSelectTotem(Totem totem) {
         try {
@@ -197,16 +226,35 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Receives an update about the whole game's state
+     * @param board: snapshot of the current board state
+     * @param players: list of player snapshots with current stats
+     * @throws RemoteException: fails to receive the update
+     */
     @Override
     public void receiveBoardUpdate(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
         userInterface.updateBoard(board, players);
     }
 
+    /**
+     * Receives an error from the server
+     * @param errorMessage: description of the error
+     * @throws RemoteException: method fails to receive the error
+     */
     @Override
     public void receiveError(String errorMessage) throws RemoteException {
         userInterface.showError("Server error: "+errorMessage);
     }
 
+    /**
+     * Receives an update about the players' turn
+     * @param currentPlayerNickname: nickname of the player whose turn it is
+     * @param gamePhase: current game phase (PLACEMENT, RESOLUTION, or EXTRA_PICK)
+     * @param round: current round number
+     * @param era: current era number
+     * @throws RemoteException
+     */
     @Override
     public void receiveTurnNotification(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
         userInterface.notifyTurn(currentPlayerNickname, gamePhase, round, era);
