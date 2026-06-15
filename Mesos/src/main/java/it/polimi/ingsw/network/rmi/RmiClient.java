@@ -61,14 +61,22 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
+    /**
+     * Requests the list of games available for joining and shows it to the player
+     */
     @Override
     public void requestAvailableGames() throws RemoteException{
         try {
             Map<Integer,String> games = serverStub.getAvailableGames();
-            userInterface.showMessage("Available games:");
 
-            for(Map.Entry<Integer,String> game : games.entrySet()) {
-                userInterface.showMessage("Game #" +  game.getKey() + ": " + game.getValue() + "'s game");
+            if(games.isEmpty()){
+                userInterface.showMessage("No available games");
+            } else {
+                userInterface.showMessage("Available games:");
+
+                for(Map.Entry<Integer,String> game : games.entrySet()) {
+                    userInterface.showMessage("Game #" +  game.getKey() + ": " + game.getValue() + "'s game");
+                }
             }
         }catch (Exception e) {
             userInterface.showError("Failed to request available games");
@@ -76,7 +84,13 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
         }
     }
 
-    public void createGame(String nickName,int numPlayers) throws RemoteException{
+    /**
+     * Sends a game creation request to the server
+     * @param nickname
+     * @param numPlayers
+     * @throws RemoteException
+     */
+    public void createGame(String nickname,int numPlayers) throws RemoteException{
         Map<Integer, String> games = serverStub.getAvailableGames();
         if (numPlayers < 2 || numPlayers > 5) {
             throw new NumberFormatException("Invalid number of players! ");
