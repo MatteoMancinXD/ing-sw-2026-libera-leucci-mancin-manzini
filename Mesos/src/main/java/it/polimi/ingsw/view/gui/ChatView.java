@@ -82,6 +82,7 @@ public class ChatView {
                         "-fx-cursor: hand;"
         );
 
+
         // Invio con tasto Enter oppure clic sul bottone
         inputField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleSend();
