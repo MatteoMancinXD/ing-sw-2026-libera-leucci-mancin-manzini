@@ -71,7 +71,7 @@ public class ChatView {
                         "-fx-padding: 6;"
         );
 
-        Button sendButton = new Button("Invia");
+        Button sendButton = new Button("➤");
         sendButton.setStyle(
                 "-fx-background-color: #e0a830;" +
                         "-fx-text-fill: #1a1a2e;" +

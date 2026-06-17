@@ -70,17 +70,18 @@ public class TotemSelectView {
         totemCombo.setPrefWidth(200);
 
         List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
-        totemCombo.setCellFactory(lv -> {
-            ListCell<String> cell = new ListCell<>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(empty ? null : item);
-                    setTextFill(Color.WHITE);
-                    setStyle("-fx-background-color: #2a2a4a;");
-                }
-            };
-            return cell;
+        totemCombo.setCellFactory(lv -> new ListCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setTextFill(Color.WHITE);
+                setStyle("-fx-background-color: #2a2a4a; -fx-border-color: transparent;");
+            }
+        });
+        totemCombo.showingProperty().addListener((obs, wasShowing, isShowing) -> {
+            if (isShowing) {
+                totemCombo.lookup(".list-view").setStyle("-fx-border-color: transparent; -fx-background-color: #2a2a4a;");
+            }
         });
 
         totemCombo.setButtonCell(new ListCell<>() {
@@ -164,6 +165,15 @@ public class TotemSelectView {
                         "-fx-border-radius: 4;" +
                         "-fx-background-radius: 4;"
         );
+        // Rimuove il bordo interno della ScrollPane che JavaFX aggiunge alla TextArea
+        area.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            if (newSkin != null) {
+                javafx.scene.Node scrollPane = area.lookup(".scroll-pane");
+                javafx.scene.Node viewport = area.lookup(".scroll-pane > .viewport");
+                if (scrollPane != null) scrollPane.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+                if (viewport != null) viewport.setStyle("-fx-background-color: transparent;");
+            }
+        });
     }
 
     private void styleButton(Button button, String bg, String text) {

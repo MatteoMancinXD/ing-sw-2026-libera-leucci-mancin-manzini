@@ -1,16 +1,16 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.snapshots.CardSnapshot;
 import it.polimi.ingsw.network.snapshots.PlayerSnapshot;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -24,34 +24,55 @@ import java.util.List;
  */
 public class PlayerHandView {
 
-    private static final double CARD_HEIGHT = 90;
+    private static final double CARD_HEIGHT = 80;
+    // Altezza totale fissa della sezione: carta + label + padding + scrollbar
+    private static final double SECTION_HEIGHT = CARD_HEIGHT + 20 + 24 + 14; // ~138
 
     /**
      * Builds the bottom section with one card row per player.
      * @param players   full list of players
      * @param localNick nickname of the local player (shown first)
-     * @return VBox ready to be set as gameRoot.setBottom()
+     * @return HBox ready to be used in the SplitPane
      */
-    public static VBox build(List<PlayerSnapshot> players, String localNick) {
-        VBox allRows = new VBox(0);
-        allRows.setStyle("-fx-background-color: #12122a; -fx-border-color: #e0a830; -fx-border-width: 1 0 0 0;");
+    public static HBox build(List<PlayerSnapshot> players, String localNick) {
+        HBox allColumns = new HBox(0);
+        allColumns.setStyle("-fx-background-color: #12122a; -fx-border-color: #e0a830; -fx-border-width: 1 0 0 0;");
+        // Altezza fissa e rigida: impedisce che il SplitPane schiacci la sezione
+        allColumns.setMinHeight(SECTION_HEIGHT);
+        allColumns.setPrefHeight(SECTION_HEIGHT);
+        allColumns.setMaxHeight(SECTION_HEIGHT);
 
         List<PlayerSnapshot> ordered = new ArrayList<>();
         players.stream().filter(p -> p.nickname().equals(localNick)).findFirst().ifPresent(ordered::add);
         players.stream().filter(p -> !p.nickname().equals(localNick)).forEach(ordered::add);
 
-        for (PlayerSnapshot p : ordered) {
-            allRows.getChildren().add(buildPlayerRow(p, localNick));
+        for (int i = 0; i < ordered.size(); i++) {
+            PlayerSnapshot p = ordered.get(i);
+            VBox col = buildPlayerColumn(p, localNick);
+            HBox.setHgrow(col, Priority.ALWAYS);
+
+            // Divisore verticale tra colonne (non dopo l'ultima)
+            if (i < ordered.size() - 1) {
+                col.setStyle(
+                        col.getStyle() +
+                                "-fx-border-color: #e0a830;" +
+                                "-fx-border-width: 0 1 0 0;"
+                );
+            }
+
+            allColumns.getChildren().add(col);
         }
 
-        return allRows;
+        return allColumns;
     }
 
-    private static HBox buildPlayerRow(PlayerSnapshot player, String localNick) {
-        HBox row = new HBox(0);
-        row.setStyle("-fx-background-color: #12122a;");
+    private static VBox buildPlayerColumn(PlayerSnapshot player, String localNick) {
+        VBox col = new VBox(0);
+        col.setStyle("-fx-background-color: #12122a;");
+        // La colonna prende tutta l'altezza disponibile dal genitore HBox
+        col.setMaxHeight(Double.MAX_VALUE);
 
-        // intestazione con nickname
+        // --- Intestazione con nickname ---
         boolean isLocal = player.nickname().equals(localNick);
         String labelText = isLocal
                 ? "▶ " + player.nickname() + " (tu)"
@@ -64,8 +85,12 @@ public class PlayerHandView {
         nameLabel.setPadding(new Insets(5, 8, 5, 8));
         nameLabel.setWrapText(false);
         nameLabel.setStyle("-fx-background-color: #1a1a2e; -fx-font-weight: " + (isLocal ? "bold" : "normal") + ";");
+        // Altezza fissa per la label: evita che si espanda o collassi
+        nameLabel.setMinHeight(24);
+        nameLabel.setPrefHeight(24);
+        nameLabel.setMaxHeight(24);
 
-        // raccoglie tutte le carte del giocatore
+        // --- Raccoglie tutte le carte del giocatore ---
         List<CardSnapshot> allCards = new ArrayList<>();
         allCards.addAll(player.artists());
         allCards.addAll(player.builders());
@@ -75,9 +100,10 @@ public class PlayerHandView {
         allCards.addAll(player.inventors());
         allCards.addAll(player.buildings());
 
-        // striscia carte scrollabile
+        // --- Striscia carte ---
         HBox cardStrip = new HBox(4);
         cardStrip.setPadding(new Insets(4, 8, 4, 8));
+        cardStrip.setAlignment(Pos.CENTER_LEFT);
         cardStrip.setStyle("-fx-background-color: #12122a;");
 
         if (allCards.isEmpty()) {
@@ -91,18 +117,25 @@ public class PlayerHandView {
             }
         }
 
+        // --- ScrollPane ---
+        // NON usare setFitToHeight(true): lascia che la ScrollPane abbia
+        // un'altezza definita esplicitamente, altrimenti collassa a 0.
+        double scrollHeight = CARD_HEIGHT + 20; // carta + padding + scrollbar
         ScrollPane scroll = new ScrollPane(cardStrip);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setFitToHeight(true);
-        scroll.setPrefHeight(CARD_HEIGHT + 20);
-        scroll.setMaxHeight(CARD_HEIGHT + 20);
+        scroll.setFitToHeight(true);   // adatta l'altezza del contenuto alla ScrollPane
+        scroll.setFitToWidth(false);   // lascia scorrere in orizzontale
+        scroll.setMinHeight(scrollHeight);
+        scroll.setPrefHeight(scrollHeight);
+        scroll.setMaxHeight(scrollHeight);
         scroll.setStyle("-fx-background: #12122a; -fx-background-color: #12122a; -fx-border-color: transparent;");
+        // NON usare VBox.setVgrow qui: l'altezza è già fissa
+        VBox.setVgrow(scroll, Priority.NEVER);
 
-        row.getChildren().addAll(nameLabel, scroll);
-        HBox.setHgrow(scroll, javafx.scene.layout.Priority.ALWAYS);
+        col.getChildren().addAll(nameLabel, scroll);
 
-        return row;
+        return col;
     }
 
     private static VBox buildCardNode(CardSnapshot card) {
