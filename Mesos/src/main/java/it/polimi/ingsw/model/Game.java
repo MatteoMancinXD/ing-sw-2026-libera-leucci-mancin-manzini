@@ -264,10 +264,10 @@ public class Game {
         currentDrawnUpper = 0;
 
         if(currentPlayerIndex >= players.size()) {      //Fine player
+            currentPlayerIndex = 0;
             if(currentPhase == GamePhase.PLACEMENT) {   //Si passa dalla fase di piazzamento alla risoluzione
                 currentPhase = GamePhase.RESOLUTION;
                 recalculateDrawOrder();
-                currentPlayerIndex = 0;
 
                 // If there are 5 player, tile A only adds food, so we manually skip that player's turn
                 if(numPlayers == 5 && board.getTrack().getFirst().getStatus()) {
@@ -288,6 +288,22 @@ public class Game {
                 nextTurn();
             }
         }
+
+        if(currentPhase == GamePhase.RESOLUTION) {
+            Player p = players.get(currentPlayerIndex);
+            Tile targetTile = null;
+            for(Tile t : board.getTrack()) {
+                if(t.getStatus() && t.getPlayer().equals(p)) {
+                    targetTile = t;
+                    break;
+                }
+            }
+
+            if(targetTile != null){
+                handleRemainingCards(targetTile, p);
+            }
+        }
+
     }
     /**
      * Reorders the player list based on the track tile positions for the resolution phase.
@@ -468,6 +484,10 @@ public class Game {
         p.drawCard(c);
         c.notifyBuildings(p);
 
+        handleRemainingCards(targetTile, p);
+    }
+
+    private void handleRemainingCards(Tile targetTile, Player p) {
         int remainingAllowedUpper = targetTile.getUpperRow() - currentDrawnUpper;
         int remainingAllowedLower = targetTile.getLowerRow() - currentDrawnLower;
 
@@ -481,7 +501,6 @@ public class Game {
         if (!canStillDrawUpper && !canStillDrawLower) {
             nextPlayer();
         }
-
     }
 
     /**
@@ -549,8 +568,7 @@ public class Game {
      * @param totem    the totem color to assign
      */
     public void assignTotem(String nickname, Totem totem) {
-        Player player = players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElse(null);
-        player.setTotem(totem);
+        players.stream().filter(p -> p.getNickname().equals(nickname)).findFirst().ifPresent(player -> player.setTotem(totem));
     }
 
     public GameSnapshot toSnapshot() {
