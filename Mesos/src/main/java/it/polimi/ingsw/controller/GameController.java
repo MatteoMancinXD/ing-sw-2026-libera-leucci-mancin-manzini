@@ -206,6 +206,8 @@ public class GameController implements GameObserver {
                 }
             }
 
+            String rowStr = row ? "upper row" : "lower row";
+            System.out.println("Player " + nickname + " draws from " + rowStr + "at index " + idx);
 
             try {
                 game.resolveAction(row, idx);
