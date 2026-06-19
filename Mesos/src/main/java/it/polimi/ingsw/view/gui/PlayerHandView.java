@@ -75,7 +75,7 @@ public class PlayerHandView {
         // --- Intestazione con nickname ---
         boolean isLocal = player.nickname().equals(localNick);
         String labelText = isLocal
-                ? "▶ " + player.nickname() + " (tu)"
+                ? "▶ " + player.nickname() + " (You)"
                 : "  " + player.nickname();
 
         Label nameLabel = new Label(labelText);

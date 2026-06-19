@@ -50,8 +50,6 @@ public class GameView {
         this.manager = manager;
     }
 
-    // ── API pubblica ────────────────────────────────────────────────────
-
     /**
      * Prima chiamata: costruisce l'intera scena e la monta sullo Stage.
      * Chiamate successive: aggiorna solo table area e hand, senza
@@ -105,8 +103,6 @@ public class GameView {
         return true;
     }
 
-    // ── Costruzione iniziale (una sola volta) ───────────────────────────
-
     private void buildScene(BoardSnapshot board, List<PlayerSnapshot> players) {
         int numPlayers   = players.size();
         boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
@@ -153,7 +149,6 @@ public class GameView {
         }
     }
 
-    // ── Refresh parziale (chiamate successive) ──────────────────────────
 
     /**
      * Aggiorna la table area e la hand SENZA toccare Stage/Scene/PlayerPanel.
@@ -172,7 +167,6 @@ public class GameView {
         }
     }
 
-    // ── Costruzione della table area ─────────────────────────────────────
 
     private ScrollPane buildTableScroll(BoardSnapshot board, List<PlayerSnapshot> players,
                                         int numPlayers, boolean isMyTurn) {
