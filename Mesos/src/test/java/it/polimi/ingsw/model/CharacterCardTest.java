@@ -1,64 +1,86 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.Character;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.characters.ArtistCard;
+
+import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
+import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.InputStream;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import it.polimi.ingsw.model.characters.*;
-import it.polimi.ingsw.model.Card;
-
-
-import org.junit.jupiter.api.BeforeEach;
-
-import java.util.stream.Collectors;
-
 public class CharacterCardTest {
-    private List<TribeCard> allCards;
 
-    @BeforeEach
-    void setUp() {
-        allCards = loadCardsFromJson();
+    /**
+     * Classe finta per poter istanziare e testare la logica della classe astratta CharacterCard.
+     */
+    private static class DummyCharacterCard extends CharacterCard {
+        public DummyCharacterCard(int id, int era, int minPlayers) {
+            super(id, era, minPlayers);
+        }
 
+        public DummyCharacterCard() {
+            super();
+        }
+
+        @Override
+        public String getShortString() {
+            return "Dummy Character";
+        }
     }
 
-    private List<TribeCard> loadCardsFromJson() { //method in game
-        ObjectMapper mapper = new ObjectMapper();
-        List<TribeCard> cards = new ArrayList<>();
-        try {
-            InputStream is = getClass().getResourceAsStream("/json/cardsInfo.json");
-            TypeReference<Map<String, List<TribeCard>>> typeRef = new TypeReference<>() {
-            };
-            Map<String, List<TribeCard>> data = mapper.readValue(is, typeRef);
+    /**
+     * Finto edificio per verificare che la notifica arrivi correttamente.
+     */
+    private static class DummyBuilding extends BuildingCard {
+        public boolean wasNotified = false;
 
-            for (Map.Entry<String, List<TribeCard>> entry : data.entrySet()) {
-                int eraNumber = Integer.parseInt(entry.getKey().substring(3));
-                for (TribeCard card : entry.getValue()) {
-                    card.setEra(eraNumber);
-                    cards.add(card);
-                }
-            }
-        } catch (Exception e) {
-            fail("Impossibile caricare il file JSON: " + e.getMessage());
+        public DummyBuilding() {
+            super(99, 1, 0, 0); // Parametri finti: id, era, cost, prestige
         }
-        return cards;
+
+        @Override
+        public void onCharacterCardPurchase(Player p, CharacterCard c) {
+            this.wasNotified = true;
+        }
+
+        @Override
+        public String getShortString() { return "Dummy"; }
     }
 
     @Test
-    public void testGetType(){
+    void testConstructors() {
+        DummyCharacterCard card1 = new DummyCharacterCard(10, 2, 3);
+        assertNotNull(card1);
 
-        ArtistCard artistCard4 = new  ArtistCard(1,1,2);
-
-
+        DummyCharacterCard card2 = new DummyCharacterCard();
+        assertNotNull(card2);
     }
 
-    //public void testNotifyAllBuildings(){ }
+    @Test
+    void testNotifyAllBuildings() {
+        Player player = new Player("TestPlayer");
 
+        DummyBuilding building1 = new DummyBuilding();
+        DummyBuilding building2 = new DummyBuilding();
+        player.addBuilding(building1);
+        player.addBuilding(building2);
+
+        assertFalse(building1.wasNotified);
+        assertFalse(building2.wasNotified);
+
+        DummyCharacterCard card = new DummyCharacterCard(1, 1, 2);
+        card.notifyBuildings(player);
+
+        assertTrue(building1.wasNotified);
+        assertTrue(building2.wasNotified);
+    }
+
+    @Test
+    void testEmptyDefaultMethods() {
+        DummyCharacterCard card = new DummyCharacterCard(1, 1, 2);
+
+        assertDoesNotThrow(() -> {
+            card.registerForCardSet(null);
+            card.registerInvention(null);
+            card.getShortString();
+        });
+    }
 }
