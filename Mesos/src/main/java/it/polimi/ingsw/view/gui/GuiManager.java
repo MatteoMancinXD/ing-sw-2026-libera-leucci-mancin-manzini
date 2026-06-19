@@ -93,6 +93,7 @@ public class GuiManager extends Application implements ui {
         client.requestAvailableGames();
     }
 
+
     /**
      * Chiamato da CardRowView quando il giocatore clicca su una carta.
      * Durante la fase EXTRA_PICK la carta va risolta con resolveExtraPick
