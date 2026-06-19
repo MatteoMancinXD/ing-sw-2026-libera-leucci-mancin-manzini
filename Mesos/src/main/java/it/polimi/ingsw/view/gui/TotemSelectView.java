@@ -70,6 +70,8 @@ public class TotemSelectView {
         totemCombo.setPrefWidth(200);
 
         List<String> stringTotems = Arrays.stream(Totem.values()).map(Enum::name).toList();
+
+        // Custom design for each entry of the drop menu
         totemCombo.setCellFactory(lv -> new ListCell<>() {
             @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -78,6 +80,8 @@ public class TotemSelectView {
                 setStyle("-fx-background-color: #2a2a4a; -fx-border-color: transparent;");
             }
         });
+
+        // Custom design for drop menu container when opened
         totemCombo.showingProperty().addListener((obs, wasShowing, isShowing) -> {
             if (isShowing) {
                 totemCombo.lookup(".list-view").setStyle("-fx-border-color: transparent; -fx-background-color: #2a2a4a;");
