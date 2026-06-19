@@ -83,4 +83,14 @@ public class CharacterCardTest {
             card.getShortString();
         });
     }
+    @Test
+    void testCharacterTypeEnumCoverage() {
+        // Test per coprire l'enum associato alle carte
+        Character[] values = Character.values();
+        assertNotNull(values);
+        assertTrue(values.length > 0);
+
+        Character type = Character.valueOf("ARTIST"); // Usa un valore reale
+        assertEquals(Character.ARTIST, type);
+    }
 }
