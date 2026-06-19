@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.buildings.CardSetForFoodBuilding;
-import it.polimi.ingsw.model.buildings.InventorSetForFoodBuilding;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +88,7 @@ public class CharacterCardTest {
         assertNotNull(values);
         assertTrue(values.length > 0);
 
-        Character type = Character.valueOf("ARTIST"); // Usa un valore reale
+        Character type = Character.valueOf("ARTIST");
         assertEquals(Character.ARTIST, type);
     }
 }
