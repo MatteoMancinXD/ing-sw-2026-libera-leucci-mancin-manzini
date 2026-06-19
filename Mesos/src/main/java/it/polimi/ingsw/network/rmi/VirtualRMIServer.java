@@ -86,6 +86,10 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void  placeTotem(String token, int tileIndex) throws RemoteException {
         GameSession session = mngr.getSessions().get(token);
+        if(session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
+
         int gameID = session.getGameID();
         String nickname = session.getNickname();
 
@@ -96,8 +100,12 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
 
     @Override
     public void skipBonusPick(String token) throws RemoteException {
-        int id = mngr.getSessions().get(token).getGameID();
         GameSession session = mngr.getSessions().get(token);
+        if(session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
+        int id = session.getGameID();
+
 
         GameController  controller = mngr.getAvailableGames().get(id);
         if (controller == null) {
@@ -117,6 +125,9 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void serverEndTurn(String token) throws RemoteException {  //checks if gameController controller exists if yes controllerEndTurn
         GameSession session = mngr.getSessions().get(token);
+        if(session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
 
         int gameID = session.getGameID();
         String nickname = session.getNickname();
@@ -137,6 +148,9 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public Set<Totem> getAvailableTotems(String token) {
         GameSession session = mngr.getSessions().get(token);
+        if(session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
 
         int gameID = session.getGameID();
         String nickname = session.getNickname();
@@ -154,6 +168,9 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void selectTotem(String token, Totem totem) throws RemoteException {
         GameSession session = mngr.getSessions().get(token);
+        if(session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
 
         int gameID = session.getGameID();
         String nickname = session.getNickname();
@@ -167,9 +184,8 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void sendChatMessage(String token,String message) throws RemoteException{
         GameSession session = mngr.getSessions().get(token);
-
         if(session == null) {
-            throw new RemoteException("Chat rejected: invalid token");
+            throw new RemoteException("Token not valid");
         }
 
         int gameID = session.getGameID();
