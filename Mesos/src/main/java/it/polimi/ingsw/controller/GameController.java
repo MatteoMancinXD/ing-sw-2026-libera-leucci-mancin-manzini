@@ -210,7 +210,18 @@ public class GameController implements GameObserver {
             System.out.println("Player " + nickname + " draws from " + rowStr + "at index " + idx);
 
             try {
-                game.resolveAction(row, idx);
+                if (game.getCurrentPhase().equals("EXTRA_PICK")) {
+                    if (!row) {
+                        VirtualView view = clients.get(nickname);
+                        try {
+                            view.showError("For the Extra Pick bonus you can only draw from the UPPER row!");
+                        } catch (RemoteException re) {}
+                        return false;
+                    }
+                    game.resolveExtraPick(idx);
+                } else {
+                    game.resolveAction(row, idx);
+                }
 
                 GameSnapshot snap = game.toSnapshot();
                 new Thread(() -> {
