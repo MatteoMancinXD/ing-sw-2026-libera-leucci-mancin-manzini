@@ -93,9 +93,18 @@ public class GuiManager extends Application implements ui {
         client.requestAvailableGames();
     }
 
+    /**
+     * Chiamato da CardRowView quando il giocatore clicca su una carta.
+     * Durante la fase EXTRA_PICK la carta va risolta con resolveExtraPick
+     * (sempre dalla upper row), in tutte le altre fasi si usa la draw normale.
+     */
     public void drawCard(boolean row, int index) throws Exception {
         System.out.println("DEBUG GUI drawCard row=" + row + " index=" + index);
-        client.askToDrawCard(row, index);
+        if (gameView != null && "EXTRA_PICK".equals(gameView.getCurrentPhase())) {
+            client.askToDrawCard(row,index);
+        } else {
+            client.askToDrawCard(row, index);
+        }
     }
 
     public void placeTotem(int index) throws Exception {

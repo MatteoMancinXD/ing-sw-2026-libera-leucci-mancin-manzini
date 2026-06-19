@@ -103,6 +103,11 @@ public class GameView {
         return true;
     }
 
+    /** Espone la fase corrente del turno, usata da GuiManager per smistare le azioni. */
+    public String getCurrentPhase() {
+        return currentPhase;
+    }
+
     private void buildScene(BoardSnapshot board, List<PlayerSnapshot> players) {
         int numPlayers   = players.size();
         boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
@@ -170,15 +175,18 @@ public class GameView {
 
     private ScrollPane buildTableScroll(BoardSnapshot board, List<PlayerSnapshot> players,
                                         int numPlayers, boolean isMyTurn) {
+        boolean canResolve = isMyTurn && currentPhase.equals("RESOLUTION");
+        boolean canExtraPick = isMyTurn && currentPhase.equals("EXTRA_PICK");
+
         VBox table = new VBox();
         table.setPadding(new Insets(15));
         table.getChildren().addAll(
                 CardRowView.build(board.upperRow(), 150, true,  manager,
-                        isMyTurn && currentPhase.equals("RESOLUTION")),
+                        canResolve || canExtraPick),
                 TrackView.build(board.order(), board.track(), numPlayers, manager,
                         isMyTurn && currentPhase.equals("PLACEMENT")),
                 CardRowView.build(board.lowerRow(), 150, false, manager,
-                        isMyTurn && currentPhase.equals("RESOLUTION"))
+                        canResolve)
         );
 
         ScrollPane scroll = new ScrollPane(table);
