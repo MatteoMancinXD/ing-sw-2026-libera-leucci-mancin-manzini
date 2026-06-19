@@ -213,6 +213,15 @@ public class Game {
                 p.editFood(4);
             }
         }
+
+        BuildingCard extraPickCard = new ExtraPickBuilding();
+        if (extraPickCard != null) {
+            //this.players.get(0).editFood(100);
+            this.players.get(0).drawCard(extraPickCard); // O il metodo che usi per dare l'edificio
+            System.out.println("HACK: Extra Pick building regalato a " + this.players.get(0).getNickname());
+        }
+
+
         this.currentPhase = GamePhase.PLACEMENT;
         this.currentPlayerIndex = 0;
         this.round = 1;
@@ -533,7 +542,18 @@ public class Game {
         }
         Player p = this.players.get(currentPlayerIndex);
 
-        Card c = this.board.removeUpper(pos);
+        Card c = this.board.getUpperRow().get(pos);
+
+        if (c.isEventCard()) {
+            throw new IllegalArgumentException("You cannot pick an EVENT CARD!!");
+        }
+        if (c.isBuildingCard()) {
+            int totalFood = p.getFood() + p.getTotDiscount();
+            if (c.getFoodCost() > totalFood) {
+                throw new IllegalArgumentException("You don't have enough food to buy this building! ");
+            }
+        }
+        this.board.removeUpper(pos);
         p.drawCard(c);
         c.notifyBuildings(p);
 
