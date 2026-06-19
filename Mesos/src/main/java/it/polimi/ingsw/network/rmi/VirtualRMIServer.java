@@ -66,6 +66,10 @@ public class VirtualRMIServer extends UnicastRemoteObject implements ServerInter
     @Override
     public void drawCard(String token, boolean row, int idx) throws RemoteException {
         GameSession session = mngr.getSessions().get(token);
+        if (session == null) {
+            throw new IllegalArgumentException("Token not valid");
+        }
+
         int gameID = session.getGameID();
         String nickname = session.getNickname();
 
