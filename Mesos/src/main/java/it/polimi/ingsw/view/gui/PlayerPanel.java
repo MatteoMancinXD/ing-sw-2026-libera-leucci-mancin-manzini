@@ -91,51 +91,11 @@ public class PlayerPanel {
             sideBar.getChildren().add(makeLabel("Shamans: "    + p.shamans().size()));
             sideBar.getChildren().add(makeLabel("Inventors: "  + p.inventors().size()));
             sideBar.getChildren().add(makeLabel("Buildings: "  + p.buildings().size()));
-            sideBar.getChildren().add(makeLabel("Buildings list:\n" + buildingsText));
+
 
             sideBar.getChildren().add(new Separator());
         }
     }
-
-
-
-/*
-    private static VBox buildStatsBox(List<Player> players, String localNick) {
-        VBox sideBar = new VBox(10);
-        sideBar.setPadding(new Insets(15));
-        sideBar.getChildren().add(makeLabel("PLAYERS:"));
-        sideBar.getChildren().add(makeLabel("---STATS---"));
-
-        for (Player p : players) {
-            String name = p.getNickname().equals(localNick)
-                    ? "Player: " + p.getNickname() + " (YOU)"
-                    : "Player: " + p.getNickname();
-
-
-            String buildingsText = p.getBuildings().stream()
-                    .map(b -> b.getClass().getSimpleName())
-                    .collect(Collectors.joining("\n"));
-
-
-
-            sideBar.getChildren().add(makeLabel(name));
-            sideBar.getChildren().add(makeLabel("Food: " + p.getFood() + "  Prestige: " + p.getPrestige()));
-            sideBar.getChildren().add(makeLabel("Stars: "    + p.getTotStars()));
-            sideBar.getChildren().add(makeLabel("Artists: "    + p.getArtists().size()));
-            sideBar.getChildren().add(makeLabel("Builders: "   + p.getBuilders().size() + " tot bonus: " + p.getBuilders().stream().mapToInt(BuilderCard::getDiscount).sum()));
-            sideBar.getChildren().add(makeLabel("Harvesters: " + p.getHarvesters().size()));
-            sideBar.getChildren().add(makeLabel("Hunters: "    + p.getHunters().size()));
-            sideBar.getChildren().add(makeLabel("Shamans: "    + p.getShamans().size()));
-            sideBar.getChildren().add(makeLabel("Inventors: "  + p.getInventors().size()));
-            sideBar.getChildren().add(makeLabel("Buildings: "  + p.getBuildings().size()));
-            sideBar.getChildren().add(makeLabel("Buildings list:\n" + buildingsText));
-
-            sideBar.getChildren().add(new Separator());
-        }
-
-        return sideBar;
-    }
-*/
 
 
 

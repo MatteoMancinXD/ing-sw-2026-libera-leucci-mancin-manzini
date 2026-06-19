@@ -213,15 +213,6 @@ public class Game {
                 p.editFood(4);
             }
         }
-
-        BuildingCard extraPickCard = new ExtraPickBuilding();
-        if (extraPickCard != null) {
-            //this.players.get(0).editFood(100);
-            this.players.get(0).drawCard(extraPickCard); // O il metodo che usi per dare l'edificio
-            System.out.println("HACK: Extra Pick building regalato a " + this.players.get(0).getNickname());
-        }
-
-
         this.currentPhase = GamePhase.PLACEMENT;
         this.currentPlayerIndex = 0;
         this.round = 1;
