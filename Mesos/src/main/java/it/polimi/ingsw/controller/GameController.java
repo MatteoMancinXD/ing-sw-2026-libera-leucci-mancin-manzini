@@ -73,16 +73,20 @@ public class GameController implements GameObserver {
                 VirtualView view = clients.get(nickname);
                 try {
                     view.showError("Totem not available");
-                    return;
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
+                return;
             }
 
             availableTotems.remove(totem);
             game.assignTotem(nickname, totem);
 
-            VirtualView view = clients.get(nickname);
+            VirtualView view = null;
+            synchronized (clients) {
+                view = clients.get(nickname);
+            }
+
             try {
                 view.notifyTotemSelected();
             } catch (RemoteException e) {
@@ -102,18 +106,10 @@ public class GameController implements GameObserver {
                 starter.onGameStart(gameID);
 
                 System.out.println("Game #" + gameID + " is starting.");
-
-                new Thread(() -> {
-                    broadcastMessage("Game #" + gameID + " starting.");
-                }).start();
-
-                Board board = game.getBoard();
-                String current = game.getCurrentPlayer().getNickname();
+                broadcastMessage("Game #" + gameID + " starting.");
 
                 GameSnapshot snap = game.toSnapshot();
-                new Thread(() -> {
-                    broadcastUpdate(snap);
-                }).start();
+                broadcastUpdate(snap);
             } else {
                 broadcastUpdateAvailableTotems(availableTotems);
             }
@@ -141,7 +137,10 @@ public class GameController implements GameObserver {
                 return false;
             } else {
                 game.addPlayer(new Player(nickname));
-                clients.put(nickname, view);
+
+                synchronized (clients) {
+                    clients.put(nickname, view);
+                }
 
                 Set<Totem> totems = availableTotems;
                 try {
@@ -180,30 +179,35 @@ public class GameController implements GameObserver {
             Player p = game.getCurrentPlayer();
             Board board = game.getBoard();
 
+            VirtualView view = null;
+            synchronized (clients) {
+                view = clients.get(p.getNickname());
+            }
+
             try {
                 card = row ? board.getUpperRow().get(idx) : board.getLowerRow().get(idx);
             } catch (IndexOutOfBoundsException e) {
-                VirtualView view = clients.get(p.getNickname());
                 try {
                     view.showError("Index out of bounds! ");
                     return false;
                 } catch (RemoteException e1) {
                     e1.printStackTrace();
                 }
-
             }
+
+            if(card == null) return false;
 
             int foodCost = card.getFoodCost();
             int discount = p.getTotDiscount();
 
             if (foodCost > (p.getFood() + discount)){
-                VirtualView view = clients.get(p.getNickname());
                 try {
                     view.showError("You don't have enough food to buy that card!");
-                    return false;
                 } catch (RemoteException e) {
                     //giocatore disconnesso
+                    //e.printStackTrace();
                 }
+                return false;
             }
 
             String rowStr = row ? "upper row" : "lower row";
@@ -212,7 +216,6 @@ public class GameController implements GameObserver {
             try {
                 if (game.getCurrentPhase().equals("EXTRA_PICK")) {
                     if (!row) {
-                        VirtualView view = clients.get(nickname);
                         try {
                             view.showError("For the Extra Pick bonus you can only draw from the UPPER row!");
                         } catch (RemoteException re) {}
@@ -229,7 +232,6 @@ public class GameController implements GameObserver {
                     //notifyCurrentPlayer();
                 }).start();
             } catch (IllegalStateException | IllegalArgumentException e) {
-                VirtualView view = clients.get(nickname);
                 try {
                     view.showError(e.getMessage());
                 } catch (RemoteException re) {
@@ -251,9 +253,12 @@ public class GameController implements GameObserver {
         synchronized (game) {
             if (!checkPlayer(nickname)) return false;
 
+            VirtualView view = null;
+            synchronized (clients) {
+                view = clients.get(nickname);
+            }
             Board board = game.getBoard();
             if (tileIndex < 0 || tileIndex > board.getTrack().size() - 1) {
-                VirtualView view = clients.get(nickname);
                 try {
                     view.showError("Index out of bound");
                     return false;
@@ -264,7 +269,6 @@ public class GameController implements GameObserver {
 
             Tile tile = board.getTrack().get(tileIndex);
             if (tile.getStatus()) {
-                VirtualView view = clients.get(nickname);
                 try {
                     view.showError("Tile already occupied by player " + tile.getPlayer().getNickname());
                     return false;
@@ -275,9 +279,8 @@ public class GameController implements GameObserver {
 
             game.placeTotem(tileIndex);
             GameSnapshot snap = game.toSnapshot();
-            new Thread(() -> {
-                broadcastUpdate(snap);
-            }).start();
+
+            broadcastUpdate(snap);
 
             return true;
         }
@@ -414,10 +417,7 @@ public class GameController implements GameObserver {
             game.skipExtraPick();
 
             GameSnapshot snap = game.toSnapshot();
-            new Thread(() -> {
-                broadcastUpdate(snap);
-                //notifyCurrentPlayer();
-            }).start();
+            broadcastUpdate(snap);
         }
     }
 
@@ -480,9 +480,8 @@ public class GameController implements GameObserver {
         for (int i = 0; i < players.size(); i++) {
             message.append((i + 1) + ". :" + players.get(i).getNickname() + "\n");
         }
-        new Thread(() -> {
-            broadcastMessage(message.toString());
-        }).start();
+
+        broadcastMessage(message.toString());
 
         new Thread(() -> {
             try {

@@ -159,7 +159,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     }
 
 
-    public void receiveChatMessage(String sender, String message) throws RemoteException {
+    public synchronized void receiveChatMessage(String sender, String message) throws RemoteException {
         userInterface.showChatMessage(sender, message);
     }
 
@@ -233,7 +233,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
      * @throws RemoteException: fails to receive the update
      */
     @Override
-    public void receiveBoardUpdate(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
+    public synchronized void receiveBoardUpdate(BoardSnapshot board, List<PlayerSnapshot> players) throws RemoteException {
         userInterface.updateBoard(board, players);
     }
 
@@ -243,7 +243,7 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
      * @throws RemoteException: method fails to receive the error
      */
     @Override
-    public void receiveError(String errorMessage) throws RemoteException {
+    public synchronized void receiveError(String errorMessage) throws RemoteException {
         userInterface.showError("Server error: "+errorMessage);
     }
 
@@ -256,32 +256,32 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
      * @throws RemoteException
      */
     @Override
-    public void receiveTurnNotification(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
+    public synchronized void receiveTurnNotification(String currentPlayerNickname, String gamePhase, int round, int era) throws RemoteException {
         userInterface.notifyTurn(currentPlayerNickname, gamePhase, round, era);
     }
 
     @Override
-    public void receiveAskBonusExtraPick() throws RemoteException {
+    public synchronized void receiveAskBonusExtraPick() throws RemoteException {
         userInterface.showMessage("You have activated ExtraPickBuilding");
         userInterface.showMessage("Choose if you want to draw a bonus card or not");
     }
 
     @Override
-    public void receiveGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException {
+    public synchronized void receiveGameEnd(List<String> rankings, List<LeaderboardEntryBean> globalRanks) throws RemoteException {
         userInterface.notifyEndGame(rankings, globalRanks);
     }
     @Override
-    public void receiveMessage(String message) throws RemoteException {
+    public synchronized void receiveMessage(String message) throws RemoteException {
         userInterface.showMessage(message);
     }
 
     @Override
-    public void receiveToken(String token)  throws RemoteException {
+    public synchronized void receiveToken(String token)  throws RemoteException {
         this.token = token;
     }
 
     @Override
-    public void receiveEventResolution(EventCard card) throws RemoteException {
+    public synchronized void receiveEventResolution(EventCard card) throws RemoteException {
         userInterface.showMessage("Event resolved: " + card.getShortString());
     }
 
@@ -289,15 +289,15 @@ public class RmiClient extends UnicastRemoteObject implements ClientRemote, Netw
     public void ping() throws RemoteException {}
 
     @Override
-    public void onTotemSelected() {
+    public synchronized void onTotemSelected() {
         userInterface.onTotemSelected();
     }
 
     @Override
-    public void onGameParticipation(Set<Totem> totems) {
+    public synchronized void onGameParticipation(Set<Totem> totems) {
         userInterface.onGameParticipation(totems);
     }
 
     @Override
-    public void receiveAvailableTotemsUpdate(Set<Totem> totems) { userInterface.showAvailableTotems(totems); }
+    public synchronized void receiveAvailableTotemsUpdate(Set<Totem> totems) { userInterface.showAvailableTotems(totems); }
 }
