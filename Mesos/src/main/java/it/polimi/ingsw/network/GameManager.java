@@ -33,6 +33,10 @@ public class GameManager implements GameStarter {
 
     public int getIdCounter() { return idCounter.incrementAndGet(); }
 
+    /**
+     * Gets a ready-to-show map of available games with their respective master
+     * @return map of available games
+     */
     public synchronized Map<Integer, String> getGamesIDAndMaster() {
         Map<Integer, String> games = new HashMap<>();
         for(Map.Entry<Integer, GameController> game : availableGames.entrySet()) {
@@ -42,6 +46,10 @@ public class GameManager implements GameStarter {
         return games;
     }
 
+    /**
+     * Moves the GameController from the list of available games to the list of started games
+     * @param gameID: id of the starting game
+     */
     @Override
     public synchronized void onGameStart(int gameID) {
         if(availableGames.containsKey(gameID)) {

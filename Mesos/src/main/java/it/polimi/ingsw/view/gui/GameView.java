@@ -173,6 +173,15 @@ public class GameView {
     }
 
 
+    /**
+     * Creates the table of the game, rendering the board with the orderTile, the offers' track
+     * and the upper and lower rows of cards
+     * @param board: main data object containing all information about the state of the table
+     * @param players: list of current players
+     * @param numPlayers: number of players
+     * @param isMyTurn: used to enable or disable the effect of clicking cards and tiles
+     * @return
+     */
     private ScrollPane buildTableScroll(BoardSnapshot board, List<PlayerSnapshot> players,
                                         int numPlayers, boolean isMyTurn) {
         boolean canResolve = isMyTurn && currentPhase.equals("RESOLUTION");

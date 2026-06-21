@@ -29,6 +29,10 @@ public class GameSetup {
         this.manager = manager;
     }
 
+    /**
+     * Shows the GameSetup view with inputs to see available games, create a new game and
+     * choose a game to join
+     */
     public void show() {
         VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);

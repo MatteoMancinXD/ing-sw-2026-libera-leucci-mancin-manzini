@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+
 public class GameSession {
     int gameID;
     String nickname;

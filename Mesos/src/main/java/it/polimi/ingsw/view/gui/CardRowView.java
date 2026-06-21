@@ -15,6 +15,8 @@ import java.util.List;
 public class CardRowView {
 
     /**
+     * Builds the row of cards, retrieving graphic resources and
+     * defining the cards' behaviour when clicked
      * @param cards  list of cards to display
      * @param height display height of each card image
      * @return HBox containing all card buttons

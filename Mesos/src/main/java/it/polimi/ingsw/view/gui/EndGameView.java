@@ -34,6 +34,11 @@ public class EndGameView {
         this.databaseManagerDAO = DatabaseManagerDAO.getInstance();
     }
 
+    /**
+     * Shows this game's rankings along with historical rankings
+     * @param rankings: current game's results
+     * @param globalLeaderboard: historical results
+     */
     public void show(List<String> rankings, List<LeaderboardEntryBean> globalLeaderboard) {
         int numPlayers = rankings.size();
 

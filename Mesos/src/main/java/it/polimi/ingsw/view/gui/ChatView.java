@@ -104,10 +104,6 @@ public class ChatView {
         );
     }
 
-    // ------------------------------------------------------------------ //
-    //  API pubblica                                                        //
-    // ------------------------------------------------------------------ //
-
     /**
      * Restituisce il nodo radice da embeddare nel layout della scena padre.
      * Esempio:
@@ -171,10 +167,9 @@ public class ChatView {
         });
     }
 
-    // ------------------------------------------------------------------ //
-    //  Invio messaggio                                                     //
-    // ------------------------------------------------------------------ //
-
+    /**
+     * Sends written message to all players in game
+     */
     private void handleSend() {
         String text = inputField.getText().trim();
         if (text.isEmpty()) return;

@@ -77,7 +77,7 @@ public class GuiManager extends Application implements ui {
     }
 
 
-    //LobbyView calls these methods, then GuiManeger passes them to NetworkClient
+    //LobbyView calls these methods, then GuiManager passes them to NetworkClient
     //so that the ui and the network are divided
     //in LobbyView we use:  manager.createGame("player1",2)
 
@@ -108,6 +108,10 @@ public class GuiManager extends Application implements ui {
         }
     }
 
+    /**
+     * Called from GameView to place the player's totem on a certain tile
+     * @param index: index of the tile in the offers' track
+     */
     public void placeTotem(int index) throws Exception {
         System.out.println("DEBUG GUI placeTotem index=" + index);
         client.askToPlaceTotem(index);
@@ -115,11 +119,20 @@ public class GuiManager extends Application implements ui {
 
     //ui methods
 
+    /**
+     * Allows to update the graphic rendering of the game to reflect the current state
+     * @param board: state of the board
+     * @param players: current players
+     */
     @Override
     public void updateBoard(BoardSnapshot board, List<PlayerSnapshot> players) {
         Platform.runLater(() -> gameView.show(board, players));
     }
 
+    /**
+     * Displays an error received from server
+     * @param errorMessage: error received
+     */
     @Override
     public void showError(String errorMessage) {
         Platform.runLater(() -> {
@@ -130,12 +143,25 @@ public class GuiManager extends Application implements ui {
         });
     }
 
+    /**
+     * Updates the turn management of the game, eventually allowing the player
+     * to place the totem/draw cards
+     * @param currentPlayerNickname: nickname of the active player
+     * @param gamePhase: phase of the game (placing/resolution/extra pick)
+     * @param round: round of the game
+     * @param era: current era
+     */
     @Override
     public void notifyTurn(String currentPlayerNickname, String gamePhase, int round, int era) {
         Platform.runLater(() -> {
             if (gameView != null) gameView.updateTurnLabel(currentPlayerNickname, gamePhase, round, era);        });
     }
 
+    /**
+     * Notifies that the game is concluded and proceeds to show current and global rankings
+     * @param rankings: rankings for the current game
+     * @param globalRanks: historical rankings
+     */
     @Override
     public void notifyEndGame(List<String> rankings, List<LeaderboardEntryBean> globalRanks) {
         System.out.println("DEBUG notifyEndGame: " + rankings);
@@ -145,6 +171,10 @@ public class GuiManager extends Application implements ui {
         });
     }
 
+    /**
+     * Generic method invoked to show a message received from the server
+     * @param message: message to be shown
+     */
     @Override
     public void showMessage(String message) {
         System.out.println(message);
@@ -173,6 +203,11 @@ public class GuiManager extends Application implements ui {
         });
     }
 
+    /**
+     * Method invoked to show a message in the players' chat
+     * @param sender: nickname of the author of the message
+     * @param message: content of the message
+     */
     @Override
     public void showChatMessage(String sender, String message) {
         Platform.runLater(() -> {
@@ -180,6 +215,10 @@ public class GuiManager extends Application implements ui {
         });
     }
 
+    /**
+     * Called from TotemSelectView, shows the set of available totems
+     * @param totems: set of available totems
+     */
     @Override
     public void showAvailableTotems(Set<Totem> totems) {
         Platform.runLater(() -> {
@@ -190,6 +229,11 @@ public class GuiManager extends Application implements ui {
     @Override
     public void onTotemSelected() {}
 
+    /**
+     * Hands a firrst set of available totems right after the player officially
+     * joins a game
+     * @param totems: available totems
+     */
     @Override
     public void onGameParticipation(Set<Totem> totems) {
         System.out.println("onGameParticipation() called");
