@@ -44,7 +44,7 @@ public class GuiManager extends Application implements ui {
         stage.setTitle("Mesos");
 
 
-        // Crea la lobby e la salva come campo per ricevere i callback
+        // creates the lobby and saves it as a parameter to receive the callbacks
         lobbyView = new LobbyView(stage, this);
         lobbyView.show();
         //creates gameView
@@ -63,24 +63,25 @@ public class GuiManager extends Application implements ui {
 
         this.nickname = nickname;
 
-        if (isRmi) {
+        if (isRmi) { //RMI
             RmiClient rmiClient = new RmiClient(this, nickname);
             rmiClient.startConnection(ip, 1099);
             this.client = rmiClient;
-        } else {
+        } else { //Socket
             SocketClient socketClient = new SocketClient(nickname);
             socketClient.setUserInterface(this);
             socketClient.startConnection(ip, 5000);
-            Thread.sleep(500);
+            Thread.sleep(500);  //thread waits for socket to be ready
             this.client = socketClient;
         }
     }
 
-
-    //LobbyView calls these methods, then GuiManager passes them to NetworkClient
-    //so that the ui and the network are divided
-    //in LobbyView we use:  manager.createGame("player1",2)
-
+/**
+ * LobbyView calls these methods, then GuiManager passes them to NetworkClient
+ * so that the ui and the network are divided
+ * in LobbyView we use (for ex):  manager.createGame("player1",2)
+ *
+*/
     public void createGame(String nickname, int numPlayers) throws Exception {
         client.createGame(nickname, numPlayers);
     }
@@ -95,17 +96,16 @@ public class GuiManager extends Application implements ui {
 
 
     /**
-     * Chiamato da CardRowView quando il giocatore clicca su una carta.
-     * Durante la fase EXTRA_PICK la carta va risolta con resolveExtraPick
-     * (sempre dalla upper row), in tutte le altre fasi si usa la draw normale.
+
+     Sends a draw request to the server.
+     The server autonomously handles the logic based on the current phase.
+     @param row true = upper row, false = lower row
+     @param index position of the card in the row
+     The logic behind the "EXTRA_PICK" phase is handled in Game class in model
      */
     public void drawCard(boolean row, int index) throws Exception {
         System.out.println("DEBUG GUI drawCard row=" + row + " index=" + index);
-        if (gameView != null && "EXTRA_PICK".equals(gameView.getCurrentPhase())) {
-            client.askToDrawCard(row,index);
-        } else {
-            client.askToDrawCard(row, index);
-        }
+        client.askToDrawCard(row,index);
     }
 
     /**
@@ -180,7 +180,7 @@ public class GuiManager extends Application implements ui {
         System.out.println(message);
         Platform.runLater(() -> {
 
-            // 1. Lista partite → lobby
+            // if the message starts with one of the following strings then it's from the lobby
             if (message.startsWith("Available games:") ||
                     message.contains("Game #") ||
                     message.contains("Game ID") ||
@@ -189,16 +189,11 @@ public class GuiManager extends Application implements ui {
                 return;
             }
 
-            // 2. Messaggio di chat → formato "nickname: testo"
-            //    GameView sa chi sono i giocatori e decide se è chat
-            //if (gameView != null && gameView.tryShowChatMessage(message)) {
-            //    return;  // GameView ha riconosciuto e mostrato il messaggio
-            //}
 
-            // 3. Tutto il resto → messaggio di stato nella lobby
+            // message that updates the lobby status
             if (lobbyView != null) lobbyView.showStatusOk(message);
 
-            // 4. Aggiornamento schermata di caricamento
+            // update totem's color selection menu
             if (totemSelectView != null) totemSelectView.updateWaitingLabel(message);
         });
     }
@@ -230,7 +225,7 @@ public class GuiManager extends Application implements ui {
     public void onTotemSelected() {}
 
     /**
-     * Hands a firrst set of available totems right after the player officially
+     * Hands a first set of available totems right after the player officially
      * joins a game
      * @param totems: available totems
      */
@@ -244,7 +239,13 @@ public class GuiManager extends Application implements ui {
         });
     }
 
-
+    /**
+     * Sends a message in the chat. The chat is available once the game is started.
+     * The communication is handled by the server while the chat itself is available only
+     * during the game and between the players' in the same game. See ChatView class in gui
+     * @param message
+     * @throws Exception
+     */
     public void sendChatMessage(String message) throws Exception {
         client.sendChatMessage(message);
     }

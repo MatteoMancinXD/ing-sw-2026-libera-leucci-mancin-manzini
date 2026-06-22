@@ -13,9 +13,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * LobbyView — prima schermata.
- * Il giocatore inserisce nickname, IP server e sceglie il protocollo.
- * Dopo aver cliccato "Connetti" si apre GameSetup.
+ *  LobbyView — first screen.
+ *  The player enters a nickname, server IP, and chooses the protocol (rmi or socket)
+ *  After clicking "Connect", GameSetup opens.
+ *
  */
 public class LobbyView {
 
