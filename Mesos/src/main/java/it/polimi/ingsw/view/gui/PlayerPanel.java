@@ -55,8 +55,10 @@ public class PlayerPanel {
 
     }
 
-    //update player stats without touching the chat
-    //called on every updateBoard() after the first show()
+    /**
+     * update player stats without touching the chat
+     * called on every updateBoard() after the first show()
+     */
     public void updateStats(List<PlayerSnapshot> players, String localNick) {
         sideBar.getChildren().clear();
         fillStats(players, localNick);          // refill with updated data

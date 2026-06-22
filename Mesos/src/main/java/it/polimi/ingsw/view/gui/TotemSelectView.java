@@ -31,6 +31,10 @@ public class TotemSelectView {
         this.manager = manager;
     }
 
+    /**
+     * Shows the set of available totems received, along with the inputs to select a totem and refresh
+     * @param totems: set of available totems
+     */
     public void show(Set<Totem> totems) {
         VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);
@@ -147,6 +151,10 @@ public class TotemSelectView {
         return l;
     }
 
+    /**
+     * Edits the list of available totems to show the latest updates
+     * @param totems: update containing the last available totems
+     */
     public void showTotems(Set<Totem> totems) {
         totemsList.clear();
         totemCombo.getItems().clear();

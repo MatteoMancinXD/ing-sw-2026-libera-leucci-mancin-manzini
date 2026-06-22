@@ -66,6 +66,13 @@ public class TrackView {
 
     //  Private helpers
 
+    /**
+     * Renders the correct OrderTile for the game, visualizing also the totems of the players
+     * still on the tile
+     * @param container: container of the TrackView
+     * @param order: Snapshot of the OrderTile's current state
+     * @param numPlayers: total number of players
+     */
     private static void addTotemCard(HBox container, OrderTileSnapshot order, int numPlayers) {
         String path = "/assets/board/order/order_" + numPlayers + ".png";
 
@@ -93,6 +100,7 @@ public class TrackView {
             Pane overlayPane = new Pane();
             double offset_y = order_offset_y.get(numPlayers);
 
+            // Loads the totem for each player still on the OrderTile
             for(int i = 0; i < order.players().size(); i++) {
                 PlayerSnapshot p = order.players().get(i);
                 if(p == null) { continue; }
@@ -123,6 +131,14 @@ public class TrackView {
         }
     }
 
+    /**0
+     * Renders a certain Tile, eventually visualizing the occupying player's totem
+     * @param container: container of the TrackView
+     * @param tile: Snapshot of the tile's current state
+     * @param index: index of the tile in the offer track
+     * @param manager: link to the GuiManager to access placeTotem methods
+     * @param enabled: dictates whether the local player can currently place the totem on any tile
+     */
     private static void addTileCard(HBox container, TileSnapshot tile, int index, GuiManager manager, boolean enabled) {
         String path = "/assets/board/tiles/tile_" + tile.letter() + ".png";
 
