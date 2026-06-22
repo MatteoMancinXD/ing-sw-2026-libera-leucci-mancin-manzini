@@ -27,9 +27,10 @@ Maven scaricherà le dipendenze in automatico e creerà i file server.jar e clie
 Posto che il percorso per la cartella \bin del JDK sia già incluso nella variabile d'ambiente PATH, per l'esecuzione del progetto è sufficiente usare i seguenti comandi nel terminale, spostandosi preventivamente nella cartella target/ del progetto:
 
 Esecuzione server:
-
-> java -jar server.jar
-
+```bash
+java -jar server.jar
+```
 Esecuzione client:
-
+```bash
 > java -jar client.jar
+```
