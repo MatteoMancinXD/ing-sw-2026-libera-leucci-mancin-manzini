@@ -54,11 +54,6 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>21.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>21.0.2</version>
         </dependency>
@@ -91,6 +86,24 @@
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>client</shadedClassifierName>
+
+<!--                            <filters>-->
+<!--                                <filter>-->
+<!--                                    <artifact>${project.groupId}:${project.artifactId}</artifact>-->
+<!--                                    <includes>-->
+<!--                                        <include>it/polimi/ingsw/ClientApp.class</include>-->
+<!--                                        <include>it/polimi/ingsw/network/**</include>-->
+<!--                                        <include>it/polimi/ingsw/view/**</include>-->
+<!--                                        <includes>it/polimi/ingsw/model/**</includes>-->
+<!--                                        <include>assets/**</include>-->
+<!--                                    </includes>-->
+<!--                                    <excludes>-->
+<!--                                        <exclude>it/polimi/ingsw/ServerApp.class</exclude>-->
+<!--                                        <exclude>it/polimi/ingsw/controller/**</exclude>-->
+<!--                                    </excludes>-->
+<!--                                </filter>-->
+<!--                            </filters>-->
+
                             <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -109,6 +122,25 @@
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>server</shadedClassifierName>
+
+<!--                            <filters>-->
+<!--                                <filter>-->
+<!--                                    <artifact>${project.groupId}:${project.artifactId}</artifact>-->
+<!--                                    <includes>-->
+<!--                                        <include>it/polimi/ingsw/ServerApp.class</include>-->
+<!--                                        <include>it/polimi/ingsw/model/**</include>-->
+<!--                                        <include>it/polimi/ingsw/controller/**</include>-->
+<!--                                        <include>it/polimi/ingsw/network/**</include>-->
+<!--                                        <include>json/**</include>-->
+<!--                                        <include>db.properties</include>-->
+<!--                                        <include>it/polimi/ingsw/view/ui.class</include>-->
+<!--                                    </includes>-->
+<!--                                    <excludes>-->
+<!--                                        <exclude>it/polimi/ingsw/ClientApp.class</exclude>-->
+<!--                                    </excludes>-->
+<!--                                </filter>-->
+<!--                            </filters>-->
+
                             <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
