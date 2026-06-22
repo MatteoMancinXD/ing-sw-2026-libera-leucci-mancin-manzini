@@ -32,5 +32,5 @@ java -jar server.jar
 ```
 Esecuzione client:
 ```bash
-> java -jar client.jar
+java -jar client.jar
 ```
