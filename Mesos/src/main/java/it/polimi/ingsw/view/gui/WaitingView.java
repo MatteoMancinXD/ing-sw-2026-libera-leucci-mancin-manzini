@@ -20,6 +20,10 @@ public class WaitingView {
         this.manager = manager;
     }
 
+    /**
+     * Displays a waiting message until all players select a totem, consequently
+     * starting the game
+     */
     public void show() {
         VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);

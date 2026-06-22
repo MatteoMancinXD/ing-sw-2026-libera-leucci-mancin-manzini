@@ -29,6 +29,9 @@ public class LobbyView {
         this.manager = manager;
     }
 
+    /**
+     * Shows the LobbyView with inputs for nickname, communication protocol and serverIP
+     */
     public void show() {
         VBox root = new VBox(14);
         root.setAlignment(Pos.CENTER);
@@ -105,6 +108,8 @@ public class LobbyView {
         Scene scene = new Scene(root, 500, 500);
         stage.setScene(scene);
     }
+
+    // Auxiliary methods
 
     public void showStatusError(String msg) {
         Platform.runLater(() -> {
