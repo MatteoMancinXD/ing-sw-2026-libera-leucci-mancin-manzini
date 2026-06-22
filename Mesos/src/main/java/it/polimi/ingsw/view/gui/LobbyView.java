@@ -111,6 +111,10 @@ public class LobbyView {
 
     // Auxiliary methods
 
+    /**
+     * implements error text as a red colored label
+     * @param msg
+     */
     public void showStatusError(String msg) {
         Platform.runLater(() -> {
             messageLabel.setText(msg);
@@ -118,6 +122,11 @@ public class LobbyView {
         });
     }
 
+    /**
+     * "converts" the text from GuiManager (that came from server) in a Label (graphic element).
+     * This choice was implemented to divide the graphics from the logic
+     * @param msg
+     */
     public void showStatusOk(String msg) {
         Platform.runLater(() -> {
             messageLabel.setText(msg);
@@ -125,7 +134,9 @@ public class LobbyView {
         });
     }
 
-    // --- helpers ---
+
+
+    //helper methods to avoid code duplication
 
     private Label makeLabel(String text) {
         Label l = new Label(text);
@@ -151,7 +162,7 @@ public class LobbyView {
 
     private RadioButton makeRadio(String text, ToggleGroup group, boolean selected) {
         RadioButton rb = new RadioButton(text);
-        rb.setToggleGroup(group);
+        rb.setToggleGroup(group); //makes a group (in each group only one element can be selected at the same time)
         rb.setSelected(selected);
         rb.setTextFill(Color.WHITE);
         return rb;
@@ -168,7 +179,7 @@ public class LobbyView {
                         "-fx-background-radius: 4;" +
                         "-fx-cursor: hand;"
         );
-        button.setOnMouseEntered(e -> button.setOpacity(0.85));
-        button.setOnMouseExited(e ->  button.setOpacity(1.0));
+        button.setOnMouseEntered(e -> button.setOpacity(0.85)); //changes button color on click start
+        button.setOnMouseExited(e ->  button.setOpacity(1.0)); //changes button color on click end
     }
 }
