@@ -30,7 +30,7 @@ public class LobbyView {
     }
 
     /**
-     * Shows the LobbyView with inputs for nickname, communication protocol and serverIP
+     * Shows the LobbyView (graphics) with inputs for nickname, communication protocol and serverIP
      */
     public void show() {
         VBox root = new VBox(14);
@@ -38,7 +38,7 @@ public class LobbyView {
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #1a1a2e;");
 
-        // Titolo
+        // Title
         Text title = new Text("MESOS");
         title.setFont(Font.font("Georgia", FontWeight.BOLD, 48));
         title.setFill(Color.web("#e0a830"));
@@ -46,32 +46,33 @@ public class LobbyView {
 
         // Nickname
         Label nicknameLabel = makeLabel("Nickname");
-        TextField nicknameField = makeTextField("Inserisci il tuo nickname");
+        TextField nicknameField = makeTextField("Inserisci il tuo nickname"); //promptText
 
         // IP Server
+        //you set this string as default text: "127.0.0.1", then if you enter a blank string the promptText reminds it you again
         Label ipLabel = makeLabel("IP Server");
         TextField ipField = makeTextField("127.0.0.1");
         ipField.setText("127.0.0.1");
 
-        // Protocollo
+        // RMI or Socket
         Label protocolLabel = makeLabel("Protocollo");
         ToggleGroup protocolGroup = new ToggleGroup();
-        RadioButton rmiButton    = makeRadio("RMI",    protocolGroup, true);
+        RadioButton rmiButton    = makeRadio("RMI",    protocolGroup, true); //true as default
         RadioButton socketButton = makeRadio("Socket", protocolGroup, false);
         HBox protocolBox = new HBox(20, rmiButton, socketButton);
         protocolBox.setAlignment(Pos.CENTER);
 
-        // Bottone connetti
+        // connection button
         Button connectButton = new Button("Connetti");
         styleButton(connectButton, "#e0a830", "#1a1a2e");
 
-        // Messaggio di stato
+        // state message
         messageLabel = new Label("");
         messageLabel.setTextFill(Color.web("#aaaaaa"));
-        messageLabel.setWrapText(true);
+        messageLabel.setWrapText(true); //line break true
 
         connectButton.setOnAction(e -> {
-            String nick   = nicknameField.getText().trim();
+            String nick   = nicknameField.getText().trim(); //trim() removes blank spaces at the beginning and at the end of a string
             String ip     = ipField.getText().trim();
             boolean isRmi = rmiButton.isSelected();
 
@@ -82,9 +83,9 @@ public class LobbyView {
                 try {
                     manager.connectClient(nick, ip, isRmi);
                     Platform.runLater(() -> {
-                        // apre la schermata di setup partita
+                        // uses the javafx thread to put in cue: gameSetup's showing
                         Platform.runLater(() -> {
-                            GameSetup gameSetup = new GameSetup(stage, manager);
+                            GameSetup gameSetup = new GameSetup(stage, manager); //gameSetup is a private var in guiManager (dividing logic from graphic)
                             manager.setGameSetup(gameSetup);
                             gameSetup.show();
                         });
@@ -109,11 +110,10 @@ public class LobbyView {
         stage.setScene(scene);
     }
 
-    // Auxiliary methods
 
     /**
      * implements error text as a red colored label
-     * @param msg
+     * @param msg message
      */
     public void showStatusError(String msg) {
         Platform.runLater(() -> {
@@ -125,7 +125,7 @@ public class LobbyView {
     /**
      * "converts" the text from GuiManager (that came from server) in a Label (graphic element).
      * This choice was implemented to divide the graphics from the logic
-     * @param msg
+     * @param msg message
      */
     public void showStatusOk(String msg) {
         Platform.runLater(() -> {
@@ -146,7 +146,7 @@ public class LobbyView {
 
     private TextField makeTextField(String prompt) {
         TextField f = new TextField();
-        f.setPromptText(prompt);
+        f.setPromptText(prompt); //suggested text that you see before writing inside a TextField
         f.setMaxWidth(400);
         f.setStyle(
                 "-fx-background-color: #2a2a4a;" +

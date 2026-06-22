@@ -49,7 +49,7 @@ public class TotemSelectView {
 
         totemsLabel = makeLabel("Available totems:");
         totemsList = new TextArea();
-        totemsList.setEditable(false);
+        totemsList.setEditable(false); //this text area is for showing totem's available colors
         totemsList.setPrefHeight(115);
         totemsList.setPrefWidth(400);
         totemsList.setPromptText("Click \"Update\" to see available totems");
