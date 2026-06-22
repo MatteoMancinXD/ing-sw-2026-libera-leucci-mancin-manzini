@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.network.rmi.RmiClient;
 import it.polimi.ingsw.network.socket.SocketClient;
 import it.polimi.ingsw.view.gui.GuiManager;
@@ -13,8 +12,6 @@ import java.util.Scanner;
 
 public class ClientApp {
     public static void main(String[] args) throws Exception {
-        ClientController ui = new ClientController();
-
         Scanner kb = new Scanner(System.in);
 
         System.out.println("Select interface:");
