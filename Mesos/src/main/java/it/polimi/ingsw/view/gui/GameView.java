@@ -13,17 +13,34 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * GameView — main game screen.
+ /**
+  * Main game screen, displayed once the single game starts.
+  *
+  * The scene is built only once on the first show() call via buildScene().
+  * All subsequent updates replace only the inner the parts that actually need to change.
+  * The scene and the stage are not recreated.
+  *
+  * This design solves two problems:
+  *
+  * - Chat persistence — PlayerPanel and ChatView are created once and never
+  *   destroyed, so that chat messages survive every board update.
+  *
+  * - replacing the entire scene while in full-screen mode
+  *   caused a complete crash of the gui. Now in buildScene() we memorize the previous window's dimension
+  *   before setting the new Scene (the scene is refreshed everytime the server calls updateBoard() )
+  *
+  *
+  * flow:
+  * First call:  show() → buildScene()   — builds root, top bar, center, right panel
+  * Later calls: show() → refreshTable() — replaces only center (table + hand)
+  * Turn change: updateTurnLabel()       — updates label text + calls refreshTable()
+  *
+  * Subcomponents:
+  * - CardRowView   — renders the upper and lower card rows
+  * - TrackView     — renders the order tile and track tiles
+  * - PlayerHandView— renders the local player's hand
+  * - PlayerPanel   — renders player stats (scrollable) and chat (fixed)
  *
- * ARCHITETTURA:
- *   - La scena viene costruita UNA SOLA VOLTA in buildScene().
- *   - show() al primo invoco costruisce la scena; nei successivi aggiorna
- *     solo i sottoalberi che cambiano (table area + hand).
- *   - updateTurnLabel() aggiorna solo la label, senza ricostruire nulla.
- *
- * Questo evita il crash D3D che si verificava perché JavaFX perdeva il
- * contesto GPU durante ricostruzioni rapide della scena a schermo intero.
  */
 public class GameView {
 
@@ -51,9 +68,9 @@ public class GameView {
     }
 
     /**
-     * Prima chiamata: costruisce l'intera scena e la monta sullo Stage.
-     * Chiamate successive: aggiorna solo table area e hand, senza
-     * ricreare Scene/Stage né distruggere il PlayerPanel.
+     * First call: builds the entire scene and mounts it on the Stage.
+     * Other calls: updates only the table area and hand, without
+     * recreating Scene/Stage or destroying the PlayerPanel.
      */
     public void show(BoardSnapshot board, List<PlayerSnapshot> players) {
         this.lastBoard  = board;
@@ -62,17 +79,18 @@ public class GameView {
         playersNicknames.clear();
         for (PlayerSnapshot p : players) playersNicknames.add(p.nickname());
 
-        if (!sceneBuilt) {
+        if (!sceneBuilt) { //first call
             buildScene(board, players);
             sceneBuilt = true;
-        } else {
+        } else { //other calls
             refreshTable(board, players);
         }
     }
 
     /**
-     * Aggiorna solo la label del turno e, se serve, ridipinge la board
-     * (ma senza ricostruire la scena).
+     * Updates just TurnLabel and repaint the Board if needed
+     * but without rebuilding the scene.
+     * When your turn comes TurnLabel says "è il tuo turno" otherwise "turno di:" other player
      */
     public void updateTurnLabel(String nickname, String phase, int round, int era) {
         this.currentPlayerNickname = nickname;
@@ -103,11 +121,24 @@ public class GameView {
         return true;
     }
 
-    /** Espone la fase corrente del turno, usata da GuiManager per smistare le azioni. */
+    /** Returns current phase  */
     public String getCurrentPhase() {
         return currentPhase;
     }
 
+
+    /**
+     * Builds the main scene. buildScene is used in GameView's show() method to create
+     * the part of the graphics that don't need to be refreshed after the first call (creation of the view)
+     *
+     * It's used to divide and organize the scene in its different panels.
+     *
+     * The old scene's dimensions are memorized so that after an updateBoard() the window after setScene() will have
+     * the same dimensions as before
+     *
+     * @param board
+     * @param players
+     */
     private void buildScene(BoardSnapshot board, List<PlayerSnapshot> players) {
         int numPlayers   = players.size();
         boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
@@ -131,7 +162,7 @@ public class GameView {
         centerPane.setBottom(PlayerHandView.build(players, manager.getNickName()));
         gameRoot.setCenter(centerPane);
 
-        // Right: PlayerPanel (creato una sola volta)
+        // Right: PlayerPanel (created once then updated)
         playerPanel = new PlayerPanel(players, manager.getNickName(), manager);
         chatView    = playerPanel.getChatView();
         gameRoot.setRight(playerPanel.getRightPanel());
@@ -156,8 +187,11 @@ public class GameView {
 
 
     /**
-     * Aggiorna la table area e la hand SENZA toccare Stage/Scene/PlayerPanel.
-     * Sostituisce solo i nodi figli del centerPane.
+     * Updates the table area and the hand WITHOUT touching Stage/Scene/PlayerPanel.
+     * Replaces only the child nodes of the centerPane.
+     *
+     * @param board   the current board state
+     * @param players the list of all players in the game
      */
     private void refreshTable(BoardSnapshot board, List<PlayerSnapshot> players) {
         int numPlayers   = players.size();
@@ -182,8 +216,8 @@ public class GameView {
      * @param isMyTurn: used to enable or disable the effect of clicking cards and tiles
      * @return
      */
-    private ScrollPane buildTableScroll(BoardSnapshot board, List<PlayerSnapshot> players,
-                                        int numPlayers, boolean isMyTurn) {
+    private ScrollPane buildTableScroll(BoardSnapshot board, List<PlayerSnapshot> players, int numPlayers, boolean isMyTurn) {
+
         boolean canResolve = isMyTurn && currentPhase.equals("RESOLUTION");
         boolean canExtraPick = isMyTurn && currentPhase.equals("EXTRA_PICK");
 

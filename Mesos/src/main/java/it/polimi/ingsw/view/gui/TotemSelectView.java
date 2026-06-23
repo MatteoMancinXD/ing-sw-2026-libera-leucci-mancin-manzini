@@ -49,7 +49,7 @@ public class TotemSelectView {
 
         totemsLabel = makeLabel("Available totems:");
         totemsList = new TextArea();
-        totemsList.setEditable(false);
+        totemsList.setEditable(false); //this text area is for showing totem's available colors
         totemsList.setPrefHeight(115);
         totemsList.setPrefWidth(400);
         totemsList.setPromptText("Click \"Update\" to see available totems");
@@ -68,7 +68,7 @@ public class TotemSelectView {
         styleButton(updateBtn, "#2a2a4a", "#e0a830");
 
         Label selectLabel = makeLabel("Select totem:");
-        totemCombo = new ComboBox<>();
+        totemCombo = new ComboBox<>();  //selezione singola menu a discesa
         totemCombo.setPromptText("Select a totem...");
         totemCombo.setStyle("-fx-background-color: #2a2a4a; -fx-text-fill: white;");
         totemCombo.setPrefWidth(200);
@@ -86,6 +86,8 @@ public class TotemSelectView {
         });
 
         // Custom design for drop menu container when opened
+        // showingProperty() changes to 'true' when the user clicks the arrow
+        //addListener((observable,oldValue,newValue) -> ...
         totemCombo.showingProperty().addListener((obs, wasShowing, isShowing) -> {
             if (isShowing) {
                 totemCombo.lookup(".list-view").setStyle("-fx-border-color: transparent; -fx-background-color: #2a2a4a;");
@@ -109,7 +111,7 @@ public class TotemSelectView {
             String selected = totemCombo.getValue();
             if (selected == null) { showStatusError("Seleziona un totem."); return; }
             final String finalTotem = selected.toUpperCase();
-            if (stringTotems.contains(finalTotem)) {
+            if (stringTotems.contains(finalTotem)) {  //once the totem is selected create a waiting view
                 new Thread(() -> {
                     Platform.runLater(() -> {
                         WaitingView waitingView = new WaitingView(stage, manager);

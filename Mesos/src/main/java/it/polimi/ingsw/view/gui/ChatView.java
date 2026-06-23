@@ -16,6 +16,10 @@ import javafx.scene.text.TextFlow;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Builds the chatView with a title a Vbox inside which the messages are visualized
+ * and a scrollPane that moves automatically when there's no more room for new messages
+ */
 public class ChatView {
 
     private final GuiManager manager;
@@ -24,7 +28,7 @@ public class ChatView {
     //ui
     private final VBox root;
     private final VBox messagesBox;
-    private final ScrollPane scrollPane;  // scroll automatico verso il basso
+    private final ScrollPane scrollPane;  // scroll verso il basso
     private final TextField inputField;
 
     private static final DateTimeFormatter TIME_FMT =
@@ -35,12 +39,12 @@ public class ChatView {
         this.manager = manager;
         this.title = title;
 
-        // --- Titolo ---
+        // title
         Label titleLabel = new Label(title);
         titleLabel.setTextFill(Color.web("#e0a830"));
         titleLabel.setFont(Font.font("Georgia", FontWeight.BOLD, 14));
 
-        // --- Area messaggi ---
+        // VBox inside which the messages are visualized
         messagesBox = new VBox(4);
         messagesBox.setPadding(new Insets(8));
 
@@ -104,19 +108,13 @@ public class ChatView {
         );
     }
 
-    /**
-     * Restituisce il nodo radice da embeddare nel layout della scena padre.
-     * Esempio:
-     *   sideBar.getChildren().add(chatView.getRoot());
-     */
+
     public VBox getRoot() {
         return root;
     }
 
     /**
-     * Aggiunge un messaggio ricevuto dal server alla chat.
-     * Chiamato da GuiManager quando arriva un messaggio.
-     * Thread-safe: usa Platform.runLater() internamente.
+     * Adds the received message to the chat
      *
      * @param from    nickname del mittente
      * @param message testo del messaggio
@@ -147,10 +145,7 @@ public class ChatView {
         });
     }
 
-    /**
-     * Overload: accetta una stringa già formattata "NICKNAME: messaggio"
-     * utile se il server manda i messaggi già in quel formato.
-     */
+
     public void appendMessage(String rawMessage) {
         Platform.runLater(() -> {
             String time = LocalTime.now().format(TIME_FMT);
