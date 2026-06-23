@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * PlayerPanel builds the right panel: player stats (scrollable) + chat (fixed at bottom).
+ * PlayerPanel builds the right stats panel: player stats (scrollable) + chat (fixed at bottom).
  */
 public class PlayerPanel {
 
@@ -38,12 +38,12 @@ public class PlayerPanel {
         sideBar.setPadding(new Insets(15));
         fillStats(players, localNick);
 
-        // --- Stats (scrollable) ---
+        // Stats (scrollable)
         ScrollPane statsScroll = new ScrollPane(sideBar);
         statsScroll.setFitToWidth(true);
         statsScroll.setStyle("-fx-background: #1a1a2e; -fx-background-color: #1a1a2e;");
 
-        // --- Chat (fixed height at bottom) ---
+        // Chat (fixed height at bottom)
         chatView = new ChatView(manager, "Game Chat");
         VBox chatContainer = chatView.getRoot();
         chatContainer.setPrefHeight(CHAT_HEIGHT);

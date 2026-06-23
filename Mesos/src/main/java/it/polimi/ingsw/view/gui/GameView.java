@@ -23,7 +23,7 @@ import java.util.List;
   * This design solves two problems:
   *
   * - Chat persistence — PlayerPanel and ChatView are created once and never
-  *   destroyed, so chat messages survive every board update.
+  *   destroyed, so that chat messages survive every board update.
   *
   * - replacing the entire scene while in full-screen mode
   *   caused a complete crash of the gui. Now in buildScene() we memorize the previous window's dimension

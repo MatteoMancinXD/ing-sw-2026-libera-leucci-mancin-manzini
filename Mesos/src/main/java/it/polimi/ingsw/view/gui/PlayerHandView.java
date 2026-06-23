@@ -117,9 +117,7 @@ public class PlayerHandView {
             }
         }
 
-        // --- ScrollPane ---
-        // NON usare setFitToHeight(true): lascia che la ScrollPane abbia
-        // un'altezza definita esplicitamente, altrimenti collassa a 0.
+        // ScrollPane
         double scrollHeight = CARD_HEIGHT + 20; // carta + padding + scrollbar
         ScrollPane scroll = new ScrollPane(cardStrip);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -130,7 +128,7 @@ public class PlayerHandView {
         scroll.setPrefHeight(scrollHeight);
         scroll.setMaxHeight(scrollHeight);
         scroll.setStyle("-fx-background: #12122a; -fx-background-color: #12122a; -fx-border-color: transparent;");
-        // NON usare VBox.setVgrow qui: l'altezza è già fissa
+
         VBox.setVgrow(scroll, Priority.NEVER);
 
         col.getChildren().addAll(nameLabel, scroll);
