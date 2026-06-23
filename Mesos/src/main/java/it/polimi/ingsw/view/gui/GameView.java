@@ -51,9 +51,9 @@ public class GameView {
     }
 
     /**
-     * Prima chiamata: costruisce l'intera scena e la monta sullo Stage.
-     * Chiamate successive: aggiorna solo table area e hand, senza
-     * ricreare Scene/Stage né distruggere il PlayerPanel.
+     * First call: builds the entire scene and mounts it on the Stage.
+     * Other calls: updates only the table area and hand, without
+     * recreating Scene/Stage or destroying the PlayerPanel.
      */
     public void show(BoardSnapshot board, List<PlayerSnapshot> players) {
         this.lastBoard  = board;
@@ -62,10 +62,10 @@ public class GameView {
         playersNicknames.clear();
         for (PlayerSnapshot p : players) playersNicknames.add(p.nickname());
 
-        if (!sceneBuilt) {
+        if (!sceneBuilt) { //first call
             buildScene(board, players);
             sceneBuilt = true;
-        } else {
+        } else { //other calls
             refreshTable(board, players);
         }
     }
@@ -108,6 +108,16 @@ public class GameView {
         return currentPhase;
     }
 
+
+    /**
+     * Builds the main scene. buildScene is used in GameView's show() method to create
+     * the part of the graphics that don't need to be refreshed after the first call (creation of the view)
+     *
+     * It's used to divide and organize the scene in its different panels.
+     *
+     * @param board
+     * @param players
+     */
     private void buildScene(BoardSnapshot board, List<PlayerSnapshot> players) {
         int numPlayers   = players.size();
         boolean isMyTurn = manager.getNickName().equals(currentPlayerNickname);
