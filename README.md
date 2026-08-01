@@ -32,5 +32,4 @@ The project was designed with a strong focus on modularity, decoupling, and robu
 * **Model-View-Controller (MVC):** Strict separation of concerns between game logic, user interfaces, and network controllers.
 * **Virtual View Pattern:** Used to seamlessly decouple the network layer from the application logic. The server communicates with clients through a "virtual" representation of the view, oblivious to the underlying network protocol (Socket or RMI) being used.
 * **Singleton:** Applied to the `DatabaseManagerDAO` to guarantee a single, thread-safe connection pool to the database across the entire server lifecycle.
-* **Java Modeling Language (JML):** The core components of the `Model` have been formally specified using JML. Pre-conditions, post-conditions, and class invariants were strictly defined to prevent illegal states and to systematically guide our testing phase.
 
